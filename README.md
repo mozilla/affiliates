@@ -1,17 +1,15 @@
-playdoh
-=======
+Affiliates
+==========
 
-Mozilla's Playdoh is a web application template based on [Django][django].
-
-Patches are welcome! Feel free to fork and contribute to this project on
-[github][gh-playdoh].
-
-Full [documentation][docs] is available as well.
+This is the new home for the Mozilla affiliates program.
 
 
-[django]: http://www.djangoproject.com/
+Contributing
+------------
+Patches are welcome! Affiliates is a [playdoh][gh-playdoh]-based web
+application.
+
 [gh-playdoh]: https://github.com/mozilla/playdoh
-[docs]: http://playdoh.rtfd.org/
 
 
 License
