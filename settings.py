@@ -11,23 +11,29 @@ SYSLOG_TAG = "http_app_playdoh"  # Make this unique to your project.
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
     'css': {
-        'example_css': (
-            'css/examples/main.css',
+        'common': (
+            'css/reset.css',
+            'global/headerfooter.css',
+            'css/main.css',
         ),
     },
     'js': {
-        'example_js': (
+        'common': (
             'js/libs/jquery-1.4.4.min.js',
+            'global/menu.js',
         ),
     }
 }
 
-
 INSTALLED_APPS = list(INSTALLED_APPS) + [
-    # Example code. Can (and should) be removed for actual projects.
-    'examples',
+    'affiliates',
+    'users',
 ]
 
+# Email settings
+DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACTIVATION_EMAIL = 'users/email/activation.ltxt'
 
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.

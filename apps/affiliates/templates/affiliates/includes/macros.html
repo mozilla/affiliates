@@ -1,0 +1,24 @@
+{% macro show_register_form(form, csrf) -%}
+<form action="{{ url('users.register') }}" method="post">
+  {{ csrf|safe }}
+  <fieldset>
+	<ul>
+	  <li>
+		<label for="id_name">{{ _('Name:') }}</label>
+		{{ form.name }}
+	  </li>
+	  <li>
+		<label for="id_email">{{ _('Email:') }}</label>
+		{{ form.email }}
+	  </li>
+	  <li>
+		<label for="id_password">{{ _('Password:') }}</label>
+		{{ form.password }}
+	  </li>
+	</ul>
+  </fieldset>
+  <div class="submit">
+	<input type="submit" value="{{ _('Register') }}" />
+  </div>
+</form>
+{%- endmacro %}

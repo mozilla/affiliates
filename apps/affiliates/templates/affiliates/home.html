@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% from "affiliates/includes/macros.html" import show_register_form %}
+{% block content %}
+<p>{{ _('Welcome to zombocom!') }}</p>
+{{ show_register_form(register_form, csrf()) }}
+{% endblock %}
