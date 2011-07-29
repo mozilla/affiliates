@@ -7,6 +7,7 @@ from users.models import RegisterProfile
 
 def register(request):
     """Create a registration profile."""
+    form = RegisterForm(request.POST or None)
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():

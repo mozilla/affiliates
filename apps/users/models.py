@@ -3,7 +3,9 @@ import random
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.core import mail
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.loader import render_to_string
 
@@ -65,11 +67,11 @@ class RegisterManager(models.Manager):
         activation_key = hashlib.sha1(salt + email).hexdigest()
 
         profile = RegisterProfile(name=name, email=email,
-                                      activation_key=activation_key)
+                                  activation_key=activation_key)
         profile.set_password(password)
         profile.save()
 
-        self._send_email(settings.ACTIVATION_EMAIL,
+        self._send_email('users/email/activation.ltxt',
                          _('Please activate your account'), profile)
 
         return profile
@@ -79,7 +81,11 @@ class RegisterManager(models.Manager):
 
     def _send_email(self, template, subject, profile, **kwargs):
         """Sends an activation email to the user"""
-        email_kwargs = {'profile': profile}
+        current_site = Site.objects.get_current()
+        url = reverse('users.activate',
+                     kwargs={'activation_key': profile.activation_key})
+        email_kwargs = {'domain': current_site.domain,
+                        'activate_url': url}
         email_kwargs.update(kwargs)
         message = render_to_string(template, email_kwargs)
         mail.send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
@@ -89,11 +95,11 @@ class RegisterManager(models.Manager):
 class RegisterProfile(ModelBase):
     """Stores activation information for a user."""
     activation_key = models.CharField(max_length=40,
-                                      verbose_name=_lazy(u'activation key'))
-    name = models.CharField(max_length=255, verbose_name=_lazy(u'full name'))
-    email = models.EmailField(unique=True, verbose_name=_lazy(u'email'))
+                                      verbose_name=_lazy(u'Activation Key'))
+    name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
+    email = models.EmailField(unique=True, verbose_name=_lazy(u'Email'))
     password = models.CharField(max_length=255,
-                                verbose_name=_lazy(u'password'))
+                                verbose_name=_lazy(u'Password'))
     user = models.OneToOneField(User, null=True)
 
     objects = RegisterManager()

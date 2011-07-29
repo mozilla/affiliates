@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>{{ _('Registration Complete!') }}</h2>
-<p>{{ _('Your registration has been sent to <a href="mailto:{email}">{email}</a> <a href="{home}">change</a>.')|fe(email=profile.email, home=url('home')) }}</p>
-<p>{{ _('Okay, I lied. But here, just <a href="{url}">click to activate your account</a>.')|fe(url=url('users.activate', activation_key=profile.activation_key)) }}</p>
+<h2>Registration Complete!</h2>
+<p>Your registration has been sent to <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> <a href="{{ url('home') }}">change</a>.</p>
+<p>Okay, I lied. But here, just <a href="{{ url('users.activate', activation_key=profile.activation_key) }}">click to activate your account</a>.</p>
 {% endblock %}

@@ -26,6 +26,7 @@ MINIFY_BUNDLES = {
 }
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
+    'django.contrib.sites',
     'affiliates',
     'users',
 ]
@@ -33,7 +34,6 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACTIVATION_EMAIL = 'users/email/activation.ltxt'
 
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
