@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html LANG="{{ LANG }}" dir="{{ DIR }}">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>{% block page_title %}Mozilla Affiliates{% endblock %}</title>
+
+    {% block site_css %}
+	  {{ css('common') }}
+    {% endblock %}
+  </head>
+  <body>
+	<header id="header-container">
+	  {% include 'global/header.html' %}
+	</header>
+	<div id="content">
+	  {% block content %}{% endblock %}
+	</div>
+    {% block site_js %}
+      {{ js('common') }}
+    {% endblock %}
+  </body>
+</html>

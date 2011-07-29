@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Registration Complete!</h2>
+<p>Your registration has been sent to <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> <a href="{{ url('home') }}">change</a>.</p>
+<p>Okay, I lied. But here, just <a href="{{ url('users.activate', activation_key=profile.activation_key) }}">click to activate your account</a>.</p>
+{% endblock %}
