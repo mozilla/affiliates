@@ -12,7 +12,8 @@ from django.template.loader import render_to_string
 from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
-from affiliates.models import ModelBase
+from affiliates.models import ModelBase, LocaleField
+from countries import COUNTRIES
 
 
 class UserProfile(ModelBase):
@@ -35,12 +36,13 @@ class UserProfile(ModelBase):
     city = models.CharField(max_length=255, blank=True, null=True,
                                  verbose_name=_lazy(u'City'))
     state = models.CharField(max_length=255, blank=True, null=True,
-                                 verbose_name=_lazy(u'State'))
+                                 verbose_name=_lazy(u'State or Province'))
 
-    language = models.CharField(max_length=255,
-                                verbose_name=_lazy(u'Language'))
-    country = models.CharField(max_length=255,
-                                verbose_name=_lazy(u'Country'))
+    locale = LocaleField(verbose_name=_lazy(u'Locale'))
+    country = models.CharField(max_length=2, choices=COUNTRIES,
+                               verbose_name=_lazy(u'Country'))
+
+    accept_email = models.BooleanField(verbose_name=_lazy(u'Receive emails'))
 
     def __unicode__(self):
         return unicode(self.email)

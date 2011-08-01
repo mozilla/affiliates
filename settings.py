@@ -3,9 +3,22 @@
 
 from funfactory.settings_base import *
 
+from affiliates_locales import LOCALES
+
 # Logging
 SYSLOG_TAG = "http_app_playdoh"  # Make this unique to your project.
 
+# Default language
+LANGUAGE_CODE = 'en-US';
+
+# Languages that Affiliates supports
+AFFILIATES_LANGUAGES = ['en-US']
+
+LANGUAGE_CHOICES = tuple([(i, LOCALES[i].native) for i in AFFILIATES_LANGUAGES])
+
+# Email settings
+DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
@@ -30,10 +43,6 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'affiliates',
     'users',
 ]
-
-# Email settings
-DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
