@@ -13,7 +13,10 @@ from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
 from affiliates.models import ModelBase, LocaleField
-from countries import COUNTRIES
+from product_details import product_details
+
+
+COUNTRIES = tuple(product_details.get_regions(settings.LANGUAGE_CODE).items())
 
 
 class UserProfile(ModelBase):

@@ -3,8 +3,6 @@
 
 from funfactory.settings_base import *
 
-from affiliates_locales import LOCALES
-
 # Logging
 SYSLOG_TAG = "http_app_playdoh"  # Make this unique to your project.
 
@@ -13,8 +11,6 @@ LANGUAGE_CODE = 'en-US';
 
 # Languages that Affiliates supports
 AFFILIATES_LANGUAGES = ['en-US']
-
-LANGUAGE_CHOICES = tuple([(i, LOCALES[i].native) for i in AFFILIATES_LANGUAGES])
 
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
