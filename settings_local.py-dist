@@ -33,11 +33,11 @@ MANAGERS = ADMINS
 
 # Debugging displays nice error messages, but leaks memory. Set this to False
 # on all server instances and True only for development.
-DEBUG = TEMPLATE_DEBUG = True
+DEBUG = TEMPLATE_DEBUG = False
 
 # Is this a development instance? Set this to True on development/master
 # instances and False on stage/prod.
-DEV = True
+DEV = False
 
 # # Playdoh ships with sha512 password hashing by default. Bcrypt+HMAC is safer,
 # # so it is recommended. Please read <https://github.com/fwenzel/django-sha2#readme>,
