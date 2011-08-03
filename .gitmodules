@@ -3,7 +3,7 @@
 	url = git://github.com/mozilla/playdoh-lib.git
 [submodule "templates/global"]
 	path = templates/global
-	url = git://github.com/mozilla/django-moz-header.git
+	url = https://github.com/mozilla/django-moz-header.git
 [submodule "media/global"]
 	path = media/global
-	url = git://github.com/mozilla/django-moz-header.git
+	url = https://github.com/mozilla/django-moz-header.git
