@@ -1,6 +1,6 @@
 import jingo
 
-from affiliates.views import home
+from badges.views import home
 from users.forms import RegisterForm
 from users.models import RegisterProfile
 

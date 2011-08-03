@@ -8,5 +8,5 @@ def home(request, register_form=None):
     if not register_form:
         register_form = RegisterForm()
 
-    return jingo.render(request, 'affiliates/home.html',
+    return jingo.render(request, 'badges/home.html',
                         {'register_form': register_form})

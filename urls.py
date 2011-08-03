@@ -6,8 +6,7 @@ from django.conf.urls.defaults import include, patterns
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    (r'', include('affiliates.urls')),
+    (r'', include('badges.urls')),
     (r'^accounts/', include('users.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

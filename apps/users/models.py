@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
-from affiliates.models import ModelBase, LocaleField
+from badges.models import ModelBase, LocaleField
 from product_details import product_details
 
 

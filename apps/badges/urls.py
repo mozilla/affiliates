@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url
 
-urlpatterns = patterns('affiliates.views',
+urlpatterns = patterns('badges.views',
     url(r'^$', 'home', name='home'),
 )

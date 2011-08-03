@@ -36,7 +36,7 @@ MINIFY_BUNDLES = {
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.sites',
-    'affiliates',
+    'badges',
     'users',
 ]
 
