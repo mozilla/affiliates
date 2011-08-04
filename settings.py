@@ -16,6 +16,9 @@ AFFILIATES_LANGUAGES = ['en-US']
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# User account profiles
+AUTH_PROFILE_MODULE = 'users.UserProfile'
+
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {

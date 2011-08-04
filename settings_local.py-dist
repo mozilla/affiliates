@@ -58,6 +58,3 @@ SECRET_KEY = '1iz#v0m55@h26^m6hxk3a7at*h$qj_2a$juu1#nv50548j(x1v'
 # BROKER_PASSWORD = 'playdoh'
 # BROKER_VHOST = 'playdoh'
 # CELERY_RESULT_BACKEND = 'amqp'
-
-# User account profiles
-AUTH_PROFILE_MODULE = 'users.models.UserProfile'
