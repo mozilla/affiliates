@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Activate Account</h2>
+<form action="{{ url('users.activate', activation_key=activation_key) }}" method="post">
+  {{ csrf() }}
+  {{ form.non_field_errors() }}
+  {{ form.as_p() }}
+  <div class="submit">
+    <input type="submit" value="Activate Account">
+  </div>
+</form>
+{% endblock %}

@@ -1,5 +1,6 @@
 import hashlib
 import random
+import re
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -9,14 +10,16 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.loader import render_to_string
 
+from product_details import product_details
 from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
 from badges.models import ModelBase, LocaleField
-from product_details import product_details
+from users.utils import hash_password
 
 
 COUNTRIES = tuple(product_details.get_regions(settings.LANGUAGE_CODE).items())
+SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
 
 class UserProfile(ModelBase):
@@ -81,8 +84,51 @@ class RegisterManager(models.Manager):
 
         return profile
 
-    def activate_profile(self, activation_key):
-        pass
+    def activate_profile(self, key, form):
+        """
+        Create a User and UserProfile, and deactivate the corresponding
+        RegisterProfile.
+
+        If the activation key is valid, create the User and
+        UserProfile, and return the new User.
+
+        If the key is invalid, return ``False``.
+        """
+
+        reg_profile = self.get_by_key(key)
+        if reg_profile and not reg_profile.is_expired() and form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = (form.cleaned_data.get('password') or
+                        reg_profile.password)
+            email = reg_profile.email
+
+            user = User.objects.create(username=username,
+                                       password=password, email=email)
+            reg_profile.user = user
+            reg_profile.activation_key = self.model.ACTIVATED
+            reg_profile.save()
+
+            profile = form.save(commit=False)
+            profile.user = user
+            profile.save()
+
+            return user
+
+        return False
+
+    def get_by_key(self, key):
+        """
+        Validates an activation key and returns the corresponding
+        RegisterProfile. If the key is invalid, return None.
+        """
+        # Check for a valid SHA-1 hash before hitting the DB
+        if (SHA1_RE.search(key)):
+            try:
+                return self.get(activation_key=key)
+            except self.model.DoesNotExist:
+                pass
+
+        return None
 
     def _send_email(self, template, subject, profile, **kwargs):
         """Sends an activation email to the user"""
@@ -99,7 +145,10 @@ class RegisterManager(models.Manager):
 
 class RegisterProfile(ModelBase):
     """Stores activation information for a user."""
-    activation_key = models.CharField(max_length=40,
+
+    ACTIVATED = u'ACTIVATED'
+
+    activation_key = models.CharField(max_length=40, unique=True,
                                       verbose_name=_lazy(u'Activation Key'))
     name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
     email = models.EmailField(unique=True, verbose_name=_lazy(u'Email'))
@@ -111,12 +160,12 @@ class RegisterProfile(ModelBase):
 
     def set_password(self, raw_password):
         """
-        Sets the profile's password to a properly hashed password by passing
-        it through a User object.
+        Sets the profile's password to a properly hashed password.
         """
-        user = User()
-        user.set_password(raw_password)
-        self.password = user.password
+        self.password = hash_password(raw_password)
+
+    def is_expired(self):
+        return self.activation_key == self.ACTIVATED
 
     def __unicode__(self):
         return u'Registration information for %s' % self.name
