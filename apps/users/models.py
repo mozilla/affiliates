@@ -148,7 +148,7 @@ class RegisterProfile(ModelBase):
 
     ACTIVATED = u'ACTIVATED'
 
-    activation_key = models.CharField(max_length=40, unique=True,
+    activation_key = models.CharField(max_length=40,
                                       verbose_name=_lazy(u'Activation Key'))
     name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
     email = models.EmailField(unique=True, verbose_name=_lazy(u'Email'))
