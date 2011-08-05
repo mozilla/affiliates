@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 import jingo
+from session_csrf import anonymous_csrf
 
 from badges.views import home
 from users.forms import ActivationForm, RegisterForm
@@ -25,7 +26,7 @@ def register(request):
 
     return home(request, register_form=form)
 
-
+@anonymous_csrf
 def activate(request, activation_key=None):
     """Activate a registration profile and create a user."""
 
