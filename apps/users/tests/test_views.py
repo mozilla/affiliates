@@ -7,7 +7,7 @@ from nose.tools import eq_, ok_
 
 from badges.tests import LocalizingClient
 from users.models import RegisterProfile
-from users.tests import activation_form_defaults
+from users.tests.test_forms import activation_form_defaults
 
 
 class RegisterTests(test_utils.TestCase):
@@ -46,7 +46,6 @@ class RegisterTests(test_utils.TestCase):
 
         # Test relations
         u = User.objects.get(username=parameters['username'])
-        eq_(u.registerprofile, reg_profile)
         eq_(u.get_profile().name, parameters['name'])
 
 

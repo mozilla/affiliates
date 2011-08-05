@@ -4,7 +4,7 @@ from django.core import mail
 from nose.tools import eq_, ok_
 
 from users.models import RegisterProfile
-from users.tests import activation_form
+from users.tests.test_forms import activation_form
 
 
 class RegisterProfileTests(test_utils.TestCase):

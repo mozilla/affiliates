@@ -95,24 +95,23 @@ class RegisterManager(models.Manager):
         If the key is invalid, return ``False``.
         """
 
-        reg_profile = self.get_by_key(key)
-        if reg_profile and not reg_profile.is_expired() and form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = (form.cleaned_data.get('password') or
-                        reg_profile.password)
-            email = reg_profile.email
+        if form.is_valid():
+            reg_profile = self.get_by_key(key)
+            if reg_profile:
+                username = form.cleaned_data.get('username')
+                password = (form.cleaned_data.get('password') or
+                            reg_profile.password)
+                email = reg_profile.email
 
-            user = User.objects.create(username=username,
-                                       password=password, email=email)
-            reg_profile.user = user
-            reg_profile.activation_key = self.model.ACTIVATED
-            reg_profile.save()
+                user = User.objects.create(username=username,
+                                           password=password, email=email)
+                reg_profile.delete()
 
-            profile = form.save(commit=False)
-            profile.user = user
-            profile.save()
+                profile = form.save(commit=False)
+                profile.user = user
+                profile.save()
 
-            return user
+                return user
 
         return False
 
@@ -122,7 +121,7 @@ class RegisterManager(models.Manager):
         RegisterProfile. If the key is invalid, return None.
         """
         # Check for a valid SHA-1 hash before hitting the DB
-        if (SHA1_RE.search(key)):
+        if SHA1_RE.match(key):
             try:
                 return self.get(activation_key=key)
             except self.model.DoesNotExist:
@@ -146,8 +145,6 @@ class RegisterManager(models.Manager):
 class RegisterProfile(ModelBase):
     """Stores activation information for a user."""
 
-    ACTIVATED = u'ACTIVATED'
-
     activation_key = models.CharField(max_length=40,
                                       verbose_name=_lazy(u'Activation Key'))
     name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
@@ -163,9 +160,6 @@ class RegisterProfile(ModelBase):
         Sets the profile's password to a properly hashed password.
         """
         self.password = hash_password(raw_password)
-
-    def is_expired(self):
-        return self.activation_key == self.ACTIVATED
 
     def __unicode__(self):
         return u'Registration information for %s' % self.name
