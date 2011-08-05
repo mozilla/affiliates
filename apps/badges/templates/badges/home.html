@@ -1,6 +1,12 @@
 {% extends "base.html" %}
-{% from "badges/includes/macros.html" import show_register_form %}
 {% block content %}
 <p>Welcome to zombocom!</p>
-{{ show_register_form(register_form, csrf()) }}
+<form action="{{ url('users.register') }}" method="post">
+  {{ csrf() }}
+  {{ register_form.non_field_errors() }}
+  {{ register_form.as_p() }}
+  <div class="submit">
+	<input type="submit" value="Register">
+  </div>
+</form>
 {% endblock %}
