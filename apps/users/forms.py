@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
@@ -38,6 +39,7 @@ class ActivationForm(forms.ModelForm):
         exclude = ('user', 'modified', 'created')
 
     def clean(self):
+        # Passwords must match
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
 
@@ -47,6 +49,16 @@ class ActivationForm(forms.ModelForm):
             self.cleaned_data['password'] = hash_password(password)
 
         return self.cleaned_data
+
+    def clean_username(self):
+        """Ensure that the chosen username is unique."""
+        try:
+            User.objects.get(username=self.cleaned_data['username'])
+            raise forms.ValidationError(_('Username is already taken!'))
+        except User.DoesNotExist:
+            pass
+
+        return self.cleaned_data['username']
 
 
 class ProfileForm(forms.ModelForm):
