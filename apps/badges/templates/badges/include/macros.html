@@ -1,0 +1,10 @@
+{% macro badge_wizard(step) -%}
+<ol class="wizard_steps">
+  <li {{ step|class_selected(0) }}>Pick a Category</li>
+  <li {{ step|class_selected(1) }}>Pick a Banner</li>
+  <li {{ step|class_selected(2) }}>Configure & Post</li>
+</ol>
+<div class="wizard_content">
+  {{ caller() }}
+</div>
+{%- endmacro %}

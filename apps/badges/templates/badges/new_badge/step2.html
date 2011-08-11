@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% import 'badges/include/macros.html' as macros %}
+{% block content %}
+{% call macros.badge_wizard(0) %}
+  <form method="get" action="{{ url('badges.new.step3') }}">
+    <ul class="option_list">
+      {% for badge in badges %}
+        <li>
+          <img src="{{ badge.preview_img.url }}">
+          <span class="option_name">
+            <input type="radio" name="badge" value="{{ badge.to_badge_str() }}">
+            {{ badge.name }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  <div class="buttons">
+    <button type="button">Back</button>
+    <button type="submit">Continue to Step 3 >></button>
+  </div>
+</form>
+{% endcall %}
+{% endblock %}

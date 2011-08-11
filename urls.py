@@ -1,19 +1,16 @@
 from django.conf import settings
 from django.conf.urls.defaults import include, patterns
+from django.contrib.admin import autodiscover
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from affiliates import admin
+
+autodiscover()
 
 urlpatterns = patterns('',
     (r'', include('badges.urls')),
     (r'^accounts/', include('users.urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
 )
 
 ## In DEBUG mode, serve media files through Django.

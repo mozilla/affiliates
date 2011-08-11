@@ -58,3 +58,7 @@ SECRET_KEY = '1iz#v0m55@h26^m6hxk3a7at*h$qj_2a$juu1#nv50548j(x1v'
 # BROKER_PASSWORD = 'playdoh'
 # BROKER_VHOST = 'playdoh'
 # CELERY_RESULT_BACKEND = 'amqp'
+
+# If running on a development instance, set this to the port you're running on
+# to generate correct fully qualified paths when needed.
+# SERVER_PORT = 8000

@@ -7,7 +7,7 @@ from funfactory.settings_base import *
 SYSLOG_TAG = "http_app_playdoh"  # Make this unique to your project.
 
 # Default language
-LANGUAGE_CODE = 'en-US';
+LANGUAGE_CODE = 'en-US'
 
 # Languages that Affiliates supports
 AFFILIATES_LANGUAGES = ['en-US']
@@ -18,6 +18,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # User account profiles
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+
+# Badge file path info
+MAX_FILEPATH_LENGTH = 250
+
+# Image file paths
+BADGE_PREVIEW_PATH = 'uploads/badge_previews/'
+BANNER_IMAGE_PATH = 'uploads/banners/'
+
+# Port the server is running on (None in production)
+SERVER_PORT = None
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
@@ -34,13 +44,19 @@ MINIFY_BUNDLES = {
             'js/libs/jquery-1.4.4.min.js',
             'global/menu.js',
         ),
+        'banners': (
+            'js/banners.js',
+        ),
     }
 }
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
-    'django.contrib.sites',
     'badges',
+    'banners',
     'users',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
 ]
 
 # Tells the extract script what files to look for L10n in and what function

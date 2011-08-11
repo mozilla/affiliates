@@ -1,0 +1,14 @@
+{% extends 'badges/new_badge/step3.html' %}
+{% block preview %}
+<div id="banner_preview" data-images="{{ json_banner_images }}" data-template="{{ template }}">
+
+</div>
+{% endblock %}
+{% block custom_parameters %}
+<select id="size" data-choices="{{ json_size_colors }}"></select>
+<select id="color"></select>
+{% endblock %}
+{% block site_js %}
+{{ super() }}
+{{ js('banners') }}
+{% endblock %}

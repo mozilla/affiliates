@@ -1,0 +1,102 @@
+[
+    {
+        "pk": 1,
+        "model": "badges.category",
+        "fields": {
+            "name": "Test"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "badges.category",
+        "fields": {
+            "name": "Category 2"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/qmo-logo.png",
+            "name": "Subtest",
+            "parent": 1
+        }
+    },
+    {
+        "pk": 2,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/mobile_dl_300x250_grn_1.png",
+            "name": "SecondTest",
+            "parent": 2
+        }
+    },
+    {
+        "pk": 3,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/mobile_dl_300x250_red_1.png",
+            "name": "Something",
+            "parent": 2
+        }
+    },
+    {
+        "pk": 1,
+        "model": "banners.banner",
+        "fields": {
+            "preview_img": "uploads/badge_previews/120x240arrow_b.png",
+            "name": "Fast Forward",
+            "subcategory": 1
+        }
+    },
+    {
+        "pk": 1,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Blue",
+            "image": "uploads/banners/120x240arrow_b.png",
+            "banner": 1,
+            "size": "120x240"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Green",
+            "image": "uploads/banners/120x240arrow_g.png",
+            "banner": 1,
+            "size": "120x240"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Red",
+            "image": "uploads/banners/120x240arrow_r.png",
+            "banner": 1,
+            "size": "120x240"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Green",
+            "image": "uploads/banners/mobile_dl_300x250_grn_1.png",
+            "banner": 1,
+            "size": "300x250"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Red",
+            "image": "uploads/banners/mobile_dl_300x250_red_1.png",
+            "banner": 1,
+            "size": "300x250"
+        }
+    }
+]

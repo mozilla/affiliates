@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% import 'badges/include/macros.html' as macros %}
+{% block content %}
+{% call macros.badge_wizard(2) %}
+<div class="badge_preview">
+  {% block preview %}{% endblock %}
+</div>
+<div class="badge_custom_parameters">
+  {% block custom_parameters %}{% endblock %}
+</div>
+<div class="badge_code">
+  <textarea id="badge_code"></textarea>
+</div>
+{% endcall %}
+{% endblock %}

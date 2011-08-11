@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import 'badges/include/macros.html' as macros %}
+{% block content %}
+{% call macros.badge_wizard(0) %}
+  <form method="get" action="{{ url('badges.new.step2') }}">
+    {% for category in categories %}
+    <h2>{{ category.name }}</h2>
+    <ul class="option_list">
+      {% for subcategory in category.subcategory_set.all() %}
+        <li>
+          <img src="{{ subcategory.preview_img.url }}">
+          <span class="option_name">
+            <input type="radio" name="subcategory" value="{{ subcategory.pk }}">
+            {{ subcategory.name }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+  <div class="buttons">
+    <button type="submit">Continue to Step 2 >></button>
+  </div>
+</form>
+{% endcall %}
+{% endblock %}
