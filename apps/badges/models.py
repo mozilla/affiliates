@@ -9,7 +9,6 @@ from tower import ugettext_lazy as _lazy
 LANGUAGE_CHOICES = tuple([(i, product_details.languages[i]['native']) for i in
                           settings.AFFILIATES_LANGUAGES])
 
-
 class ModelBase(models.Model):
     """For future use if needed"""
     class Meta:
@@ -46,6 +45,7 @@ class Subcategory(ModelBase):
 
 
 class BadgeManager(models.Manager):
+    BADGE_BANNER = 'Banner'
 
     def from_badge_str(self, badge_str):
         """
@@ -53,7 +53,7 @@ class BadgeManager(models.Manager):
         string.
         """
         badge_type, pk = badge_str.split(';')
-        if badge_type == 'Banner':
+        if badge_type == self.BADGE_BANNER:
             from banners.models import Banner
             return (Banner, pk)
 
@@ -80,10 +80,9 @@ class Badge(ModelBase):
                                     max_length=settings.MAX_FILEPATH_LENGTH)
     objects = BadgeManager()
 
-    """
-    Subclasses should override this with the string name for the view
-    for customizing badges.
-    """
+
+    # Subclasses should override this with the string name for the view for
+    # customizing badges.
     customize_view = None
 
     class Meta:

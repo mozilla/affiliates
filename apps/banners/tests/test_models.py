@@ -8,22 +8,10 @@ from banners.models import Banner
 
 
 class BannerTests(TestCase):
-    fixtures = ['banners.json']
+    fixtures = ['banners']
 
-    def setUp(self):
-        super(BannerTests, self).setUp()
-        self.site_patcher = patch('django.contrib.sites.models.Site.objects')
-        site_mock = self.site_patcher.start()
-        site_mock.get_current.return_value.domain = 'badge.mo.com'
-
-        self.settings_patcher = patch.object(settings, 'SERVER_PORT', new=None)
-        self.settings_patcher.start()
-
-    def tearDown(self):
-        self.site_patcher.stop()
-        self.settings_patcher.stop()
-        super(BannerTests, self).tearDown()
-
+    @patch.object(settings, 'PORT', 80)
+    @patch.object(settings, 'DOMAIN', 'badge.mo.com')
     def test_image_url_dict(self):
         banner = Banner.objects.get(pk=1)
         results = banner.image_url_dict()

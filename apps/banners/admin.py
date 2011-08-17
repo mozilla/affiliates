@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from affiliates.admin import site
+from funfactory.admin import site
 from banners.models import Banner, BannerImage, BannerInstance
 
 

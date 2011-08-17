@@ -4,7 +4,7 @@ from django.db import models
 from tower import ugettext_lazy as _lazy
 
 from badges.models import Badge, BadgeInstance, ModelBase
-from badges.utils import fq_url
+from funfactory.utils import absolutify
 
 
 class Banner(Badge):
@@ -21,7 +21,7 @@ class Banner(Badge):
             if img.size not in img_urls:
                 img_urls[img.size] = {}
 
-            img_urls[img.size][img.color] = fq_url(img.image.url)
+            img_urls[img.size][img.color] = absolutify(img.image.url)
 
         return img_urls
 

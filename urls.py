@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.defaults import include, patterns
 from django.contrib.admin import autodiscover
 
-from affiliates import admin
+from funfactory import admin
 
 autodiscover()
 

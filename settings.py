@@ -26,9 +26,6 @@ MAX_FILEPATH_LENGTH = 250
 BADGE_PREVIEW_PATH = 'uploads/badge_previews/'
 BANNER_IMAGE_PATH = 'uploads/banners/'
 
-# Port the server is running on (None in production)
-SERVER_PORT = None
-
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {

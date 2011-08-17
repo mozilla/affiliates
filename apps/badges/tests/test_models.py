@@ -6,7 +6,7 @@ from banners.models import Banner
 
 
 class BadgeManagerTests(TestCase):
-    fixtures = ['banners.json']
+    fixtures = ['banners']
 
     def test_all_from_subcategory(self):
         subcat = Subcategory.objects.get(pk=1)
@@ -21,7 +21,7 @@ class BadgeManagerTests(TestCase):
 
 
 class BadgeTests(TestCase):
-    fixtures = ['banners.json']
+    fixtures = ['banners']
 
     def test_to_badge_str(self):
         banner = Banner.objects.get(pk=1)
