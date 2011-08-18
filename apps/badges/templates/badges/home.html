@@ -1,12 +1,59 @@
 {% extends "base.html" %}
-{% block content %}
-<p>Welcome to zombocom!</p>
-<form action="{{ url('users.register') }}" method="post">
-  {{ csrf() }}
-  {{ register_form.non_field_errors() }}
-  {{ register_form.as_p() }}
-  <div class="submit">
-	<input type="submit" value="Register">
+
+{% block site_css %}
+  {{ super() }}
+  {{ css('home') }}
+{% endblock %}
+
+{% block highlight_box %}
+<div id="home-registration-forms" class="highlight-box">
+  {% include 'users/include/login_form.html' %}
+  <div class="divider-medium">
+    &nbsp;
   </div>
-</form>
+  <span>{{ _('Don’t have an account?') }}</span>
+  <p>
+    {{ _('Want to be a Firefox Affiliate?') }}
+    <br/>
+    {{ _('Sign up now and start spreading the word.') }}
+  </p>
+  {% include 'users/include/register_form.html' %}
+</div>
+{% endblock %}
+
+{% block content_class %}background_illo{% endblock %}
+
+{% block content %}
+<h2>{{ _('Become a Firefox <span>Affiliate Today!</span>') }}</h2>
+<p>
+  {# L10n: Link is for JavaScript popup when the mouse hovers over. #}
+  {% trans %}
+    The Firefox Affiliates program is a great way to share your love of Mozilla Firefox.
+    Host Firefox buttons on your site and climb your way to fame on the Affiliates leaderboard.
+    <a href="#" class="show_tooltip" target="tooltip_home">Learn more &raquo;</a>
+  {% endtrans %}
+</p>
+<div class="tool-tip top-arrow" id="tooltip_home">
+  <span></span>
+  <p>
+    {% trans -%}
+      Firefox Affiliates is the go-to place for Firefox fans and Mozillians to get promotional
+      buttons and links that encourage users to download Firefox. We do send out prizes and gifts
+      to our affiliates from time to time, but Firefox Affiliates does not offer monetary rewards
+      for hosting Firefox buttons. That warm, fuzzy feeling in your heart will have to do.
+    {%- endtrans %}
+    <br>
+    <br>
+    {{ _('Sign up and become an affiliate today!') }}
+  </p>
+</div>
+<div class="divider-medium">
+  &nbsp;
+</div>
+<button class="share_twitter">
+  {{ _('Share on Twitter &raquo;') }}
+</button>
+<button class="share_facebook">
+  {{ _('Share on Facebook &raquo;') }}
+</button>
 {% endblock %}

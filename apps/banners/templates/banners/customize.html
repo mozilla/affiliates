@@ -5,8 +5,14 @@
 </div>
 {% endblock %}
 {% block custom_parameters %}
-<select id="size" data-choices="{{ json_size_colors }}"></select>
-<select id="color"></select>
+  <div class="fields short">
+    <h4>{{ _('Size') }}</h4>
+    <select id="size" class="js_uniform" data-choices="{{ json_size_colors }}"></select>
+  </div>
+  <div class="fields">
+    <h4>{{ _('Color') }}</h4>
+    <select id="color" class="js_uniform"></select>
+  </div>
 {% endblock %}
 {% block site_js %}
 {{ super() }}

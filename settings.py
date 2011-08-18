@@ -31,15 +31,25 @@ BANNER_IMAGE_PATH = 'uploads/banners/'
 MINIFY_BUNDLES = {
     'css': {
         'common': (
-            'css/reset.css',
-            'global/headerfooter.css',
-            'css/main.css',
+            'css/styles.css',
+            'global/unified/css/template.css',
+            'css/uniform.default.css',
+            'css/affiliates.css',
+        ),
+        'home': (
+            'css/home.css',
+        ),
+        'user_profile': (
+            'css/user_profile.css',
         ),
     },
     'js': {
         'common': (
             'js/libs/jquery-1.4.4.min.js',
-            'global/menu.js',
+            'global/unified/js/nav-main.js',
+            'js/libs/jquery.placeholder.min.js',
+            'js/libs/jquery.uniform.min.js',
+            'js/affiliates.js',
         ),
         'banners': (
             'js/banners.js',

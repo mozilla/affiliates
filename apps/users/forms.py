@@ -38,6 +38,13 @@ class ActivationForm(forms.ModelForm):
         model = UserProfile
         exclude = ('user', 'modified', 'created', 'name')
 
+    def __init__(self, *args, **kwargs):
+        super(ActivationForm, self).__init__(*args, **kwargs)
+
+        # Style select fields correctly
+        self.fields['locale'].widget.attrs['class'] = 'js_uniform'
+        self.fields['country'].widget.attrs['class'] = 'js_uniform'
+
     def clean(self):
         # Passwords must match
         password = self.cleaned_data.get('password')

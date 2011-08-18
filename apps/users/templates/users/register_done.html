@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
+{% block site_css %}
+  {{ super() }}
+  {{ css('home') }}
+{% endblock %}
+{% block content_class %}thank_you{% endblock %}
 {% block content %}
-<h2>Registration Complete!</h2>
-<p>Your registration has been sent to <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> <a href="{{ url('home') }}">change</a>.</p>
-<p>Okay, I lied. But here, just <a href="{{ url('users.activate', activation_key=profile.activation_key) }}">click to activate your account</a>.</p>
+<h2>{{ _('Thanks for joining <span>Firefox Affiliates!</span>') }}</h2>
+<p>{% trans email=profile.email, homepage=url('home') -%}
+  We've just sent you an e-mail with your password to: <span>{{ email }} <a href="{{ homepage }}">(Change)</a></span>
+{%- endtrans %}</p>
+<p>{% trans -%}
+  Please click on the link provided in the e-mail to access your Affiliates account.
+{%- endtrans %}</p>
 {% endblock %}

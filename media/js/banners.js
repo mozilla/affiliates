@@ -3,7 +3,7 @@ $(function() {
     function make_select_dependent(parent, child, choices) {
         var $parent = $(parent), $child = $(child);
 
-        for (choice in choices) {
+        for (var choice in choices) {
             if (choices.hasOwnProperty(choice)) {
                 $parent.append('<option value="'+choice+'">'+choice+'</option>');
             }
@@ -15,8 +15,8 @@ $(function() {
                 var child_choices = choices[self.val()];
                 $child.empty();
                 for (var k = 0; k < child_choices.length; k++) {
-                    $child.append('<option value="'+child_choices[k]+'">'
-                                  +child_choices[k]+'</option>');
+                    $child.append('<option value="'+child_choices[k]+'">' +
+                                  child_choices[k]+'</option>');
                 }
             }
         }).change();

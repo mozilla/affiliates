@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block site_css %}
+  {{ super() }}
+  {{ css('user_profile') }}
+{% endblock %}
+{% block content %}
+  {% include 'layout/content_nav.html' %}
+  <div class="highlight-box {{ content_section }}">
+    <div class="arrow_indicator"></div>
+    {% block dashboard_content %}
+
+    {% endblock %}
+  </div>
+{% endblock %}

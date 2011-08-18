@@ -45,5 +45,6 @@ def activate(request, activation_key=None):
         form = ActivationForm(initial={'name': reg_profile.name,
                                        'email': reg_profile.email})
 
-    params = {'form': form, 'activation_key': activation_key}
+    params = {'form': form, 'profile': reg_profile,
+              'activation_key': activation_key}
     return jingo.render(request, 'users/activate.html', params)

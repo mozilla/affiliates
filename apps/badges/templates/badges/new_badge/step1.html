@@ -1,25 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'dashboard.html' %}
 {% import 'badges/include/macros.html' as macros %}
-{% block content %}
+
+{% set content_section = 'first-section' %}
+
+{% block dashboard_content %}
 {% call macros.badge_wizard(0) %}
   <form method="get" action="{{ url('badges.new.step2') }}">
     {% for category in categories %}
-    <h2>{{ category.name }}</h2>
-    <ul class="option_list">
-      {% for subcategory in category.subcategory_set.all() %}
-        <li>
-          <img src="{{ subcategory.preview_img.url }}">
-          <span class="option_name">
-            <input type="radio" name="subcategory" value="{{ subcategory.pk }}">
-            {{ subcategory.name }}
-          </span>
-        </li>
-      {% endfor %}
-    </ul>
-  {% endfor %}
-  <div class="buttons">
-    <button type="submit">Continue to Step 2 &raquo;</button>
-  </div>
-</form>
+      <p class="title">
+        {{ _('Category:') }} <span>{{ _(category.name) }}</span>
+      </p>
+      <div class="divider-notch"></div>
+      <ul>
+        {% for subcategory in category.subcategory_set.all() %}
+          {{ macros.wizard_li(subcategory, 'subcategory', subcategory.pk) }}
+        {% endfor %}
+      </ul>
+    {% endfor %}
+    {{ macros.wizard_footer(
+      next_button_label=_('Continue to Step 2 &raquo;')
+    ) }}
+  </form>
 {% endcall %}
 {% endblock %}

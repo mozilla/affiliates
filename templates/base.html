@@ -2,22 +2,46 @@
 <html LANG="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <title>{% block page_title %}Mozilla Affiliates{% endblock %}</title>
-
+    <title>{% block page_title %}{{ _('Mozilla Affiliates') }}{% endblock %}</title>
     {% block site_css %}
-	  {{ css('common') }}
+      {{ css('common') }}
     {% endblock %}
+    <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}global/unified/img/favicon.png"/>
   </head>
-  <body>
-	<header id="header-container">
-	  {% include 'global/header.html' %}
-	</header>
-	<div id="content">
-    <h1><a href="{{ url('home') }}">Affiliates</a></h1>
-	  {% block content %}{% endblock %}
-	</div>
+  <body id="{% block body_id %}affiliates{% endblock %}">
+    <div id="wrapper">
+      <div id="doc">
+        <div id="nav-access">
+          <a href="#nav-main">{{ _('skip to navigation') }}</a>
+          <a href="#lang_form">{{ _('switch language') }}</a>
+        </div>
+        {% block site_header %}
+          {% include "global/unified/header.html" %}
+        {% endblock %}
+        {% block highlight_box %}{% endblock %}
+        <div id="main-feature">
+          <h2>{{ _('Firefox<span>Affiliates</span>') }}</h2>
+          <p>
+            {{ _('Everything you need to share Firefox with the world.') }}
+          </p>
+        </div>
+        <div id="content" class="{% block content_class %}{% endblock %}">
+          {% block content %}{% endblock %}
+        </div>
+        {% block sidebar %}
+          <div id="sidebar">
+            {% block sidebar_content %}{% endblock %}
+          </div>
+        {% endblock %}
+      </div>{# /#doc #}
+    </div>{# /#wrapper #}
+    {% block site_footer %}
+      {% include "global/unified/footer.html" %}
+    {% endblock %}
     {% block site_js %}
       {{ js('common') }}
     {% endblock %}
+    {% block js %}{% endblock %}
+    {# {% include "includes/webtrends.html" %} #}
   </body>
 </html>

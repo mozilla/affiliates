@@ -1,12 +1,185 @@
 {% extends "base.html" %}
+{% block site_css %}
+  {{ super() }}
+  {{ css('user_profile') }}
+{% endblock %}
+{# TODO: Figure out a better way to split this page into macros. #}
+{# TODO: Handle form errors properly. #}
+{# TODO: Implement proper username suggestion. #}
 {% block content %}
-<h2>Activate Account</h2>
-<form action="{{ url('users.activate', activation_key=activation_key) }}" method="post">
-  {{ csrf() }}
-  {{ form.non_field_errors() }}
-  {{ form.as_p() }}
-  <div class="submit">
-    <input type="submit" value="Activate Account">
+  <div id="user-profile-forms" class="highlight-box">
+    <div class="header">
+      <h2>{{ _('Complete your user profile') }}</h2>
+    </div>
+    <div class="user_info">
+      <ul class="user_data">
+        <li class="first-child">
+          <span>{{ _('Full Name') }}</span>
+          <label>{{ profile.name }}</label>
+        </li>
+        <li>
+          <span>{{ _('Email') }}</span>
+          <label>{{ profile.email }}</label>
+        </li>
+      </ul>
+    </div>
+    <form action="{{ url('users.activate', activation_key=activation_key) }}" method="post" id="profile-form">
+      {{ csrf() }}
+      <p class="required_label">
+        {# L10n: Tells the user that required fields have a * next to them. #}
+        {{ _('<span>*</span> Required') }}
+      </p>
+      {{ form.non_field_errors() }}
+      {# TODO: Uncomment when user avatars are implemented.
+          <div class="section">
+          <div class="fields">
+          <h4>CHOOSE YOUR AVATAR</h4>
+          <div class="user_avatar">
+          <img src="img/zemoga/user_avatar_default.png" alt="user avatar" />
+          </div>
+          <div class="file_field">
+          <label class="enable_avatar">
+          <input type="checkbox" />Enable Avatars
+          </label><input type="text" id="file-avatar" name="file-avatar" value="" />
+          </div>
+          </div>
+          <div class="buttons">
+          <button class="js_no_action">
+          Browse &raquo;
+          </button>
+          <button class="disabled js_no_action">
+          Upload &raquo;
+          </button>
+          </div>
+          </div>
+      #}
+      <div class="section">
+        <div class="fields">
+          {# L10n: The span and star are left in in case your language would put the required star on the left side. #}
+          <h4 class="has_bulb">{{ _('USERNAME <span class="required_star">*</span>') }}</h4>
+          <div class="help_bulb_wrapper">
+            <a href="#" class="help_bulb show_tooltip" target="tooltip_username"></a>
+            <div class="tool-tip left-arrow" id="tooltip_username">
+              <span></span>
+              <p>
+                {% trans %}
+                  Your username is your online identity, so use somenthing you are comfortable with
+                  everyone seeing. Take into account that you won't be able to change your username
+                  in the future.
+                {%- endtrans %}
+              </p>
+            </div>
+          </div>
+          <input type="text" name="{{ form.username.html_name }}" required/>
+          {{ form.username.errors }}
+        </div>
+        {# TODO: Implement username suggestions.
+        <div class="fields suggestions">
+          {# L10n: Refers to suggested usernames if the user's desired username is taken.
+          <h4>{{ _('SUGGESTIONS') }}</h4>
+          <ul>
+            <li>
+              <label>
+                <input type="radio" name="suggestion_group" value="" />suggestion 1
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="radio" name="suggestion_group" value="" />suggestion 2
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="radio" name="suggestion_group" value="" />suggestion 3
+              </label>
+            </li>
+          </ul>
+        </div>
+        #}
+      </div>
+      <div class="section">
+        <div class="fields">
+          <h4>{{ _('NEW PASSWORD') }}</h4>
+          <input type="password" name="{{ form.password.html_name }}" maxlength="20"/>
+          {{ form.password.errors }}
+        </div>
+        <div class="fields">
+          <h4>{{ _('RETYPE PASSWORD') }}</h4>
+          <input type="password" name="{{ form.password2.html_name }}" maxlength="20"/>
+        </div>
+        <p class="grey_label">
+          {% trans -%}
+            Between 6-20 characters, include Latin letters and numbers. Note: no-one else can see your password.
+          {%- endtrans %}
+        </p>
+      </div>
+      <div class="section">
+        <div class="fields">
+          <h4 class="has_bulb">{{ _('ADDRESS') }}</h4>
+          <div class="help_bulb_wrapper">
+            <a href="#" class="help_bulb show_tooltip" target="tooltip_address"></a>
+            <div class="tool-tip left-arrow" id="tooltip_address">
+              <span></span>
+              <p>{% trans -%}
+                Why should I provide my mailing address?
+                <br/>
+                <br/>
+                From time to time, we may send you Mozilla T-shirts or other cool stuff in the mail. If you'd like to get stuff from us, please share your mailing address, but it's not mandatory to be part of the Firefox Affiliates program.
+              {%- endtrans %}</p>
+            </div>
+          </div>
+          {# L10n: Refers to the street part of an address #}
+          <input type="text" name="{{ form.address_1.html_name }}" placeholder="{{ _('Street') }}" />
+          {{ form.address_1.errors }}
+          <input type="text" name="{{ form.city.html_name }}" placeholder="{{ _('City') }}" />
+          {{ form.city.errors }}
+        </div>
+        <div class="fields">
+          <h4>&nbsp;</h4>
+          <input type="text" name="{{ form.address_2.html_name }}" placeholder="{{ _('Apartment or Unit # (optional)') }}" />
+          {{ form.address_2.errors }}
+          <input type="text" name="{{ form.state.html_name }}" placeholder="{{ _('State or Province') }}" />
+          {{ form.state.errors }}
+        </div>
+      </div>
+      <div class="section">
+        <div class="fields">
+          <h4 class="has_bulb">{{ _('LANGUAGE') }}</h4>
+          <div class="help_bulb_wrapper">
+            <a href="#" class="help_bulb show_tooltip" target="tooltip_language"></a>
+            <div class="tool-tip left-arrow" id="tooltip_language">
+              <span></span>
+              <p>
+                {% trans %}
+                  Your country and language were automatically detected by your IP location,
+                  but you are welcome to change them here.
+                {% endtrans %}
+              </p>
+            </div>
+          </div>
+          {{ form.locale }}
+          {{ form.locale.errors }}
+        </div>
+        <div class="fields">
+          <h4>{{ _('COUNTRY') }}</h4>
+          {{ form.country }}
+          {{ form.country.errors }}
+        </div>
+      </div>
+      <div class="section section_buttons">
+        <p>
+          <label class="opt_in_info">
+            <input type="checkbox" name="{{ form.accept_email.html_name }}"/>
+            {{ _('I wish to receive information and notifications about Firefox and Mozilla via email.') }}
+          </label>
+        </p>
+        <div class="buttons">
+          <button type="submit" class="save_changes">
+            {# L10n: Used in context of saving changes to a profile. #}
+            {{ _('Save &raquo;') }}
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
 {% endblock %}

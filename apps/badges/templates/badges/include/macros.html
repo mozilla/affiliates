@@ -1,10 +1,42 @@
 {% macro badge_wizard(step) -%}
-<ol class="wizard_steps">
-  <li {{ step|class_selected(0) }}>Pick a Category</li>
-  <li {{ step|class_selected(1) }}>Pick a Banner</li>
-  <li {{ step|class_selected(2) }}>Configure & Post</li>
-</ol>
-<div class="wizard_content">
-  {{ caller() }}
+<div class="header">
+  <h2>{{ _('Follow these easy steps to get started:') }}</h2>
+</div>
+<div id="steps-started">
+  <ul class="steps-buttons">
+    <li class="first {{ 0|wizard_active(step) }}">
+      {{ _('<span>1</span>PICK A CATEGORY') }}
+    </li>
+    <li class="second {{ 1|wizard_active(step) }}">
+      {{ _('<span>2</span>PICK A BANNER') }}
+    </li>
+    <li class="third {{ 2|wizard_active(step) }}">
+      {{ _('<span>3</span>CONFIGURE &amp; POST') }}
+    </li>
+  </ul>
+  <div id="step-content">
+    {{ caller() }}
+  </div>
 </div>
 {%- endmacro %}
+
+{% macro wizard_li(item, input_name, input_value) %}
+  <li class="options">
+    <img src="{{ item.preview_img.url }}" alt="{{ _(item.name) }}">
+    <div class="description">
+      <p>{{ _(item.name) }}</p>
+      <input name="{{ input_name }}" type="radio" class="js_uniform" value="{{ input_value }}">
+    </div>
+  </li>
+{% endmacro %}
+
+{% macro wizard_footer(back_href, next_button_label) %}
+  <div id="footer-content" class="buttons">
+    {% if back_href is defined %}
+      <a class="back" href="{{ back_href }}">{{ _('&laquo; Back') }}</a>
+    {% endif %}
+    {% if next_button_label is defined %}
+      <button type="submit" class="save_changes">{{ next_button_label }}</button>
+    {% endif %}
+  </div>
+{% endmacro %}
