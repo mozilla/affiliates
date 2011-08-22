@@ -33,7 +33,6 @@ class UserProfile(ModelBase):
     modified = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
-    email = models.EmailField(unique=True, verbose_name=_lazy(u'Email'))
 
     address_1 = models.CharField(max_length=255, blank=True, null=True,
                                  verbose_name=_lazy(u'Address Line 1'))
@@ -101,6 +100,7 @@ class RegisterManager(models.Manager):
                 username = form.cleaned_data.get('username')
                 password = (form.cleaned_data.get('password') or
                             reg_profile.password)
+                name = reg_profile.name
                 email = reg_profile.email
 
                 user = User.objects.create(username=username,
@@ -109,6 +109,7 @@ class RegisterManager(models.Manager):
 
                 profile = form.save(commit=False)
                 profile.user = user
+                profile.name = name
                 profile.save()
 
                 return user

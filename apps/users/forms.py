@@ -36,7 +36,7 @@ class ActivationForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        exclude = ('user', 'modified', 'created')
+        exclude = ('user', 'modified', 'created', 'name')
 
     def clean(self):
         # Passwords must match
@@ -45,7 +45,7 @@ class ActivationForm(forms.ModelForm):
 
         if (not password == password2):
             raise forms.ValidationError(_('Passwords must match.'))
-        elif (password is not None):
+        elif (password is not None) and (password != ''):
             self.cleaned_data['password'] = hash_password(password)
 
         return self.cleaned_data

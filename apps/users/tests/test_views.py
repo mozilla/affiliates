@@ -37,7 +37,7 @@ class RegisterTests(test_utils.TestCase):
         """Test basic account activation."""
         parameters = activation_form_defaults()
         reg_profile = RegisterProfile.objects.create_profile(
-            parameters['name'], parameters['email'], parameters['password'])
+            'TestName', 'a@b.com', 'asdfasdf')
 
         kwargs = {'activation_key': reg_profile.activation_key}
         response = self.client.post(reverse('users.activate', kwargs=kwargs),
@@ -45,8 +45,8 @@ class RegisterTests(test_utils.TestCase):
         eq_(200, response.status_code)
 
         # Test relations
-        u = User.objects.get(username=parameters['username'])
-        eq_(u.get_profile().name, parameters['name'])
+        u = User.objects.get(username='TestUser')
+        eq_(u.get_profile().name, 'TestName')
 
 
     def test_invalid_activation_key(self):
