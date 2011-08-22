@@ -9,9 +9,13 @@
     </a>
   </li>
   <li {{ 'second-section'|class_selected(content_section) }}>
-    {{ _('FAQ') }}
+    <a href="{{ url('faq') }}">
+      {{ _('FAQ') }}
+    </a>
   </li>
   <li {{ 'third-section'|class_selected(content_section) }}>
-    {{ _('ABOUT AFFILIATES') }}
+    <a href="{{ url('about') }}">
+      {{ _('ABOUT AFFILIATES') }}
+    </a>
   </li>
 </ul>

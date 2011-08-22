@@ -51,7 +51,7 @@ def my_badges(request):
                      {'instance_categories': instance_categories})
 
 
-def dashboard(request, template, context):
+def dashboard(request, template, context={}):
     """
     Performs common operations needed by pages using the 'dashboard' template.
     """
