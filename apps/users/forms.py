@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
 from tower import ugettext as _
@@ -26,6 +27,11 @@ class RegisterForm(forms.Form):
     name = forms.CharField(label=_lazy(u'Name'), max_length=255)
     email = forms.EmailField(label=_lazy(u'Email'), max_length=255)
     password = PasswordField()
+
+
+class LoginForm(AuthenticationForm):
+    """Form for logging in."""
+    remember_me = forms.BooleanField(label=_lazy('Remember me'), required=False)
 
 
 class ActivationForm(forms.ModelForm):

@@ -1,3 +1,4 @@
+from django.contrib.auth import login as auth_login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
@@ -5,8 +6,19 @@ import jingo
 from session_csrf import anonymous_csrf
 
 from badges.views import home
-from users.forms import ActivationForm, RegisterForm
+from users.forms import ActivationForm, LoginForm, RegisterForm
 from users.models import RegisterProfile
+
+def login(request):
+    form = LoginForm(data=(request.POST or None))
+    if request.method == 'POST':
+        # TODO: Handle inactive users
+        # TODO: Handle invalid logins
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            return HttpResponseRedirect(reverse('badges.new.step1'))
+
+    return home(request, login_form=form)
 
 
 def register(request):
@@ -21,8 +33,6 @@ def register(request):
 
         return jingo.render(request, 'users/register_done.html',
                             {'profile': profile})
-    else:
-        form = RegisterForm()
 
     return home(request, register_form=form)
 

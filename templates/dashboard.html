@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% set user = request.user %}
 {% block site_css %}
   {{ super() }}
   {{ css('user_profile') }}
@@ -11,4 +12,8 @@
 
     {% endblock %}
   </div>
+{% endblock %}
+{% block sidebar_content %}
+  {% include 'layout/sidebar_nav.html' %}
+  {% include 'badges/include/sidebar_profile.html' %}
 {% endblock %}

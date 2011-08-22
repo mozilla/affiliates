@@ -4,17 +4,20 @@ import jingo
 from session_csrf import anonymous_csrf
 
 from badges.models import Badge, Category, Subcategory
-from users.forms import RegisterForm
+from users.forms import RegisterForm, LoginForm
 
 
 @anonymous_csrf
-def home(request, register_form=None):
+def home(request, register_form=None, login_form=None):
     """Display the home page."""
-    if not register_form:
+    if register_form is None:
         register_form = RegisterForm()
+    if login_form is None:
+        login_form = LoginForm()
 
     return jingo.render(request, 'badges/home.html',
-                        {'register_form': register_form})
+                        {'register_form': register_form,
+                         'login_form': login_form})
 
 
 def new_badge_step1(request):

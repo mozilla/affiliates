@@ -1,17 +1,20 @@
-<form id="login-form">
+{% if login_form.errors %}
+  <p class="msg_warning">{{ _('Username or password incorrect.') }}</p>
+{% endif %}
+<form action="{{ url('users.login') }}" method="post" id="login-form">
+  {{ csrf() }}
   <input type="text"
-         name="login-username"
+         name="{{ login_form.username.html_name }}"
          placeholder="{{ _('Username') }}"
          required/>
   <input type="password"
-         name="login-password"
+         name="{{ login_form.password.html_name }}"
          placeholder="{{ _('Password') }}"
          required/>
   <button type="submit">{{ _('Log in &raquo;') }}</button>
   <input type="checkbox"
          id="login-remember-me"
-         name="login-remember-me"
-         value="true" />
+         name="{{ login_form.remember_me.html_name }}" />
   <label for="login-remember-me">{{ _('Remember me') }}</label>
   <a href="#">{{ _('Forgot your password?') }}</a>
 </form>
