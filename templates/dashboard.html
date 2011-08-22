@@ -14,6 +14,12 @@
   </div>
 {% endblock %}
 {% block sidebar_content %}
+  {% set newsitem = get_latest_newsitem() %}
+  {% if newsitem is not none %}
+    {% import 'news/macros.html' as news %}
+    {{ news.news_box(newsitem) }}
+  {% endif %}
+{% endblock %}{% block sidebar_content %}
   {% include 'layout/sidebar_nav.html' %}
   {% include 'badges/include/sidebar_profile.html' %}
 {% endblock %}
