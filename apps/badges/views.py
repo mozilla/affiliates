@@ -1,4 +1,5 @@
-from django.core.urlresolvers import get_callable
+from django.core.urlresolvers import get_callable, reverse
+from django.http import HttpResponseRedirect
 
 import jingo
 from session_csrf import anonymous_csrf
@@ -10,6 +11,10 @@ from users.forms import RegisterForm, LoginForm
 @anonymous_csrf
 def home(request, register_form=None, login_form=None):
     """Display the home page."""
+    # Redirect logged-in users
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('badges.new.step1'))
+
     if register_form is None:
         register_form = RegisterForm()
     if login_form is None:
