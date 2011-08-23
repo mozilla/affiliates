@@ -43,9 +43,9 @@ class ActivationForm(forms.ModelForm):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
 
-        if (not password == password2):
+        if not password == password2:
             raise forms.ValidationError(_('Passwords must match.'))
-        elif (password is not None) and (password != ''):
+        elif password:
             self.cleaned_data['password'] = hash_password(password)
 
         return self.cleaned_data
