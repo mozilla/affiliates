@@ -24,8 +24,8 @@
   <li class="options">
     <img src="{{ item.preview_img.url }}" alt="{{ _(item.name) }}">
     <div class="description">
-      <p>{{ _(item.name) }}</p>
       <input name="{{ input_name }}" type="radio" class="js_uniform" value="{{ input_value }}">
+      <p>{{ item.localized('name') }}</p>
     </div>
   </li>
 {% endmacro %}

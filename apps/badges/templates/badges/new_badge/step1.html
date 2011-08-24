@@ -8,7 +8,9 @@
   <form method="get" action="{{ url('badges.new.step2') }}">
     {% for category in categories %}
       <p class="title">
-        {{ _('Category:') }} <span>{{ _(category.name) }}</span>
+        {% trans category_name=category.localized('name') %}
+          Category: <span>{{ category_name }}</span>
+        {% endtrans %}
       </p>
       <div class="divider-notch"></div>
       <ul>

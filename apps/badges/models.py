@@ -3,20 +3,36 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from product_details import product_details
-from tower import ugettext_lazy as _lazy
+from tower import ugettext as _, ugettext_lazy as _lazy
 
 
 LANGUAGE_CHOICES = tuple([(i, product_details.languages[i]['native']) for i in
                           settings.AFFILIATES_LANGUAGES])
 
 class ModelBase(models.Model):
-    """For future use if needed"""
+    """Common functions that models across the app will need."""
+
+    def __init__(self, *args, **kwargs):
+        super(ModelBase, self).__init__(*args, **kwargs)
+
+        # Cache localized attributes
+        self._localized_attrs = {}
+
+    def localized(self, attr):
+        """Return a localized version of the requested attribute."""
+        if attr not in self._localized_attrs:
+            self._localized_attrs[attr] = _(getattr(self, attr))
+
+        return self._localized_attrs[attr]
+
     class Meta:
         abstract = True
 
 
 class LocaleField(models.CharField):
-    """CharField with locale settings specific to Affiliates defaults."""
+    description = ('CharField with locale settings specific to Affiliates '
+                   'defaults.')
+
     def __init__(self, max_length=7, default=settings.LANGUAGE_CODE,
                  choices=LANGUAGE_CHOICES, *args, **kwargs):
         return super(LocaleField, self).__init__(
