@@ -12,7 +12,7 @@
             "last_login": "2011-08-03 16:54:45",
             "groups": [],
             "user_permissions": [],
-            "password": "sha512$4f88ddee0a09aa88bffc$2a770bb8c047f3ffd61e780d1ebd7865f1f778caccc4483cbd5d4015c9f016c23a499e4e992079ae3cdd2e9a47b0b4761ac48c9c4d78634a4815c62abdfbe3a8",
+            "password": "sha512$3872628ec7f0672c0cc1$08f850fabaea76355ff42e4596880bb80200494d2bceebdd15c9b3663f7dfffed1e30fa01a4cd4f7fc62fb6d52973a690547b6ee9596220a0c5ba22dd29e9b88",
             "email": "mkelly@mozilla.com",
             "date_joined": "2011-08-03 16:54:45"
         }
@@ -39,7 +39,7 @@
         "fields": {
             "user": 1,
             "activation_key": "ACTIVATED",
-            "password": "sha512$9c54e3bdbcd24fc05659$f4574d6153d41f8a021ef944a690c4a31337a7753c023308700015c482cf4d7695ef8fa073a38f0ff556955b859b78ab1418a38ee702428b7f2a1d1fd5645e39",
+            "password": "sha512$3872628ec7f0672c0cc1$08f850fabaea76355ff42e4596880bb80200494d2bceebdd15c9b3663f7dfffed1e30fa01a4cd4f7fc62fb6d52973a690547b6ee9596220a0c5ba22dd29e9b88'",
             "name": "Michael Kelly",
             "email": "mkelly@mozilla.com"
         }

@@ -1,5 +1,6 @@
 import test_utils
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core.urlresolvers import reverse
@@ -57,3 +58,27 @@ class RegisterTests(test_utils.TestCase):
 
         eq_(302, response.status_code)
         eq_('http://testserver/', response['Location'])
+
+
+class LoginTests(test_utils.TestCase):
+    client_class = LocalizingClient
+    fixtures = ['registered_users']
+
+    def test_basic_login(self):
+        """Test that a basic login works."""
+        parameters = {'username': 'mkelly', 'password': 'asdfasdf'}
+        response = self.client.post(reverse('users.login'), parameters)
+
+        ok_(response.cookies[settings.SESSION_COOKIE_NAME])
+        eq_(response.cookies[settings.SESSION_COOKIE_NAME]['expires'], '')
+
+    def test_remembered_login(self):
+        """
+        Test that logging in with "Remember me" checked sets the
+        session expiration.
+        """
+        parameters = {'username': 'mkelly', 'password': 'asdfasdf',
+                      'remember_me': True}
+        response = self.client.post(reverse('users.login'), parameters)
+
+        ok_(response.cookies[settings.SESSION_COOKIE_NAME]['expires'])

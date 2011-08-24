@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -13,9 +14,13 @@ def login(request):
     form = LoginForm(data=(request.POST or None))
     if request.method == 'POST':
         # TODO: Handle inactive users
-        # TODO: Handle invalid logins
         if form.is_valid():
             auth_login(request, form.get_user())
+
+            # Set session to not expire on browser close
+            if form.cleaned_data['remember_me']:
+                request.session.set_expiry(settings.SESSION_REMEMBER_DURATION)
+
             return HttpResponseRedirect(reverse('badges.new.step1'))
 
     return home(request, login_form=form)
