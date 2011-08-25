@@ -5,11 +5,11 @@
       <p class="date">{{ newsitem.get_date() }}</p>
     </div>
     <div id="latest-news">
-      <h3>{{ newsitem.title }}</h3>
+      <h3>{{ newsitem.localized('title') }}</h3>
       <div class="divider-medium">
         &nbsp;
       </div>
-      <p>{{ newsitem.content|nl2br }}</p>
+      <p>{{ newsitem.localized('content')|nl2br }}</p>
     </div>
   </div>
 {% endmacro %}
