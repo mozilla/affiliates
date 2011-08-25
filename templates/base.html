@@ -6,7 +6,7 @@
     {% block site_css %}
       {{ css('common') }}
     {% endblock %}
-    <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}global/unified/img/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}global/img/favicon.png"/>
   </head>
   <body id="{% block body_id %}affiliates{% endblock %}">
     <div id="wrapper">
@@ -16,7 +16,7 @@
           <a href="#lang_form">{{ _('switch language') }}</a>
         </div>
         {% block site_header %}
-          {% include "global/unified/header.html" %}
+          {% include "global/header.html" %}
         {% endblock %}
         {% block highlight_box %}{% endblock %}
         <div id="main-feature">
@@ -36,7 +36,7 @@
       </div>{# /#doc #}
     </div>{# /#wrapper #}
     {% block site_footer %}
-      {% include "global/unified/footer.html" %}
+      {% include "global/footer.html" %}
     {% endblock %}
     {% block site_js %}
       {{ js('common') }}
