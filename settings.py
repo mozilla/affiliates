@@ -14,7 +14,6 @@ AFFILIATES_LANGUAGES = ['en-US']
 
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # User account profiles
 AUTH_PROFILE_MODULE = 'users.UserProfile'
