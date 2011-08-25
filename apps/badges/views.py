@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import get_callable, reverse
 from django.http import HttpResponseRedirect
 
@@ -25,6 +26,7 @@ def home(request, register_form=None, login_form=None):
                          'login_form': login_form})
 
 
+@login_required(redirect_field_name='')
 def new_badge_step1(request):
     categories = Category.objects.all()
 
@@ -32,6 +34,7 @@ def new_badge_step1(request):
                         {'categories': categories})
 
 
+@login_required(redirect_field_name='')
 def new_badge_step2(request):
     subcategory_pk = request.GET.get('subcategory')
     subcategory = Subcategory.objects.get(pk=subcategory_pk)
@@ -41,6 +44,7 @@ def new_badge_step2(request):
                         {'subcategory': subcategory, 'badges': badges})
 
 
+@login_required(redirect_field_name='')
 def new_badge_step3(request):
     badge_class, pk = Badge.objects.from_badge_str(request.GET.get('badge'))
     customize_view = get_callable(badge_class.customize_view)

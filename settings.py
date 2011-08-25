@@ -18,6 +18,9 @@ DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
 # User account profiles
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 
+# Login settings
+LOGIN_URL = '/'
+
 # Badge file path info
 MAX_FILEPATH_LENGTH = 250
 
@@ -26,8 +29,8 @@ BADGE_PREVIEW_PATH = 'uploads/badge_previews/'
 BANNER_IMAGE_PATH = 'uploads/banners/'
 
 # Session configuration
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True # Log out on browser close
-SESSION_REMEMBER_DURATION = 1209600 # If we remember you, it lasts for 2 weeks
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Log out on browser close
+SESSION_REMEMBER_DURATION = 1209600  # If we remember you, it lasts for 2 weeks
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
