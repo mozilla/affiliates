@@ -37,3 +37,7 @@ def new_badge_step3(request):
     badge_class, pk = Badge.objects.from_badge_str(request.GET.get('badge'))
     customize_view = get_callable(badge_class.customize_view)
     return customize_view(request, pk=pk)
+
+
+def handler500(request):
+    return jingo.render(request, '500.html')

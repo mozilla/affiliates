@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{# This 500 page is a placeholder until a better one is made. #}
+
+{% block site_css %}
+  {{ super() }}
+  {{ css('home') }}
+{% endblock %}
+
+{% block content_class %}thank_you{% endblock %}
+
+{% block content %}
+<h2>Oops, something went wrong.</h2>
+<p>You've encountered an error. Please go back and try again.</p>
+{% endblock %}
