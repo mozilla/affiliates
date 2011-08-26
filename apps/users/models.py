@@ -22,6 +22,12 @@ COUNTRIES = tuple(product_details.get_regions(settings.LANGUAGE_CODE).items())
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
 
+# Extra User Methods
+def has_created_badges(self):
+    return self.badgeinstance_set.count() > 0
+User.add_to_class('has_created_badges', has_created_badges)
+
+
 class UserProfile(ModelBase):
     """
     Stores information about a user account. Created post-activation.

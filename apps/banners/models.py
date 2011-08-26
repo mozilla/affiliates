@@ -1,29 +1,42 @@
+import json
+
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 
+import jingo
+from funfactory.manage import path
+from funfactory.utils import absolutify
 from tower import ugettext_lazy as _lazy
 
 from badges.models import Badge, BadgeInstance, ModelBase
-from funfactory.utils import absolutify
+
+
+BANNER_TEMPLATE_FILE = 'apps/banners/templates/banners/banner_template.html'
+with open(path(BANNER_TEMPLATE_FILE)) as f:
+    BANNER_TEMPLATE = f.read()
 
 
 class Banner(Badge):
     """Badge consisting of an image link."""
     customize_view = 'banners.views.customize_banner'
 
-    def image_url_dict(self):
+    def banner_image_dict(self):
         """
-        Return a dictionary that maps sizes and colors to the fully qualified
-        URLs of this banner's images.
+        Return a dictionary that maps sizes and colors to the banner images
+        for this banner.
         """
-        img_urls = {}
+        banner_images = {}
         for img in self.bannerimage_set.all():
-            if img.size not in img_urls:
-                img_urls[img.size] = {}
+            if img.size not in banner_images:
+                banner_images[img.size] = {}
 
-            img_urls[img.size][img.color] = absolutify(img.image.url)
+            banner_images[img.size][img.color] = {
+                'image_url': absolutify(img.image.url),
+                'pk': img.pk
+            }
 
-        return img_urls
+        return banner_images
 
     def image_size_color_dict(self):
         """
@@ -37,6 +50,9 @@ class Banner(Badge):
             size_colors[img.size].append(img.color)
 
         return size_colors
+
+    def customize_url(self):
+        return reverse('banners.customize', kwargs={'banner_pk': self.pk})
 
 
 class BannerImage(ModelBase):
@@ -53,8 +69,15 @@ class BannerImage(ModelBase):
 
 
 class BannerInstance(BadgeInstance):
-    banner = models.ForeignKey(Banner)
     image = models.ForeignKey(BannerImage)
 
-    def __unicode__(self):
-        return '%s: %s' % (self.user, self.image)
+    def render(self):
+        return jingo.env.from_string(BANNER_TEMPLATE).render({
+            'url': self.affiliate_link(),
+            'img': absolutify(self.image.image.url)
+        })
+
+    def affiliate_link(self):
+        return reverse('banners.link', kwargs={'user_id': self.user.pk,
+                                               'banner_id': self.badge.pk,
+                                               'banner_img_id': self.image.pk})

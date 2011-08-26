@@ -22,24 +22,28 @@ $(function() {
         }).change();
     }
 
-    function str_format(str) {
-        for (var k = 1; k < arguments.length; k++) {
-            str = str.replace('%s', arguments[k]);
-        }
-
-        return str;
-    }
-
     var preview = $('#banner_preview'),
         badge_code = $('#badge_code'),
         size = $('#size'),
         color = $('#color'),
         banner_images = preview.data('images'),
         template = preview.data('template');
+
     make_select_dependent(size, color, size.data('choices'));
+
+    function generate_affiliate_url(banner_img_id) {
+        return Mustache.to_html(preview.data('affiliate-link'),
+                                {banner_img_id: banner_img_id});
+    }
+
     size.add(color).change(function(e) {
-        var img = banner_images[size.val()][color.val()];
-        var banner = str_format(template, '#', img, '');
+        var banner_img = banner_images[size.val()][color.val()];
+        var url = generate_affiliate_url(banner_img['pk']);
+        var banner = Mustache.to_html(preview.data('template'), {
+            url: url,
+            img: banner_img['image_url']
+        });
+        
         preview.html(banner);
         badge_code.val(banner);
     }).change();

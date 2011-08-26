@@ -58,6 +58,7 @@ MINIFY_BUNDLES = {
             'js/affiliates.js',
         ),
         'banners': (
+            'js/libs/mustache.js',
             'js/banners.js',
         ),
     }

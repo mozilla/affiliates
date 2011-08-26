@@ -8,6 +8,7 @@ autodiscover()
 
 urlpatterns = patterns('',
     (r'', include('badges.urls')),
+    (r'^banners/', include('banners.urls')),
     (r'^accounts/', include('users.urls')),
 
     (r'^admin/', include(admin.site.urls)),

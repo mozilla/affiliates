@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from funfactory.admin import site
-from banners.models import Banner, BannerImage, BannerInstance
+from banners.models import Banner, BannerImage
 
 
 class BannerAdmin(admin.ModelAdmin):
@@ -12,8 +12,3 @@ site.register(Banner, BannerAdmin)
 class BannerImageAdmin(admin.ModelAdmin):
     pass
 site.register(BannerImage, BannerImageAdmin)
-
-
-class BannerInstanceAdmin(admin.ModelAdmin):
-    pass
-site.register(BannerInstance, BannerInstanceAdmin)

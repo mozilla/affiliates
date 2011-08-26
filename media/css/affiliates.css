@@ -51,6 +51,7 @@
 }
 
 .highlight-box .header {
+    clear: both;
     color: #444;
     background: url(../img/template/bg_highlightbox_header.png) repeat-x 0 100%;
     border-radius: 6px 6px 0 0;
@@ -59,7 +60,7 @@
     position: relative;
 }
 
-.highlight-box .header.no-banner-menu {
+ul.banners_nav ~ .header {
     border-top: 1px solid #E1EDF9;
     border-radius: 0;
     clear: both;
@@ -193,7 +194,7 @@
 
 .first-section .arrow_indicator {
     display: block;
-    left: 70px;
+    left: 70px;\
 }
 
 .second-section .arrow_indicator {
@@ -211,13 +212,13 @@
     left: 550px;
 }
 
-.current_banner .arrow_indicator_banner {
+.arrow_indicator_banner.current {
     display: block;
     left: 200px;
     top: 77px;
 }
 
-.new_banner .arrow_indicator_banner {
+.arrow_indicator_banner.new {
     display: block;
     left: 420px;
     top: 77px;
@@ -507,7 +508,7 @@ div.left-arrow span {
     padding: 10px 0 30px 30px;
 }
 
-#step-content ul li.options{
+#step-content ul li.options {
     background: #FFF;
     border: 1px solid #E6EBF1;
     border-radius: 8px;
@@ -515,17 +516,26 @@ div.left-arrow span {
     float: left;
     font-family: "MetaBlack";
     font-size: 20px;
-    height: 190px;
     list-style: none outside none;
     margin-right: 10px;
+}
+
+#step-content ul li.options:hover {
+    border: 1px solid #B0C1D2;
+    box-shadow: 0 2px rgba(0, 0, 0, 0.05), 0 -2px rgba(224, 239, 249, 0.9) inset;
+}
+
+#step-content ul li a {
+    color: #6D7581;
+    display: inline-block;
+    height: 190px;
     padding: 24px 20px 0;
     width: 148px;
 }
 
-#step-content ul li.selected {
+#step-content ul li a:hover {
     color: #4577A6;
-    border: 1px solid #B0C1D2;
-    box-shadow: 0 2px rgba(0, 0, 0, 0.05), 0 -2px rgba(224, 239, 249, 0.9) inset;
+    text-decoration: none;
 }
 
 #step-content ul li img{
@@ -539,11 +549,10 @@ div.left-arrow span {
 
 #step-content ul li div.description p{
     margin: 0;
-    width: 100px;
-    float: right;
     font-family: "MetaWebProBlack";
     font-size:20px;
     line-height: 0.9;
+    text-align: center;
 }
 
 #step-content ul li div.description p span{
@@ -567,7 +576,7 @@ div.left-arrow span {
     border-top: 1px solid #B0C1D2;
 }
 
-#footer-content button.save_changes {
+#footer-content .save_changes {
     background-color: #669BE1;
     background: -moz-linear-gradient(center top, #669BE1 0%, #5784BF 100%) repeat 0 0;
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5784BF), color-stop(1, #669BE1) );
@@ -575,11 +584,17 @@ div.left-arrow span {
     border: none;
     box-shadow: 0 1px rgba(0, 0, 0, 0.05), 0 -2px rgba(224, 239, 249, 0.9) inset;
     color: #fff;
+    display: inline-block;
     font-family: Georgia;
     font-size: 16px;
     font-style: italic;
     font-weight: normal;
     padding-bottom: 10px;
+}
+
+#footer-content .save_changes:hover {
+    cursor: pointer;
+    text-decoration: none;
 }
 
 a.back,
@@ -599,7 +614,8 @@ a.back:hover {
     text-decoration: none;
 }
 
-#footer-content button {
+#footer-content button,
+#footer-content a {
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #B3C8D7;
     border-radius: 4px 4px 4px 4px;
@@ -903,8 +919,7 @@ div.block-space{
 }
 
 .banners_nav li a:hover,
-.banners_nav li.current_banner_option a,
-.banners_nav li.new_banner_option a {
+.banners_nav li.selected a {
     color: #447BC4;
 }
 
@@ -953,6 +968,7 @@ div.block-space{
 }
 
 .banners_content .banner_section .col_2 {
+    overflow: auto;
     text-align: center;
     width: 280px;
 }

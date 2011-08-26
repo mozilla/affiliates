@@ -2,28 +2,24 @@
 {% import 'badges/include/macros.html' as macros %}
 
 {% set content_section = 'first-section' %}
+{% set banner_section = 'new' %}
 
 {% block dashboard_content %}
-{% call macros.badge_wizard(1) %}
-  <form method="get" action="{{ url('badges.new.step3') }}">
-    <p class="head">
-      {# L10n: subcategory_name is the name of the group of banners being displayed below. #}
-      {%- trans subcategory_name=subcategory.name-%}
-        Now choose the type of <span>{{ subcategory_name }}</span>
-        banner you want to display on your website or blog:
-      {%- endtrans -%}
-    </p>
-    <div class="divider-notch">
-    </div>
-    <ul>
-      {% for badge in badges %}
-        {{ macros.wizard_li(badge, 'badge', badge.to_badge_str()) }}
-      {% endfor %}
-    </ul>
-    {{ macros.wizard_footer(
-      back_href=url('badges.new.step1'),
-      next_button_label=_('Continue to Step 3 &raquo;')
-    ) }}
-  </form>
+{% call macros.badge_wizard(1, user) %}
+  <p class="head">
+    {# L10n: subcategory_name is the name of the group of banners being displayed below. #}
+    {%- trans subcategory_name=subcategory.name-%}
+      Now choose the type of <span>{{ subcategory_name }}</span>
+      banner you want to display on your website or blog:
+    {%- endtrans -%}
+  </p>
+  <div class="divider-notch">
+  </div>
+  <ul>
+    {% for badge in badges %}
+      {{ macros.wizard_li(badge, badge.customize_url()) }}
+    {% endfor %}
+  </ul>
+  {{ macros.wizard_footer(url('badges.new.step1')) }}
 {% endcall %}
 {% endblock %}

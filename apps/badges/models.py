@@ -1,3 +1,6 @@
+from collections import defaultdict
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -8,6 +11,7 @@ from tower import ugettext as _, ugettext_lazy as _lazy
 
 LANGUAGE_CHOICES = tuple([(i, product_details.languages[i]['native']) for i in
                           settings.AFFILIATES_LANGUAGES])
+
 
 class ModelBase(models.Model):
     """Common functions that models across the app will need."""
@@ -24,6 +28,27 @@ class ModelBase(models.Model):
             self._localized_attrs[attr] = _(getattr(self, attr))
 
         return self._localized_attrs[attr]
+
+    class Meta:
+        abstract = True
+
+
+class MultiTableParentModel(ModelBase):
+    """
+    Provides boilerplate for models that will be the parent in a multi-table
+    inheritence relationship.
+    """
+    child_type = models.CharField(max_length=255, editable=False)
+
+    def save(self, *args, **kwargs):
+        """Set type to our classname on save."""
+        if not self.child_type:
+            self.child_type = self.__class__.__name__.lower()
+        return super(MultiTableParentModel, self).save(*args, **kwargs)
+
+    def child(self):
+        """Return this instance's child model instance."""
+        return getattr(self, self.child_type)
 
     class Meta:
         abstract = True
@@ -60,33 +85,9 @@ class Subcategory(ModelBase):
         return self.name
 
 
-class BadgeManager(models.Manager):
-    BADGE_BANNER = 'Banner'
-
-    def from_badge_str(self, badge_str):
-        """
-        Return the class and primary key corresponding to the given badge
-        string.
-        """
-        badge_type, pk = badge_str.split(';')
-        if badge_type == self.BADGE_BANNER:
-            from banners.models import Banner
-            return (Banner, pk)
-
-        return None
-
-    def all_from_subcategory(self, subcategory):
-        """
-        Retrieves all the badges for the given subcategory.
-
-        Useful for the future when there will be more than on type of badge.
-        """
-        return subcategory.banner_set.all()
-
-
-class Badge(ModelBase):
+class Badge(MultiTableParentModel):
     """
-    Abstract model for any banner, text link, or other item that users will put
+    Parent model for any banner, text link, or other item that users will put
     on their website as an affiliate link.
     """
     name = models.CharField(max_length=255, verbose_name=_lazy(u'name'))
@@ -94,32 +95,58 @@ class Badge(ModelBase):
     preview_img = models.ImageField(upload_to=settings.BADGE_PREVIEW_PATH,
                                     verbose_name=_lazy(u'badge preview'),
                                     max_length=settings.MAX_FILEPATH_LENGTH)
-    objects = BadgeManager()
+    href = models.URLField(verbose_name=u'URL to redirect to')
 
-
-    # Subclasses should override this with the string name for the view for
-    # customizing badges.
-    customize_view = None
-
-    class Meta:
-        abstract = True
-
-    def to_badge_str(self):
-        """Return string representing this badge, including its class."""
-        return '%s;%s' % (self.__class__.__name__, self.pk)
+    def customize_url(self):
+        return self.child().customize_url()
 
     def __unicode__(self):
         return self.name
 
 
-class BadgeInstance(ModelBase):
-    """Single user-created instance of a badge."""
-    user = models.ForeignKey(User)
+class BadgeInstanceManager(models.Manager):
+    def for_user_by_category(self, user):
+        results = defaultdict(list)
+        instances = (BadgeInstance.objects
+                     .select_related('Badge', 'Subcategory', 'Category')
+                     .filter(user=user)
+                     .annotate(downloads=models.Sum('clickstats__clicks')))
+
+        for instance in instances:
+            results[instance.badge.subcategory.parent.name].append(instance)
+
+        return results
+
+class BadgeInstance(MultiTableParentModel):
+    """Single instance of a badge that a user has created and sent clicks to."""
     created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+
+    user = models.ForeignKey(User)
+    badge = models.ForeignKey(Badge)
+
+    objects = BadgeInstanceManager()
+
+    def add_click(self):
+        """Increment the click count for this badge instance."""
+        now = datetime.now()
+
+        stats, created = self.clickstats_set.get_or_create(month=now.month,
+                                                           year=now.year)
+        stats.clicks = models.F('clicks') + 1
+        stats.save()
+
+    def render(self):
+        """Return the HTML to display this BadgeInstance."""
+        return self.child().render()
+
+
+class ClickStats(ModelBase):
+    """Tracks historical data for an affiliate's referrals."""
+    badge_instance = models.ForeignKey(BadgeInstance)
+
+    month = models.IntegerField(choices=[(k, k) for k in range(1, 13)])
+    year = models.IntegerField()
+    clicks = models.IntegerField(default=0)
 
     class Meta:
-        abstract = True
-
-    def __unicode__(self):
-        return 'Badge for %s' % self.user
+        unique_together = ('badge_instance', 'month', 'year')

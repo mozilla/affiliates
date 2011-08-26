@@ -2,9 +2,10 @@
 {% import 'badges/include/macros.html' as macros %}
 
 {% set content_section = 'first-section' %}
+{% set banner_section = 'new' %}
 
 {% block dashboard_content %}
-{% call macros.badge_wizard(2) %}
+{% call macros.badge_wizard(2, user) %}
   <p class="head">
     {# L10n: subcategory_name is the name of a group of banners, e.g. Firefox for Mobile. #}
     {%- trans subcategory_name=subcategory.name -%}
@@ -43,7 +44,7 @@
     </div>
   </div>
   {{ macros.wizard_footer(
-      back_href=url('badges.new.step2')|urlparams(subcategory=subcategory.pk)
+      back_href=url('badges.new.step2', subcategory_pk=subcategory.pk)
   ) }}
 {% endcall %}
 {% endblock %}

@@ -1,6 +1,12 @@
-{% macro badge_wizard(step) -%}
+{% macro badge_wizard(step, user) -%}
 <div class="header">
-  <h2>{{ _('Follow these easy steps to get started:') }}</h2>
+  <h2>
+    {% if user.has_created_badges() %}
+      {{ _('Follow these easy steps to create a new banner:') }}
+    {% else %}
+      {{ _('Follow these easy steps to get started:') }}
+    {% endif %}
+  </h2>
 </div>
 <div id="steps-started">
   <ul class="steps-buttons">
@@ -20,23 +26,52 @@
 </div>
 {%- endmacro %}
 
-{% macro wizard_li(item, input_name, input_value) %}
-  <li class="options">
-    <img src="{{ item.preview_img.url }}" alt="{{ _(item.name) }}">
-    <div class="description">
-      <input name="{{ input_name }}" type="radio" class="js_uniform" value="{{ input_value }}">
-      <p>{{ item.localized('name') }}</p>
-    </div>
+{% macro wizard_li(item, url) %}
+  <li class="options selected">
+    <a href="{{ url }}">
+      <img src="{{ item.preview_img.url }}" alt="{{ item.localized('name') }}">
+      <div class="description">
+        <p>{{ item.localized('name')|bleach(tags=['span']) }}</p>
+      </div>
+    </a>
   </li>
 {% endmacro %}
 
-{% macro wizard_footer(back_href, next_button_label) %}
+{% macro wizard_footer(back_href) %}
   <div id="footer-content" class="buttons">
     {% if back_href is defined %}
       <a class="back" href="{{ back_href }}">{{ _('&laquo; Back') }}</a>
     {% endif %}
-    {% if next_button_label is defined %}
-      <button type="submit" class="save_changes">{{ next_button_label }}</button>
-    {% endif %}
   </div>
+{% endmacro %}
+
+{% macro dashboard_section(name, instances) %}
+  <div class="banner_section">
+    <h4>{{ name }}</h4>
+    <ul>
+      {% for instance in instances %}
+        <li class="banner_cols">
+          <div class="col_1">{{ loop.index }}</div>
+          <div class="col_2">{{ instance.render()|safe }}</div>
+          <div class="col_3">
+            <ul class="banner_info">
+              <li>
+                <h5>{{ _('CREATION DATE:') }}</h5>
+                <p>{{ instance.created|babel_date('short') }}</p>
+              </li>
+              <li>
+                <h5>{{ _('DOWNLOADS:') }}</h5>
+                <p>{{ instance.downloads }}</p>
+              </li>
+              <li>
+                <h5>{{ _('LINKED URL:') }}</h5>
+                <p><a href="{{ instance.badge.href }}">{{ instance.badge.href }}</a></p>
+              </li>
+            </ul>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
 {% endmacro %}

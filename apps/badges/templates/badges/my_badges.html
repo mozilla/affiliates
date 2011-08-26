@@ -1,0 +1,23 @@
+{% extends 'dashboard.html' %}
+{% import 'badges/include/macros.html' as macros %}
+
+{% set content_section = 'first-section' %}
+{% set banner_section = 'current' %}
+
+{% block dashboard_content %}
+  <div class="header">
+    <h2>{{ _("These are the banners you've created so far:") }}</h2>
+  </div>
+  <div id="steps-started">
+    <div class="banners_content">
+      {% for name, instances in instance_categories|dictsort %}
+        {{ macros.dashboard_section(name, instances) }}
+      {% endfor %}
+      <div class="buttons" id="footer-content">
+        <a class="save_changes" href="{{ url('badges.new.step1') }}">
+          {{ _('Create a New Banner &raquo;') }}
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

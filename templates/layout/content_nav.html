@@ -1,6 +1,12 @@
 <ul id="content-nav">
   <li {{ 'first-section'|class_selected(content_section) }}>
-    {{ _('GET STARTED') }}
+    <a href="{{ url('my_badges') }}">
+      {% if user.has_created_badges() %}
+        {{ _('MY BANNERS') }}
+      {% else %}
+        {{ _('GET STARTED') }}
+      {% endif %}
+    </a>
   </li>
   <li {{ 'second-section'|class_selected(content_section) }}>
     {{ _('FAQ') }}

@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import get_callable, reverse
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 import jingo
 from session_csrf import anonymous_csrf
 
-from badges.models import Badge, Category, Subcategory
+from badges.models import Badge, BadgeInstance, Category, Subcategory
 from news.models import NewsItem
 from users.forms import RegisterForm, LoginForm
 
@@ -36,20 +36,19 @@ def new_badge_step1(request):
 
 
 @login_required(redirect_field_name='')
-def new_badge_step2(request):
-    subcategory_pk = request.GET.get('subcategory')
+def new_badge_step2(request, subcategory_pk):
     subcategory = Subcategory.objects.get(pk=subcategory_pk)
-    badges = Badge.objects.all_from_subcategory(subcategory)
+    badges = Badge.objects.filter(subcategory=subcategory)
 
     return dashboard(request, 'badges/new_badge/step2.html',
                         {'subcategory': subcategory, 'badges': badges})
 
 
-@login_required(redirect_field_name='')
-def new_badge_step3(request):
-    badge_class, pk = Badge.objects.from_badge_str(request.GET.get('badge'))
-    customize_view = get_callable(badge_class.customize_view)
-    return customize_view(request, pk=pk)
+def my_badges(request):
+    instance_categories = (BadgeInstance.objects
+                           .for_user_by_category(request.user))
+    return dashboard(request, 'badges/my_badges.html',
+                     {'instance_categories': instance_categories})
 
 
 def dashboard(request, template, context):

@@ -1,5 +1,7 @@
-from jingo import register
 from babel.dates import format_date
+from bleach import clean
+from jingo import register
+from jinja2 import Markup
 
 
 @register.filter
@@ -23,3 +25,8 @@ def babel_date(date, format='long'):
     'short', 'medium', 'long', or 'full'.
     """
     return format_date(date, format)
+
+
+@register.filter
+def bleach(str, *args, **kwargs):
+    return Markup(clean(str, *args, **kwargs))

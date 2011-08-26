@@ -1,7 +1,9 @@
 {% extends 'badges/new_badge/step3.html' %}
 {% block preview %}
-<div id="banner_preview" data-images="{{ json_banner_images }}" data-template="{{ template }}">
-
+<div id="banner_preview"
+     data-affiliate-link="{{ affiliate_link }}"
+     data-images="{{ json_banner_images }}"
+     data-template="{{ template }}">
 </div>
 {% endblock %}
 {% block custom_parameters %}
