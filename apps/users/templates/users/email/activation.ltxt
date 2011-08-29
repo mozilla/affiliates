@@ -1,4 +1,4 @@
-{% load i18n %}{# L10n: This is an email. Whitespace matters! #}{% blocktrans %}
+{# L10n: This is an email. Whitespace matters! #}{% trans %}
 Welcome to Mozilla Affiliates.
 
 Before you can use your new account you must activate it --
@@ -14,4 +14,4 @@ away this e-mail.
 Thanks!
 
 The Mozilla Affiliates team
-{% endblocktrans %}
+{% endtrans %}
