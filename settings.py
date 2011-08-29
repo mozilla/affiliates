@@ -65,6 +65,15 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.admin',
 ]
 
+# Add Jingo loader
+TEMPLATE_LOADERS = [
+    'jingo.Loader',
+] + list(TEMPLATE_LOADERS)
+
+JINGO_EXCLUDE_APPS = [
+    'django.contrib.admin',
+]
+
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 

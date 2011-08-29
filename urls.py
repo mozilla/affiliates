@@ -13,9 +13,6 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 )
 
-# Configure error handlers
-handler500 = 'badges.views.handler500'
-
 ## In DEBUG mode, serve media files through Django.
 if settings.DEBUG:
     # Remove leading and trailing slashes so the regex matches.
