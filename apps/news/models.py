@@ -1,8 +1,18 @@
 from django.db import models
 
-from babel.dates import format_date
-
 from badges.models import ModelBase
+
+
+class NewsItemManager(models.Manager):
+    def current(self):
+        """
+        Return the latest enabled news item. Return None if none are found.
+        """
+        try:
+            return (NewsItem.objects.filter(enabled=True).order_by('-created')
+                    .get())
+        except NewsItem.DoesNotExist:
+            return None
 
 
 class NewsItem(ModelBase):
@@ -15,12 +25,7 @@ class NewsItem(ModelBase):
     content = models.TextField(verbose_name=u'Content')
     enabled = models.BooleanField(verbose_name=u'Show on site')
 
-    def get_date(self):
-        """
-        Return the modified-on date of this news item in a locale-appropriate
-        format.
-        """
-        return format_date(self.modified, format='long')
+    objects = NewsItemManager()
 
     def __unicode__(self):
         return self.title

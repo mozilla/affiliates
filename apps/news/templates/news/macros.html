@@ -2,7 +2,7 @@
   <div class="highlight-box degraded-box block-space">
     <div class="degraded-box head-box">
       <h5>{{ _('Latest News') }}</h5>
-      <p class="date">{{ newsitem.get_date() }}</p>
+      <p class="date">{{ newsitem.created|babel_date('long') }}</p>
     </div>
     <div id="latest-news">
       <h3>{{ newsitem.localized('title') }}</h3>

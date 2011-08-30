@@ -1,4 +1,5 @@
 from jingo import register
+from babel.dates import format_date
 
 
 @register.filter
@@ -13,3 +14,12 @@ def wizard_active(step, current):
         return 'selected'
     elif (current + 1) == step:
         return 'next-selected'
+
+
+@register.filter
+def babel_date(date, format='long'):
+    """
+    Format a date properly for the current locale. Format can be one of
+    'short', 'medium', 'long', or 'full'.
+    """
+    return format_date(date, format)

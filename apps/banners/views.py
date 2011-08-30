@@ -2,6 +2,7 @@ import json
 
 import jingo
 
+from badges.views import dashboard
 from banners.models import Banner
 
 
@@ -14,7 +15,7 @@ def customize_banner(request, pk=None):
     json_banner_urls = json.dumps(banner.image_url_dict())
     json_size_colors = json.dumps(banner.image_size_color_dict())
 
-    return jingo.render(request, 'banners/customize.html',
+    return dashboard(request, 'banners/customize.html',
                         {'banner': banner,
                          'subcategory': banner.subcategory,
                          'template': BANNER_TEMPLATE,

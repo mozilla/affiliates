@@ -6,6 +6,7 @@ import jingo
 from session_csrf import anonymous_csrf
 
 from badges.models import Badge, Category, Subcategory
+from news.models import NewsItem
 from users.forms import RegisterForm, LoginForm
 
 
@@ -30,7 +31,7 @@ def home(request, register_form=None, login_form=None):
 def new_badge_step1(request):
     categories = Category.objects.all()
 
-    return jingo.render(request, 'badges/new_badge/step1.html',
+    return dashboard(request, 'badges/new_badge/step1.html',
                         {'categories': categories})
 
 
@@ -40,7 +41,7 @@ def new_badge_step2(request):
     subcategory = Subcategory.objects.get(pk=subcategory_pk)
     badges = Badge.objects.all_from_subcategory(subcategory)
 
-    return jingo.render(request, 'badges/new_badge/step2.html',
+    return dashboard(request, 'badges/new_badge/step2.html',
                         {'subcategory': subcategory, 'badges': badges})
 
 
@@ -49,3 +50,12 @@ def new_badge_step3(request):
     badge_class, pk = Badge.objects.from_badge_str(request.GET.get('badge'))
     customize_view = get_callable(badge_class.customize_view)
     return customize_view(request, pk=pk)
+
+
+def dashboard(request, template, context):
+    """
+    Performs common operations needed by pages using the 'dashboard' template.
+    """
+    context['newsitem'] = NewsItem.objects.current()
+
+    return jingo.render(request, template, context)
