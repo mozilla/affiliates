@@ -6,4 +6,4 @@
 	url = https://github.com/mozilla/django-moz-header.git
 [submodule "vendor"]
 	path = vendor
-	url = https://Osmose@github.com/mozilla/affiliates-lib.git
+	url = https://github.com/mozilla/affiliates-lib.git
