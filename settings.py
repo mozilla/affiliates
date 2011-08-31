@@ -79,7 +79,7 @@ TEMPLATE_LOADERS = [
 ] + list(TEMPLATE_LOADERS)
 
 JINGO_EXCLUDE_APPS = [
-    'django.contrib.admin',
+    'admin',
 ]
 
 # Set up logging to send emails on 500 errors
