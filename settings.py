@@ -82,6 +82,23 @@ JINGO_EXCLUDE_APPS = [
     'django.contrib.admin',
 ]
 
+# Set up logging to send emails on 500 errors
+LOGGING = {
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    }
+}
+
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 
