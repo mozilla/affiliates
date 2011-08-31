@@ -10,6 +10,8 @@ from badges.views import home
 from users.forms import ActivationForm, LoginForm, RegisterForm
 from users.models import RegisterProfile
 
+
+@anonymous_csrf
 def login(request):
     form = LoginForm(data=(request.POST or None))
     if request.method == 'POST':
@@ -26,6 +28,7 @@ def login(request):
     return home(request, login_form=form)
 
 
+@anonymous_csrf
 def register(request):
     """Create a registration profile."""
     form = RegisterForm(request.POST or None)
