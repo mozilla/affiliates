@@ -51,10 +51,13 @@ def my_badges(request):
                      {'instance_categories': instance_categories})
 
 
-def dashboard(request, template, context={}):
+def dashboard(request, template, context=None):
     """
     Performs common operations needed by pages using the 'dashboard' template.
     """
+    if context is None:
+        context = {}
+
     context['newsitem'] = NewsItem.objects.current()
 
     return jingo.render(request, template, context)

@@ -7,21 +7,27 @@
     <h2>{{ _('About Affiliates') }}</h2>
   </div>
   <div class="about_content">
-    {% trans %}
-      <p>
+    <p>
+      {% trans %}
+
         Firefox Affiliate buttons are a bit of html code that you put
         on your website or blog to encourage visitors to your site to
         download Firefox. When a visitor to your site clicks on a
         button on your site and downloads Firefox, you get credit for
         that download.
-      </p>
-      <p>
+
+      {% endtrans %}
+    </p>
+    <p>
+      {% trans %}
+
         Affiliates who get a lot of downloads through their site will
         be featured on our leaderboard and be elegible for fun stuff
         like Firefox T-shirts. While we do send out prizes and gifts
         to our affiliates from time to time, Firefox Affiliates does
         not offer monetary rewards for hosting Firefox buttons.
-      </p>
-    {% endtrans %}
+
+      {% endtrans %}
+    </p>
   </div>
 {% endblock %}
