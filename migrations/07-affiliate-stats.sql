@@ -23,9 +23,6 @@ CREATE TABLE `banners_bannerinstance` (
 )
 ;
 ALTER TABLE `banners_bannerinstance` ADD CONSTRAINT `image_id_refs_id_9a6082f4` FOREIGN KEY (`image_id`) REFERENCES `banners_bannerimage` (`id`);
--- The following references should be added but depend on non-existent tables:
--- ALTER TABLE `banners_banner` ADD CONSTRAINT `badge_ptr_id_refs_id_c467fa8d` FOREIGN KEY (`badge_ptr_id`) REFERENCES `badges_badge` (`id`);
--- ALTER TABLE `banners_bannerinstance` ADD CONSTRAINT `badgeinstance_ptr_id_refs_id_2899f6ad` FOREIGN KEY (`badgeinstance_ptr_id`) REFERENCES `badges_badgeinstance` (`id`);
 CREATE INDEX `banners_bannerimage_50ab1ff4` ON `banners_bannerimage` (`banner_id`);
 CREATE INDEX `banners_bannerinstance_6682136` ON `banners_bannerinstance` (`image_id`);
 
@@ -58,6 +55,10 @@ CREATE TABLE `badges_clickstats` (
     UNIQUE (`badge_instance_id`, `month`, `year`)
 )
 ;
+
+ALTER TABLE `banners_banner` ADD CONSTRAINT `badge_ptr_id_refs_id_c467fa8d` FOREIGN KEY (`badge_ptr_id`) REFERENCES `badges_badge` (`id`);
+ALTER TABLE `banners_bannerinstance` ADD CONSTRAINT `badgeinstance_ptr_id_refs_id_2899f6ad` FOREIGN KEY (`badgeinstance_ptr_id`) REFERENCES `badges_badgeinstance` (`id`);
+
 ALTER TABLE `badges_clickstats` ADD CONSTRAINT `badge_instance_id_refs_id_1b6aeead` FOREIGN KEY (`badge_instance_id`) REFERENCES `badges_badgeinstance` (`id`);
 CREATE INDEX `badges_badge_913b3835` ON `badges_badge` (`subcategory_id`);
 CREATE INDEX `badges_badgeinstance_fbfc09f1` ON `badges_badgeinstance` (`user_id`);
