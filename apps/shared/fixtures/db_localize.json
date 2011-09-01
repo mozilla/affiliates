@@ -1,0 +1,9 @@
+[
+    {
+        "pk": 1,
+        "model": "badges.category",
+        "fields": {
+            "name": "Localize String"
+        }
+    }
+]
