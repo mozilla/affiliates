@@ -71,6 +71,6 @@ VALUES
 
 INSERT INTO `django_site` (`id`, `domain`, `name`)
 VALUES
-	(3, 'affiliates.allizom.org', 'stage'),
-	(4, 'affiliates.mozilla.org', 'prod');
+	(4, 'affiliates.allizom.org', 'stage'),
+	(5, 'affiliates.mozilla.org', 'prod');
 COMMIT;
