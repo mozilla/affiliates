@@ -1,13 +1,14 @@
-import test_utils
 from django.contrib.auth.models import User
 from django.core import mail
 from nose.tools import eq_, ok_
+from test_utils import TestCase
 
+from badges.models import BadgeInstance
 from users.models import RegisterProfile
 from users.tests.test_forms import activation_form
 
 
-class RegisterProfileTests(test_utils.TestCase):
+class RegisterProfileTests(TestCase):
     fixtures = ['registration_profiles.json', 'registered_users.json']
 
     def setUp(self):
@@ -35,8 +36,20 @@ class RegisterProfileTests(test_utils.TestCase):
 
     def test_activate_expired(self):
         """An expired(or already activated) account cannot be activated."""
-        key = User.objects.get(username='mkelly').registerprofile.activation_key
+        key = (User.objects.get(username='mkelly').registerprofile
+               .activation_key)
         form = activation_form(activation_key=key)
         form.is_valid()
 
         ok_(not RegisterProfile.objects.activate_profile(key, form))
+
+
+class UserTests(TestCase):
+    fixtures = ['banners']
+
+    def test_has_created_badges(self):
+        user = User.objects.get(pk=1)
+        ok_(not user.has_created_badges())
+
+        BadgeInstance.objects.create(user=user, badge_id=1)
+        ok_(user.has_created_badges())

@@ -1,11 +1,16 @@
+from datetime import datetime
+
+from django.contrib.auth.models import User
 from django.core import management
+from django.db.models import Sum
 
 import tower
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.models import Badge, Category, Subcategory
-from banners.models import Banner
+from badges.models import BadgeInstance, Category
+from badges.tests import ModelsTestCase
+from badges.tests.models import MultiTableParent, MultiTableChild
 
 
 class ModelBaseTests(TestCase):
@@ -32,24 +37,41 @@ class ModelBaseTests(TestCase):
         ok_('name' in c._localized_attrs)
 
 
-class BadgeManagerTests(TestCase):
-    fixtures = ['banners']
+class MultiTableParentModelTests(ModelsTestCase):
+    apps = ['badges.tests']
 
-    def test_all_from_subcategory(self):
-        subcat = Subcategory.objects.get(pk=1)
-        banner = Banner.objects.get(pk=1)
+    def setUp(self):
+        self.child = MultiTableChild.objects.create(some_value=10)
 
-        banners = Badge.objects.all_from_subcategory(subcat)
-        eq_(list(banners), [banner])
-
-    def test_from_badge_str(self):
-        eq_(Badge.objects.from_badge_str('Banner;1'), (Banner, '1'))
-        eq_(Badge.objects.from_badge_str('HoneyBadger;4'), None)
+    def test_child(self):
+        parent = MultiTableParent.objects.all()[0]
+        eq_(parent.child_type, 'multitablechild')
+        eq_(parent.child(), self.child)
 
 
-class BadgeTests(TestCase):
-    fixtures = ['banners']
+class FakeDatetime(datetime):
+    def __new__(cls, *args, **kwargs):
+        return datetime.__new__(datetime, *args, **kwargs)
 
-    def test_to_badge_str(self):
-        banner = Banner.objects.get(pk=1)
-        eq_(banner.to_badge_str(), 'Banner;1')
+
+class BadgeInstanceTests(TestCase):
+    fixtures = ['badge_instance']
+
+    def setUp(self):
+        self.badge_instance = BadgeInstance.objects.all()[0]
+
+    def test_add_click(self):
+        old_clicks = (self.badge_instance.clickstats_set
+                      .aggregate(Sum('clicks'))['clicks__sum'])
+
+        self.badge_instance.add_click()
+
+        new_clicks = (self.badge_instance.clickstats_set
+                      .aggregate(Sum('clicks'))['clicks__sum'])
+        eq_(old_clicks + 1, new_clicks)
+
+    def test_for_user_by_category(self):
+        user = User.objects.get(pk=5)
+        categories = BadgeInstance.objects.for_user_by_category(user)
+        expect = {'Firefox': [self.badge_instance]}
+        eq_(categories, expect)

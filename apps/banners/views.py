@@ -1,6 +1,6 @@
 import json
 
-from badges.utils import affiliate_link_render
+from badges.utils import handle_affiliate_link
 from badges.views import dashboard
 from banners.urls import AFFILIATE_LINK
 from banners.models import Banner, BannerImage, BannerInstance, BANNER_TEMPLATE
@@ -30,4 +30,4 @@ def link(request, user_id, banner_id, banner_img_id):
         instance.badge = banner_img.banner
         instance.save()
 
-    return affiliate_link_render(request, instance)
+    return handle_affiliate_link(instance)

@@ -117,8 +117,11 @@ class BadgeInstanceManager(models.Manager):
 
         return results
 
+
 class BadgeInstance(MultiTableParentModel):
-    """Single instance of a badge that a user has created and sent clicks to."""
+    """
+    Single instance of a badge that a user has created and sent clicks to.
+    """
     created = models.DateTimeField(auto_now_add=True)
 
     user = models.ForeignKey(User)

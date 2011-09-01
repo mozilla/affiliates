@@ -12,13 +12,15 @@ class BannerTests(TestCase):
 
     @patch.object(settings, 'PORT', 80)
     @patch.object(settings, 'DOMAIN', 'badge.mo.com')
-    def test_image_url_dict(self):
+    def test_banner_image_dict(self):
         banner = Banner.objects.get(pk=1)
-        results = banner.image_url_dict()
+        results = banner.banner_image_dict()
 
-        eq_(results['120x240']['Green'], self.banner_url('120x240arrow_g.png'))
-        eq_(results['120x240']['Blue'], self.banner_url('120x240arrow_b.png'))
-        eq_(results['300x250']['Green'],
+        eq_(results['120x240']['Green']['image_url'],
+            self.banner_url('120x240arrow_g.png'))
+        eq_(results['120x240']['Blue']['image_url'],
+            self.banner_url('120x240arrow_b.png'))
+        eq_(results['300x250']['Green']['image_url'],
             self.banner_url('mobile_dl_300x250_grn_1.png'))
 
     def banner_url(self, filename):

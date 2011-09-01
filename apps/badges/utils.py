@@ -6,7 +6,7 @@ from django.utils.functional import lazy
 reverse_lazy = lazy(reverse, str)
 
 
-def affiliate_link_render(request, badge_instance):
+def handle_affiliate_link(badge_instance):
     """
     Record an affiliate link click and redirect to the proper URL.
     """
