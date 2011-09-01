@@ -84,7 +84,7 @@ class RegisterManager(models.Manager):
         profile.set_password(password)
         profile.save()
 
-        self._send_email('users/email/activation.ltxt',
+        self._send_email('users/email/activation_email.html',
                          _('Please activate your account'), profile)
 
         return profile
