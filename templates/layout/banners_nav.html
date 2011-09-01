@@ -1,4 +1,4 @@
-{% if user.has_created_badges() %}
+{% if user.has_created_badges() and banner_section is defined %}
   <ul class="banners_nav">
     <li {{ 'current'|class_selected(banner_section) }}>
       <a href="{{ url('my_badges') }}">{{ _('VIEW CURRENT BANNERS') }}</a>
