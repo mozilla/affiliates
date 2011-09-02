@@ -1,7 +1,7 @@
-{% macro badge_wizard(step, user) -%}
+{% macro badge_wizard(step) -%}
 <div class="header">
   <h2>
-    {% if user.has_created_badges() %}
+    {% if user_has_created_badges %}
       {{ _('Follow these easy steps to create a new banner:') }}
     {% else %}
       {{ _('Follow these easy steps to get started:') }}

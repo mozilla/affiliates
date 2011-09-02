@@ -5,7 +5,7 @@
 {% set banner_section = 'new' %}
 
 {% block dashboard_content %}
-{% call macros.badge_wizard(2, user) %}
+{% call macros.badge_wizard(2) %}
   <p class="head">
     {# L10n: subcategory_name is the name of a group of banners, e.g. Firefox for Mobile. #}
     {%- trans subcategory_name=subcategory.name -%}

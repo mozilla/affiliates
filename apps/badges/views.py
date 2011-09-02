@@ -66,9 +66,11 @@ def dashboard(request, template, context=None):
     if context is None:
         context = {}
 
+    # Set context variables needed by all dashboard pages
     context['newsitem'] = NewsItem.objects.current()
     context['user_clicks_total'] = format_number(ClickStats.objects
                                     .total(badge_instance__user=request.user))
+    context['user_has_created_badges'] = request.user.has_created_badges()
 
     locale = Locale.parse(get_language(), sep='-')
     month_names_short = get_month_names('abbreviated', locale=locale)

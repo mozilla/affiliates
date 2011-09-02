@@ -5,7 +5,7 @@
 {% set banner_section = 'new' %}
 
 {% block dashboard_content %}
-{% call macros.badge_wizard(1, user) %}
+{% call macros.badge_wizard(1) %}
   <p class="head">
     {# L10n: subcategory_name is the name of the group of banners being displayed below. #}
     {%- trans subcategory_name=subcategory.name-%}

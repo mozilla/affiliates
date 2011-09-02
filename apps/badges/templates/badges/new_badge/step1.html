@@ -5,7 +5,7 @@
 {% set banner_section = 'new' %}
 
 {% block dashboard_content %}
-{% call macros.badge_wizard(0, user) %}
+{% call macros.badge_wizard(0) %}
   {% for category in categories %}
     <p class="title">
       {% trans category_name=category.localized('name') %}

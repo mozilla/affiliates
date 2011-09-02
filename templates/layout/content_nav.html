@@ -1,7 +1,7 @@
 <ul id="content-nav">
   <li {{ 'first-section'|class_selected(content_section) }}>
     <a href="{{ url('my_badges') }}">
-      {% if user.has_created_badges() %}
+      {% if user_has_created_badges %}
         {{ _('MY BANNERS') }}
       {% else %}
         {{ _('GET STARTED') }}
