@@ -1015,6 +1015,10 @@ div.statistics-summary div.instructions{
     margin-top:20px;
 }
 
+.statistics-warning {
+    margin: 4px 0;
+}
+
 /* Month Picker Widget */
 /* general */
 .month-picker-button{

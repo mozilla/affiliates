@@ -7,4 +7,5 @@ urlpatterns = patterns('badges.views',
     url(r'^new$', 'new_badge_step1', name='badges.new.step1'),
     url(r'^new/(?P<subcategory_pk>\d+)$', 'new_badge_step2',
         name='badges.new.step2'),
+    url(r'^stats$', 'month_stats_ajax', name='badges.ajax.stats'),
 )

@@ -2,7 +2,8 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.http import require_POST
 from django.utils.translation import get_language
 
 import jingo
@@ -66,20 +67,40 @@ def dashboard(request, template, context=None):
     if context is None:
         context = {}
 
+    locale = Locale.parse(get_language(), sep='-')
+
     # Set context variables needed by all dashboard pages
     context['newsitem'] = NewsItem.objects.current()
-    context['user_clicks_total'] = format_number(ClickStats.objects
-                                    .total(badge_instance__user=request.user))
     context['user_has_created_badges'] = request.user.has_created_badges()
 
-    locale = Locale.parse(get_language(), sep='-')
-    month_names_short = get_month_names('abbreviated', locale=locale)
-    month_names_full = get_month_names('wide', locale=locale)
-    month_names_short_list = [name for k, name in month_names_short.items()]
-    month_names_full_list = [name for k, name in month_names_full.items()]
+    if context['user_has_created_badges']:
+        clicks_total = (ClickStats.objects
+                        .total(badge_instance__user=request.user))
+        context['user_clicks_total'] = format_number(clicks_total,
+                                                     locale=locale)
 
-    context['month_names_short'] = month_names_short.items()
-    context['month_names_full_list_json'] = json.dumps(month_names_full_list)
-    context['month_names_short_list_json'] = json.dumps(month_names_short_list)
+        months_short = get_month_names('abbreviated', locale=locale)
+        months_full = get_month_names('wide', locale=locale)
+        months_short_list = [name for k, name in months_short.items()]
+        months_full_list = [name for k, name in months_full.items()]
+
+        context['months_short'] = months_short.items()
+        context['months_full_list_json'] = json.dumps(months_full_list)
+        context['months_short_list_json'] = json.dumps(months_short_list)
 
     return jingo.render(request, template, context)
+
+
+@login_required(redirect_field_name='')
+@require_POST
+def month_stats_ajax(request):
+    user_total = ClickStats.objects.total(badge_instance__user=request.user,
+                                          month=request.POST['month'],
+                                          year=request.POST['year'])
+    site_avg = ClickStats.objects.average_for_period(month=request.POST['month'],
+                                                     year=request.POST['year'])
+
+    locale = Locale.parse(get_language(), sep='-')
+    results = {'user_total': format_number(user_total, locale=locale),
+               'site_avg': format_number(site_avg, locale=locale)}
+    return HttpResponse(json.dumps(results), mimetype='application/json')

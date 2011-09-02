@@ -149,8 +149,21 @@ class ClickStatsManager(models.Manager):
         Return the total number of clicks found for the given filter parameters.
         """
         results = self.filter(**kwargs).aggregate(models.Sum('clicks'))
-        return results['clicks__sum']
         return results['clicks__sum'] or 0
+
+    def average_for_period(self, month, year):
+        """Return the average number of clicks for the given period."""
+        results = (User.objects
+                   .filter(badgeinstance__clickstats__month__exact=month,
+                           badgeinstance__clickstats__year__exact=year)
+                   .annotate(clicks=models.Sum('badgeinstance__clickstats__clicks'))
+                   .aggregate(models.Avg('clicks')))
+
+        # Average is sometimes None, so substitute 0
+        average = results['clicks__avg'] or 0
+
+        # Get rid of decimal
+        return int(average)
 
 
 class ClickStats(ModelBase):
