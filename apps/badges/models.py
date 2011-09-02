@@ -150,6 +150,7 @@ class ClickStatsManager(models.Manager):
         """
         results = self.filter(**kwargs).aggregate(models.Sum('clicks'))
         return results['clicks__sum']
+        return results['clicks__sum'] or 0
 
 
 class ClickStats(ModelBase):
