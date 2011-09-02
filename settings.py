@@ -48,6 +48,9 @@ MINIFY_BUNDLES = {
         'user_profile': (
             'css/user_profile.css',
         ),
+        '404': (
+            'css/404.css',
+        ),
     },
     'js': {
         'common': (

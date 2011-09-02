@@ -1,0 +1,197 @@
+#mozilla-404 {
+    background: #555 url(../img/404/background-404.png) 0 0 repeat-x;
+}
+
+#mozilla-404 #wrapper {
+    background: url(../img/404/poker.png) 50% 0 no-repeat;
+}
+
+#mozilla-404 #sub-footer {
+    display: none;
+}
+
+#main-feature {
+    padding-top: 40px;
+    padding-bottom: 0;
+    min-height: 0px;
+    text-shadow: 1px 1px #000;
+}
+
+* html #main-feature {
+    height: 160px;
+}
+
+#main-feature h2 {
+    color: #fff;
+    font-size: 32px;
+    line-height: 1em;
+}
+
+#main-feature h2 span {
+    line-height: 1em;
+}
+
+#main-feature p {
+    width: 400px;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+#footer {
+    background-image: url(../img/404/background-footer.png);
+    background-position: 0 0;
+    opacity: 0.5;
+    -moz-transition: opacity .25s linear;
+}
+
+#footer:hover {
+    opacity: 1;
+}
+
+#content {
+    padding-bottom: 200px;
+    width: 380px;
+    color: #aaa;
+    text-shadow: 1px 1px #000;
+}
+
+#content a,
+#content a:link,
+#content a:visited,
+#content a:hover,
+#content a:active {
+    color: #fff;
+}
+
+#content ul {
+    padding-left: 20px;
+}
+
+#content ul li {
+    padding-bottom: 10px;
+}
+
+#mozilla-404 #nav-main ul li a,
+#mozilla-404 #nav-main ul li a:link,
+#mozilla-404 #nav-main ul li a:visited,
+#mozilla-404 #nav-main ul li span {
+    color: #fff;
+    border-color: #555;
+}
+
+#mozilla-404 #nav-main ul li li a,
+#mozilla-404 #nav-main ul li li a:link,
+#mozilla-404 #nav-main ul li li a:visited,
+#mozilla-404 #nav-main ul li li span {
+    color: #484848;
+}
+
+#mozilla-404 #nav-main ul li a:hover,
+#mozilla-404 #nav-main ul li:hover a,
+#mozilla-404 #nav-main ul li.hover a,
+#mozilla-404 #nav-main ul li.hover a:link,
+#mozilla-404 #nav-main ul li.hover a:visited {
+    background: #ccc;
+    color: #484848;
+    border-color: #98B2C9;
+}
+
+#mozilla-404 #header h1 a,
+#mozilla-404 #header a.mozilla {
+    background-image: url(../img/404/title.png);
+}
+
+/* {{{ Eyes */
+
+#eyes {
+    height: 6px;
+    width: 40px;
+    -moz-animation-duration: 18s;
+    -webkit-animation-duration: 18s;
+    animation-duration: 18s;
+    -moz-animation-name: blink;
+    -webkit-animation-name: blink;
+    animation-name: blink;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    position: absolute;
+    top: 285px;
+    left: 721px;
+}
+
+#eyes .eye {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #4e1766;
+    height: 100%;
+    width: 5px;
+    position: absolute;
+}
+
+#eyes #eye1 {
+    left: 0;
+    top: 50%
+}
+
+#eye2 {
+    right: 0;
+    top: 60%;
+}
+
+@-moz-keyframes blink {
+    0%    { height: 10px; top: 285px; left: 721px; }
+    45%   { height: 10px; top: 285px; left: 721px; }
+    47%   { height: 10px; top: 288px; left: 718px; }
+    48%   { height: 10px; top: 288px; left: 718px; }
+    52%   { height: 10px; top: 288px; left: 718px; }
+    53%   { height: 10px; top: 288px; left: 724px; }
+    57%   { height: 10px; top: 288px; left: 724px; }
+    58%   { height: 10px; top: 285px; left: 721px; }
+    64%   { height: 10px; top: 285px; left: 721px; }
+    64.2% { height: 0;    top: 293px; left: 721px; }
+    65%   { height: 10px; top: 285px; left: 721px; }
+    68%   { height: 10px; top: 285px; left: 721px; }
+    68.2% { height: 0;    top: 293px; left: 721px; }
+    69%   { height: 10px; top: 285px; left: 721px; }
+    100%  { height: 10px; top: 285px; left: 721px; }
+}
+
+@-webkit-keyframes blink {
+    0%    { height: 10px; top: 285px; left: 721px; }
+    45%   { height: 10px; top: 285px; left: 721px; }
+    47%   { height: 10px; top: 288px; left: 718px; }
+    48%   { height: 10px; top: 288px; left: 718px; }
+    52%   { height: 10px; top: 288px; left: 718px; }
+    53%   { height: 10px; top: 288px; left: 724px; }
+    57%   { height: 10px; top: 288px; left: 724px; }
+    58%   { height: 10px; top: 285px; left: 721px; }
+    64%   { height: 10px; top: 285px; left: 721px; }
+    64.2% { height: 0;    top: 293px; left: 721px; }
+    65%   { height: 10px; top: 285px; left: 721px; }
+    68%   { height: 10px; top: 285px; left: 721px; }
+    68.2% { height: 0;    top: 293px; left: 721px; }
+    69%   { height: 10px; top: 285px; left: 721px; }
+    100%  { height: 10px; top: 285px; left: 721px; }
+}
+
+@keyframes blink {
+    0%    { height: 10px; top: 285px; left: 721px; }
+    45%   { height: 10px; top: 285px; left: 721px; }
+    47%   { height: 10px; top: 288px; left: 718px; }
+    48%   { height: 10px; top: 288px; left: 718px; }
+    52%   { height: 10px; top: 288px; left: 718px; }
+    53%   { height: 10px; top: 288px; left: 724px; }
+    57%   { height: 10px; top: 288px; left: 724px; }
+    58%   { height: 10px; top: 285px; left: 721px; }
+    64%   { height: 10px; top: 285px; left: 721px; }
+    64.2% { height: 0;    top: 293px; left: 721px; }
+    65%   { height: 10px; top: 285px; left: 721px; }
+    68%   { height: 10px; top: 285px; left: 721px; }
+    68.2% { height: 0;    top: 293px; left: 721px; }
+    69%   { height: 10px; top: 285px; left: 721px; }
+    100%  { height: 10px; top: 285px; left: 721px; }
+}
+
+}

@@ -20,10 +20,12 @@
         {% endblock %}
         {% block highlight_box %}{% endblock %}
         <div id="main-feature">
-          <h2>{{ _('Firefox<span>Affiliates</span>') }}</h2>
-          <p>
-            {{ _('Everything you need to share Firefox with the world.') }}
-          </p>
+          {% block main_feature %}
+            <h2>{{ _('Firefox<span>Affiliates</span>') }}</h2>
+            <p>
+              {{ _('Everything you need to share Firefox with the world.') }}
+            </p>
+          {% endblock %}
         </div>
         <div id="content" class="{% block content_class %}{% endblock %}">
           {% block content %}{% endblock %}
