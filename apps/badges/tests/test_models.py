@@ -8,7 +8,7 @@ import tower
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.models import BadgeInstance, Category
+from badges.models import BadgeInstance, Category, ClickStats
 from badges.tests import ModelsTestCase
 from badges.tests.models import MultiTableParent, MultiTableChild
 
@@ -58,7 +58,7 @@ class BadgeInstanceTests(TestCase):
     fixtures = ['badge_instance']
 
     def setUp(self):
-        self.badge_instance = BadgeInstance.objects.all()[0]
+        self.badge_instance = BadgeInstance.objects.get(pk=2)
 
     def test_add_click(self):
         old_clicks = (self.badge_instance.clickstats_set
@@ -75,3 +75,16 @@ class BadgeInstanceTests(TestCase):
         categories = BadgeInstance.objects.for_user_by_category(user)
         expect = {'Firefox': [self.badge_instance]}
         eq_(categories, expect)
+
+
+class ClickStatsTests(TestCase):
+    fixtures = ['badge_instance']
+
+    def test_total_basic(self):
+        instance = BadgeInstance.objects.get(pk=3)
+        eq_(ClickStats.objects.total(badge_instance=instance), 21)
+        eq_(ClickStats.objects.total(badge_instance__user=instance.user), 21)
+
+    def test_average_for_period_basic(self):
+        eq_(ClickStats.objects.average_for_period(7, 2011), 5)
+        eq_(ClickStats.objects.average_for_period(8, 2011), 11)
