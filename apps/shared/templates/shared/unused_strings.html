@@ -1,0 +1,56 @@
+{# Place for Strings we'll eventually need translated that haven't been used yet. #}
+
+{{ _('Start Spreading the Word!') }}
+{% trans count=1 %}You have <span>{{ count }}</span> banners posted.{% endtrans %}
+{{ _('EDIT PROFILE') }}
+{# L10n: Used above username suggestions #}
+{{ _('SUGGESTIONS') }}
+{{ _('CHANGE YOUR AVATAR') }}
+{{ _('Browse &raquo;') }}
+{{ _('Upload &raquo;') }}
+{{ _('Enable Avatars') }}
+{# L10n: Used as generic name for a person. #}
+{{ _('John Doe') }}
+{{ _('Username not available') }}
+{{ _('Forgot password on Firefox Affiliates!') }}
+{{ _('Edit your profile') }}
+{{ _('Please enter your e-mail and we\'ll reset your password:') }}
+{{ _('Your email address') }}
+{{ _('Send &raquo;') }}
+{{ _('Please click on the link provided in the e-mail to access your Affiliates account.') }}
+{{ _('Your total') }}
+{# L10n: Used when displaying your click amount vs. the average click amount: 'You: 10, Affiliates avergae: 100' #}
+{{ _('You') }}
+{{ _('Affiliates average') }}
+{{ _('Your Statistics Summary') }}
+{{ _('You may filter results by selecting a specific month using the calendar above.') }}
+{{ _('DOWNLOADS') }}
+{{ _('Leaderboard') }}
+{{ _('What\'s this?') }}
+{{ _('TOP 5 AFFILIATES WITH THE MOST DOWNLOADS') }}
+{{ _('USER') }}
+{# L10n: PT = Pacific Time #}
+{{ _('Check out how many people are downloading Firefox. Where are you on the leaderboard? Leaderboard statistics are updated at midnight PT each day.') }}
+{{ _('SIZE') }}
+{# L10n: size is something like '320x240', resulting in the string: '320x240 pixels' #}
+{{ _('{{ size }} pixels') }}
+
+{{ _('Blue') }}
+{{ _('Green') }}
+{{ _('Red') }}
+{{ _('Orange') }}
+{{ _('Yellow') }}
+{{ _('White') }}
+{{ _('Black') }}
+
+{{ _('Whoops!') }}
+{{ _('What are you doing here?') }}
+{# L10n: 'Deal you in' refers to dealing cards; it's an offer to join a card game. #}
+{{ _('Did you make a left at that last URL instead of a right? No problem. Unless you want us to deal you in, here are some tips to get you back on your way:') }}
+{{ _('If you typed in the address, check your spelling. Could just be a typo.') }}
+{% trans email='affiliates@mozilla.org' %}If you followed a link, it’s probably broken. Please <a href="mailto:{{ email }}">contact us</a> and we’ll fix it.{% endtrans %}
+{{ _('If you’re not sure what you’re looking for, start at <a href="http://mozilla.org">mozilla.org</a>.') }}
+{{ _('An Error Occurred') }}
+{% trans %}Oh, no! It looks like an unexpected error occurred. We've
+  already notified the site administrators. Please try again now, or in a few
+  minutes.{% endtrans %}
