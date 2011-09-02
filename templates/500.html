@@ -9,6 +9,12 @@
 {% block content_class %}thank_you{% endblock %}
 
 {% block content %}
-<h2>Oops, something went wrong.</h2>
-<p>You've encountered an error. Please go back and try again.</p>
+  <h2>{{ _('An Error Occurred') }}</h2>
+  <p>
+    {% trans %}
+      Oh, no! It looks like an unexpected error occurred. We've
+      already notified the site administrators. Please try again now,
+      or in a few minutes.
+    {% endtrans %}
+  </p>
 {% endblock %}
