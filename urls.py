@@ -16,7 +16,7 @@ urlpatterns = patterns('',
 )
 
 ## In DEBUG mode, serve media files through Django.
-if settings.DEBUG:
+if settings.DEBUG or settings.SERVE_MEDIA:
     # Remove leading and trailing slashes so the regex matches.
     media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
     urlpatterns += patterns('',

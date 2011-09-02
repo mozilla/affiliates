@@ -104,6 +104,9 @@ LOGGING = {
     }
 }
 
+# Don't serve media by default
+SERVE_MEDIA = False
+
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.
 
