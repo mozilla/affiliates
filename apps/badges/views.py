@@ -1,11 +1,18 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.utils.translation import get_language
 
 import jingo
+from babel.core import Locale
+from babel.dates import get_month_names
+from babel.numbers import format_number
 from session_csrf import anonymous_csrf
 
-from badges.models import Badge, BadgeInstance, Category, Subcategory
+from badges.models import (Badge, BadgeInstance, Category, ClickStats,
+                           Subcategory)
 from news.models import NewsItem
 from users.forms import RegisterForm, LoginForm
 
@@ -51,6 +58,7 @@ def my_badges(request):
                      {'instance_categories': instance_categories})
 
 
+@login_required(redirect_field_name='')
 def dashboard(request, template, context=None):
     """
     Performs common operations needed by pages using the 'dashboard' template.
@@ -59,5 +67,17 @@ def dashboard(request, template, context=None):
         context = {}
 
     context['newsitem'] = NewsItem.objects.current()
+    context['user_clicks_total'] = format_number(ClickStats.objects
+                                    .total(badge_instance__user=request.user))
+
+    locale = Locale.parse(get_language(), sep='-')
+    month_names_short = get_month_names('abbreviated', locale=locale)
+    month_names_full = get_month_names('wide', locale=locale)
+    month_names_short_list = [name for k, name in month_names_short.items()]
+    month_names_full_list = [name for k, name in month_names_full.items()]
+
+    context['month_names_short'] = month_names_short.items()
+    context['month_names_full_list_json'] = json.dumps(month_names_full_list)
+    context['month_names_short_list_json'] = json.dumps(month_names_short_list)
 
     return jingo.render(request, template, context)

@@ -143,6 +143,15 @@ class BadgeInstance(MultiTableParentModel):
         return self.child().render()
 
 
+class ClickStatsManager(models.Manager):
+    def total(self, **kwargs):
+        """
+        Return the total number of clicks found for the given filter parameters.
+        """
+        results = self.filter(**kwargs).aggregate(models.Sum('clicks'))
+        return results['clicks__sum']
+
+
 class ClickStats(ModelBase):
     """Tracks historical data for an affiliate's referrals."""
     badge_instance = models.ForeignKey(BadgeInstance)
@@ -151,5 +160,6 @@ class ClickStats(ModelBase):
     year = models.IntegerField()
     clicks = models.IntegerField(default=0)
 
+    objects = ClickStatsManager()
     class Meta:
         unique_together = ('badge_instance', 'month', 'year')

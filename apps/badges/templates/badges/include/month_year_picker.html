@@ -1,0 +1,26 @@
+<div class="month-year-picker"
+     data-short-month-names="{{ month_names_short_list_json }}"
+     data-full-month-names="{{ month_names_full_list_json }}">
+  <div class="picker-header">
+    <a class="prev-month month-picker-button" href="">&laquo;</a>
+    <a class="current-month-year" href="">
+      <span class="month-year"></span>
+      <span class="month-icon">&nbsp;</span>
+    </a>
+    <a class="next-month month-picker-button" href="">&raquo;</a>
+  </div>
+  <div class="month-picker">
+    <div class="year-picker">
+      <a class="prev-year" href="">&laquo;</a>
+      <span class="current-year"></span>
+      <a class="next-year" href="">&raquo;</a>
+    </div>
+    <ul>
+      {% for number, month_name in month_names_short %}
+        <li>
+          <a data-number="{{ number }}" href="">{{ month_name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

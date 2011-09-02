@@ -94,44 +94,34 @@ var MonthPicker = {
 
     currentMonth: 1,
     currentYear: 2011,
-    monthNames:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct',
-                'Nov','Dec'],
-    fullMonthNames:['January','February','March','April','May','June','July',
-                    'August','September','October','November','December'],
+    monthNames:[],
+    fullMonthNames: [],
     opened:false,
     monthList:null,
     /**
      * Month Picker Initialization
      */
     init: function(){
-        MonthPicker.refresh();
-        MonthPicker.addEventListeners();
-    },
-
-    /**
-     *
-     */
-    addEventListeners: function(){
-        var monthPicker = $('.month-year-picker');
-        if (monthPicker.length === 0){ return; }
+        // Load month names
+        var picker = $('.month-year-picker');
+        MonthPicker.monthNames = picker.data('short-month-names');
+        MonthPicker.fullMonthNames = picker.data('full-month-names');
 
         // Cache Elements
         MonthPicker.monthList = $('.month-picker');
 
-        // set current month
-        MonthPicker.currentMonth = parseInt($('.month-picker ul li.current-month a').attr('title'), 10) || 1;
+        // Set month and year
+        var date = new Date();
+        MonthPicker.currentMonth = date.getMonth() + 1;
+        MonthPicker.currentYear = date.getFullYear();
 
-        // set current year
-        MonthPicker.currentYear = parseInt($('.month-picker .year-picker .current-year').text(), 10) || 2011;
+        MonthPicker.refresh();
+        MonthPicker.addEventListeners();
+    },
 
-        // pull month name list from document
-        var months = $('.month-picker ul li a');
-        if (months.length > 0){
-            MonthPicker.monthNames = [];
-            $.each($('.month-picker ul li a'),function(i,val){
-                MonthPicker.monthNames.push($(this).html());
-            });
-        }
+    addEventListeners: function(){
+        var monthPicker = $('.month-year-picker');
+        if (monthPicker.length === 0){ return; }
 
         $('.picker-header .prev-month').click(function(e){
             e.preventDefault();
@@ -166,7 +156,7 @@ var MonthPicker = {
 
         $('.month-picker ul li a').click(function(e){
             e.preventDefault();
-            MonthPicker.currentMonth = parseInt($(this).attr('title'),10);
+            MonthPicker.currentMonth = $(this).data('number');
             MonthPicker.refresh();
         });
 

@@ -1,6 +1,38 @@
+{% import 'badges/include/macros.html' as macros %}
+
 <div class="highlight-box degraded-box">
   <div id="user-info">
     <img alt="user avatar" src="{{ MEDIA_URL }}img/template/user-avatar.jpg">
     <span>{{ display_name(user) }}</span>
+  </div>
+  <div class="statistics-summary">
+    <h3>{{ _('Your Statistics Summary') }}</h3>
+    {% include 'badges/include/month_year_picker.html' %}
+    <div class="instructions">
+      {{ _('You can filter results by selecting a specific month using the calendar above.') }}
+    </div>
+  </div>
+  <div class="total-downloads-section">
+    <h4>{{ _('DOWNLOADS') }}</h4>
+    {{ macros.divider() }}
+    <ul>
+      <li>
+        {{ _('You') }}
+        <span class="download-count">2.150</span>
+      </li>
+      <li>
+        {{ _('Affiliates average') }}
+        <span class="download-count">3.153</span>
+      </li>
+    </ul>
+    {{ macros.divider() }}
+    <ul>
+      <li>
+        {{ _('Your total') }}
+        <span class="download-count">{{ user_clicks_total }}</span>
+      </li>
+    </ul>
+    <div class="clearfix">
+    </div>
   </div>
 </div>

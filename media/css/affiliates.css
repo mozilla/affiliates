@@ -471,7 +471,6 @@ div.left-arrow span {
 #step-content h3 span{
     color:#000;
     font-size: 20px;
-    text-transform: none;
     font-weight: lighter;
     width: 100px;
 }
@@ -559,7 +558,6 @@ div.left-arrow span {
     font-style: italic;
     font-family: Georgia,serif;
     font-size:  13px;
-    text-transform: lowercase;
     font-weight: bold;
 }
 
@@ -985,7 +983,6 @@ div.block-space{
     font-style: normal;
     line-height: 1;
     margin: 0;
-    text-transform: uppercase;
 }
 
 .banners_content .banner_section .banner_info p {
@@ -1060,7 +1057,6 @@ div.statistics-summary div.instructions{
     height:34px;
     width:100%;
     text-align:center;
-    text-transform:uppercase;
     line-height:34px;
 }
 
@@ -1119,7 +1115,6 @@ div.statistics-summary div.instructions{
 .month-year-picker div.month-picker .year-picker{
     height:32px;
     text-align:center;
-    text-transform:uppercase;
     line-height:32px;
 
     background: #5073b6;
@@ -1194,7 +1189,6 @@ div.statistics-summary div.instructions{
 div.total-downloads-section h4{
     font-family:MuseoSans500,sans-serif;
     font-size:13px;
-    text-transform:uppercase;
     font-style:normal;
     text-align:right;
     margin:18px 0 4px 0;
@@ -1204,7 +1198,6 @@ div.total-downloads-section h4 span{
     float: left;
     font-family:MuseoSans500,sans-serif;
     font-size:13px;
-    text-transform:uppercase;
     font-weight: normal;
     font-style:normal;
 }
