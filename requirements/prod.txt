@@ -1,1 +1,4 @@
 -r ../vendor/src/funfactory/funfactory/requirements/prod.txt
+
+# Cache
+python-memcached==1.45
