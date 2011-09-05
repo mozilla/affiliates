@@ -67,7 +67,8 @@ class ActivationForm(forms.ModelForm):
         """Ensure that the chosen username is unique."""
         try:
             User.objects.get(username=self.cleaned_data['username'])
-            raise forms.ValidationError(_('Username is already taken!'))
+            raise forms.ValidationError(_('This username is already taken! '
+                                          'Please try again.'))
         except User.DoesNotExist:
             pass
 
