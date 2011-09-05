@@ -1,13 +1,17 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 import jingo
 from session_csrf import anonymous_csrf
+from tower import ugettext as _
 
 from badges.views import home
-from users.forms import ActivationForm, LoginForm, RegisterForm
+from users.forms import (ActivationForm, EditProfileForm, LoginForm,
+                         RegisterForm)
 from users.models import RegisterProfile
 
 
@@ -63,6 +67,20 @@ def activate(request, activation_key=None):
         form = ActivationForm(initial={'name': reg_profile.name,
                                        'email': reg_profile.email})
 
-    params = {'form': form, 'profile': reg_profile,
+    params = {'form': form,
+              'profile': reg_profile,
               'activation_key': activation_key}
     return jingo.render(request, 'users/activate.html', params)
+
+
+@login_required
+def edit_profile(request):
+    """Edit an existing UserProfile."""
+    form = EditProfileForm(request.POST or None,
+                           instance=request.user.get_profile())
+    if request.POST and form.is_valid():
+        form.save()
+        messages.success(request, _('Your profile was updated successfully!'))
+        return HttpResponseRedirect(reverse('my_badges'))
+
+    return jingo.render(request, 'users/edit_profile.html', {'form': form})

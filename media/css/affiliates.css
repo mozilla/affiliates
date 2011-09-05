@@ -92,11 +92,16 @@ ul.banners_nav ~ .header {
     width: 16px;
 }
 
-.highlight-box .msg_warning {
+ul.errorlist li,
+.msg_warning {
     background: url(../img/template/sprites.png) no-repeat 0 -173px;
     color: #af6f13;
     padding-left: 25px;
     font-size: 13px;
+}
+
+ul.errorlist li {
+    list-style-type: none;
 }
 
 .highlight-box .about_content {
@@ -194,7 +199,7 @@ ul.banners_nav ~ .header {
 
 .first-section .arrow_indicator {
     display: block;
-    left: 70px;\
+    left: 70px;
 }
 
 .second-section .arrow_indicator {
@@ -330,6 +335,20 @@ div.left-arrow span {
 .clearfix{
     clear:both;
     height:0;
+}
+
+#message {
+    background: #F6F9FD;
+    border: 1px solid #B0C1D2;
+    border-radius: 4px;
+    box-shadow: 0 2px rgba(0, 0, 0, 0.05), 0 -2px rgba(0, 0, 0, 0.05) inset;
+    float: left;
+    font-family: 'MuseoSans500';
+    font-size: 14px;
+    margin: 0 20px;
+    padding: 5px 10px;
+    text-align: center;
+    width: 630px;
 }
 
 /*steps for affiliates*/
@@ -762,6 +781,10 @@ div.head-box .date{
     -webkit-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
     -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
     box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
+}
+
+.buttonhead img {
+    vertical-align: middle;
 }
 
 #sidebar button.buttonhead {

@@ -6,7 +6,6 @@ from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
 from users.models import UserProfile
-from users.utils import hash_password
 
 
 class PasswordField(forms.CharField):
@@ -34,22 +33,57 @@ class LoginForm(AuthenticationForm):
     remember_me = forms.BooleanField(label=_lazy('Remember me'), required=False)
 
 
-class ActivationForm(forms.ModelForm):
-    """Form used during activation."""
-    username = forms.CharField(label=_lazy(u'Username'), max_length=50)
-    password = PasswordField(label=_lazy(u'New Password'), required=False)
-    password2 = PasswordField(label=_lazy(u'Retype Password'), required=False)
-
+class ProfileForm(forms.ModelForm):
+    """Parent class for editing UserProfiles."""
     class Meta:
         model = UserProfile
-        exclude = ('user', 'modified', 'created', 'name')
+
+    placeholders = {
+        'address_1': _('Street'),
+        'address_2': _('Apartment or Unit # (optional)'),
+        'city': _('City'),
+        'state': _('State or Province'),
+    }
 
     def __init__(self, *args, **kwargs):
-        super(ActivationForm, self).__init__(*args, **kwargs)
+        super(ProfileForm, self).__init__(*args, **kwargs)
 
         # Style select fields correctly
         self.fields['locale'].widget.attrs['class'] = 'js_uniform'
         self.fields['country'].widget.attrs['class'] = 'js_uniform'
+
+        # Add placeholders for fields
+        for field, placeholder in ProfileForm.placeholders.items():
+            self.fields[field].widget.attrs['placeholder'] = placeholder
+
+
+class EditProfileForm(ProfileForm):
+    """Form for editing an existing UserProfile."""
+    email = forms.EmailField(label=_lazy(u'Email'))
+    password = PasswordField(label=_lazy(u'New Password'), required=False)
+    password2 = PasswordField(label=_lazy(u'Retype Password'), required=False)
+
+    class Meta(ProfileForm.Meta):
+        exclude = ('user', 'modified', 'created')
+
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+
+        # Pull email from user object if possible
+        if self.instance:
+            self.initial['email'] = self.instance.user.email
+
+    def save(self, *args, **kwargs):
+        """Save email and password to user object instead of UserProfile."""
+        if self.is_valid():
+            user = self.instance.user
+            user.email = self.cleaned_data['email']
+            if self.cleaned_data['password']:
+                user.set_password(self.cleaned_data['password'])
+
+            user.save()
+
+        return super(EditProfileForm, self).save(*args, **kwargs)
 
     def clean(self):
         # Passwords must match
@@ -59,9 +93,18 @@ class ActivationForm(forms.ModelForm):
         if not password == password2:
             raise forms.ValidationError(_('Passwords must match.'))
         elif password:
-            self.cleaned_data['password'] = hash_password(password)
+            self.cleaned_data['password'] = password
 
         return self.cleaned_data
+
+
+class ActivationForm(ProfileForm):
+    """Form used during activation."""
+    username = forms.CharField(label=_lazy(u'Username'), max_length=50)
+
+    class Meta(ProfileForm.Meta):
+        exclude = ('user', 'modified', 'created', 'name')
+
 
     def clean_username(self):
         """Ensure that the chosen username is unique."""
@@ -73,9 +116,3 @@ class ActivationForm(forms.ModelForm):
             pass
 
         return self.cleaned_data['username']
-
-
-class ProfileForm(forms.ModelForm):
-    """Form used to edit user profile."""
-    class Meta:
-        model = UserProfile

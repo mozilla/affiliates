@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^logout$', logout, {'next_page': reverse_lazy('home')},
         name='users.logout'),
     url(r'^register$', views.register, name='users.register'),
+    url(r'^edit$', views.edit_profile, name='users.edit.profile'),
     url(r'^activate/(?P<activation_key>\w+)$', views.activate,
         name='users.activate'),
 )

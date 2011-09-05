@@ -1,0 +1,62 @@
+{% import 'users/include/macros.html' as macros %}
+
+<form action="{% block action %}{% endblock %}" method="post" id="profile-form">
+  {{ csrf() }}
+  {{ form.non_field_errors() }}
+  {% block topfields %}{% endblock %}
+  <div class="section">
+    <div class="fields">
+      {% call macros.fields_title(_('ADDRESS')) %}
+        {% trans %}
+          Why should I provide my mailing address?
+          <br/><br/>
+          From time to time, we may send you Mozilla T-shirts or
+          other cool stuff in the mail. If you'd like to get stuff
+          from us, please share your mailing address, but it's not
+          mandatory to be part of the Firefox Affiliates program.
+        {% endtrans %}
+      {% endcall %}
+      {{ form.address_1 }}
+      {{ form.address_1.errors }}
+
+      {{ form.city }}
+      {{ form.city.errors }}
+    </div>
+    <div class="fields">
+      <h4>&nbsp;</h4>
+      {{ form.address_2 }}
+      {{ form.address_2.errors }}
+      {{ form.state }}
+      {{ form.state.errors }}
+    </div>
+  </div>
+  <div class="section">
+    <div class="fields">
+      {% call macros.fields_title(_('LANGUAGE')) %}
+        {% trans %}
+          Your country and language were automatically detected by
+          your IP location, but you are welcome to change them
+          here.
+        {% endtrans %}
+      {% endcall %}
+      {{ form.locale }}
+      {{ form.locale.errors }}
+    </div>
+    <div class="fields">
+      {{ macros.fields_title(_('COUNTRY')) }}
+      {{ form.country }}
+      {{ form.country.errors }}
+    </div>
+  </div>
+  <div class="section section_buttons">
+    <p>
+      <label class="opt_in_info">
+        {{ form.accept_email }}
+        {{ _('I wish to receive information and notifications about Firefox and Mozilla via email.') }}
+      </label>
+    </p>
+    <div class="buttons">
+      {% block buttons %}{% endblock %}
+    </div>
+  </div>
+</form>

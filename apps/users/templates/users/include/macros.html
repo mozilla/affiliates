@@ -1,0 +1,13 @@
+{% macro fields_title(title) -%}
+  {% set help = caller is defined %}
+  <h4 {{ help|ifeq(true, 'class="has_bulb"') }}>{{ title }}</h4>
+  {% if help %}
+    <div class="help_bulb_wrapper">
+      <a href="#" class="help_bulb show_tooltip"></a>
+      <div class="tool-tip left-arrow">
+        <span></span>
+        <p>{{ caller() }}</p>
+      </div>
+    </div>
+  {% endif %}
+{%- endmacro %}

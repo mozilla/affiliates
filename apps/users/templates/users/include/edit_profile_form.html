@@ -1,0 +1,43 @@
+{% extends 'users/include/profile_form.html' %}
+
+{% block action %}{{ url('users.edit.profile') }}{% endblock %}
+
+{% block topfields %}
+  <div class="section">
+    <div class="fields">
+      {{ macros.fields_title(_('FULL NAME')) }}
+      {{ form.name }}
+      {{ form.name.errors }}
+    </div>
+    <div class="fields">
+      {{ macros.fields_title(_('EMAIL')) }}
+      {{ form.email }}
+      {{ form.email.errors }}
+    </div>
+  </div>
+  <div class="section">
+    <div class="fields">
+      {{ macros.fields_title(_('NEW PASSWORD')) }}
+      <input type="password" name="{{ form.password.html_name }}" maxlength="20"/>
+      {{ form.password.errors }}
+    </div>
+    <div class="fields">
+      {{ macros.fields_title(_('RETYPE PASSWORD')) }}
+      <input type="password" name="{{ form.password2.html_name }}" maxlength="20"/>
+    </div>
+    <p class="grey_label">
+      {% trans %}
+        8 or more characters, include Latin letters and
+        numbers. Note: No one else can see your password.
+      {% endtrans %}
+    </p>
+  </div>
+{% endblock %}
+
+{% block buttons %}
+  <button type="submit" class="save_changes">
+    {# L10n: Used in context of saving changes to a profile. #}
+    {{ _('Save my changes&raquo;') }}
+  </button>
+  <a class="button" href="{{ url('my_badges') }}">{{ _('Cancel &raquo;') }}</a>
+{% endblock %}

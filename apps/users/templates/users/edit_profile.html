@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block site_css %}
+  {{ super() }}
+  {{ css('user_profile') }}
+{% endblock %}
+{% block content %}
+  <div id="user-profile-forms" class="highlight-box">
+    <div class="header">
+      <h2>{{ _('Edit your user profile') }}</h2>
+    </div>
+    {% include 'users/include/edit_profile_form.html' %}
+  </div>
+{% endblock %}

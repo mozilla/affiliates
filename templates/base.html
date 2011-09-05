@@ -27,6 +27,12 @@
             </p>
           {% endblock %}
         </div>
+        {% if messages is defined %}
+          {% for message in messages %}
+            <div id="message">{{ message }}</div>
+            <div class="clear"></div>
+          {% endfor %}
+        {% endif %}
         <div id="content" class="{% block content_class %}{% endblock %}">
           {% block content %}{% endblock %}
         </div>

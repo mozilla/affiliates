@@ -40,10 +40,12 @@ var HomePage = {
             });
             $(".show_tooltip").hover(
                 function(e){
-                    HomePage.toggleToolTip($(this).attr('target'), e.type);
+                    HomePage.toggleToolTip($(this).siblings('.tool-tip'),
+                                           e.type);
                 },
                 function(e){
-                    HomePage.toggleToolTip($(this).attr('target'), e.type);
+                    HomePage.toggleToolTip($(this).siblings('.tool-tip'),
+                                           e.type);
                 });
         }
         if($.browser.msie) {
@@ -53,14 +55,11 @@ var HomePage = {
             $(".js_uniform").uniform();
         }
     },
-    toggleToolTip: function(rel, e){
-        var toolTip = $('#'+rel),
-            timer;
-
+    toggleToolTip: function(tooltip, e){
         if (e == "mouseenter") {
-            toolTip.show();
+            tooltip.show();
         } else {
-            toolTip.hide();
+            tooltip.hide();
         }
     },
     initAccordion : function(elem){

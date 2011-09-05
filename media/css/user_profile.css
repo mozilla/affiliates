@@ -47,7 +47,8 @@
     font-size: 16px;
 }
 
-#user-profile-forms button {
+#user-profile-forms button,
+a.button {
     background: #FFF;
     border: 1px solid #B3C8D7;
     border-radius: 4px 4px 4px 4px;
@@ -181,11 +182,16 @@
     margin-top: 53px;
 }
 
-#profile-form .section .buttons button {
+#profile-form .section .buttons button,
+#profile-form .section .buttons a.button {
     font-family: Georgia, serif;
     font-size: 120%;
     font-style: italic;
     margin-right: 8px;
+}
+
+#profile-form a.button {
+    margin-bottom: 4px;
 }
 
 #profile-form .section .grey_label {
