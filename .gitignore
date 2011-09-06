@@ -16,3 +16,4 @@ tmp/*
 *~
 *.mo
 media/uploads/*
+!media/uploads/.gitignore
