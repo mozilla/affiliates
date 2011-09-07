@@ -157,6 +157,7 @@ a.button {
     float: left;
     margin-right: 12px;
     position: relative;
+    width: 284px;
 }
 
 #profile-form .section .fields .has_bulb {
