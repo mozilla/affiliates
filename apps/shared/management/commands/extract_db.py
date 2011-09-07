@@ -46,7 +46,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             apps = settings.DB_LOCALIZE
-        except NameError:
+        except AttributeError:
             raise CommandError('DB_LOCALIZE setting is not defined!')
 
         strings = []
