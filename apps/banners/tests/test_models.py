@@ -8,10 +8,9 @@ from banners.models import Banner
 
 
 class BannerTests(TestCase):
-    fixtures = ['banners']
+    fixtures = ['banners', 'sites']
 
-    @patch.object(settings, 'PORT', 80)
-    @patch.object(settings, 'DOMAIN', 'badge.mo.com')
+    @patch.object(settings, 'SITE_ID', 1)
     def test_banner_image_dict(self):
         banner = Banner.objects.get(pk=1)
         results = banner.banner_image_dict()

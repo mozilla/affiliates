@@ -4,10 +4,10 @@ from django.db import models
 
 import jingo
 from funfactory.manage import path
-from funfactory.utils import absolutify
 from tower import ugettext_lazy as _lazy
 
 from badges.models import Badge, BadgeInstance, ModelBase
+from shared.utils import absolutify
 
 
 BANNER_TEMPLATE_FILE = 'apps/banners/templates/banners/banner_template.html'

@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 
-from funfactory.utils import absolutify
+from shared.utils import absolutify
 
 
 # Reverse won't let us use placeholder values (so Javascript can replace the
