@@ -13,12 +13,12 @@
   <div class="section">
     <div class="fields">
       {{ macros.fields_title(_('NEW PASSWORD')) }}
-      <input type="password" name="{{ form.password.html_name }}" maxlength="20"/>
+      {{ form.password }}
       {{ form.password.errors }}
     </div>
     <div class="fields">
       {{ macros.fields_title(_('RETYPE PASSWORD')) }}
-      <input type="password" name="{{ form.password2.html_name }}" maxlength="20"/>
+      {{ form.password2 }}
     </div>
     <p class="grey_label">
       {% trans %}
