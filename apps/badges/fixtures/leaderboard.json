@@ -1,0 +1,217 @@
+[
+    {
+        "pk": 11,
+        "model": "auth.user",
+        "fields": {
+            "username": "leaderboard_admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2011-09-07 14:07:39",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$5ce65740abcc415c633d$ab2d9b0713fbcad1601f698511bc98468a9fc1e16ff1e619507d5aa0668f0231a7ed51d594863cd8e37204cc9a63cad36912197a9ebfa6345d840d09ad7f9469",
+            "email": "a@b.com",
+            "date_joined": "2011-08-17 00:14:29"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "auth.user",
+        "fields": {
+            "username": "leaderboard_testuser1",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-08-19 14:25:08",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$9b2b78ec43265601e3ae$663a6a47ab9f02bc67fee2707ce95c70dbc401a1f83c57aef01145ce3ad0f8d39a4b0b901257dcda4bd83d21941b660b91d06a5754e887269d64031e66a150fa",
+            "email": "testuser1@asdf.asdf",
+            "date_joined": "2011-08-19 14:25:08"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "auth.user",
+        "fields": {
+            "username": "leaderboard_testuser2",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-08-22 15:17:43",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$042861bbb472c0a5fdea$7e1568af156cb02df9b77b0a00d0be39fae9c7274e6c953369f28d7547db48a2024de9d05b57eab5301d7088ba68d8f95fa19125581623683cb0e5c4e43aea78",
+            "email": "bobbu@craig.co.uk",
+            "date_joined": "2011-08-22 15:17:43"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "auth.user",
+        "fields": {
+            "username": "leaderboard_testuser17",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-08-22 17:12:54",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$435ce4a10c10ad1f0cd1$62f9afb6817dbf1a53974a6ce5092c55a858e2d0f01853fdaa35f8e9040a55c39e5de5b03a6843b673e0961faa69c1c7d711dc03be7fe0e3abce554074e534d2",
+            "email": "asdf@qwer.zxcv",
+            "date_joined": "2011-08-22 16:37:43"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "auth.user",
+        "fields": {
+            "username": "leaderboard_testuser42",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-09-07 17:13:38",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$ed669c374b0cb0698786$1254a8347478de0bec4dd0042ce42bcbc984d20cc6443b844a55e25cb4280091d6e1d5a1f421cc6bb2358e027603a63504f4b31d5f7c37e9f85c3c2e66891548",
+            "email": "testuser42@couponbug.com",
+            "date_joined": "2011-08-29 16:21:16"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "auth.user",
+        "fields": {
+            "username": "leaderboard_testuser45",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-09-06 21:24:18",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$3fbbdf8ef04f87f97537$7a7e4d71797e848c0246059eae22530973abe5b18883f3947e2457d5bfc1855bf23931bc20d7df84c9a50b59070ba9a2cd16168acfbe01e0631355908a703e39",
+            "email": "testuser45@couponbug.com",
+            "date_joined": "2011-09-06 21:23:57"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "badges.category",
+        "fields": {
+            "name": "Firefox"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/fpo-mobile_15.png",
+            "name": "Firefox Plugins",
+            "parent": 13
+        }
+    },
+    {
+        "pk": 18,
+        "model": "badges.badge",
+        "fields": {
+            "href": "http://www.mozilla.org/",
+            "child_type": "banner",
+            "name": "Plugin Checker",
+            "preview_img": "uploads/badge_previews/fpo-mobile_22.png",
+            "subcategory": 15
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 18,
+            "user": 11,
+            "created": "2011-09-01 13:11:03"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 18,
+            "user": 11,
+            "created": "2011-09-01 13:13:25"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 18,
+            "user": 15,
+            "created": "2011-09-02 10:12:07"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 18,
+            "user": 16,
+            "created": "2011-09-06 21:24:41"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 11,
+            "year": 2011,
+            "clicks": 2005025,
+            "month": 9
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 12,
+            "year": 2011,
+            "clicks": 3,
+            "month": 9
+        }
+    },
+    {
+        "pk": 13,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 13,
+            "year": 2011,
+            "clicks": 1,
+            "month": 9
+        }
+    },
+    {
+        "pk": 14,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 14,
+            "year": 2011,
+            "clicks": 1,
+            "month": 9
+        }
+    }
+]
