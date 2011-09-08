@@ -28,6 +28,9 @@ MAX_FILEPATH_LENGTH = 250
 BADGE_PREVIEW_PATH = 'uploads/badge_previews/'
 BANNER_IMAGE_PATH = 'uploads/banners/'
 
+# Leaderboard Display Size
+LEADERBOARD_SIZE = 5
+
 # Session configuration
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Log out on browser close
 SESSION_REMEMBER_DURATION = 1209600  # If we remember you, it lasts for 2 weeks
