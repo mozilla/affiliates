@@ -1,0 +1,11 @@
+{% extends 'short_msg.html' %}
+
+{% block content %}
+<h2>{{ _('Password Reset') }}</h2>
+<p>
+  {% trans %}
+    We've sent an email to any account using this email address. Please
+    follow the link in the email to reset your password.
+  {% endtrans %}
+</p>
+{% endblock %}

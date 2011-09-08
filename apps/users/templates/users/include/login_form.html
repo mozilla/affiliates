@@ -16,5 +16,5 @@
          id="login-remember-me"
          name="{{ login_form.remember_me.html_name }}" />
   <label for="login-remember-me">{{ _('Remember me') }}</label>
-  <a href="#">{{ _('Forgot your password?') }}</a>
+  <a href="{{ url('users.send_password_reset') }}">{{ _('Forgot your password?') }}</a>
 </form>

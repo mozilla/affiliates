@@ -1,0 +1,15 @@
+{% extends 'short_msg.html' %}
+
+{% block content %}
+<h2>{{ _('Forgot password on Firefox Affiliates!') }}</h2>
+<p>{{ _('Please enter your e-mail and we\'ll reset your password:') }}</p>
+<form id="forgot-password-form" method="post" action="">
+  {{ csrf() }}
+  <p>
+    {{ form.email }}
+    <button type="submit">{{ _('Send &raquo;') }}</button>
+    {{ form.email.errors }}
+  </p>
+</form>
+<p>{{ _('Please click on the link provided in the e-mail to access your Affiliates account.') }}</p>
+{% endblock %}

@@ -13,4 +13,8 @@ urlpatterns = patterns('',
     url(r'^edit$', views.edit_profile, name='users.edit.profile'),
     url(r'^activate/(?P<activation_key>\w+)$', views.activate,
         name='users.activate'),
+    url(r'^forgot_password$', views.send_password_reset,
+        name='users.send_password_reset'),
+    url(r'^/pwreset/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)$',
+        views.password_reset, name="users.pw_reset"),
 )

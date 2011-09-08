@@ -63,7 +63,7 @@
     padding-left: 20px;
     width: 275px;
 }
-#forgot-password-form input[type="email"] {
+#forgot-password-form input[type="text"] {
     margin-right: 10px;
     width: 270px;
 }

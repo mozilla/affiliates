@@ -10,14 +10,13 @@ from session_csrf import anonymous_csrf
 from tower import ugettext as _
 
 from badges.views import home
-from users.forms import (ActivationForm, EditProfileForm, LoginForm,
-                         RegisterForm)
+from users import forms
 from users.models import RegisterProfile
 
 
 @anonymous_csrf
 def login(request):
-    form = LoginForm(data=(request.POST or None))
+    form = forms.LoginForm(data=(request.POST or None))
     if request.method == 'POST':
         # TODO: Handle inactive users
         if form.is_valid():
@@ -35,7 +34,7 @@ def login(request):
 @anonymous_csrf
 def register(request):
     """Create a registration profile."""
-    form = RegisterForm(request.POST or None)
+    form = forms.RegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         # Create a registration profile, which also emails
         # activation details
@@ -59,14 +58,14 @@ def activate(request, activation_key=None):
         return HttpResponseRedirect(reverse('home'))
 
     if request.method == 'POST':
-        form = ActivationForm(request.POST)
+        form = forms.ActivationForm(request.POST)
         user = RegisterProfile.objects.activate_profile(activation_key, form)
         if user:
             return jingo.render(request, 'users/activate_done.html',
                                 {'user': user})
     else:
-        form = ActivationForm(initial={'name': reg_profile.name,
-                                       'email': reg_profile.email})
+        form = forms.ActivationForm(initial={'name': reg_profile.name,
+                                             'email': reg_profile.email})
 
     params = {'form': form,
               'profile': reg_profile,
@@ -77,11 +76,36 @@ def activate(request, activation_key=None):
 @login_required
 def edit_profile(request):
     """Edit an existing UserProfile."""
-    form = EditProfileForm(request.POST or None,
-                           instance=request.user.get_profile())
+    form = forms.EditProfileForm(request.POST or None,
+                                 instance=request.user.get_profile())
     if request.POST and form.is_valid():
         form.save()
         messages.success(request, _('Your profile was updated successfully!'))
         return HttpResponseRedirect(reverse('my_badges'))
 
     return jingo.render(request, 'users/edit_profile.html', {'form': form})
+
+
+@anonymous_csrf
+def send_password_reset(request):
+    """View that displays the password reset form and sends the email out."""
+    form = forms.PasswordResetForm(request.POST or None)
+    if request.POST:
+        is_valid = form.is_valid()
+        if is_valid:
+            sent = form.send()
+        else:
+            sent = False
+
+        # Only reveal that an email exists if it was a valid email but
+        # failed to send properly.
+        if sent or not is_valid:
+            return jingo.render(request,
+                                'users/password_reset/send_complete.html')
+
+    return jingo.render(request, 'users/password_reset/send_form.html',
+                        {'form': form})
+
+
+def password_reset(request, uidb36=None, token=None):
+    pass

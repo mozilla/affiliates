@@ -1,8 +1,10 @@
 import re
+import logging
+from smtplib import SMTPException
 
+import django.contrib.auth.forms as auth_forms
 from django import forms
 from django.forms.util import ValidationError
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
 from tower import ugettext as _
@@ -15,6 +17,13 @@ PASSWD_MATCH = _lazy('Passwords must match.')
 PASSWD_LENGTH = _lazy('Passwords must be at least 8 characters long.')
 PASSWD_COMPLEX = _lazy('Passwords must contain at least 1 letter and '
                        '1 number.')
+ERROR_SEND_EMAIL = _lazy(
+    u'We are having trouble reaching your email address. '
+    'Please try a different address or contact an administrator.')
+YOUR_EMAIL = _lazy('Your email address')
+
+
+log = logging.getLogger('badges.users')
 
 
 class PasswordField(forms.CharField):
@@ -56,7 +65,7 @@ class RegisterForm(forms.Form):
     password = PasswordField()
 
 
-class LoginForm(AuthenticationForm):
+class LoginForm(auth_forms.AuthenticationForm):
     """Form for logging in."""
     remember_me = forms.BooleanField(label=_lazy('Remember me'),
                                      required=False)
@@ -135,3 +144,26 @@ class ActivationForm(ProfileForm):
             pass
 
         return self.cleaned_data['username']
+
+
+class PasswordResetForm(auth_forms.PasswordResetForm):
+    """Password Reset form with some extra sugar."""
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+        self.fields['email'].widget.attrs['placeholder'] = YOUR_EMAIL
+
+    def send(self, use_https=True,
+             email_template_name='users/email/pw_reset.html'):
+        """
+        Try sending the password reset email, logging an error if it fails.
+        """
+        try:
+            self.save(use_https=use_https,
+                      email_template_name=email_template_name)
+            return True
+        except SMTPException, e:
+            log.warning(u'Failed to send email: %s' % e)
+            self._errors['email'].append(ERROR_SEND_EMAIL)
+            return False
