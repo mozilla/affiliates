@@ -9,7 +9,7 @@ class Command(BaseCommand):
         cursor = connection.cursor()
 
         # Clear leaderboards
-        cursor.execute('DELETE from badges_leaderboard')
+        cursor.execute('DELETE FROM badges_leaderboard')
 
         # Set ranking variable
         cursor.execute('SET @curRank := 0')

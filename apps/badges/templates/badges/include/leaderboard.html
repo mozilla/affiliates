@@ -32,7 +32,7 @@
       {% for standing in leaderboard %}
       <li>
         <span class="download-number">{{ standing.ranking|babel_number }}</span>
-        {{ standing.user.username }}
+        {{ display_name(standing.user) }}
         <span class="download-count">{{ standing.clicks|babel_number }}</span>
       </li>
       {% endfor %}
@@ -44,7 +44,7 @@
           <img class="user-category-icon"
                alt="{{ _('Leaderboard') }}"
                src="{{ MEDIA_URL }}img/template/user-category-icon.gif ">
-          {{ user.username }}
+          {{ display_name(user) }}
           <span class="download-count">{{ user_standing.clicks|babel_number }}</span>
         </li>
       </ul>
