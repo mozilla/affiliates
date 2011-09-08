@@ -177,3 +177,17 @@ class ClickStats(ModelBase):
     objects = ClickStatsManager()
     class Meta:
         unique_together = ('badge_instance', 'month', 'year')
+
+
+class LeaderboardManager(models.Manager):
+    def top_users(self, count):
+        return self.order_by('ranking')[:count]
+
+
+class Leaderboard(ModelBase):
+    """Stores a user's standing in the leaderboard."""
+    ranking = models.PositiveIntegerField(primary_key=True)
+    user = models.ForeignKey(User)
+    clicks = models.PositiveIntegerField()
+
+    objects = LeaderboardManager()

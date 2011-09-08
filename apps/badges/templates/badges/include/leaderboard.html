@@ -1,0 +1,54 @@
+{% import 'badges/include/macros.html' as macros %}
+
+{% if show_leaderboard %}
+  <div class="highlight-box degraded-box block-space">
+    <div class="degraded-box head-box">
+      {# L10n: Refers to a table showing the top 5 users with the most download referrals. #}
+      <h5>{{ _('Leaderboard') }}<a target="tooltip_username" class="help_bulb show_tooltip" href="#"></a></h5>
+      <div id="tooltip_username" class="tool-tip top-arrow download_tooltip">
+        <span></span>
+        <p>
+          {# L10n: PT = Pacific Time #}
+          {% trans %}
+          Check out how many people are downloading Firefox.
+          <br>
+          Where are you on the leaderboard?
+          <br>
+          Leaderboard statics are updated at midnight PT each day.
+        {% endtrans %}
+      </p>
+    </div>
+    <p class="date">
+      {{ _('TOP 5 AFFILIATES WITH THE MOST FIREFOX DOWNLOADS') }}
+    </p>
+  </div>
+  <div class="total-downloads-section">
+    <h4>
+      <span>{{ _('USER') }}</span>
+      {{ _('DOWNLOADS') }}
+    </h4>
+    {{ macros.divider() }}
+    <ul>
+      {% for standing in leaderboard %}
+      <li>
+        <span class="download-number">{{ standing.ranking|babel_number }}</span>
+        {{ display_name(standing.user) }}
+        <span class="download-count">{{ standing.clicks|babel_number }}</span>
+      </li>
+      {% endfor %}
+      {{ macros.divider() }}
+      <div class="clearfix"></div>
+      <ul>
+        <li>
+          <span class="download-number">{{ user_standing.ranking|babel_number }}</span>
+          <img class="user-category-icon"
+               alt="{{ _('Leaderboard') }}"
+               src="{{ MEDIA_URL }}img/template/user-category-icon.gif ">
+          {{ display_name(user) }}
+          <span class="download-count">{{ user_standing.clicks|babel_number }}</span>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+{% endif %}

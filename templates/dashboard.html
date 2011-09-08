@@ -21,6 +21,7 @@
 {% block sidebar_content %}
   {% include 'layout/sidebar_nav.html' %}
   {% include 'badges/include/sidebar_profile.html' %}
+  {% include 'badges/include/leaderboard.html' %}
   {% if newsitem is not none %}
     {% import 'news/macros.html' as news %}
     {{ news.news_box(newsitem) }}

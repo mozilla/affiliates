@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,7 +14,7 @@ from babel.numbers import format_number
 from session_csrf import anonymous_csrf
 
 from badges.models import (Badge, BadgeInstance, Category, ClickStats,
-                           Subcategory)
+                           Leaderboard, Subcategory)
 from news.models import NewsItem
 from users.forms import RegisterForm, LoginForm
 
@@ -79,6 +80,7 @@ def dashboard(request, template, context=None):
         context['user_clicks_total'] = format_number(clicks_total,
                                                      locale=locale)
 
+        # Statistics Summary
         months_short = get_month_names('abbreviated', locale=locale)
         months_full = get_month_names('wide', locale=locale)
         months_short_list = [name for k, name in months_short.items()]
@@ -87,6 +89,16 @@ def dashboard(request, template, context=None):
         context['months_short'] = months_short.items()
         context['months_full_list_json'] = json.dumps(months_full_list)
         context['months_short_list_json'] = json.dumps(months_short_list)
+
+        # Leaderboard
+        try:
+            context['show_leaderboard'] = True
+            context['leaderboard'] = (Leaderboard.objects
+                                      .top_users(settings.LEADERBOARD_SIZE))
+            context['user_standing'] = (Leaderboard.objects
+                                        .get(user=request.user))
+        except Leaderboard.DoesNotExist:
+            context['show_leaderboard'] = False
 
     return jingo.render(request, template, context)
 
