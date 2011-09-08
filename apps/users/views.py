@@ -48,6 +48,7 @@ def register(request):
 
     return home(request, register_form=form)
 
+
 @anonymous_csrf
 def activate(request, activation_key=None):
     """Activate a registration profile and create a user."""

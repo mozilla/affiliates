@@ -24,7 +24,7 @@ class RegisterTests(test_utils.TestCase):
         response = self.client.post(reverse('users.register'),
                                     {'name': 'newbie',
                                      'email': 'newbie@example.com',
-                                     'password': 'asdfasdf'})
+                                     'password': 'asdf1234'})
         eq_(200, response.status_code)
 
         p = RegisterProfile.objects.get(name='newbie')
@@ -33,12 +33,11 @@ class RegisterTests(test_utils.TestCase):
         eq_(len(mail.outbox), 1)
         ok_(mail.outbox[0].body.find('activate/%s' % p.activation_key))
 
-
     def test_activation(self):
         """Test basic account activation."""
         parameters = activation_form_defaults()
         reg_profile = RegisterProfile.objects.create_profile(
-            'TestName', 'a@b.com', 'asdfasdf')
+            'TestName', 'a@b.com', 'asdf1234')
 
         kwargs = {'activation_key': reg_profile.activation_key}
         response = self.client.post(reverse('users.activate', kwargs=kwargs),
@@ -48,7 +47,6 @@ class RegisterTests(test_utils.TestCase):
         # Test relations
         u = User.objects.get(username='TestUser')
         eq_(u.get_profile().name, 'TestName')
-
 
     def test_invalid_activation_key(self):
         """Invalid activation keys are redirected to the homepage."""
@@ -82,3 +80,33 @@ class LoginTests(test_utils.TestCase):
         response = self.client.post(reverse('users.login'), parameters)
 
         ok_(response.cookies[settings.SESSION_COOKIE_NAME]['expires'])
+
+
+class EditProfileTests(test_utils.TestCase):
+    client_class = LocalizingClient
+    fixtures = ['registered_users']
+
+    def setUp(self):
+        self.client.login(username='mkelly', password='asdfasdf')
+
+    def _params(self, **kwargs):
+        """Default arguments for profile edit form."""
+        defaults = {'name': 'Test User', 'locale': 'en-US', 'country': 'us'}
+        defaults.update(kwargs)
+
+        return defaults
+
+    def test_basic_edit(self):
+        parameters = self._params(name='Honey Badger', state="Doesn't care")
+        self.client.post(reverse('users.edit.profile'), parameters)
+
+        user = User.objects.get(pk=1)
+        eq_(user.get_profile().name, 'Honey Badger')
+        eq_(user.get_profile().state, "Doesn't care")
+
+    def test_change_password(self):
+        parameters = self._params(password='asdf1234', password2='asdf1234')
+        self.client.post(reverse('users.edit.profile'), parameters)
+
+        user = User.objects.get(pk=1)
+        ok_(user.check_password('asdf1234'))

@@ -38,11 +38,12 @@ class PasswordField(forms.CharField):
         """Passwords must consist of letters and numbers."""
         cleaned_value = super(PasswordField, self).clean(value)
 
-        # Unicode letters are anything in \w that isn't a digit or underscore
-        letters = re.search(r'(?Lu)[^\W\d_]+', cleaned_value)
-        numbers = re.search(r'(?Lu)\d+', cleaned_value)
-        if not (letters and numbers):
-            raise ValidationError(PASSWD_COMPLEX)
+        if cleaned_value:
+            # Unicode letters are anything in \w that isn't a digit or _
+            letters = re.search(r'(?Lu)[^\W\d_]+', cleaned_value)
+            numbers = re.search(r'(?Lu)\d+', cleaned_value)
+            if not (letters and numbers):
+                raise ValidationError(PASSWD_COMPLEX)
 
         return cleaned_value
 
@@ -57,7 +58,8 @@ class RegisterForm(forms.Form):
 
 class LoginForm(AuthenticationForm):
     """Form for logging in."""
-    remember_me = forms.BooleanField(label=_lazy('Remember me'), required=False)
+    remember_me = forms.BooleanField(label=_lazy('Remember me'),
+                                     required=False)
 
 
 class ProfileForm(forms.ModelForm):
@@ -93,7 +95,7 @@ class EditProfileForm(ProfileForm):
         exclude = ('user', 'modified', 'created')
 
     def save(self, *args, **kwargs):
-        """Save email and password to user object instead of UserProfile."""
+        """Save password to user object instead of UserProfile."""
         if self.is_valid():
             user = self.instance.user
             if self.cleaned_data['password']:
@@ -122,7 +124,6 @@ class ActivationForm(ProfileForm):
 
     class Meta(ProfileForm.Meta):
         exclude = ('user', 'modified', 'created', 'name')
-
 
     def clean_username(self):
         """Ensure that the chosen username is unique."""
