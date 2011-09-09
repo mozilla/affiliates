@@ -109,12 +109,32 @@ class SetPasswordFormTests(TestCase):
     fixtures = ['registered_users']
 
     def _form(self, pw, pw2):
-        return forms.SetPasswordForm({'new_password1': pw,
-                                      'new_password2': pw2})
+        return forms.SetPasswordForm(None, data={'new_password1': pw,
+                                                 'new_password2': pw2})
 
-    def passwords_must_match(self):
+    def test_passwords_must_match(self):
         form = self._form('asdf1234', 'asdf1234')
         ok_(form.is_valid())
 
         form = self._form('asdf1234', 'qwer5678')
+        ok_(not form.is_valid())
+
+
+class LoginFormTests(TestCase):
+    fixtures = ['registered_users']
+
+    def _form(self, email, password):
+        return forms.LoginForm(data={'username': email, 'password': password})
+
+    def test_basic(self):
+        form = self._form('mkelly@mozilla.com', 'asdfasdf')
+        ok_(form.is_valid())
+        eq_(form.get_user().username, 'mkelly')
+
+    def test_wrong_username(self):
+        form = self._form('honey@badger.net', 'dontcare')
+        ok_(not form.is_valid())
+
+    def test_wrong_password(self):
+        form = self._form('mkelly@mozilla.com', 'incorrect')
         ok_(not form.is_valid())

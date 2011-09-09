@@ -4,12 +4,14 @@ from smtplib import SMTPException
 
 import django.contrib.auth.forms as auth_forms
 from django import forms
-from django.forms.util import ValidationError
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.forms.util import ValidationError
 
 from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
+from shared.forms import FormBase
 from users.models import UserProfile
 
 
@@ -22,6 +24,10 @@ ERROR_SEND_EMAIL = _lazy(
     u'We are having trouble reaching your email address. '
     'Please try a different address or contact an administrator.')
 YOUR_EMAIL = _lazy(u'Your email address')
+
+
+EMAIL_OR_PASSWD_WRONG = _lazy('Email or password incorrect.')
+USER_INACTIVE = _lazy('This account is inactive.')
 
 
 log = logging.getLogger('badges.users')
@@ -67,10 +73,28 @@ class RegisterForm(forms.Form):
     password = PasswordField()
 
 
-class LoginForm(auth_forms.AuthenticationForm):
-    """Form for logging in."""
-    remember_me = forms.BooleanField(label=_lazy('Remember me'),
-                                     required=False)
+class LoginForm(FormBase, auth_forms.AuthenticationForm):
+    """AuthenticationForm that uses an email instead of a username."""
+    username = forms.EmailField()
+    remember_me = forms.BooleanField(required=False)
+
+    placeholders = {
+        'username': _lazy('Email address'),
+        'password': _lazy('Password'),
+    }
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            self.user_cache = authenticate(username=username, password=password)
+            if self.user_cache is None:
+                raise forms.ValidationError(EMAIL_OR_PASSWD_WRONG)
+            elif not self.user_cache.is_active:
+                raise forms.ValidationError(USER_INACTIVE)
+        self.check_for_test_cookie()
+        return self.cleaned_data
 
 
 class ProfileForm(forms.ModelForm):

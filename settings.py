@@ -15,7 +15,10 @@ AFFILIATES_LANGUAGES = ['en-US']
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
 
-# User account profiles
+# User accounts
+AUTHENTICATION_BACKENDS = (
+    'users.backends.EmailBackend',
+)
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # Login settings

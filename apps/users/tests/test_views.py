@@ -65,7 +65,7 @@ class LoginTests(TestCase):
 
     def test_basic_login(self):
         """Test that a basic login works."""
-        parameters = {'username': 'mkelly', 'password': 'asdfasdf'}
+        parameters = {'username': 'mkelly@mozilla.com', 'password': 'asdfasdf'}
         response = self.client.post(reverse('users.login'), parameters)
 
         ok_(response.cookies[settings.SESSION_COOKIE_NAME])
@@ -76,7 +76,7 @@ class LoginTests(TestCase):
         Test that logging in with "Remember me" checked sets the
         session expiration.
         """
-        parameters = {'username': 'mkelly', 'password': 'asdfasdf',
+        parameters = {'username': 'mkelly@mozilla.com', 'password': 'asdfasdf',
                       'remember_me': True}
         response = self.client.post(reverse('users.login'), parameters)
 
@@ -88,7 +88,7 @@ class EditProfileTests(TestCase):
     fixtures = ['registered_users']
 
     def setUp(self):
-        self.client.login(username='mkelly', password='asdfasdf')
+        self.client.login(username='mkelly@mozilla.com', password='asdfasdf')
 
     def _params(self, **kwargs):
         """Default arguments for profile edit form."""

@@ -13,7 +13,7 @@ class TestMonthStatsAjax(TestCase):
     fixtures = ['badge_instance']
 
     def test_basic(self):
-        self.client.login(username='testuser43', password='asdfasdf')
+        self.client.login(username='testuser43@asdf.asdf', password='asdfasdf')
         response = self.client.post(reverse('badges.ajax.stats'),
                                     {'month': 7, 'year': 2011})
 
