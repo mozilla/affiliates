@@ -43,6 +43,12 @@ class RegisterProfileTests(TestCase):
 
         ok_(not RegisterProfile.objects.activate_profile(key, form))
 
+    def test_register_existing_replace(self):
+        profile = RegisterProfile.objects.create_profile('Richard Stallman',
+                                                         'linus@linux.org',
+                                                         'trolololol')
+        eq_(profile.id, 11)
+
 
 class UserTests(TestCase):
     fixtures = ['banners']

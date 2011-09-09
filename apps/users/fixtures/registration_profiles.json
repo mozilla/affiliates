@@ -9,5 +9,16 @@
 			"email": "mkelly@example.com",
 			"user": null
 		}
-	}
+	},
+    {
+        "pk": 11,
+        "model": "users.registerprofile",
+        "fields": {
+            "user": null,
+            "activation_key": "4ab885d709527333cd6a7adf293dd900ccab649d",
+            "password": "sha512$3bb28d08951b63f9cac5$de1a370dd55184366e87a3f567f1d3ac94486e3900219023820758e10ae17acc44eee4a17ea78dd667cdfc292ed5238675194ab96fe043f464aa1e73eb9e4ed6",
+            "name": "Linus Torvalds",
+            "email": "linus@linux.org"
+        }
+    }
 ]

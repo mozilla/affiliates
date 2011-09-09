@@ -79,8 +79,10 @@ class RegisterManager(models.Manager):
         salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
         activation_key = hashlib.sha1(salt + email).hexdigest()
 
-        profile = RegisterProfile(name=name, email=email,
-                                  activation_key=activation_key)
+        # get_or_create lets us replace existing profiles
+        profile, created = RegisterProfile.objects.get_or_create(email=email)
+        profile.name = name
+        profile.activation_key = activation_key
         profile.set_password(password)
         profile.save()
 
