@@ -13,15 +13,15 @@ from tower import ugettext_lazy as _lazy
 from users.models import UserProfile
 
 
-PASSWD_REQUIRED = _lazy('Please enter a password.')
-PASSWD_MATCH = _lazy('Passwords must match.')
-PASSWD_LENGTH = _lazy('Passwords must be at least 8 characters long.')
-PASSWD_COMPLEX = _lazy('Passwords must contain at least 1 letter and '
+PASSWD_REQUIRED = _lazy(u'Please enter a password.')
+PASSWD_MATCH = _lazy(u'Passwords must match.')
+PASSWD_LENGTH = _lazy(u'Passwords must be at least 8 characters long.')
+PASSWD_COMPLEX = _lazy(u'Passwords must contain at least 1 letter and '
                        '1 number.')
 ERROR_SEND_EMAIL = _lazy(
     u'We are having trouble reaching your email address. '
     'Please try a different address or contact an administrator.')
-YOUR_EMAIL = _lazy('Your email address')
+YOUR_EMAIL = _lazy(u'Your email address')
 
 
 log = logging.getLogger('badges.users')
@@ -160,15 +160,19 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
              email_template_name='users/email/pw_reset.html'):
         """
         Try sending the password reset email, logging an error if it fails.
+
+        Returns True on success, False on failure.
         """
         try:
-            self.save(use_https=use_https,
-                      email_template_name=email_template_name)
-            return True
+            if self.is_valid():
+                self.save(use_https=use_https,
+                          email_template_name=email_template_name)
+                return True
         except SMTPException, e:
             log.warning(u'Failed to send email: %s' % e)
-            self._errors['email'].append(ERROR_SEND_EMAIL)
-            return False
+            self._errors['email'] = self.error_class([ERROR_SEND_EMAIL])
+
+        return False
 
 
 class SetPasswordForm(auth_forms.SetPasswordForm):
@@ -180,14 +184,10 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
     new_password1 = PasswordField()
     new_password2 = PasswordField()
 
-    def clean(self):
-        cleaned_data = super(SetPasswordForm, self).clean()
-
-        # Passwords must match
-        password1 = cleaned_data.get('new_password1')
-        password2 = cleaned_data.get('new_password2')
-
-        if not password1 == password2:
+    def clean_new_password2(self):
+        """Customize matching password error and put it on password1."""
+        try:
+            return super(SetPasswordForm, self).clean_new_password2()
+        except ValidationError:
             self._errors['new_password1'] = self.error_class([PASSWD_MATCH])
-
-        return cleaned_data
+            return self.cleaned_data.get('new_password2')
