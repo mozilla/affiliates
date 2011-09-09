@@ -1,0 +1,12 @@
+{% extends 'short_msg.html' %}
+
+{% block content %}
+<h2>{{ _('Password reset successful!') }}</h2>
+<p>
+  {% trans href=url('home') %}
+    You have successfully changed your password.
+    <a href="{{ href }}">Return to the home page
+    and log in using your new password</a>.
+  {% endtrans %}
+</p>
+{% endblock %}

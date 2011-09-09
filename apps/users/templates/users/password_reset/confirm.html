@@ -1,0 +1,32 @@
+{% extends 'short_msg.html' %}
+
+{% block content %}
+  {% if validlink %}
+    <h2>{{ _('Password Reset') }}</h2>
+    <form id="forgot-password-form" method="post" action="">
+      {{ csrf() }}
+      {# All form errors are set on new_password1 #}
+      {{ form.new_password1.errors }}
+      <p>
+        <label for="id_new_password1">{{ _('NEW PASSWORD') }}</label>
+        {{ form.new_password1 }}
+      </p>
+      <p>
+        <label for="id_new_password2">{{ _('CONFIRM PASSWORD') }}</label>
+        {{ form.new_password2 }}
+      </p>
+      <p>
+        <button type="submit">{{ _('Reset password &raquo;') }}</button>
+      </p>
+    </form>
+  {% else %}
+    <h2>{{ _('Password reset unsuccessful') }}</h2>
+    <p>
+      {% trans href=url('users.send_password_reset') %}
+        The password reset link was invalid, possibly because it has
+        already been used.
+        <a href="{{ href }}">Please request a new password reset.</a>
+      {% endtrans %}
+    </p>
+  {% endif %}
+{% endblock %}

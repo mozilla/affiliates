@@ -2,8 +2,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404
+from django.utils.http import base36_to_int
 
 import jingo
 from session_csrf import anonymous_csrf
@@ -107,5 +111,31 @@ def send_password_reset(request):
                         {'form': form})
 
 
+@anonymous_csrf
 def password_reset(request, uidb36=None, token=None):
-    pass
+    """Validate password reset hash and process the password reset form."""
+
+    try:
+        uid_int = base36_to_int(uidb36)
+    except ValueError:
+        raise Http404
+
+    user = get_object_or_404(User, id=uid_int)
+    context = {}
+
+    if default_token_generator.check_token(user, token):
+        context['validlink'] = True
+        if request.POST:
+            form = forms.SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                return jingo.render(request,
+                                    'users/password_reset/complete.html')
+        else:
+            form = forms.SetPasswordForm(None)
+    else:
+        context['validlink'] = False
+        form = None
+
+    context['form'] = form
+    return jingo.render(request, 'users/password_reset/confirm.html', context)

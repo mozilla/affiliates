@@ -13,6 +13,7 @@ from tower import ugettext_lazy as _lazy
 from users.models import UserProfile
 
 
+PASSWD_REQUIRED = _lazy('Please enter a password.')
 PASSWD_MATCH = _lazy('Passwords must match.')
 PASSWD_LENGTH = _lazy('Passwords must be at least 8 characters long.')
 PASSWD_COMPLEX = _lazy('Passwords must contain at least 1 letter and '
@@ -31,6 +32,7 @@ class PasswordField(forms.CharField):
 
     error_messages = {
         'min_length': PASSWD_LENGTH,
+        'required': PASSWD_REQUIRED,
     }
 
     def __init__(self, *args, **kwargs):
@@ -167,3 +169,25 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
             log.warning(u'Failed to send email: %s' % e)
             self._errors['email'].append(ERROR_SEND_EMAIL)
             return False
+
+
+class SetPasswordForm(auth_forms.SetPasswordForm):
+    """
+    Form for setting a new password.
+
+    All our form errors are set on new_password1 for display purposes.
+    """
+    new_password1 = PasswordField()
+    new_password2 = PasswordField()
+
+    def clean(self):
+        cleaned_data = super(SetPasswordForm, self).clean()
+
+        # Passwords must match
+        password1 = cleaned_data.get('new_password1')
+        password2 = cleaned_data.get('new_password2')
+
+        if not password1 == password2:
+            self._errors['new_password1'] = self.error_class([PASSWD_MATCH])
+
+        return cleaned_data
