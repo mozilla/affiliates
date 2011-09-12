@@ -25,6 +25,7 @@ ERROR_SEND_EMAIL = _lazy(
     u'We are having trouble reaching your email address. '
     'Please try a different address or contact an administrator.')
 YOUR_EMAIL = _lazy(u'Your email address')
+USER_EMAIL_EXISTS = _lazy(u'A user with that email address already exists.')
 
 
 EMAIL_OR_PASSWD_WRONG = _lazy('Email or password incorrect.')
@@ -66,12 +67,25 @@ class PasswordField(forms.CharField):
         return cleaned_value
 
 
-# TODO: Prevent common passwords
-class RegisterForm(forms.Form):
+class RegisterForm(FormBase):
     """Form used to create registration profile."""
-    name = forms.CharField(label=_lazy(u'Name'), max_length=255)
-    email = forms.EmailField(label=_lazy(u'Email'), max_length=255)
+    name = forms.CharField(max_length=255)
+    email = forms.EmailField(max_length=255)
     password = PasswordField()
+
+    placeholders = {
+        'name': _lazy('Your full name'),
+        'email': _lazy('Your email address'),
+        'password': _lazy('Your password'),
+    }
+
+    def clean_email(self):
+        """Check if a user exists with the given email."""
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(USER_EMAIL_EXISTS)
+
+        return email
 
 
 class LoginForm(FormBase, auth_forms.AuthenticationForm):
@@ -89,7 +103,8 @@ class LoginForm(FormBase, auth_forms.AuthenticationForm):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            self.user_cache = authenticate(username=username, password=password)
+            self.user_cache = authenticate(username=username,
+                                           password=password)
             if self.user_cache is None:
                 raise forms.ValidationError(EMAIL_OR_PASSWD_WRONG)
             elif not self.user_cache.is_active:

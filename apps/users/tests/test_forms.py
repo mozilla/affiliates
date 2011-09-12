@@ -138,3 +138,20 @@ class LoginFormTests(TestCase):
     def test_wrong_password(self):
         form = self._form('mkelly@mozilla.com', 'incorrect')
         ok_(not form.is_valid())
+
+
+class RegisterFormTests(TestCase):
+    fixtures = ['registered_users']
+
+    def _form(self, name, email, password):
+        return forms.RegisterForm({'name': name, 'email': email,
+                                   'password': password})
+
+    def test_email(self):
+        # Email isn't taken
+        form = self._form('name', 'not.exist@moz.com', 'asdf1234')
+        ok_(form.is_valid())
+
+        # Email is taken
+        form = self._form('name', 'mkelly@mozilla.com', 'asdf1234')
+        ok_(not form.is_valid())

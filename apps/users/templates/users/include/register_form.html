@@ -1,19 +1,16 @@
+{% if register_form.errors %}
+  {% for field, errors in register_form.errors.items() %}
+    {% for error in errors %}
+      <p class="msg_warning">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+{% endif %}
 <form action="{{ url('users.register') }}" method="post" id="register-form">
   {{ csrf() }}
-  <input type="text"
-         name="{{ register_form.name.html_name }}"
-         placeholder="{{ _('Your full name') }}"
-         maxlength="255"
-         required/>
-  <input type="email"
-         name="{{ register_form.email.html_name }}"
-         placeholder="{{ _('Your email address') }}"
-         maxlength="75"
-         required/>
-  <input type="password"
-         name="{{ register_form.password.html_name }}"
-         placeholder="{{ _('Your password') }}"
-         required/>
+  {{ register_form.name }}
+  {{ register_form.email }}
+  {{ register_form.password }}
+
   {# TODO: Uncomment when registration agreement is implemented
   <input class="agree_chk"
          type="checkbox"
@@ -26,5 +23,6 @@
     I agree to the Firefox Affiliates <a href="{{ tos }}">terms of service</a> and Mozilla <a href="{{ privacy_policy }}">Privacy Policy</a>
     {%- endtrans -%}
   </label>#}
+
   <button class="register" type="submit">{{ _('Register &raquo;') }}</button>
 </form>
