@@ -12,7 +12,8 @@ from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
 from shared.forms import FormBase
-from users.models import UserProfile
+from shared.utils import country_choices
+from users.models import COUNTRIES, UserProfile
 
 
 PASSWD_REQUIRED = _lazy(u'Please enter a password.')
@@ -99,6 +100,8 @@ class LoginForm(FormBase, auth_forms.AuthenticationForm):
 
 class ProfileForm(forms.ModelForm):
     """Parent class for editing UserProfiles."""
+    country = forms.ChoiceField(choices=COUNTRIES)
+
     class Meta:
         model = UserProfile
 
@@ -119,6 +122,9 @@ class ProfileForm(forms.ModelForm):
         # Add placeholders for fields
         for field, placeholder in ProfileForm.placeholders.items():
             self.fields[field].widget.attrs['placeholder'] = placeholder
+
+        # Localize countries list
+        self.fields['country'].choices = country_choices()
 
 
 class EditProfileForm(ProfileForm):
