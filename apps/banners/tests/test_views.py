@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
+from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
@@ -14,6 +16,8 @@ class LinkViewTests(TestCase):
     BANNER_ID = 1
     USER_ID = 1
     BANNER_IMG_ID = 1
+
+    BAD_BANNER_IMG_ID = 666
 
     def test_basic(self):
         kwargs = {'user_id': self.USER_ID,
@@ -31,3 +35,14 @@ class LinkViewTests(TestCase):
         banner = Banner.objects.get(pk=self.BANNER_ID)
         eq_(response.status_code, 302)
         eq_(response['Location'], banner.href)
+
+    @patch.object(settings, 'DEFAULT_AFFILIATE_LINK', 'http://testlink.com')
+    def test_redirect_default_on_error(self):
+        kwargs = {'user_id': self.USER_ID,
+                  'banner_id': self.BANNER_ID,
+                  'banner_img_id': self.BAD_BANNER_IMG_ID}
+        url = reverse('banners.link', kwargs=kwargs)
+        response = self.client.get(url)
+
+        eq_(response.status_code, 302)
+        eq_(response['Location'], 'http://testlink.com')

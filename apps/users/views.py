@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.http import base36_to_int
 
 import jingo
@@ -59,7 +59,7 @@ def activate(request, activation_key=None):
     # Invalid keys get booted to the homepage
     reg_profile = RegisterProfile.objects.get_by_key(activation_key)
     if (reg_profile is None):
-        return HttpResponseRedirect(reverse('home'))
+        return redirect('home')
 
     if request.method == 'POST':
         form = forms.ActivationForm(request.POST)

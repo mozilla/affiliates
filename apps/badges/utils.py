@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.utils.functional import lazy
 
 
@@ -12,4 +12,4 @@ def handle_affiliate_link(badge_instance):
     """
     badge_instance.add_click()
 
-    return HttpResponseRedirect(badge_instance.badge.href)
+    return redirect(badge_instance.badge.href)

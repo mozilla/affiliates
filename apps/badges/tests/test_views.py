@@ -23,3 +23,37 @@ class TestMonthStatsAjax(TestCase):
         data = json.loads(response.content)
         eq_(data['user_total'], '10')
         eq_(data['site_avg'], '5')
+
+
+class TestHome(TestCase):
+    client_class = LocalizingClient
+    fixtures = ['registered_users']
+
+    def test_redirect_logged_in(self):
+        self.client.login(username='mkelly@mozilla.com', password='asdfasdf')
+        response = self.client.get(reverse('home'))
+
+        eq_(response.status_code, 302)
+
+
+class TestNewBadgeStep2(TestCase):
+    client_class = LocalizingClient
+    fixtures = ['registered_users']
+
+    def test_no_subcategory_404(self):
+        self.client.login(username='mkelly@mozilla.com', password='asdfasdf')
+
+        path = reverse('badges.new.step2', kwargs={'subcategory_pk': 9999})
+        response = self.client.get(path)
+
+        eq_(response.status_code, 404)
+
+
+class TestMyBadges(TestCase):
+    client_class = LocalizingClient
+    fixtures = ['registered_users']
+
+    def test_new_user_redirect(self):
+        self.client.login(username='mkelly@mozilla.com', password='asdfasdf')
+        response = self.client.get(reverse('my_badges'))
+        eq_(response.status_code, 302)

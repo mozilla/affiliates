@@ -3,8 +3,8 @@ from urllib import quote_plus
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.utils.translation import get_language
 
@@ -31,7 +31,7 @@ def home(request, register_form=None, login_form=None):
     """Display the home page."""
     # Redirect logged-in users
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('badges.new.step1'))
+        return redirect('badges.new.step1')
 
     if register_form is None:
         register_form = RegisterForm()
@@ -55,14 +55,19 @@ def new_badge_step1(request):
 
 @login_required(redirect_field_name='')
 def new_badge_step2(request, subcategory_pk):
-    subcategory = Subcategory.objects.get(pk=subcategory_pk)
+    subcategory = get_object_or_404(Subcategory, pk=subcategory_pk)
     badges = Badge.objects.filter(subcategory=subcategory)
 
     return dashboard(request, 'badges/new_badge/step2.html',
                         {'subcategory': subcategory, 'badges': badges})
 
 
+@login_required(redirect_field_name='')
 def my_badges(request):
+    # New users are redirected to the badge generator
+    if not request.user.has_created_badges():
+        return redirect('badges.new.step1')
+
     instance_categories = (BadgeInstance.objects
                            .for_user_by_category(request.user))
     return dashboard(request, 'badges/my_badges.html',
@@ -112,8 +117,8 @@ def dashboard(request, template, context=None):
     return jingo.render(request, template, context)
 
 
-@login_required(redirect_field_name='')
 @require_POST
+@login_required(redirect_field_name='')
 def month_stats_ajax(request):
     user_total = ClickStats.objects.total(badge_instance__user=request.user,
                                           month=request.POST['month'],

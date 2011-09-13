@@ -31,6 +31,9 @@ MAX_FILEPATH_LENGTH = 250
 BADGE_PREVIEW_PATH = 'uploads/badge_previews/'
 BANNER_IMAGE_PATH = 'uploads/banners/'
 
+# URL to redirect to on affiliate link errors
+DEFAULT_AFFILIATE_LINK = 'http://mozilla.org'
+
 # Leaderboard Display Size
 LEADERBOARD_SIZE = 5
 
