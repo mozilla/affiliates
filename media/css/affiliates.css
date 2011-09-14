@@ -373,13 +373,10 @@ div.left-arrow span {
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #e6ebf1;
     border-radius: 4px 4px 4px 4px;
-    color:#5e5e5e;
     cursor: pointer;
     float: left;
-    font-family: 'MuseoSans500';
     list-style: none;
     margin: 0 0 5px 10px;
-    padding: 7px 0px;
     text-align: center;
     width: 151px;
 }
@@ -391,7 +388,21 @@ div.left-arrow span {
 #content-nav li.selected {
     border-color: #B0C1D2;
     box-shadow: 0 2px rgba(0, 0, 0, 0.05), 0 -2px rgba(224, 239, 249, 0.9) inset;
-    color:#4577a6;
+}
+
+#content-nav li a {
+    color: #5E5E5E;
+    display: block;
+    font-family: 'MuseoSans500';
+    padding: 7px 0;
+}
+
+#content-nav li a:hover {
+    text-decoration: none;
+}
+
+#content-nav li.selected a {
+    color: #4577A6;
 }
 
 /*
@@ -771,7 +782,7 @@ div.head-box .date{
     margin: 0;
 }
 
-#sidebar .buttonhead{
+#sidebar .buttonhead {
     background: #FFF;
     color: #4F4F4F;
     cursor:pointer;
@@ -788,6 +799,10 @@ div.head-box .date{
     -webkit-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
     -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
     box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
+}
+
+.buttonhead:hover {
+    text-decoration: none;
 }
 
 .buttonhead img {
