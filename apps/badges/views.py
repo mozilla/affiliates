@@ -1,4 +1,5 @@
 import json
+from urllib import quote_plus
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -12,11 +13,17 @@ from babel.core import Locale
 from babel.dates import get_month_names
 from babel.numbers import format_number
 from session_csrf import anonymous_csrf
+from tower import ugettext_lazy as _lazy
 
 from badges.models import (Badge, BadgeInstance, Category, ClickStats,
                            Leaderboard, Subcategory)
 from news.models import NewsItem
+from shared.utils import absolutify
 from users.forms import RegisterForm, LoginForm
+
+
+TWEET_TEXT = _lazy(u'The Firefox Affiliates program is a great way to share '
+                   'your love of Mozilla Firefox.')
 
 
 @anonymous_csrf
@@ -31,9 +38,11 @@ def home(request, register_form=None, login_form=None):
     if login_form is None:
         login_form = LoginForm()
 
-    return jingo.render(request, 'badges/home.html',
-                        {'register_form': register_form,
-                         'login_form': login_form})
+    params = {'register_form': register_form,
+              'login_form': login_form,
+              'share_url': absolutify('/'),
+              'tweet_text': quote_plus(TWEET_TEXT)}
+    return jingo.render(request, 'badges/home.html', params)
 
 
 @login_required(redirect_field_name='')

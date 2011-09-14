@@ -103,7 +103,8 @@
 #content .divider-medium {
     margin-bottom: 10px;
 }
-#content button {
+#content button,
+#content a.button {
     background: #FFF;
     color: #4F4F4F;
     cursor:pointer;
@@ -121,14 +122,14 @@
     -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
     box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
 }
-#content .share_twitter {
+#content a.share_twitter {
     background: #FFF url(../img/template/sprites.png) no-repeat 12px -43px;
     padding-left: 55px;
     width: 225px;
 }
-#content .share_facebook {
+#content a.share_facebook {
     background: #FFF url(../img/template/sprites.png) no-repeat 12px -86px;
-    padding-left: 50px;
+    padding-left: 55px;
     width: 225px;
 }
 

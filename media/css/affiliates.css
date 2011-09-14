@@ -230,7 +230,8 @@ ul.errorlist li {
 }
 
 input,
-button {
+button,
+a.button {
     font-family: Georgia,serif;
     font-size: 110%; /* 14px */
     font-style: italic;
@@ -241,8 +242,13 @@ button {
     position: relative;
 }
 
+a.button:hover {
+    text-decoration: none;
+}
+
 input[type="submit"],
-button[type="submit"] {
+button[type="submit"],
+a.button.submit {
     zoom:1;
     padding:4px 12px;
     border:1px solid #B3C8D7;
@@ -257,7 +263,8 @@ button[type="submit"] {
 }
 
 input[type="submit"]:hover,
-button[type="submit"]:hover {
+button[type="submit"]:hover,
+a.button.submit:hover {
     background-image: url(../img/template/vertical-lines.png), -webkit-gradient( linear, left bottom, left top, color-stop(0.25, rgb(244,250,255)), color-stop(0.57, rgb(255,255,255)));
     background-image: url(../img/template/vertical-lines.png), -moz-linear-gradient( center bottom, rgb(244,250,255) 25%, rgb(255,255,255) 57%);
     filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#f4faff', EndColorStr='#FFFFFF', GradientType=0);
