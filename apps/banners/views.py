@@ -2,7 +2,8 @@ import json
 
 from django.conf import settings
 from django.db import IntegrityError
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 from badges.utils import handle_affiliate_link
 from badges.views import dashboard
@@ -33,7 +34,7 @@ def link(request, user_id, banner_id, banner_img_id):
                                             badge_id=banner_id,
                                             image_id=banner_img_id))
     except (IntegrityError):
-        return redirect(settings.DEFAULT_AFFILIATE_LINK)
+        return HttpResponseRedirect(settings.DEFAULT_AFFILIATE_LINK)
 
     if created:
         banner_img = BannerImage.objects.select_related().get(pk=banner_img_id)

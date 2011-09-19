@@ -56,7 +56,7 @@ class RegisterTests(TestCase):
                                            kwargs=kwargs))
 
         eq_(302, response.status_code)
-        eq_('http://testserver/', response['Location'])
+        eq_('http://testserver/en-US/', response['Location'])
 
 
 class LoginTests(TestCase):

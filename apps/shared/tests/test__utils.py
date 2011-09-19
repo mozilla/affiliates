@@ -4,7 +4,7 @@ from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
 
-from shared.utils import absolutify
+from shared.utils import absolutify, redirect
 
 
 @patch.object(settings, 'SITE_ID', 1)
@@ -18,3 +18,17 @@ class TestAbsolutify(TestCase):
     def test_https(self):
         url = absolutify('/some/url', https=True)
         eq_(url, 'https://badge.mo.com/some/url')
+
+
+class TestRedirect(TestCase):
+    urls = 'shared.tests.urls'
+
+    def test_basic(self):
+        response = redirect('mock_view')
+        eq_(response.status_code, 302)
+        eq_(response['Location'], '/en-US/mock_view')
+
+    def test_permanent(self):
+        response = redirect('mock_view', permanent=True)
+        eq_(response.status_code, 301)
+        eq_(response['Location'], '/en-US/mock_view')

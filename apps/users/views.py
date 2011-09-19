@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.utils.http import base36_to_int
 
 import jingo
@@ -14,6 +14,7 @@ from session_csrf import anonymous_csrf
 from tower import ugettext as _
 
 from badges.views import home
+from shared.utils import redirect
 from users import forms
 from users.models import RegisterProfile
 

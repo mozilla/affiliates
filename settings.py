@@ -22,7 +22,7 @@ AUTHENTICATION_BACKENDS = (
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # Login settings
-LOGIN_URL = '/'
+LOGIN_VIEW_NAME = 'home'
 
 # Badge file path info
 MAX_FILEPATH_LENGTH = 250

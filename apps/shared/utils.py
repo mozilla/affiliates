@@ -1,6 +1,8 @@
 from django.contrib.sites.models import Site
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.translation import get_language
 
+from funfactory.urlresolvers import reverse
 from product_details import product_details
 
 
@@ -15,3 +17,19 @@ def country_choices():
     """Return a localized, sorted list of tuples of country names and values."""
     items = product_details.get_regions(get_language()).items()
     return sorted(items, key=lambda x: x[1])
+
+
+def redirect(to, permanent=False, **kwargs):
+    """
+    Returns a redirect response by applying funfactory's locale-aware reverse
+    to the given string.
+
+    Pass in permanent=True to return a permanent redirect. All other keyword
+    arguments are passed to reverse.
+    """
+    if permanent:
+        redirect_class = HttpResponsePermanentRedirect
+    else:
+        redirect_class = HttpResponseRedirect
+
+    return redirect_class(reverse(to, **kwargs))

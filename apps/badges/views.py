@@ -2,9 +2,8 @@ import json
 from urllib import quote_plus
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils.translation import get_language
 
@@ -18,7 +17,8 @@ from tower import ugettext_lazy as _lazy
 from badges.models import (Badge, BadgeInstance, Category, ClickStats,
                            Leaderboard, Subcategory)
 from news.models import NewsItem
-from shared.utils import absolutify
+from shared.decorators import login_required
+from shared.utils import absolutify, redirect
 from users.forms import RegisterForm, LoginForm
 
 
@@ -45,7 +45,7 @@ def home(request, register_form=None, login_form=None):
     return jingo.render(request, 'badges/home.html', params)
 
 
-@login_required(redirect_field_name='')
+@login_required
 def new_badge_step1(request):
     categories = Category.objects.all()
 
@@ -53,7 +53,7 @@ def new_badge_step1(request):
                         {'categories': categories})
 
 
-@login_required(redirect_field_name='')
+@login_required
 def new_badge_step2(request, subcategory_pk):
     subcategory = get_object_or_404(Subcategory, pk=subcategory_pk)
     badges = Badge.objects.filter(subcategory=subcategory)
@@ -62,7 +62,7 @@ def new_badge_step2(request, subcategory_pk):
                         {'subcategory': subcategory, 'badges': badges})
 
 
-@login_required(redirect_field_name='')
+@login_required
 def my_badges(request):
     # New users are redirected to the badge generator
     if not request.user.has_created_badges():
@@ -74,7 +74,7 @@ def my_badges(request):
                      {'instance_categories': instance_categories})
 
 
-@login_required(redirect_field_name='')
+@login_required
 def dashboard(request, template, context=None):
     """
     Performs common operations needed by pages using the 'dashboard' template.
@@ -118,7 +118,7 @@ def dashboard(request, template, context=None):
 
 
 @require_POST
-@login_required(redirect_field_name='')
+@login_required
 def month_stats_ajax(request):
     user_total = ClickStats.objects.total(badge_instance__user=request.user,
                                           month=request.POST['month'],
