@@ -11,7 +11,6 @@ from django.db import models
 from django.template.loader import render_to_string
 
 from product_details import product_details
-from tower import ugettext as _
 from tower import ugettext_lazy as _lazy
 
 from badges.models import ModelBase, LocaleField
@@ -20,6 +19,10 @@ from users.utils import hash_password
 
 COUNTRIES = tuple(product_details.get_regions(settings.LANGUAGE_CODE).items())
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
+
+
+ACTIVATION_EMAIL_SUBJECT = _lazy('Please activate your Firefox Affiliates '
+                                 'account')
 
 
 # Extra User Methods
@@ -38,7 +41,10 @@ class UserProfile(ModelBase):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
+    name = models.CharField(max_length=255, blank=True,
+                            verbose_name=_lazy(u'Full Name'))
+    display_name = models.CharField(max_length=255,
+                                    verbose_name=_lazy(u'Display name'))
 
     address_1 = models.CharField(max_length=255, blank=True, null=True,
                                  verbose_name=_lazy(u'Address Line 1'))
@@ -68,10 +74,10 @@ class RegisterManager(models.Manager):
     to fill out their profile information.
     """
 
-    def create_profile(self, name, email, password):
+    def create_profile(self, display_name, email, password):
         """
-        Create a registration profile and return it. Also sends an activation
-        email to the given email address.
+        Create a registration profile and return it. Also sends an
+        activation email to the given email address.
 
         Activation keys are a hash generated from the user's email and a
         random salt.
@@ -81,17 +87,17 @@ class RegisterManager(models.Manager):
 
         # get_or_create lets us replace existing profiles
         profile, created = RegisterProfile.objects.get_or_create(email=email)
-        profile.name = name
+        profile.display_name = display_name
         profile.activation_key = activation_key
         profile.set_password(password)
         profile.save()
 
         self._send_email('users/email/activation_email.html',
-                         _('Please activate your account'), profile)
+                         ACTIVATION_EMAIL_SUBJECT, profile)
 
         return profile
 
-    def activate_profile(self, key, form):
+    def activate_profile(self, key):
         """
         Create a User and UserProfile, and deactivate the corresponding
         RegisterProfile.
@@ -99,30 +105,24 @@ class RegisterManager(models.Manager):
         If the activation key is valid, create the User and
         UserProfile, and return the new User.
 
-        If the key is invalid, return ``False``.
+        If the key is invalid, return ``None``.
         """
+        reg_profile = self.get_by_key(key)
+        if reg_profile:
+            # Username isn't used but is required and has silly constraints.
+            # So we make one up.
+            username = hashlib.sha1(reg_profile.email).hexdigest()[:30]
+            user = User(username=username,
+                        email=reg_profile.email,
+                        password=reg_profile.password,
+                        is_active=True)
+            user.save()
+            UserProfile.objects.create(user=user,
+                                       display_name=reg_profile.display_name)
+            reg_profile.delete()
+            return user
 
-        if form.is_valid():
-            reg_profile = self.get_by_key(key)
-            if reg_profile:
-                username = form.cleaned_data.get('username')
-                password = (form.cleaned_data.get('password') or
-                            reg_profile.password)
-                name = reg_profile.name
-                email = reg_profile.email
-
-                user = User.objects.create(username=username,
-                                           password=password, email=email)
-                reg_profile.delete()
-
-                profile = form.save(commit=False)
-                profile.user = user
-                profile.name = name
-                profile.save()
-
-                return user
-
-        return False
+        return None
 
     def get_by_key(self, key):
         """
@@ -153,13 +153,10 @@ class RegisterManager(models.Manager):
 
 class RegisterProfile(ModelBase):
     """Stores activation information for a user."""
-
-    activation_key = models.CharField(max_length=40,
-                                      verbose_name=_lazy(u'Activation Key'))
-    name = models.CharField(max_length=255, verbose_name=_lazy(u'Full Name'))
-    email = models.EmailField(unique=True, verbose_name=_lazy(u'Email'))
-    password = models.CharField(max_length=255,
-                                verbose_name=_lazy(u'Password'))
+    activation_key = models.CharField(max_length=40, editable=False)
+    display_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)
     user = models.OneToOneField(User, null=True)
 
     objects = RegisterManager()
@@ -171,4 +168,4 @@ class RegisterProfile(ModelBase):
         self.password = hash_password(raw_password)
 
     def __unicode__(self):
-        return u'Registration information for %s' % self.name
+        return u'Registration information for %s' % self.user

@@ -40,7 +40,7 @@
             "user": 1,
             "activation_key": "ACTIVATED",
             "password": "sha512$3872628ec7f0672c0cc1$08f850fabaea76355ff42e4596880bb80200494d2bceebdd15c9b3663f7dfffed1e30fa01a4cd4f7fc62fb6d52973a690547b6ee9596220a0c5ba22dd29e9b88'",
-            "name": "Michael Kelly",
+            "display_name": "Michael Kelly",
             "email": "mkelly@mozilla.com"
         }
     }

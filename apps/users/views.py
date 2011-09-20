@@ -14,7 +14,6 @@ from session_csrf import anonymous_csrf
 from tower import ugettext as _
 
 from badges.views import home
-from shared.utils import redirect
 from users import forms
 from users.models import RegisterProfile
 
@@ -44,7 +43,7 @@ def register(request):
         # Create a registration profile, which also emails
         # activation details
         profile = RegisterProfile.objects.create_profile(
-            form.cleaned_data['name'], form.cleaned_data['email'],
+            form.cleaned_data['display_name'], form.cleaned_data['email'],
             form.cleaned_data['password'])
 
         return jingo.render(request, 'users/register_done.html',
@@ -56,26 +55,9 @@ def register(request):
 @anonymous_csrf
 def activate(request, activation_key=None):
     """Activate a registration profile and create a user."""
-
-    # Invalid keys get booted to the homepage
-    reg_profile = RegisterProfile.objects.get_by_key(activation_key)
-    if (reg_profile is None):
-        return redirect('home')
-
-    if request.method == 'POST':
-        form = forms.ActivationForm(request.POST)
-        user = RegisterProfile.objects.activate_profile(activation_key, form)
-        if user:
-            return jingo.render(request, 'users/activate_done.html',
-                                {'user': user})
-    else:
-        form = forms.ActivationForm(initial={'name': reg_profile.name,
-                                             'email': reg_profile.email})
-
-    params = {'form': form,
-              'profile': reg_profile,
-              'activation_key': activation_key}
-    return jingo.render(request, 'users/activate.html', params)
+    user = RegisterProfile.objects.activate_profile(activation_key)
+    return jingo.render(request, 'users/activate_done.html',
+                        {'activated_user': user})
 
 
 @login_required

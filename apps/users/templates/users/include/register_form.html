@@ -7,7 +7,7 @@
 {% endif %}
 <form action="{{ url('users.register') }}" method="post" id="register-form">
   {{ csrf() }}
-  {{ register_form.name }}
+  {{ register_form.display_name }}
   {{ register_form.email }}
   {{ register_form.password }}
 

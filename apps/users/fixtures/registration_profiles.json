@@ -5,20 +5,20 @@
 		"fields": {
 			"activation_key": "7017ab9d4d6dc86d55b61fd58709b3830de1c649",
 			"password": "sha512$cd2b3b9ad2bf092b2845$d201e41eaf6ae440f3396a14ee854104841851d73e77b2c7372483a1dfb0ca95366f93885c74e7eb752a34b343c11de7a0876a27bf01c9865bd90fa7b82befe8",
-			"name": "Michael Kelly",
+			"display_name": "Michael Kelly",
 			"email": "mkelly@example.com",
 			"user": null
 		}
 	},
     {
         "pk": 11,
-        "model": "users.registerprofile",
+        "model": "users.RegisterProfile",
         "fields": {
             "user": null,
             "activation_key": "4ab885d709527333cd6a7adf293dd900ccab649d",
             "password": "sha512$3bb28d08951b63f9cac5$de1a370dd55184366e87a3f567f1d3ac94486e3900219023820758e10ae17acc44eee4a17ea78dd667cdfc292ed5238675194ab96fe043f464aa1e73eb9e4ed6",
-            "name": "Linus Torvalds",
-            "email": "linus@linux.org"
+            "display_name": "Linus Torvalds",
+            "email": "linus@example.org"
         }
     }
 ]

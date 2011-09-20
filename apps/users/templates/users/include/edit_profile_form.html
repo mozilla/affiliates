@@ -1,13 +1,13 @@
-{% extends 'users/include/profile_form.html' %}
+{% import 'users/include/macros.html' as macros %}
 
-{% block action %}{{ url('users.edit.profile') }}{% endblock %}
-
-{% block topfields %}
+<form action="{{ url('users.edit.profile') }}" method="post" id="profile-form">
+  {{ csrf() }}
+  {{ form.non_field_errors() }}
   <div class="section">
     <div class="fields">
-      {{ macros.fields_title(_('FULL NAME')) }}
-      {{ form.name }}
-      {{ form.name.errors }}
+      {{ macros.fields_title(_('DISPLAY NAME')) }}
+      {{ form.display_name }}
+      {{ form.display_name.errors }}
     </div>
   </div>
   <div class="section">
@@ -27,12 +27,69 @@
       {% endtrans %}
     </p>
   </div>
-{% endblock %}
+  <div class="section">
+    <div>
+      {% call macros.fields_title(_('ADDRESS')) %}
+        {% trans %}
+          Why should I provide my mailing address?
+          <br/><br/>
+          From time to time, we may send you Mozilla T-shirts or
+          other cool stuff in the mail. If you'd like to get stuff
+          from us, please share your mailing address, but it's not
+          mandatory to be part of the Firefox Affiliates program.
+        {% endtrans %}
+      {% endcall %}
+    </div>
+    <div class="fields_long">
+      {{ form.name }}
+      {{ form.name.errors }}
+    </div>
+    <div class="fields">
 
-{% block buttons %}
-  <button type="submit" class="save_changes">
-    {# L10n: Used in context of saving changes to a profile. #}
-    {{ _('Save my changes&raquo;') }}
-  </button>
-  <a class="button" href="{{ url('my_badges') }}">{{ _('Cancel &raquo;') }}</a>
-{% endblock %}
+      {{ form.address_1 }}
+      {{ form.address_1.errors }}
+
+      {{ form.city }}
+      {{ form.city.errors }}
+    </div>
+    <div class="fields">
+      {{ form.address_2 }}
+      {{ form.address_2.errors }}
+      {{ form.state }}
+      {{ form.state.errors }}
+    </div>
+  </div>
+  <div class="section">
+    <div class="fields">
+      {% call macros.fields_title(_('LANGUAGE')) %}
+        {% trans %}
+          Your country and language were automatically detected by
+          your IP location, but you are welcome to change them
+          here.
+        {% endtrans %}
+      {% endcall %}
+      {{ form.locale }}
+      {{ form.locale.errors }}
+    </div>
+    <div class="fields">
+      {{ macros.fields_title(_('COUNTRY')) }}
+      {{ form.country }}
+      {{ form.country.errors }}
+    </div>
+  </div>
+  <div class="section section_buttons">
+    <p>
+      <label class="opt_in_info">
+        {{ form.accept_email }}
+        {{ _('I wish to receive information and notifications about Firefox and Mozilla via email.') }}
+      </label>
+    </p>
+    <div class="buttons">
+      <button type="submit" class="save_changes">
+        {# L10n: Used in context of saving changes to a profile. #}
+        {{ _('Save my changes &raquo;') }}
+      </button>
+      <a class="button" href="{{ url('my_badges') }}">{{ _('Cancel &raquo;') }}</a>
+    </div>
+  </div>
+</form>

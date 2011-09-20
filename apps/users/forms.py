@@ -24,12 +24,13 @@ PASSWD_COMPLEX = _lazy(u'Passwords must contain at least 1 letter and '
 ERROR_SEND_EMAIL = _lazy(
     u'We are having trouble reaching your email address. '
     'Please try a different address or contact an administrator.')
+EMAIL_REQUIRED = _lazy(u'Please enter an email address.')
 YOUR_EMAIL = _lazy(u'Your email address')
 USER_EMAIL_EXISTS = _lazy(u'A user with that email address already exists.')
-
-
 EMAIL_OR_PASSWD_WRONG = _lazy('Email or password incorrect.')
 USER_INACTIVE = _lazy('This account is inactive.')
+# L10n: A display name is the name that other users on the site see for you.
+DISPLAY_NAME_REQUIRED = _lazy(u'Please enter a display name.')
 
 
 log = logging.getLogger('badges.users')
@@ -67,30 +68,10 @@ class PasswordField(forms.CharField):
         return cleaned_value
 
 
-class RegisterForm(FormBase):
-    """Form used to create registration profile."""
-    name = forms.CharField(max_length=255)
-    email = forms.EmailField(max_length=255)
-    password = PasswordField()
-
-    placeholders = {
-        'name': _lazy('Your full name'),
-        'email': _lazy('Your email address'),
-        'password': _lazy('Your password'),
-    }
-
-    def clean_email(self):
-        """Check if a user exists with the given email."""
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise ValidationError(USER_EMAIL_EXISTS)
-
-        return email
-
-
 class LoginForm(FormBase, auth_forms.AuthenticationForm):
     """AuthenticationForm that uses an email instead of a username."""
-    username = forms.EmailField()
+    username = forms.EmailField(error_messages={'required': EMAIL_REQUIRED})
+    password = forms.CharField(error_messages={'required': PASSWD_REQUIRED})
     remember_me = forms.BooleanField(required=False)
 
     placeholders = {
@@ -113,14 +94,18 @@ class LoginForm(FormBase, auth_forms.AuthenticationForm):
         return self.cleaned_data
 
 
-class ProfileForm(forms.ModelForm):
-    """Parent class for editing UserProfiles."""
+class EditProfileForm(forms.ModelForm):
+    """Form for editing user profile."""
     country = forms.ChoiceField(choices=COUNTRIES)
+    password = PasswordField(label=_lazy(u'New Password'), required=False)
+    password2 = PasswordField(label=_lazy(u'Retype Password'), required=False)
 
     class Meta:
+        exclude = ('user', 'modified', 'created')
         model = UserProfile
 
     placeholders = {
+        'name': _lazy('Full Name'),
         'address_1': _lazy('Street'),
         'address_2': _lazy('Apartment or Unit # (optional)'),
         'city': _lazy('City'),
@@ -128,27 +113,18 @@ class ProfileForm(forms.ModelForm):
     }
 
     def __init__(self, *args, **kwargs):
-        super(ProfileForm, self).__init__(*args, **kwargs)
+        super(EditProfileForm, self).__init__(*args, **kwargs)
 
         # Style select fields correctly
         self.fields['locale'].widget.attrs['class'] = 'js_uniform'
         self.fields['country'].widget.attrs['class'] = 'js_uniform'
 
         # Add placeholders for fields
-        for field, placeholder in ProfileForm.placeholders.items():
+        for field, placeholder in self.placeholders.items():
             self.fields[field].widget.attrs['placeholder'] = placeholder
 
         # Localize countries list
         self.fields['country'].choices = country_choices()
-
-
-class EditProfileForm(ProfileForm):
-    """Form for editing an existing UserProfile."""
-    password = PasswordField(label=_lazy(u'New Password'), required=False)
-    password2 = PasswordField(label=_lazy(u'Retype Password'), required=False)
-
-    class Meta(ProfileForm.Meta):
-        exclude = ('user', 'modified', 'created')
 
     def save(self, *args, **kwargs):
         """Save password to user object instead of UserProfile."""
@@ -174,23 +150,30 @@ class EditProfileForm(ProfileForm):
         return self.cleaned_data
 
 
-class ActivationForm(ProfileForm):
+class RegisterForm(FormBase):
     """Form used during activation."""
-    username = forms.CharField(label=_lazy(u'Username'), max_length=50)
+    display_name = forms.CharField(max_length=255, error_messages={
+        'required': DISPLAY_NAME_REQUIRED
+    })
+    email = forms.EmailField(error_messages={'required': EMAIL_REQUIRED})
+    password = PasswordField()
 
-    class Meta(ProfileForm.Meta):
-        exclude = ('user', 'modified', 'created', 'name')
+    placeholders = {
+        'display_name': _lazy(u'Your display name'),
+        'email': _lazy(u'Your email address'),
+        'password': _lazy(u'Your password'),
+    }
 
-    def clean_username(self):
-        """Ensure that the chosen username is unique."""
+    def clean_email(self):
+        """Ensure that the chosen email is unique."""
         try:
-            User.objects.get(username=self.cleaned_data['username'])
-            raise forms.ValidationError(_('This username is already taken! '
+            User.objects.get(email=self.cleaned_data['email'])
+            raise forms.ValidationError(_('This email is already taken! '
                                           'Please try again.'))
         except User.DoesNotExist:
             pass
 
-        return self.cleaned_data['username']
+        return self.cleaned_data['email']
 
 
 class PasswordResetForm(auth_forms.PasswordResetForm):

@@ -9,7 +9,6 @@ from test_utils import TestCase
 
 from badges.tests import LocalizingClient
 from users.models import RegisterProfile
-from users.tests.test_forms import activation_form_defaults
 
 
 class RegisterTests(TestCase):
@@ -23,12 +22,12 @@ class RegisterTests(TestCase):
         A registration profile should be created and an activation email sent.
         """
         response = self.client.post(reverse('users.register'),
-                                    {'name': 'newbie',
+                                    {'display_name': 'newbie',
                                      'email': 'newbie@example.com',
                                      'password': 'asdf1234'})
         eq_(200, response.status_code)
 
-        p = RegisterProfile.objects.get(name='newbie')
+        p = RegisterProfile.objects.get(display_name='newbie')
         assert p.password.startswith('sha512')
 
         eq_(len(mail.outbox), 1)
@@ -36,27 +35,16 @@ class RegisterTests(TestCase):
 
     def test_activation(self):
         """Test basic account activation."""
-        parameters = activation_form_defaults()
         reg_profile = RegisterProfile.objects.create_profile(
             'TestName', 'a@b.com', 'asdf1234')
 
         kwargs = {'activation_key': reg_profile.activation_key}
-        response = self.client.post(reverse('users.activate', kwargs=kwargs),
-                                    parameters)
+        response = self.client.post(reverse('users.activate', kwargs=kwargs))
         eq_(200, response.status_code)
 
         # Test relations
-        u = User.objects.get(username='TestUser')
-        eq_(u.get_profile().name, 'TestName')
-
-    def test_invalid_activation_key(self):
-        """Invalid activation keys are redirected to the homepage."""
-        kwargs = {'activation_key': "invalid_key"}
-        response = self.client.get(reverse('users.activate',
-                                           kwargs=kwargs))
-
-        eq_(302, response.status_code)
-        eq_('http://testserver/en-US/', response['Location'])
+        u = User.objects.get(email='a@b.com')
+        eq_(u.get_profile().display_name, 'TestName')
 
 
 class LoginTests(TestCase):
@@ -92,17 +80,20 @@ class EditProfileTests(TestCase):
 
     def _params(self, **kwargs):
         """Default arguments for profile edit form."""
-        defaults = {'name': 'Test User', 'locale': 'en-US', 'country': 'us'}
+        defaults = {'display_name': 'Test User',
+                    'locale': 'en-US',
+                    'country': 'us'}
         defaults.update(kwargs)
 
         return defaults
 
     def test_basic_edit(self):
-        parameters = self._params(name='Honey Badger', state="Doesn't care")
+        parameters = self._params(display_name='Honey Badger',
+                                  state="Doesn't care")
         self.client.post(reverse('users.edit.profile'), parameters)
 
         user = User.objects.get(pk=1)
-        eq_(user.get_profile().name, 'Honey Badger')
+        eq_(user.get_profile().display_name, 'Honey Badger')
         eq_(user.get_profile().state, "Doesn't care")
 
     def test_change_password(self):

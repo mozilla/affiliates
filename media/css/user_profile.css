@@ -133,7 +133,7 @@ a.button {
 }
 
 
-#profile-form .section h4 {
+#profile-form h4 {
     display: block;
     font-family: 'MuseoSans500', sans-serif;
     font-size: 14px;
@@ -160,9 +160,13 @@ a.button {
     width: 284px;
 }
 
-#profile-form .section .fields .has_bulb {
+#profile-form .has_bulb {
     display: inline-block;
     margin-bottom: 6px;
+}
+
+#profile-form .fields_long input {
+    width: 567px;
 }
 
 #profile-form .section .fields label {

@@ -1,5 +1,27 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block site_css %}
+  {{ super() }}
+  {{ css('home') }}
+{% endblock %}
+{% block content_class %}thank_you{% endblock %}
 {% block content %}
-<h2>Activation Complete!</h2>
-<p>Congratulations, your account has been successfully activated!</p>
+  {% if activated_user %}
+    <h2>{{ _('Email verified') }}</h2>
+    <p>
+      {# L10n: href is a link to the site's homepage. #}
+      {% trans href=url('home') %}
+        Your email address has been verified. You may now
+        <a href="{{ href }}">log in from the homepage</a>.
+      {% endtrans %}
+    </p>
+  {% else %}
+    <h2>{{ _('Activation failed') }}</h2>
+    <p>
+      {% trans %}
+        We could not activate your account. Please make sure that you
+        have clicked the correct link in your email or typed in the
+        correct address.
+      {% endtrans %}
+    </p>
+  {% endif %}
 {% endblock %}

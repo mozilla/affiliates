@@ -7,9 +7,9 @@
 {% block content %}
 <h2>{{ _('Thanks for joining <span>Firefox Affiliates!</span>') }}</h2>
 <p>{% trans email=profile.email, homepage=url('home') -%}
-  We've just sent you an email with your password to: <span>{{ email }} <a href="{{ homepage }}">(Change)</a></span>
+  We've just sent an activation email to: <span>{{ email }} <a href="{{ homepage }}">(Change)</a></span>
 {%- endtrans %}</p>
 <p>{% trans -%}
-  Please click on the link provided in the e-mail to access your Affiliates account.
+  Please click on the link provided in the email to verify that your email is valid.
 {%- endtrans %}</p>
 {% endblock %}

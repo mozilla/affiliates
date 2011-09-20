@@ -9,38 +9,13 @@ from test_utils import TestCase
 from users import forms
 
 
-def activation_form_defaults():
-    """Returns a set of default values for testing the activation form."""
-    return {'username': 'TestUser', 'country': 'us',
-            'locale': 'en-US', 'accept_email': True}
-
-
-def activation_form(**kwargs):
-    """Return an activation form with default values"""
-    defaults = activation_form_defaults()
-    defaults.update(kwargs)
-
-    return forms.ActivationForm(defaults)
-
-
-class ActivationFormTests(TestCase):
-    fixtures = ['registered_users']
-
-    def test_usernames_unique(self):
-        """Usernames must be unique."""
-        form = activation_form(username='mkelly')
-        ok_(not form.is_valid())
-        ok_('username' in form.errors)
-
-        form = activation_form(username='unique_user')
-        ok_(form.is_valid())
-
-
 class EditProfileFormTests(TestCase):
 
     def _form(self, **kwargs):
         """Default profile edit form."""
-        defaults = {'name': 'Test User', 'locale': 'en-US', 'country': 'us'}
+        defaults = {'display_name': 'Test User',
+                    'locale': 'en-US',
+                    'country': 'us'}
         defaults.update(kwargs)
 
         return forms.EditProfileForm(defaults)
@@ -144,7 +119,7 @@ class RegisterFormTests(TestCase):
     fixtures = ['registered_users']
 
     def _form(self, name, email, password):
-        return forms.RegisterForm({'name': name, 'email': email,
+        return forms.RegisterForm({'display_name': name, 'email': email,
                                    'password': password})
 
     def test_email(self):

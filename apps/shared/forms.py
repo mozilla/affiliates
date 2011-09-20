@@ -9,5 +9,6 @@ class FormBase(forms.Form):
         super(FormBase, self).__init__(*args, **kwargs)
 
         # Add placeholders for fields
-        for field, placeholder in self.placeholders.items():
-            self.fields[field].widget.attrs['placeholder'] = placeholder
+        for field_name, placeholder in self.placeholders.items():
+            field = self.fields[field_name]
+            field.widget.attrs['placeholder'] = placeholder
