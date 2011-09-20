@@ -1,8 +1,8 @@
 BEGIN;
 
-DROP TABLE `banners_banner`;
-DROP TABLE `banners_bannerimage`;
 DROP TABLE `banners_bannerinstance`;
+DROP TABLE `banners_bannerimage`;
+DROP TABLE `banners_banner`;
 
 CREATE TABLE `banners_banner` (
     `badge_ptr_id` integer NOT NULL PRIMARY KEY
