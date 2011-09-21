@@ -105,6 +105,10 @@ td, th {
     clear: both;
 }
 
+p.heavy {
+    font-weight: bold;
+}
+
 #main-feature {
     margin: 0 20px;
 }

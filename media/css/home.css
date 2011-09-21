@@ -55,7 +55,7 @@
     padding: 8px 6px;
     width: 235px;
 }
-#register-form .agree_chk {
+#register-form input[type="checkbox"] {
     float: left;
 }
 #register-form label {

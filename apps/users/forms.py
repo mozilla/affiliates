@@ -31,6 +31,8 @@ EMAIL_OR_PASSWD_WRONG = _lazy('Email or password incorrect.')
 USER_INACTIVE = _lazy('This account is inactive.')
 # L10n: A display name is the name that other users on the site see for you.
 DISPLAY_NAME_REQUIRED = _lazy(u'Please enter a display name.')
+AGREE_TOS_PP = _lazy(u'You must agree to the terms of service and privacy '
+                     'policy to register.')
 
 
 log = logging.getLogger('badges.users')
@@ -157,6 +159,7 @@ class RegisterForm(FormBase):
     })
     email = forms.EmailField(error_messages={'required': EMAIL_REQUIRED})
     password = PasswordField()
+    agreement = forms.BooleanField(error_messages={'required': AGREE_TOS_PP})
 
     placeholders = {
         'display_name': _lazy(u'Your display name'),

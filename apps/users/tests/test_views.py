@@ -24,7 +24,8 @@ class RegisterTests(TestCase):
         response = self.client.post(reverse('users.register'),
                                     {'display_name': 'newbie',
                                      'email': 'newbie@example.com',
-                                     'password': 'asdf1234'})
+                                     'password': 'asdf1234',
+                                     'agreement': 'on'})
         eq_(200, response.status_code)
 
         p = RegisterProfile.objects.get(display_name='newbie')

@@ -10,19 +10,17 @@
   {{ register_form.display_name }}
   {{ register_form.email }}
   {{ register_form.password }}
-
-  {# TODO: Uncomment when registration agreement is implemented
-  <input class="agree_chk"
-         type="checkbox"
-         name="register-agreement"
-         value="true"
-         required/>
+  {{ register_form.agreement }}
   <label for="register-agreement">
-    {# L10n: {{ tos }} links to the terms of service, {{ privacy_policy }} links to Mozilla privacy policy.
-    {%- trans -%}
-    I agree to the Firefox Affiliates <a href="{{ tos }}">terms of service</a> and Mozilla <a href="{{ privacy_policy }}">Privacy Policy</a>
-    {%- endtrans -%}
-  </label>#}
+    {# L10n: {{ tos }} links to the terms of service, {{ privacy_policy }} links to Mozilla privacy policy. #}
+    {% trans tos=url('tos'), privacy_policy='http://www.mozilla.org/legal/privacy/firefox.html' %}
+
+    I agree to the Firefox Affiliates <a href="{{ tos }}">terms of
+    service</a> and Mozilla <a href="{{ privacy_policy }}">Privacy
+    Policy</a>
+
+    {% endtrans %}
+  </label>
 
   <button class="register" type="submit">{{ _('Register &raquo;') }}</button>
 </form>

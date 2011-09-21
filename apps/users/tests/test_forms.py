@@ -118,9 +118,11 @@ class LoginFormTests(TestCase):
 class RegisterFormTests(TestCase):
     fixtures = ['registered_users']
 
-    def _form(self, name, email, password):
-        return forms.RegisterForm({'display_name': name, 'email': email,
-                                   'password': password})
+    def _form(self, name, email, password, agreement=True):
+        return forms.RegisterForm({'display_name': name,
+                                   'email': email,
+                                   'password': password,
+                                   'agreement': agreement})
 
     def test_email(self):
         # Email isn't taken
@@ -129,4 +131,8 @@ class RegisterFormTests(TestCase):
 
         # Email is taken
         form = self._form('name', 'mkelly@mozilla.com', 'asdf1234')
+        ok_(not form.is_valid())
+
+    def test_agreement_required(self):
+        form = self._form('name', 'not.exist@moz.com', 'asdf1234', False)
         ok_(not form.is_valid())
