@@ -73,7 +73,8 @@ class PasswordField(forms.CharField):
 class LoginForm(FormBase, auth_forms.AuthenticationForm):
     """AuthenticationForm that uses an email instead of a username."""
     username = forms.EmailField(error_messages={'required': EMAIL_REQUIRED})
-    password = forms.CharField(error_messages={'required': PASSWD_REQUIRED})
+    password = forms.CharField(widget=forms.PasswordInput(),
+                               error_messages={'required': PASSWD_REQUIRED})
     remember_me = forms.BooleanField(required=False)
 
     placeholders = {
