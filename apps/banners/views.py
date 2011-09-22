@@ -41,4 +41,4 @@ def link(request, user_id, banner_id, banner_img_id):
         instance.badge = banner_img.banner
         instance.save()
 
-        return handle_affiliate_link(instance)
+    return handle_affiliate_link(instance)
