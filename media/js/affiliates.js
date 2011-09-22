@@ -5,6 +5,9 @@ $(
     function(event){
         MonthPicker.init();
         HomePage.init();
+
+        // Enable placeholders in non-HTML5 browsers
+        $('input[placeholder],textarea[placeholder]').placeholder();
     }
 );
 
