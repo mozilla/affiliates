@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.translation import get_language
@@ -6,9 +7,19 @@ from funfactory.urlresolvers import reverse
 from product_details import product_details
 
 
-def absolutify(url, https=False):
+def absolutify(url, https=False, cdn=False):
+    """
+    Return the given url with an added domain and protocol.
+
+    Use https=True for https, cdn=True to use settings.CDN_DOMAIN as
+    the domain.
+    """
     protocol = 'http://' if not https else 'https://'
-    domain = Site.objects.get_current().domain
+    if cdn and settings.CDN_DOMAIN:
+        domain = settings.CDN_DOMAIN
+    else:
+        domain = Site.objects.get_current().domain
+
     return ''.join((protocol, domain, url))
 
 

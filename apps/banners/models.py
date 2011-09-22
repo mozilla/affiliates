@@ -30,7 +30,7 @@ class Banner(Badge):
                 banner_images[img.size] = {}
 
             banner_images[img.size][img.color] = {
-                'image_url': absolutify(img.image.url),
+                'image_url': absolutify(img.image.url, cdn=True),
                 'pk': img.pk
             }
 

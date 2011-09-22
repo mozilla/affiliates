@@ -19,6 +19,15 @@ class TestAbsolutify(TestCase):
         url = absolutify('/some/url', https=True)
         eq_(url, 'https://badge.mo.com/some/url')
 
+    def test_cdn(self):
+        with patch.object(settings, 'CDN_DOMAIN', None):
+            url = absolutify('/some/url', cdn=True)
+            eq_(url, 'http://badge.mo.com/some/url')
+
+        with patch.object(settings, 'CDN_DOMAIN', 'cdn.badge.mo.com'):
+            url = absolutify('/some/url', cdn=True)
+            eq_(url, 'http://cdn.badge.mo.com/some/url')
+
 
 class TestRedirect(TestCase):
     urls = 'shared.tests.urls'
