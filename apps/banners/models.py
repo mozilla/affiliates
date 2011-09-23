@@ -9,6 +9,9 @@ from tower import ugettext_lazy as _lazy
 from badges.models import Badge, BadgeInstance, ModelBase
 from shared.utils import absolutify
 
+# L10n: Width and height are the width and height of an image.
+SIZE = _lazy('%(width)sx%(height)s pixels')
+
 
 BANNER_TEMPLATE_FILE = 'apps/banners/templates/banners/banner_template.html'
 with open(path(BANNER_TEMPLATE_FILE)) as f:
@@ -56,11 +59,15 @@ class Banner(Badge):
 class BannerImage(ModelBase):
     """Image that a user can choose for their specific banner."""
     banner = models.ForeignKey(Banner)
-    size = models.CharField(max_length=20, verbose_name=_lazy(u'image size'))
     color = models.CharField(max_length=20, verbose_name=_lazy(u'image color'))
     image = models.ImageField(upload_to=settings.BANNER_IMAGE_PATH,
                               verbose_name=_lazy(u'image file'),
                               max_length=settings.MAX_FILEPATH_LENGTH)
+
+    @property
+    def size(self):
+        """Return a string representing the size of this image in pixels."""
+        return SIZE % {'width': self.image.width, 'height': self.image.height}
 
     def __unicode__(self):
         return '%s: %s %s' % (self.banner.name, self.color, self.size)
@@ -68,6 +75,8 @@ class BannerImage(ModelBase):
 
 class BannerInstance(BadgeInstance):
     image = models.ForeignKey(BannerImage)
+
+    details_template = 'banners/details.html'
 
     def render(self):
         return jingo.env.from_string(BANNER_TEMPLATE).render({

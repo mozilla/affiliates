@@ -67,6 +67,7 @@
                 <h5>{{ _('LINKED URL:') }}</h5>
                 <p><a href="{{ instance.badge.href }}">{{ instance.badge.href }}</a></p>
               </li>
+              {% include instance.details_template() ignore missing %}
             </ul>
           </div>
         </li>

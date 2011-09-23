@@ -142,6 +142,14 @@ class BadgeInstance(MultiTableParentModel):
         """Return the HTML to display this BadgeInstance."""
         return self.child().render()
 
+    def details_template(self):
+        """
+        Return the path for the template used to render details about
+        this badgeinstance on the my_banners page. Returns None if there
+        is no template.
+        """
+        return getattr(self.child(), 'details_template', None)
+
 
 class ClickStatsManager(models.Manager):
     def total(self, **kwargs):

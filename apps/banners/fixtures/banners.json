@@ -62,8 +62,7 @@
         "fields": {
             "color": "Blue",
             "image": "uploads/banners/120x240arrow_b.png",
-            "banner": 1,
-            "size": "120x240"
+            "banner": 1
         }
     },
     {
@@ -72,8 +71,7 @@
         "fields": {
             "color": "Green",
             "image": "uploads/banners/120x240arrow_g.png",
-            "banner": 1,
-            "size": "120x240"
+            "banner": 1
         }
     },
     {
@@ -82,8 +80,7 @@
         "fields": {
             "color": "Red",
             "image": "uploads/banners/120x240arrow_r.png",
-            "banner": 1,
-            "size": "120x240"
+            "banner": 1
         }
     },
     {
@@ -92,8 +89,7 @@
         "fields": {
             "color": "Green",
             "image": "uploads/banners/mobile_dl_300x250_grn_1.png",
-            "banner": 1,
-            "size": "300x250"
+            "banner": 1
         }
     },
     {
@@ -102,8 +98,7 @@
         "fields": {
             "color": "Red",
             "image": "uploads/banners/mobile_dl_300x250_red_1.png",
-            "banner": 1,
-            "size": "300x250"
+            "banner": 1
         }
     },
     {
