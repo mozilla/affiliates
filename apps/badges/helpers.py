@@ -28,7 +28,8 @@ def babel_date(date, format='long'):
     Format a date properly for the current locale. Format can be one of
     'short', 'medium', 'long', or 'full'.
     """
-    return format_date(date, format)
+    locale = Locale.parse(get_language(), sep='-')
+    return format_date(date, format, locale)
 
 
 @register.filter
