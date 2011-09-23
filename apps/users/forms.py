@@ -113,6 +113,7 @@ class EditProfileForm(forms.ModelForm):
         'address_2': _lazy('Apartment or Unit # (optional)'),
         'city': _lazy('City'),
         'state': _lazy('State or Province'),
+        'postal_code': _lazy('Zip or Postal Code'),
     }
 
     def __init__(self, *args, **kwargs):

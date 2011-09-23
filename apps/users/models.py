@@ -54,6 +54,8 @@ class UserProfile(ModelBase):
                                  verbose_name=_lazy(u'City'))
     state = models.CharField(max_length=255, blank=True, null=True,
                                  verbose_name=_lazy(u'State or Province'))
+    postal_code = models.CharField(max_length=32, blank=True, null=True,
+                                   verbose_name=_lazy(u'Zip or Postal Code'))
 
     locale = LocaleField(verbose_name=_lazy(u'Locale'))
     country = models.CharField(max_length=2, choices=COUNTRIES,
