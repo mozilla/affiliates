@@ -1,10 +1,10 @@
 import json
-from urllib import quote_plus
 
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
+from django.utils.http import urlquote_plus
 from django.utils.translation import get_language
 
 import jingo
@@ -41,7 +41,7 @@ def home(request, register_form=None, login_form=None):
     params = {'register_form': register_form,
               'login_form': login_form,
               'share_url': absolutify('/'),
-              'tweet_text': quote_plus(TWEET_TEXT)}
+              'tweet_text': urlquote_plus(TWEET_TEXT)}
     return jingo.render(request, 'badges/home.html', params)
 
 
