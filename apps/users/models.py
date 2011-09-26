@@ -64,8 +64,6 @@ class UserProfile(ModelBase):
 
     locale = LocaleField(verbose_name=_lazy(u'Locale'))
 
-    accept_email = models.BooleanField(verbose_name=_lazy(u'Receive emails'))
-
     def __unicode__(self):
         return unicode(self.email)
 

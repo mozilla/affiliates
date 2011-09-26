@@ -34,6 +34,24 @@ class RegisterTests(TestCase):
         eq_(len(mail.outbox), 1)
         ok_(mail.outbox[0].body.find('activate/%s' % p.activation_key))
 
+    @patch('users.views.subscribe')
+    @patch.object(settings, 'RESPONSYS_CAMPAIGN', 'testcamp')
+    def test_email_signup(self, subscribe):
+        """
+        Agreeing to subscribe to emails during registration calls subscribe.
+        """
+        params = {'display_name': 'newbie',
+                  'email': 'newbie@example.com',
+                  'password': 'asdf1234',
+                  'agreement': 'on',
+                  'email_subscribe': 'on'}
+        response = self.client.post(reverse('users.register'), params)
+        eq_(200, response.status_code)
+
+        source_url = 'http://testserver%s' % response.request['PATH_INFO']
+        subscribe.assert_called_with('testcamp', u'newbie@example.com',
+                                     lang='en-us', source_url=source_url)
+
     def test_activation(self):
         """Test basic account activation."""
         reg_profile = RegisterProfile.objects.create_profile(

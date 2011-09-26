@@ -1,2 +1,3 @@
 -r ../vendor/src/funfactory/funfactory/requirements/compiled.txt
 PIL==1.1.7
+pycurl==7.19.0

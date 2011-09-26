@@ -126,7 +126,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'badges': {
+        'affiliates': {
             'handlers': ['syslog'],
             'level': 'WARNING',
         },

@@ -22,5 +22,10 @@
     {% endtrans %}
   </label>
 
+  {{ register_form.email_subscribe }}
+  <label for="{{ register_form.email_subscribe.html_name }}">
+    {{ _('I wish to receive information and notifications about Firefox and Mozilla via email.') }}
+  </label>
+
   <button class="register" type="submit">{{ _('Register &raquo;') }}</button>
 </form>

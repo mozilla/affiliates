@@ -35,7 +35,7 @@ AGREE_TOS_PP = _lazy(u'You must agree to the terms of service and privacy '
                      'policy to register.')
 
 
-log = logging.getLogger('badges.users')
+log = logging.getLogger('a.users')
 
 
 class PasswordField(forms.CharField):
@@ -162,6 +162,7 @@ class RegisterForm(FormBase):
     email = forms.EmailField(error_messages={'required': EMAIL_REQUIRED})
     password = PasswordField()
     agreement = forms.BooleanField(error_messages={'required': AGREE_TOS_PP})
+    email_subscribe = forms.BooleanField(required=False)
 
     placeholders = {
         'display_name': _lazy(u'Your display name'),

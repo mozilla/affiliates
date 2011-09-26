@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
@@ -8,14 +10,19 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
 from django.utils.http import base36_to_int
+from django.utils.translation import get_language
 
 import jingo
+from responsys import subscribe
 from session_csrf import anonymous_csrf
 from tower import ugettext as _
 
 from badges.views import home
 from users import forms
 from users.models import RegisterProfile
+
+
+log = logging.getLogger('a.register')
 
 
 @anonymous_csrf
@@ -45,6 +52,16 @@ def register(request):
         profile = RegisterProfile.objects.create_profile(
             form.cleaned_data['display_name'], form.cleaned_data['email'],
             form.cleaned_data['password'])
+
+        # Sign the user up for mailing lists if they wanted
+        if form.cleaned_data['email_subscribe']:
+            try:
+                subscribe(settings.RESPONSYS_CAMPAIGN,
+                          form.cleaned_data['email'],
+                          lang=get_language(),
+                          source_url=request.build_absolute_uri())
+            except Exception, err:
+                log.warning(err)
 
         return jingo.render(request, 'users/register_done.html',
                             {'profile': profile})

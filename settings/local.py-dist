@@ -62,10 +62,10 @@ SECRET_KEY = '1iz#v0m55@h26^m6hxk3a7at*h$qj_2a$juu1#nv50548j(x1v'
 # BROKER_VHOST = 'playdoh'
 # CELERY_RESULT_BACKEND = 'amqp'
 
-# For absolute urls
-# DOMAIN = 'localhost'
-# PORT = 8000
-# PROTOCOL = 'http://'
-
 # CDN for absolutify
 # CDN_DOMAIN = 'affiliates-cdn.mozilla.org'
+
+# Responsys email list
+RESPONSYS_KEY = ''
+RESPONSYS_API_URL = 'https://awesomeness.mozilla.org/pub/rf'
+RESPONSYS_CAMPAIGN = 'MOZILLA_AND_YOU'
