@@ -30,7 +30,7 @@ def login(request):
             if form.cleaned_data['remember_me']:
                 request.session.set_expiry(settings.SESSION_REMEMBER_DURATION)
 
-            return HttpResponseRedirect(reverse('badges.new.step1'))
+            return HttpResponseRedirect(reverse('my_badges'))
 
     return home(request, login_form=form)
 
