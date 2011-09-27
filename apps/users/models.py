@@ -9,6 +9,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.loader import render_to_string
+from django.utils.translation import get_language
 
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
@@ -120,7 +121,8 @@ class RegisterManager(models.Manager):
                         is_active=True)
             user.save()
             UserProfile.objects.create(user=user,
-                                       display_name=reg_profile.display_name)
+                                       display_name=reg_profile.display_name,
+                                       locale=get_language().lower())
             reg_profile.delete()
             return user
 
