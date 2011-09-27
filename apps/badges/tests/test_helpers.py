@@ -34,7 +34,8 @@ class TestHelpers(TestCase):
     def test_babel_number(self):
         number = 1000000
         activate('en-US')
-        eq_(babel_number(number), '1,000,000')
+        eq_(babel_number(number), u'1,000,000')
 
         activate('fr')
-        eq_(babel_number(number), '1 000 000')
+        # \xa0 is a non-breaking space
+        eq_(babel_number(number), u'1\xa0000\xa0000')
