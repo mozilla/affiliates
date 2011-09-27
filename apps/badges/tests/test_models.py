@@ -1,10 +1,9 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.core import management
 from django.db.models import Sum
 
-import tower
+from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
@@ -14,20 +13,12 @@ from badges.tests.models import MultiTableParent, MultiTableChild
 
 
 class ModelBaseTests(TestCase):
-    def setUp(self):
-        # Ensure xx locale is compiled
-        management.call_command('compilemessages', locale='xx')
-
-        tower.activate('xx')
-
-    def tearDown(self):
-        tower.deactivate_all()
-
-    def localized_basic_test(self):
+    @patch('badges.models._')
+    def localized_basic_test(self, _):
         # Category inherits from ModelBase
         c = Category.objects.create(name='TestString')
-
-        eq_(c.localized('name'), 'TranslatedTestString')
+        c.localized('name')
+        _.assert_called_with('TestString')
 
     def localized_cache_test(self):
         c = Category.objects.create(name='TestString')

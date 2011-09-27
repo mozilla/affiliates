@@ -5,12 +5,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
-from product_details import product_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 
-LANGUAGE_CHOICES = tuple([(i, product_details.languages[i]['native']) for i in
-                          settings.AFFILIATES_LANGUAGES])
+LANGUAGE_CHOICES = settings.LANGUAGES.items()
 
 
 class ModelBase(models.Model):

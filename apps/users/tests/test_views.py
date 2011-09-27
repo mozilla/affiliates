@@ -82,7 +82,7 @@ class EditProfileTests(TestCase):
     def _params(self, **kwargs):
         """Default arguments for profile edit form."""
         defaults = {'display_name': 'Test User',
-                    'locale': 'en-US',
+                    'locale': 'en-us',
                     'country': 'us'}
         defaults.update(kwargs)
 

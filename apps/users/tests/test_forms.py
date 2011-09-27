@@ -14,7 +14,7 @@ class EditProfileFormTests(TestCase):
     def _form(self, **kwargs):
         """Default profile edit form."""
         defaults = {'display_name': 'Test User',
-                    'locale': 'en-US',
+                    'locale': 'en-us',
                     'country': 'us'}
         defaults.update(kwargs)
 
