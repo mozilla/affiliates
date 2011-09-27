@@ -3,7 +3,7 @@
 <div class="highlight-box degraded-box">
   <div id="user-info">
     {{ gravatar_img(user, size=50) }}
-    <span>{{ display_name(user) }}</span>
+    <div>{{ display_name(user) }}</div>
   </div>
   {% if user_has_created_badges %}
     <div class="statistics-summary">

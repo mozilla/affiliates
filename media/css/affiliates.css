@@ -689,16 +689,20 @@ a.back:hover {
 
 #user-info {
     height: 65px;
+    overflow: hidden;
     position: relative;
 }
 
-#user-info span {
+#user-info img {
+    float: left;
+    margin-right: 20px;
+}
+
+#user-info div {
     color: #444;
     font-family: 'MetaWebPro', serif;
     font-size: 18px;
-    padding: 0 10px 0 20px;
-    position: relative;
-    top: -32px;
+    overflow: hidden;
 }
 
 p.banners_counter {
@@ -1261,9 +1265,10 @@ div.total-downloads-section ul{
     margin:0;
 }
 
-div.total-downloads-section ul li{
+div.total-downloads-section ul li {
     display:block;
     border-top:1px solid #e1edf9;
+    overflow-x: hidden;
     padding:4px;
     font-size: 14px;
 }
@@ -1303,5 +1308,4 @@ div.download_tooltip{
 
 div.download_tooltip span{
     left:-30px;
-
 }
