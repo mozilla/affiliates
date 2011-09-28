@@ -41,6 +41,10 @@ LEADERBOARD_SIZE = 5
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Log out on browser close
 SESSION_REMEMBER_DURATION = 1209600  # If we remember you, it lasts for 2 weeks
 
+# Gravatar Settings
+GRAVATAR_URL = 'https://secure.gravatar.com'
+DEFAULT_GRAVATAR = MEDIA_URL + 'img/template/user-avatar.jpg'
+
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {

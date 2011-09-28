@@ -2,7 +2,7 @@
 
 <div class="highlight-box degraded-box">
   <div id="user-info">
-    <img alt="user avatar" src="{{ MEDIA_URL }}img/template/user-avatar.jpg">
+    {{ gravatar_img(user, size=50) }}
     <span>{{ display_name(user) }}</span>
   </div>
   {% if user_has_created_badges %}
