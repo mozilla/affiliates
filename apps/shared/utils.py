@@ -27,6 +27,7 @@ def absolutify(url, https=False, cdn=False):
 def country_choices():
     """Return a localized, sorted list of tuples of country names and values."""
     items = product_details.get_regions(get_language()).items()
+    items.append(('', '---'))  # Empty choice
     return sorted(items, key=lambda x: x[1])
 
 

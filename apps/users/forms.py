@@ -99,7 +99,7 @@ class LoginForm(FormBase, auth_forms.AuthenticationForm):
 
 class EditProfileForm(forms.ModelForm):
     """Form for editing user profile."""
-    country = forms.ChoiceField(choices=COUNTRIES)
+    country = forms.ChoiceField(choices=COUNTRIES, required=False)
     password = PasswordField(label=_lazy(u'New Password'), required=False)
     password2 = PasswordField(label=_lazy(u'Retype Password'), required=False)
 

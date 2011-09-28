@@ -18,7 +18,8 @@ from badges.models import ModelBase, LocaleField
 from users.utils import hash_password
 
 
-COUNTRIES = tuple(product_details.get_regions(settings.LANGUAGE_CODE).items())
+COUNTRIES = product_details.get_regions(settings.LANGUAGE_CODE).items()
+COUNTRIES.append(('', '---'))  # Empty choice
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
 
@@ -57,10 +58,10 @@ class UserProfile(ModelBase):
                                  verbose_name=_lazy(u'State or Province'))
     postal_code = models.CharField(max_length=32, blank=True, null=True,
                                    verbose_name=_lazy(u'Zip or Postal Code'))
+    country = models.CharField(max_length=2, choices=COUNTRIES, blank=True,
+                               verbose_name=_lazy(u'Country'))
 
     locale = LocaleField(verbose_name=_lazy(u'Locale'))
-    country = models.CharField(max_length=2, choices=COUNTRIES,
-                               verbose_name=_lazy(u'Country'))
 
     accept_email = models.BooleanField(verbose_name=_lazy(u'Receive emails'))
 
