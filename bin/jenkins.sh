@@ -1,6 +1,9 @@
 #!/bin/sh
 # This script makes sure that Jenkins can properly run your tests against your
 # codebase.
+DB_HOST=sm-hudson01
+
+
 cd $WORKSPACE
 VENV=$WORKSPACE/venv
 
@@ -25,7 +28,6 @@ source $VENV/bin/activate
 
 pip install -q -r requirements/compiled.txt
 
-DB_HOST = sm-hudson01
 cat > settings/local.py <<SETTINGS
 from settings.base import *
 
