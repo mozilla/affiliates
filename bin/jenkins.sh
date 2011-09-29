@@ -26,8 +26,7 @@ source $VENV/bin/activate
 pip install -q -r requirements/compiled.txt
 
 cat > settings/local.py <<SETTINGS
-from settings import *
-import logging
+from settings.base import *
 
 ROOT_URLCONF = '${JOB_NAME}.urls'
 LOG_LEVEL = logging.ERROR
