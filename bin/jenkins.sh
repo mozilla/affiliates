@@ -6,13 +6,6 @@ VENV=$WORKSPACE/venv
 
 echo "Starting build on executor $EXECUTOR_NUMBER..."
 
-if [ -z $1 ]; then
-    echo "Warning: You should provide a unique name for this job to prevent "
-    echo "database collisions."
-    echo "Usage: ./build.sh <name>"
-    echo "Continuing, but don't say you weren't warned."
-fi
-
 # Make sure there's no old pyc files around.
 find . -name '*.pyc' | xargs rm
 
@@ -41,11 +34,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'sm-hudson01',
-        'NAME': '${JOB_NAME}_$1',
+        'NAME': '${JOB_NAME}',
         'USER': 'hudson',
         'PASSWORD': '',
         'OPTIONS': {'init_command': 'SET storage_engine=InnoDB'},
-        'TEST_NAME': 'test_${JOB_NAME}_$1',
+        'TEST_NAME': 'test_${JOB_NAME}',
         'TEST_CHARSET': 'utf8',
         'TEST_COLLATION': 'utf8_general_ci',
     }
