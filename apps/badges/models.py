@@ -7,8 +7,10 @@ from django.db import models
 
 from tower import ugettext as _, ugettext_lazy as _lazy
 
+from shared.utils import unicode_choice_sorted
 
-LANGUAGE_CHOICES = settings.LANGUAGES.items()
+
+LANGUAGE_CHOICES = unicode_choice_sorted(settings.LANGUAGES.items())
 
 
 class ModelBase(models.Model):

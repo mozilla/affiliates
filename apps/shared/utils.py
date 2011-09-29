@@ -1,3 +1,5 @@
+import locale
+
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
@@ -23,12 +25,17 @@ def absolutify(url, https=False, cdn=False):
     return ''.join((protocol, domain, url))
 
 
-# TODO: Sort unicode-aware once localized countries are actually being used.
+def unicode_choice_sorted(choices):
+    """
+    Sorts a list of 2-tuples by the second value, using a unicode-safe sort.
+    """
+    return sorted(choices, cmp=lambda x, y: locale.strcoll(x[1], y[1]))
+
 def country_choices():
     """Return a localized, sorted list of tuples of country names and values."""
     items = product_details.get_regions(get_language()).items()
     items.append(('', '---'))  # Empty choice
-    return sorted(items, key=lambda x: x[1])
+    return unicode_choice_sorted(items)
 
 
 def redirect(to, permanent=False, **kwargs):
