@@ -17,6 +17,7 @@ AUTHENTICATION_BACKENDS = (
     'users.backends.EmailBackend',
 )
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+PASSWORD_RESET_TIMEOUT_DAYS = 2
 
 # Login settings
 LOGIN_VIEW_NAME = 'home'
