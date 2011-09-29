@@ -25,6 +25,7 @@ source $VENV/bin/activate
 
 pip install -q -r requirements/compiled.txt
 
+DB_HOST = sm-hudson01
 cat > settings/local.py <<SETTINGS
 from settings.base import *
 
@@ -34,7 +35,7 @@ LOG_LEVEL = logging.ERROR
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'sm-hudson01',
+        'HOST': '${DB_HOST}',
         'NAME': '${JOB_NAME}',
         'USER': 'hudson',
         'PASSWORD': '',
@@ -50,7 +51,7 @@ CELERY_ALWAYS_EAGER = True
 SETTINGS
 
 echo "Creating database if we need it..."
-echo "CREATE DATABASE ${JOB_NAME} IF NOT EXISTS"|mysql -u hudson
+echo "CREATE DATABASE IF NOT EXISTS ${JOB_NAME}"|mysql -u root -h $DB_HOST
 
 echo "Starting tests..."
 export FORCE_DB=1
