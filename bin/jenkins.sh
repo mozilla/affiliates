@@ -27,7 +27,7 @@ pip install -q -r requirements/compiled.txt
 
 cat > settings/local.py <<SETTINGS
 from settings import *
-ROOT_URLCONF = '%s.urls' % ROOT_PACKAGE
+ROOT_URLCONF = '${JOB_NAME}.urls'
 LOG_LEVEL = logging.ERROR
 # Database name has to be set because of sphinx
 DATABASES = {
