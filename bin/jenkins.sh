@@ -50,7 +50,7 @@ CELERY_ALWAYS_EAGER = True
 SETTINGS
 
 echo "Creating database if we need it..."
-echo "CREATE DATBASE ${JOB_NAME} IF NOT EXISTS"|mysql -u hudson
+echo "CREATE DATABASE ${JOB_NAME} IF NOT EXISTS"|mysql -u hudson
 
 echo "Starting tests..."
 export FORCE_DB=1
