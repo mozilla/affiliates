@@ -98,7 +98,8 @@
         "fields": {
             "color": "Red",
             "image": "uploads/banners/mobile_dl_300x250_red_1.png",
-            "banner": 1
+            "banner": 1,
+            "locale": "fr"
         }
     },
     {

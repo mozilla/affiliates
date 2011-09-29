@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -7,6 +9,20 @@ from test_utils import TestCase
 
 from badges.tests import LocalizingClient
 from banners.models import Banner, BannerInstance
+
+
+class CustomizeViewTests(TestCase):
+    client_class = LocalizingClient
+    fixtures = ['banners']
+
+    def test_locale_images(self):
+        self.client.login(username='testuser42@asdf.asdf', password='asdfasdf')
+
+        url = reverse('banners.customize', kwargs={'banner_pk': 1})
+        response = self.client.get('/%s%s' % ('fr', url))
+
+        banner_images = json.loads(response.context['json_banner_images'])
+        eq_(banner_images['300x250 pixels']['Red']['pk'], 5)
 
 
 class LinkViewTests(TestCase):

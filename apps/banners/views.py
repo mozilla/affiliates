@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.utils.translation import get_language
 
 from badges.utils import handle_affiliate_link
 from badges.views import dashboard
@@ -13,8 +14,15 @@ from banners.models import Banner, BannerImage, BannerInstance, BANNER_TEMPLATE
 
 def customize(request, banner_pk=None):
     banner = get_object_or_404(Banner, pk=banner_pk)
-    json_banner_images = json.dumps(banner.banner_image_dict())
-    json_size_colors = json.dumps(banner.image_size_color_dict())
+    banner_images = banner.bannerimage_set.filter(locale=get_language())
+
+    # In case of no matches, default to the installation language
+    if not banner_images:
+        banner_images = (banner.bannerimage_set.
+                         filter(locale=settings.LANGUAGE_CODE.lower()))
+
+    json_banner_images = json.dumps(banner_images.size_color_to_image_map())
+    json_size_colors = json.dumps(banner_images.size_to_color_map())
     affiliate_link = AFFILIATE_LINK % (request.user.pk, banner.pk)
 
     return dashboard(request, 'banners/customize.html',

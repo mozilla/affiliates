@@ -6,7 +6,7 @@ import jingo
 from funfactory.manage import path
 from tower import ugettext_lazy as _lazy
 
-from badges.models import Badge, BadgeInstance, ModelBase
+from badges.models import Badge, BadgeInstance, LocaleField, ModelBase
 from shared.utils import absolutify
 
 # L10n: Width and height are the width and height of an image.
@@ -22,13 +22,17 @@ class Banner(Badge):
     """Badge consisting of an image link."""
     customize_view = 'banners.views.customize_banner'
 
-    def banner_image_dict(self):
+    def customize_url(self):
+        return reverse('banners.customize', kwargs={'banner_pk': self.pk})
+
+
+class BannerImageQuerySet(models.query.QuerySet):
+    def size_color_to_image_map(self):
         """
-        Return a dictionary that maps sizes and colors to the banner images
-        for this banner.
+        Return a dictionary that maps sizes and colors to these banner images.
         """
         banner_images = {}
-        for img in self.bannerimage_set.all():
+        for img in self:
             if img.size not in banner_images:
                 banner_images[img.size] = {}
 
@@ -39,21 +43,23 @@ class Banner(Badge):
 
         return banner_images
 
-    def image_size_color_dict(self):
+    def size_to_color_map(self):
         """
-        Return a dict that maps sizes to colors available for those sizes
-        from all of this banner's images.
+        Return a dict that maps sizes to colors available for those sizes.
         """
         size_colors = {}
-        for img in self.bannerimage_set.all():
+        for img in self:
             if img.size not in size_colors:
                 size_colors[img.size] = []
             size_colors[img.size].append(img.color)
 
         return size_colors
 
-    def customize_url(self):
-        return reverse('banners.customize', kwargs={'banner_pk': self.pk})
+
+class BannerImageManager(models.Manager):
+    def get_query_set(self):
+        """Overrides the default QuerySet class with a custom one."""
+        return BannerImageQuerySet(self.model, using=self._db)
 
 
 class BannerImage(ModelBase):
@@ -63,6 +69,9 @@ class BannerImage(ModelBase):
     image = models.ImageField(upload_to=settings.BANNER_IMAGE_PATH,
                               verbose_name=_lazy(u'image file'),
                               max_length=settings.MAX_FILEPATH_LENGTH)
+    locale = LocaleField()
+
+    objects = BannerImageManager()
 
     @property
     def size(self):

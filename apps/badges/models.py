@@ -58,7 +58,7 @@ class LocaleField(models.CharField):
     description = ('CharField with locale settings specific to Affiliates '
                    'defaults.')
 
-    def __init__(self, max_length=7, default=settings.LANGUAGE_CODE,
+    def __init__(self, max_length=32, default=settings.LANGUAGE_CODE,
                  choices=LANGUAGE_CHOICES, *args, **kwargs):
         return super(LocaleField, self).__init__(
             max_length=max_length, default=default, choices=choices,
