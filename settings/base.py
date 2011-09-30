@@ -72,6 +72,7 @@ MINIFY_BUNDLES = {
             'global/js/nav-main.js',
             'js/libs/jquery.placeholder.min.js',
             'js/libs/jquery.uniform.min.js',
+            'js/libs/webtrends.js',
             'js/affiliates.js',
         ),
         'banners': (
