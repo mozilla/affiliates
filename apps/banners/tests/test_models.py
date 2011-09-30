@@ -4,9 +4,11 @@ from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
 
-from banners.models import Banner
+from banners.models import Banner, BannerImage
+from banners.tests import mock_size
 
 
+@patch.object(BannerImage, 'size', mock_size)
 @patch.object(settings, 'SITE_ID', 1)
 class BannerImageTests(TestCase):
     fixtures = ['banners', 'sites']

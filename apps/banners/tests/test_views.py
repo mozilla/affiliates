@@ -8,9 +8,11 @@ from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.tests import LocalizingClient
-from banners.models import Banner, BannerInstance
+from banners.models import Banner, BannerImage, BannerInstance
+from banners.tests import mock_size
 
 
+@patch.object(BannerImage, 'size', mock_size)
 class CustomizeViewTests(TestCase):
     client_class = LocalizingClient
     fixtures = ['banners']
