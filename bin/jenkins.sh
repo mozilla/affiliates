@@ -15,6 +15,7 @@ find . -name '*.pyc' | xargs rm
 if [ ! -d "$VENV/bin" ]; then
   echo "No virtualenv found.  Making one..."
   virtualenv $VENV
+  pip install --upgrade pip
 fi
 
 git submodule update --init --recursive
@@ -25,7 +26,6 @@ if [ ! -d "$WORKSPACE/vendor" ]; then
 fi
 
 source $VENV/bin/activate
-
 pip install -q -r requirements/compiled.txt
 pip install -q -r requirements/dev.txt
 
