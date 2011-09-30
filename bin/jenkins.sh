@@ -14,7 +14,7 @@ find . -name '*.pyc' | xargs rm
 
 if [ ! -d "$VENV/bin" ]; then
   echo "No virtualenv found.  Making one..."
-  virtualenv $VENV
+  virtualenv $VENV --no-site-packages
   source $VENV/bin/activate
   pip install --upgrade pip
   pip install coverage
