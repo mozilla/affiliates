@@ -12,6 +12,10 @@ from banners.models import Banner, BannerImage, BannerInstance
 from banners.tests import mock_size
 
 
+FRENCH_LANGUAGE_URL_MAP = {'fr': 'fr'}
+
+
+@patch.object(settings, 'LANGUAGE_URL_MAP', FRENCH_LANGUAGE_URL_MAP)
 @patch.object(BannerImage, 'size', mock_size)
 class CustomizeViewTests(TestCase):
     client_class = LocalizingClient
