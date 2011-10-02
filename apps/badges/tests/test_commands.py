@@ -15,10 +15,10 @@ class TestUpdateLeaderboard(TestCase):
         actual = Leaderboard.objects.order_by('ranking').values_list()
         expected = [
             (1, 11, 2005028),
-            (2, 15, 1),
-            (3, 16, 1),
-            (4, 12, 0),
-            (5, 13, 0),
+            (2, 15, 5),
+            (3, 16, 4),
+            (4, 12, 3),
+            (5, 13, 2),
             (6, 14, 0),
         ]
         for i, val in enumerate(expected):

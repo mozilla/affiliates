@@ -175,6 +175,26 @@
         }
     },
     {
+        "pk": 15,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 18,
+            "user": 12,
+            "created": "2011-09-06 21:24:41"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 18,
+            "user": 13,
+            "created": "2011-09-06 21:24:41"
+        }
+    },
+    {
         "pk": 11,
         "model": "badges.clickstats",
         "fields": {
@@ -200,7 +220,7 @@
         "fields": {
             "badge_instance": 13,
             "year": 2011,
-            "clicks": 1,
+            "clicks": 5,
             "month": 9
         }
     },
@@ -210,7 +230,27 @@
         "fields": {
             "badge_instance": 14,
             "year": 2011,
-            "clicks": 1,
+            "clicks": 4,
+            "month": 9
+        }
+    },
+    {
+        "pk": 15,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 15,
+            "year": 2011,
+            "clicks": 3,
+            "month": 9
+        }
+    },
+    {
+        "pk": 16,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 16,
+            "year": 2011,
+            "clicks": 2,
             "month": 9
         }
     }
