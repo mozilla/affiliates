@@ -2,3 +2,4 @@
 
 # Cache
 python-memcached==1.45
+django-cache-machine==0.6
