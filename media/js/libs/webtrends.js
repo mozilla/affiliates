@@ -1,7 +1,16 @@
 // WebTrends SmartSource Data Collector Tag
-// Version: 9.4.0     
+// Version: 9.4.0
 // Tag Builder Version: 3.2
 // Created: 9/30/2011 6:31:11 PM
+
+// Run webtrends code in an external file for CSP
+var _tag=new WebTrends();
+_tag.dcsGetId();
+_tag.dcsCustom=function(){
+    // Add custom parameters here.
+    //_tag.DCSext.param_name=param_value;
+};
+_tag.dcsCollect();
 
 function WebTrends(){
 	var that=this;
@@ -340,7 +349,7 @@ WebTrends.prototype.dcsVar=function(){
 	})();
 	WT.slv=(function(){
 		var slv="Not enabled";
-		try{     
+		try{
 			if (navigator.userAgent.indexOf('MSIE')!=-1){
 				var sli = new ActiveXObject('AgControl.AgControl');
 				if (sli){
@@ -382,7 +391,7 @@ WebTrends.prototype.dcsVar=function(){
 	if (this.i18n){
 		if (typeof(document.defaultCharset)=="string"){
 			WT.le=document.defaultCharset;
-		} 
+		}
 		else if (typeof(document.characterSet)=="string"){
 			WT.le=document.characterSet;
 		}
