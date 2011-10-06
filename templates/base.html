@@ -6,6 +6,12 @@
     {% block site_css %}
       {{ css('common') }}
     {% endblock %}
+    {% if _('custom-css') and _('custom-css') != 'custom-css' %}
+      <style type="text/css">
+        {# L10n: You can use this string to put custom CSS rules to fix any design issues. Leave empty or untranslated if you do not need it. #}
+          {{ _('custom-css') }}
+       </style>
+    {% endif %}
     <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}global/img/favicon.png"/>
   </head>
   <body id="{% block body_id %}affiliates{% endblock %}">
