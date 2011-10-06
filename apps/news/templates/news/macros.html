@@ -9,7 +9,7 @@
       <div class="divider-medium">
         &nbsp;
       </div>
-      <p>{{ newsitem.localized('content')|nl2br }}</p>
+      <p>{{ newsitem.localized('content')|nl2br|linkify(parse_email=true) }}</p>
     </div>
   </div>
 {% endmacro %}

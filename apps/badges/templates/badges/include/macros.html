@@ -31,7 +31,7 @@
     <a href="{{ url }}">
       <img src="{{ item.preview_img.url }}" alt="{{ item.localized('name') }}">
       <div class="description">
-        <p>{{ item.localized('name')|bleach(tags=['span']) }}</p>
+        <p>{{ item.localized('name')|clean(tags=['span']) }}</p>
       </div>
     </a>
   </li>

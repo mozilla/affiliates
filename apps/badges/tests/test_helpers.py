@@ -5,21 +5,33 @@ from nose.tools import eq_
 from test_utils import TestCase
 from tower import activate
 
-from badges.helpers import babel_date, babel_number, bleach
+from badges.helpers import babel_date, babel_number, clean, linkify
 
 
 class TestHelpers(TestCase):
 
-    def test_bleach_basic(self):
+    def test_clean_basic(self):
         html = 'Text <span>with</span> html.'
         expect = 'Text &lt;span&gt;with&lt;/span&gt; html.'
-        eq_(bleach(html), Markup(expect))
+        eq_(clean(html), Markup(expect))
 
-    def test_bleach_whitelist(self):
+    def test_clean_whitelist(self):
         html = 'Text <span>with</span> whitelisted <div>html</div>.'
         expect = ('Text <span>with</span> whitelisted &lt;div&gt;html'
                   '&lt;/div&gt;.')
-        eq_(bleach(html, tags=['span']), Markup(expect))
+        eq_(clean(html, tags=['span']), Markup(expect))
+
+    def test_linkify(self):
+        text = 'Test http://www.mozilla.org text'
+        expect = ('Test <a href="http://www.mozilla.org" rel="nofollow">'
+                  'http://www.mozilla.org</a> text')
+        eq_(linkify(text), Markup(expect))
+
+    def test_linkify_email(self):
+        text = 'Test affiliates@mozilla.org text'
+        expect = ('Test <a href="mailto:affiliates@mozilla.org" '
+                  'rel="nofollow">affiliates@mozilla.org</a> text')
+        eq_(linkify(text, parse_email=True), Markup(expect))
 
     def test_babel_date(self):
         date = datetime(2011, 9, 23)

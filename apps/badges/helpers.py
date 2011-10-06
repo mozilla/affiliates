@@ -1,9 +1,9 @@
 from django.utils.translation import get_language
 
+import bleach
 from babel.core import Locale
 from babel.dates import format_date
 from babel.numbers import format_number
-from bleach import clean
 from jingo import register
 from jinja2 import Markup
 
@@ -33,8 +33,13 @@ def babel_date(date, format='long'):
 
 
 @register.filter
-def bleach(str, *args, **kwargs):
-    return Markup(clean(str, *args, **kwargs))
+def clean(str, *args, **kwargs):
+    return Markup(bleach.clean(str, *args, **kwargs))
+
+
+@register.filter
+def linkify(str, *args, **kwargs):
+    return Markup(bleach.linkify(str, *args, **kwargs))
 
 
 @register.filter
