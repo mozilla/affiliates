@@ -3,15 +3,6 @@
 // Tag Builder Version: 3.2
 // Created: 9/30/2011 6:31:11 PM
 
-// Run webtrends code in an external file for CSP
-var _tag=new WebTrends();
-_tag.dcsGetId();
-_tag.dcsCustom=function(){
-    // Add custom parameters here.
-    //_tag.DCSext.param_name=param_value;
-};
-_tag.dcsCollect();
-
 function WebTrends(){
 	var that=this;
 	// begin: user modifiable
@@ -590,3 +581,12 @@ Function.prototype.wtbind = function(obj){
 	};
 	return temp;
 }
+
+// Run webtrends code in an external file for CSP
+var _tag=new WebTrends();
+_tag.dcsGetId();
+_tag.dcsCustom=function(){
+    // Add custom parameters here.
+    //_tag.DCSext.param_name=param_value;
+};
+_tag.dcsCollect();
