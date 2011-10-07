@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.translation import get_language
 
+from babel.core import Locale, UnknownLocaleError
 from funfactory.urlresolvers import reverse
 from product_details import product_details
 
@@ -52,3 +53,15 @@ def redirect(to, permanent=False, **kwargs):
         redirect_class = HttpResponseRedirect
 
     return redirect_class(reverse(to, **kwargs))
+
+
+def current_locale():
+    """
+    Return the current Locale object (from Babel). Defaults to en-US if locale
+    does not exist.
+    """
+    try:
+        return Locale.parse(get_language(), sep='-')
+    except UnknownLocaleError:
+        # Default to en-US
+        return Locale('en', 'US')

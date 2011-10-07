@@ -1,11 +1,12 @@
 from django.utils.translation import get_language
 
 import bleach
-from babel.core import Locale
 from babel.dates import format_date
 from babel.numbers import format_number
 from jingo import register
 from jinja2 import Markup
+
+from shared.utils import current_locale
 
 
 @register.filter
@@ -28,7 +29,7 @@ def babel_date(date, format='long'):
     Format a date properly for the current locale. Format can be one of
     'short', 'medium', 'long', or 'full'.
     """
-    locale = Locale.parse(get_language(), sep='-')
+    locale = current_locale()
     return format_date(date, format, locale)
 
 
@@ -45,5 +46,5 @@ def linkify(str, *args, **kwargs):
 @register.filter
 def babel_number(number):
     """Format a number properly for the current locale."""
-    locale = Locale.parse(get_language(), sep='-')
+    locale = current_locale()
     return format_number(number, locale)

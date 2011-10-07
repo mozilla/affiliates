@@ -1,10 +1,12 @@
 from django.conf import settings
 
+from babel.core import Locale
 from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
+from tower import activate
 
-from shared.utils import absolutify, redirect
+from shared.utils import absolutify, current_locale, redirect
 
 
 @patch.object(settings, 'SITE_ID', 1)
@@ -41,3 +43,18 @@ class TestRedirect(TestCase):
         response = redirect('mock_view', permanent=True)
         eq_(response.status_code, 301)
         eq_(response['Location'], '/en-US/mock_view')
+
+
+class TestCurrentLocale(TestCase):
+    def test_basic(self):
+        """Test that the currently locale is correctly returned."""
+        activate('fr')
+        eq_(Locale('fr'), current_locale())
+
+    def test_unknown(self):
+        """
+        Test that when the current locale is not supported by Babel, it
+        defaults to en-US.
+        """
+        activate('fy')
+        eq_(Locale('en', 'US'), current_locale())

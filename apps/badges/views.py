@@ -8,7 +8,6 @@ from django.utils.http import urlquote_plus
 from django.utils.translation import get_language
 
 import jingo
-from babel.core import Locale
 from babel.dates import get_month_names
 from babel.numbers import format_number
 from session_csrf import anonymous_csrf
@@ -18,7 +17,7 @@ from badges.models import (Badge, BadgeInstance, Category, ClickStats,
                            Leaderboard, Subcategory)
 from news.models import NewsItem
 from shared.decorators import login_required
-from shared.utils import absolutify, redirect
+from shared.utils import absolutify, current_locale, redirect
 from users.forms import RegisterForm, LoginForm
 
 
@@ -82,7 +81,7 @@ def dashboard(request, template, context=None):
     if context is None:
         context = {}
 
-    locale = Locale.parse(get_language(), sep='-')
+    locale = current_locale()
 
     # Set context variables needed by all dashboard pages
     context['newsitem'] = NewsItem.objects.current()
@@ -126,7 +125,7 @@ def month_stats_ajax(request):
     site_avg = ClickStats.objects.average_for_period(month=request.POST['month'],
                                                      year=request.POST['year'])
 
-    locale = Locale.parse(get_language(), sep='-')
+    locale = current_locale()
     results = {'user_total': format_number(user_total, locale=locale),
                'site_avg': format_number(site_avg, locale=locale)}
     return HttpResponse(json.dumps(results), mimetype='application/json')
