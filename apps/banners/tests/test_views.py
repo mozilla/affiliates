@@ -32,7 +32,6 @@ class CustomizeViewTests(TestCase):
 
 
 class LinkViewTests(TestCase):
-    client_class = LocalizingClient
     fixtures = ['banners']
 
     BANNER_ID = 1
