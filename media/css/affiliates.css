@@ -1,8 +1,8 @@
 /* MetaWebPro font family licensed from fontshop.com. WOFF-FTW! */
 @font-face {
     font-family: 'MetaBlack';
-    src: url('http://mozcom-cdn.mozilla.net/img/fonts/MetaWebPro-Black.eot');
-    src: local('☺'), url('http://mozcom-cdn.mozilla.net/img/fonts/MetaWebPro-Black.woff') format('woff');
+    src: url('https://www.mozilla.org/img/fonts/MetaWebPro-Black.eot');
+    src: local('☺'), url('https://www.mozilla.org/img/fonts/MetaWebPro-Black.woff') format('woff');
     font-weight: bold;
 }
 
@@ -16,7 +16,7 @@
 
 @font-face {
     font-family: 'MetaWebPro';
-    src: url('http://mozcom-cdn.mozilla.net/img/fonts/MetaWebPro-Black.eot');
+    src: url('https://www.mozilla.org/img/fonts/MetaWebPro-Black.eot');
     src: local('☺'), url('../fonts/MetaWebPro-Normal.woff') format('woff');
     font-weight: normal;
     font-style: normal;
@@ -24,14 +24,14 @@
 
 @font-face {
     font-family: 'MetaWebProBlack';
-    src: url('http://mozcom-cdn.mozilla.net/img/fonts/MetaWebPro-Black.eot');
+    src: url('https://www.mozilla.org/img/fonts/MetaWebPro-Black.eot');
     src: local('☺'), url('../fonts/MetaWebPro-Black.woff') format('woff');
 
 }
 
 @font-face {
     font-family: 'MetaWebProBook';
-    src: url('http://mozcom-cdn.mozilla.net/img/fonts/MetaWebPro-Black.eot');
+    src: url('https://www.mozilla.org/img/fonts/MetaWebPro-Book.eot');
     src: local('☺'), url('../fonts/MetaWebPro-Book.woff') format('woff');
 }
 
