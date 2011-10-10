@@ -93,6 +93,10 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.admin',
 ]
 
+MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
+    'commonware.middleware.StrictTransportMiddleware',
+]
+
 # Add Jingo loader
 TEMPLATE_LOADERS = [
     'jingo.Loader',
