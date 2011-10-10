@@ -9,7 +9,7 @@ autodiscover()
 urlpatterns = patterns('',
     (r'', include('shared.urls')),
     (r'', include('badges.urls')),
-    (r'^banners/', include('banners.urls')),
+    (r'', include('banners.urls')),
     (r'^accounts/', include('users.urls')),
 
     (r'^admin/', include(admin.site.urls)),

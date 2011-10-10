@@ -8,8 +8,8 @@ from shared.utils import absolutify
 AFFILIATE_LINK = absolutify('/banners/link/%s/%s/{{ banner_img_id }}')
 
 urlpatterns = patterns('banners.views',
-    url(r'^customize/(?P<banner_pk>\d+)$', 'customize',
+    url(r'^banners/customize/(?P<banner_pk>\d+)$', 'customize',
         name='banners.customize'),
-    url(r'^link/(?P<user_id>\d+)/(?P<banner_id>\d+)/(?P<banner_img_id>\d+)$',
+    url(r'^link/banner/(?P<user_id>\d+)/(?P<banner_id>\d+)/(?P<banner_img_id>\d+)$',
         'link', name='banners.link')
 )
