@@ -10,8 +10,10 @@ from badges.utils import handle_affiliate_link
 from badges.views import dashboard
 from banners.urls import AFFILIATE_LINK
 from banners.models import Banner, BannerImage, BannerInstance, BANNER_TEMPLATE
+from shared.decorators import login_required
 
 
+@login_required
 def customize(request, banner_pk=None):
     banner = get_object_or_404(Banner, pk=banner_pk)
     banner_images = banner.bannerimage_set.filter(locale=get_language())
