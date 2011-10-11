@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import random
 import re
 
@@ -87,7 +88,7 @@ class RegisterManager(models.Manager):
         random salt.
         """
         salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-        activation_key = hashlib.sha1(salt + email).hexdigest()
+        activation_key = hmac.new(salt, email, hashlib.sha1).hexdigest()
 
         # get_or_create lets us replace existing profiles
         profile, created = RegisterProfile.objects.get_or_create(email=email)
