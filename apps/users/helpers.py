@@ -39,7 +39,11 @@ def gravatar_img(arg, size=80):
 def display_name(user):
     """Return a display name if set, else the username."""
     try:  # Also mostly for tests.
-        profile = user.get_profile()
+        profile = user.userprofile
     except UserProfile.DoesNotExist:
         return user.username
-    return profile.display_name if profile.display_name else user.username
+
+    if profile is None:
+        return user.username
+    else:
+        return profile.display_name
