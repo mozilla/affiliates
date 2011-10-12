@@ -35,7 +35,7 @@ class RegisterTests(TestCase):
         ok_(mail.outbox[0].body.find('activate/%s' % p.activation_key))
 
     @patch('users.views.subscribe')
-    @patch.object(settings, 'RESPONSYS_CAMPAIGN', 'testcamp')
+    @patch.object(settings, 'RESPONSYS_CAMPAIGN', 'testcamp', create=True)
     def test_email_signup(self, subscribe):
         """
         Agreeing to subscribe to emails during registration calls subscribe.
