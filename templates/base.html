@@ -27,10 +27,12 @@
         {% block highlight_box %}{% endblock %}
         <div id="main-feature">
           {% block main_feature %}
-            <h2>{{ _('Firefox<span>Affiliates</span>') }}</h2>
-            <p>
-              {{ _('Everything you need to share Firefox with the world.') }}
-            </p>
+            <a href="{{ url('home') }}">
+              <h2>{{ _('Firefox<span>Affiliates</span>') }}</h2>
+              <p>
+                {{ _('Everything you need to share Firefox with the world.') }}
+              </p>
+            </a>
           {% endblock %}
         </div>
         {% if messages is defined %}

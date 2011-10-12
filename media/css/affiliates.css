@@ -297,6 +297,19 @@ div.divider-medium {
     padding-top: 60px;
 }
 
+#main-feature a {
+    display: inline-block;
+}
+
+#main-feature a:hover h2,
+#main-feature a:hover p {
+    color: #447BC4;
+}
+
+#main-feature a:hover {
+    text-decoration: none;
+}
+
 div.tool-tip {
     background: #F4F9FF;
     background: -moz-linear-gradient(center bottom , rgba(244,249,255,0.9) 30%,rgba(244,249,255,0.9) 70%) repeat scroll 0 0 transparent;
