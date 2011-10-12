@@ -1,5 +1,4 @@
 import json
-import os
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -41,8 +40,7 @@ def home(request, register_form=None, login_form=None):
     params = {'register_form': register_form,
               'login_form': login_form,
               'share_url': absolutify('/'),
-              'tweet_text': urlquote_plus(TWEET_TEXT),
-              'httpson': os.environ.get('HTTPS')}
+              'tweet_text': urlquote_plus(TWEET_TEXT)}
     return jingo.render(request, 'badges/home.html', params)
 
 
