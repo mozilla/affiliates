@@ -14,3 +14,12 @@ import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
 
 # vim: ft=python
+
+
+from repoze.profile.profiler import AccumulatingProfileMiddleware
+application = AccumulatingProfileMiddleware(
+    application,
+    log_filename='/tmp/djangoprofile.log',
+    discard_first_request=True,
+    flush_at_shutdown=True,
+    path='/__profile__')
