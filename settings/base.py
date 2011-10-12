@@ -52,6 +52,9 @@ DEFAULT_GRAVATAR = MEDIA_URL + 'img/template/user-avatar.jpg'
 # Set cookies to use secure flag
 COOKIES_SECURE = True
 
+# CacheMachine config
+CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
+
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {

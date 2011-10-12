@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
+from caching.base import CachingManager, CachingMixin
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from shared.utils import unicode_choice_sorted
@@ -65,15 +66,17 @@ class LocaleField(models.CharField):
             *args, **kwargs)
 
 
-class Category(ModelBase):
+class Category(CachingMixin, ModelBase):
     """Top-level category that contains sub-categories."""
     name = models.CharField(max_length=255, verbose_name=_lazy(u'name'))
+
+    objects = CachingManager()
 
     def __unicode__(self):
         return self.name
 
 
-class Subcategory(ModelBase):
+class Subcategory(CachingMixin, ModelBase):
     """Second-level category that contains badges."""
     parent = models.ForeignKey(Category)
     name = models.CharField(max_length=255, verbose_name=_lazy(u'name'))
@@ -81,11 +84,13 @@ class Subcategory(ModelBase):
                                     verbose_name=_lazy(u'category preview'),
                                     max_length=settings.MAX_FILEPATH_LENGTH)
 
+    objects = CachingManager()
+
     def __unicode__(self):
         return self.name
 
 
-class Badge(MultiTableParentModel):
+class Badge(CachingMixin, MultiTableParentModel):
     """
     Parent model for any banner, text link, or other item that users will put
     on their website as an affiliate link.
@@ -97,6 +102,8 @@ class Badge(MultiTableParentModel):
                                     max_length=settings.MAX_FILEPATH_LENGTH)
     href = models.URLField(verbose_name=u'URL to redirect to')
 
+    objects = CachingManager()
+
     def customize_url(self):
         return self.child().customize_url()
 
@@ -104,7 +111,7 @@ class Badge(MultiTableParentModel):
         return self.name
 
 
-class BadgeInstanceManager(models.Manager):
+class BadgeInstanceManager(CachingManager):
     def for_user_by_category(self, user):
         results = defaultdict(list)
         instances = (BadgeInstance.objects
@@ -118,7 +125,7 @@ class BadgeInstanceManager(models.Manager):
         return results
 
 
-class BadgeInstance(MultiTableParentModel):
+class BadgeInstance(CachingMixin, MultiTableParentModel):
     """
     Single instance of a badge that a user has created and sent clicks to.
     """
@@ -187,12 +194,12 @@ class ClickStats(ModelBase):
         unique_together = ('badge_instance', 'month', 'year')
 
 
-class LeaderboardManager(models.Manager):
+class LeaderboardManager(CachingManager):
     def top_users(self, count):
         return self.order_by('ranking')[:count]
 
 
-class Leaderboard(ModelBase):
+class Leaderboard(CachingMixin, ModelBase):
     """Stores a user's standing in the leaderboard."""
     ranking = models.PositiveIntegerField(primary_key=True)
     user = models.ForeignKey(User)

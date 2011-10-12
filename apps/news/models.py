@@ -1,9 +1,11 @@
 from django.db import models
 
+from caching.base import CachingManager, CachingMixin
+
 from badges.models import ModelBase
 
 
-class NewsItemManager(models.Manager):
+class NewsItemManager(CachingManager):
     def current(self):
         """
         Return the latest enabled news item. Return None if none are found.
@@ -15,7 +17,7 @@ class NewsItemManager(models.Manager):
             return None
 
 
-class NewsItem(ModelBase):
+class NewsItem(CachingMixin, ModelBase):
     """Small news blurbs that appear across the site."""
 
     created = models.DateTimeField(auto_now_add=True)

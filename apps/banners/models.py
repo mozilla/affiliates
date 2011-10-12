@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 import jingo
+from caching.base import CachingManager, CachingMixin, CachingQuerySet
 from funfactory.manage import path
 from tower import ugettext_lazy as _lazy
 
@@ -26,7 +27,7 @@ class Banner(Badge):
         return reverse('banners.customize', kwargs={'banner_pk': self.pk})
 
 
-class BannerImageQuerySet(models.query.QuerySet):
+class BannerImageQuerySet(CachingQuerySet):
     def size_color_to_image_map(self):
         """
         Return a dictionary that maps sizes and colors to these banner images.
@@ -56,13 +57,13 @@ class BannerImageQuerySet(models.query.QuerySet):
         return size_colors
 
 
-class BannerImageManager(models.Manager):
+class BannerImageManager(CachingManager):
     def get_query_set(self):
         """Overrides the default QuerySet class with a custom one."""
         return BannerImageQuerySet(self.model, using=self._db)
 
 
-class BannerImage(ModelBase):
+class BannerImage(CachingMixin, ModelBase):
     """Image that a user can choose for their specific banner."""
     banner = models.ForeignKey(Banner)
     color = models.CharField(max_length=20, verbose_name=_lazy(u'image color'))
