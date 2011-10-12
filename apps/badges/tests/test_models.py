@@ -1,13 +1,14 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db.models import Sum
 
 from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.models import BadgeInstance, Category, ClickStats
+from badges.models import BadgeInstance, Category, ClickStats, ClickStatsManager
 from badges.tests import ModelsTestCase
 from badges.tests.models import MultiTableParent, MultiTableChild
 
@@ -71,10 +72,13 @@ class BadgeInstanceTests(TestCase):
 class ClickStatsTests(TestCase):
     fixtures = ['badge_instance']
 
-    def test_total_basic(self):
-        instance = BadgeInstance.objects.get(pk=3)
-        eq_(ClickStats.objects.total(badge_instance=instance), 21)
-        eq_(ClickStats.objects.total(badge_instance__user=instance.user), 21)
+    def test_total_for_user_basic(self):
+        user = User.objects.get(id=6)
+        eq_(ClickStats.objects.total_for_user(user), 21)
+
+    def test_total_for_user_period_basic(self):
+        user = User.objects.get(id=6)
+        eq_(ClickStats.objects.total_for_user_period(user, 7, 2011), 10)
 
     def test_average_for_period_basic(self):
         eq_(ClickStats.objects.average_for_period(7, 2011), 5)

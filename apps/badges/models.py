@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import models
 
 from caching.base import CachingManager, CachingMixin
@@ -12,6 +13,14 @@ from shared.utils import unicode_choice_sorted
 
 
 LANGUAGE_CHOICES = unicode_choice_sorted(settings.LANGUAGES.items())
+
+
+# Cache keys
+CACHE_CLICKS_AVG = 'clicks_avg_%s_%s'
+CACHE_CLICKS_USERPERIOD_TOTAL = 'clicks_userperiod_total_%s_%s_%s'
+CACHE_CLICKS_USER_TOTAL = 'clicks_user_total_%s'
+CACHE_TOP_USERS = 'top_users'
+CACHE_FOR_USER_BY_CATEGORY = 'for_user_by_category_%s'
 
 
 class ModelBase(models.Model):
@@ -114,10 +123,14 @@ class Badge(CachingMixin, MultiTableParentModel):
 class BadgeInstanceManager(CachingManager):
     def for_user_by_category(self, user):
         results = defaultdict(list)
-        instances = (BadgeInstance.objects
-                     .select_related('Badge', 'Subcategory', 'Category')
-                     .filter(user=user)
-                     .annotate(downloads=models.Sum('clickstats__clicks')))
+
+        key = CACHE_FOR_USER_BY_CATEGORY % user.id
+        instances = cache.get(key)
+        if instances is None:
+            instances = (BadgeInstance.objects
+                         .filter(user=user)
+                         .annotate(downloads=models.Sum('clickstats__clicks')))
+            cache.set(key, list(instances))
 
         for instance in instances:
             results[instance.badge.subcategory.parent.name].append(instance)
@@ -159,26 +172,55 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
 
 
 class ClickStatsManager(models.Manager):
-    def total(self, **kwargs):
+    def total_for_user(self, user):
+        """Return the total number of clicks found for the given user."""
+        key = CACHE_CLICKS_USER_TOTAL % user.id
+        total = cache.get(key)
+        if total is None:
+            total = self._total(badge_instance__user=user)
+            cache.set(key, total)
+
+        return total
+
+    def total_for_user_period(self, user, month, year):
         """
-        Return the total number of clicks found for the given filter parameters.
+        Return the total number of clicks found for the given user and month.
         """
-        results = self.filter(**kwargs).aggregate(models.Sum('clicks'))
+        key = CACHE_CLICKS_USERPERIOD_TOTAL % (user.id, month, year)
+        total = cache.get(key)
+        if total is None:
+            total = self._total(badge_instance__user=user, month=month,
+                                year=year)
+            cache.set(key, total)
+
+        return total
+
+    def _total(self, **kwargs):
+        """Return the total number of clicks for the given filters."""
+        clickstats = self.filter(**kwargs)
+        results = clickstats.aggregate(models.Sum('clicks'))
         return results['clicks__sum'] or 0
 
     def average_for_period(self, month, year):
         """Return the average number of clicks for the given period."""
-        results = (User.objects
-                   .filter(badgeinstance__clickstats__month__exact=month,
-                           badgeinstance__clickstats__year__exact=year)
-                   .annotate(clicks=models.Sum('badgeinstance__clickstats__clicks'))
-                   .aggregate(models.Avg('clicks')))
+        key = CACHE_CLICKS_AVG % (month, year)
+        average = cache.get(key)
+        if average is None:
+            clicks_sum = models.Sum('badgeinstance__clickstats__clicks')
+            results = (User.objects
+                       .filter(badgeinstance__clickstats__month__exact=month,
+                               badgeinstance__clickstats__year__exact=year)
+                       .annotate(clicks=clicks_sum)
+                       .aggregate(models.Avg('clicks')))
 
-        # Average is sometimes None, so substitute 0
-        average = results['clicks__avg'] or 0
+            # Average is sometimes None, so substitute 0
+            average = results['clicks__avg'] or 0
 
-        # Get rid of decimal
-        return int(average)
+            # Remove decimal
+            average = int(average)
+            cache.set(key, average)
+
+        return average
 
 
 class ClickStats(ModelBase):
@@ -196,7 +238,12 @@ class ClickStats(ModelBase):
 
 class LeaderboardManager(CachingManager):
     def top_users(self, count):
-        return self.order_by('ranking')[:count]
+        leaderboard = cache.get(CACHE_TOP_USERS)
+        if leaderboard is None:
+            leaderboard = (self.select_related('user', 'user__userprofile')
+                           .order_by('ranking')[:count])
+            cache.set(CACHE_TOP_USERS, list(leaderboard))
+        return leaderboard
 
 
 class Leaderboard(CachingMixin, ModelBase):

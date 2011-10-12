@@ -88,8 +88,7 @@ def dashboard(request, template, context=None):
     context['user_has_created_badges'] = request.user.has_created_badges()
 
     if context['user_has_created_badges']:
-        clicks_total = (ClickStats.objects
-                        .total(badge_instance__user=request.user))
+        clicks_total = ClickStats.objects.total_for_user(request.user)
         context['user_clicks_total'] = format_number(clicks_total,
                                                      locale=locale)
 
@@ -119,11 +118,10 @@ def dashboard(request, template, context=None):
 @require_POST
 @login_required
 def month_stats_ajax(request):
-    user_total = ClickStats.objects.total(badge_instance__user=request.user,
-                                          month=request.POST['month'],
-                                          year=request.POST['year'])
-    site_avg = ClickStats.objects.average_for_period(month=request.POST['month'],
-                                                     year=request.POST['year'])
+    user_total = ClickStats.objects.total_for_user_period(
+        request.user, request.POST['month'], request.POST['year'])
+    site_avg = ClickStats.objects.average_for_period(
+        request.POST['month'], request.POST['year'])
 
     locale = current_locale()
     results = {'user_total': format_number(user_total, locale=locale),

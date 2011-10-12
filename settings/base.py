@@ -1,6 +1,5 @@
 # This is your project's main settings file that can be committed to your
 # repo. If you need to override a setting locally, use settings_local.py
-
 from funfactory.settings_base import *
 
 # Logging
@@ -42,6 +41,7 @@ DEFAULT_AFFILIATE_LINK = 'http://mozilla.org'
 LEADERBOARD_SIZE = 5
 
 # Session configuration
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Log out on browser close
 SESSION_REMEMBER_DURATION = 1209600  # If we remember you, it lasts for 2 weeks
 
