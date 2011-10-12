@@ -39,16 +39,13 @@ def customize(request, banner_pk=None):
 # TODO: Remove need for banner_id in link
 def link(request, user_id, banner_id, banner_img_id):
     try:
+        banner_img = (BannerImage.objects.select_related('Banner')
+                      .get(pk=banner_img_id))
         instance, created = (BannerInstance.objects.select_related()
                              .get_or_create(user_id=user_id,
-                                            badge_id=banner_id,
-                                            image_id=banner_img_id))
-    except (IntegrityError):
+                                            badge=banner_img.banner,
+                                            image=banner_img))
+    except (IntegrityError, BannerImage.DoesNotExist):
         return HttpResponseRedirect(settings.DEFAULT_AFFILIATE_LINK)
-
-    if created:
-        banner_img = BannerImage.objects.select_related().get(pk=banner_img_id)
-        instance.badge = banner_img.banner
-        instance.save()
 
     return handle_affiliate_link(instance)
