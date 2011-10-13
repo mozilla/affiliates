@@ -20,7 +20,6 @@ CACHE_CLICKS_AVG = 'clicks_avg_%s_%s'
 CACHE_CLICKS_USERPERIOD_TOTAL = 'clicks_userperiod_total_%s_%s_%s'
 CACHE_CLICKS_USER_TOTAL = 'clicks_user_total_%s'
 CACHE_TOP_USERS = 'top_users'
-CACHE_FOR_USER_BY_CATEGORY = 'for_user_by_category_%s'
 
 
 class ModelBase(models.Model):
@@ -124,14 +123,7 @@ class BadgeInstanceManager(CachingManager):
     def for_user_by_category(self, user):
         results = defaultdict(list)
 
-        key = CACHE_FOR_USER_BY_CATEGORY % user.id
-        instances = cache.get(key)
-        if instances is None:
-            instances = (BadgeInstance.objects
-                         .filter(user=user)
-                         .annotate(downloads=models.Sum('clickstats__clicks')))
-            cache.set(key, list(instances))
-
+        instances = BadgeInstance.objects.filter(user=user)
         for instance in instances:
             results[instance.badge.subcategory.parent.name].append(instance)
 
@@ -146,17 +138,9 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
 
     user = models.ForeignKey(User)
     badge = models.ForeignKey(Badge)
+    clicks = models.PositiveIntegerField()
 
     objects = BadgeInstanceManager()
-
-    def add_click(self):
-        """Increment the click count for this badge instance."""
-        now = datetime.now()
-
-        stats, created = self.clickstats_set.get_or_create(month=now.month,
-                                                           year=now.year)
-        stats.clicks = models.F('clicks') + 1
-        stats.save()
 
     def render(self):
         """Return the HTML to display this BadgeInstance."""
@@ -174,13 +158,9 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
 class ClickStatsManager(models.Manager):
     def total_for_user(self, user):
         """Return the total number of clicks found for the given user."""
-        key = CACHE_CLICKS_USER_TOTAL % user.id
-        total = cache.get(key)
-        if total is None:
-            total = self._total(badge_instance__user=user)
-            cache.set(key, total)
-
-        return total
+        results = (BadgeInstance.objects.filter(user=user)
+                   .aggregate(models.Sum('clicks')))
+        return results['clicks__sum'] or 0
 
     def total_for_user_period(self, user, month, year):
         """

@@ -23,6 +23,8 @@ class Banner(Badge):
     """Badge consisting of an image link."""
     customize_view = 'banners.views.customize_banner'
 
+    objects = CachingManager()
+
     def customize_url(self):
         return reverse('banners.customize', kwargs={'banner_pk': self.pk})
 
