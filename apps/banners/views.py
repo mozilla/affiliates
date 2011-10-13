@@ -6,6 +6,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import get_language
+from django.views.decorators.cache import never_cache
 
 from badges.utils import handle_affiliate_link
 from badges.views import dashboard
@@ -41,6 +42,7 @@ def customize(request, banner_pk=None):
 
 
 # TODO: Remove need for banner_id in link
+@never_cache
 def link(request, user_id, banner_id, banner_img_id):
     try:
         banner_img = (BannerImage.objects.select_related('Banner')

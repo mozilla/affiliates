@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils.http import urlquote_plus
-from django.utils.translation import get_language
+from django.views.decorators.cache import cache_control
 
 import jingo
 from babel.dates import get_month_names
@@ -117,6 +117,7 @@ def dashboard(request, template, context=None):
 
 @require_POST
 @login_required
+@cache_control(must_revalidate=True, max_age=3600)
 def month_stats_ajax(request):
     user_total = ClickStats.objects.total_for_user_period(
         request.user, request.POST['month'], request.POST['year'])
