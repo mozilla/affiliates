@@ -21,8 +21,8 @@ class TestMonthStatsAjax(TestCase):
         eq_('application/json', response['Content-Type'])
 
         data = json.loads(response.content)
-        eq_(data['user_total'], '10')
-        eq_(data['site_avg'], '5')
+        eq_(data['user_total'], '12')
+        eq_(data['site_avg'], '6')
 
 
 class TestHome(TestCase):

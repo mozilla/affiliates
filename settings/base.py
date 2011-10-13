@@ -139,6 +139,13 @@ LOGGING = {
 # Don't serve media by default
 SERVE_MEDIA = False
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'LOCATION': 'unique-affiliates-snowflake',
+    }
+}
+
 DB_LOCALIZE = {
     'badges': {
         'Category': {

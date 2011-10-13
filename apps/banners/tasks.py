@@ -27,3 +27,6 @@ def add_click(user_id, banner_id, banner_img_id):
                                                            year=now.year)
     stats.clicks = models.F('clicks') + 1
     stats.save()
+
+    instance.clicks = models.F('clicks') + 1
+    instance.save()

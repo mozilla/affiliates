@@ -56,7 +56,7 @@ class UserTests(TestCase):
     fixtures = ['banners']
 
     def test_has_created_badges(self):
-        user = User.objects.get(pk=1)
+        user = User.objects.get(pk=2)
         ok_(not user.has_created_badges())
 
         BadgeInstance.objects.create(user=user, badge_id=1)

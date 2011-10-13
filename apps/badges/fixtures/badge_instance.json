@@ -44,7 +44,8 @@
             "child_type": "bannerinstance",
             "badge": 1,
             "user": 5,
-            "created": "2011-08-31 10:37:49"
+            "created": "2011-08-31 10:37:49",
+            "clicks": 1
         }
     },
     {
@@ -54,7 +55,19 @@
             "child_type": "bannerinstance",
             "badge": 2,
             "user": 6,
-            "created": "2011-08-31 10:37:49"
+            "created": "2011-08-31 10:37:49",
+            "clicks": 21
+        }
+    },
+    {
+        "pk": 4,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 2,
+            "user": 6,
+            "created": "2011-08-31 10:37:49",
+            "clicks": 2
         }
     },
     {
@@ -85,6 +98,16 @@
             "year": 2011,
             "clicks": 11,
             "month": 8
+        }
+    },
+    {
+        "pk": 4,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 4,
+            "year": 2011,
+            "clicks": 2,
+            "month": 7
         }
     },
     {

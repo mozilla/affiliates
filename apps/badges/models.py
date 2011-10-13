@@ -138,7 +138,7 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
 
     user = models.ForeignKey(User)
     badge = models.ForeignKey(Badge)
-    clicks = models.PositiveIntegerField()
+    clicks = models.PositiveIntegerField(default=0)
 
     objects = BadgeInstanceManager()
 

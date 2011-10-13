@@ -1,14 +1,13 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.core.cache import cache
 from django.db.models import Sum
 
 from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.models import BadgeInstance, Category, ClickStats, ClickStatsManager
+from badges.models import BadgeInstance, Category, ClickStats
 from badges.tests import ModelsTestCase
 from badges.tests.models import MultiTableParent, MultiTableChild
 
@@ -52,16 +51,6 @@ class BadgeInstanceTests(TestCase):
     def setUp(self):
         self.badge_instance = BadgeInstance.objects.get(pk=2)
 
-    def test_add_click(self):
-        old_clicks = (self.badge_instance.clickstats_set
-                      .aggregate(Sum('clicks'))['clicks__sum'])
-
-        self.badge_instance.add_click()
-
-        new_clicks = (self.badge_instance.clickstats_set
-                      .aggregate(Sum('clicks'))['clicks__sum'])
-        eq_(old_clicks + 1, new_clicks)
-
     def test_for_user_by_category(self):
         user = User.objects.get(pk=5)
         categories = BadgeInstance.objects.for_user_by_category(user)
@@ -74,12 +63,12 @@ class ClickStatsTests(TestCase):
 
     def test_total_for_user_basic(self):
         user = User.objects.get(id=6)
-        eq_(ClickStats.objects.total_for_user(user), 21)
+        eq_(ClickStats.objects.total_for_user(user), 23)
 
     def test_total_for_user_period_basic(self):
         user = User.objects.get(id=6)
-        eq_(ClickStats.objects.total_for_user_period(user, 7, 2011), 10)
+        eq_(ClickStats.objects.total_for_user_period(user, 7, 2011), 12)
 
     def test_average_for_period_basic(self):
-        eq_(ClickStats.objects.average_for_period(7, 2011), 5)
+        eq_(ClickStats.objects.average_for_period(7, 2011), 6)
         eq_(ClickStats.objects.average_for_period(8, 2011), 11)
