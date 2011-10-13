@@ -37,8 +37,7 @@ class LinkViewTests(TestCase):
     BANNER_ID = 1
     USER_ID = 1
     BANNER_IMG_ID = 1
-
-    BAD_BANNER_IMG_ID = 666
+    BAD_BANNER_ID = 666
 
     def test_basic(self):
         kwargs = {'user_id': self.USER_ID,
@@ -60,8 +59,8 @@ class LinkViewTests(TestCase):
     @patch.object(settings, 'DEFAULT_AFFILIATE_LINK', 'http://testlink.com')
     def test_redirect_default_on_error(self):
         kwargs = {'user_id': self.USER_ID,
-                  'banner_id': self.BANNER_ID,
-                  'banner_img_id': self.BAD_BANNER_IMG_ID}
+                  'banner_id': self.BAD_BANNER_ID,
+                  'banner_img_id': self.BANNER_IMG_ID}
         url = reverse('banners.link', kwargs=kwargs)
         response = self.client.get(url)
 
