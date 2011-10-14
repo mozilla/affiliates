@@ -1,5 +1,7 @@
+from django.core.cache.backends.dummy import DummyCache
 from django.db.models import Sum
 
+from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
 
@@ -7,6 +9,7 @@ from badges.models import BadgeInstance
 from banners.tasks import add_click
 
 
+@patch('caching.base.cache', DummyCache(None, {}))
 class AddClickTests(TestCase):
     fixtures = ['banners']
 
