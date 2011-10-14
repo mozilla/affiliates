@@ -299,6 +299,7 @@ div.divider-medium {
 
 #main-feature a {
     display: inline-block;
+    width: 540px;
 }
 
 #main-feature a:hover h2,
