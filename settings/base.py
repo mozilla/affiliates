@@ -3,7 +3,7 @@
 from funfactory.settings_base import *
 
 # Logging
-SYSLOG_TAG = "http_app_playdoh"  # Make this unique to your project.
+SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
 PROD_LANGUAGES = ('en-US', 'nl', 'de', 'es', 'pt-BR')
@@ -129,7 +129,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'affiliates': {
+        'a': {
             'handlers': ['syslog'],
             'level': 'WARNING',
         },

@@ -1,9 +1,13 @@
+import logging
 from datetime import date
 
 import pycurl
 
 from django.conf import settings
 from django.utils.http import urlencode
+
+
+log = logging.getLogger('a.responsys')
 
 
 def make_source_url(request):
@@ -42,7 +46,10 @@ def subscribe(campaign, address, format='html', source_url='', lang='',
     # Add POST data
     curl.setopt(pycurl.POST, 1)
     curl.setopt(pycurl.POSTFIELDS, urlencode(data))
+
     try:
+        log.warn('Sending request to %s' % settings.RESPONSYS_API_URL)
+        log.warn('Parameters: %s' % urlencode(data))
         curl.perform()
     except Exception, ce:
         raise Exception('Newsletter subscription failed: %s' % ce)
