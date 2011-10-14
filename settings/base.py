@@ -104,6 +104,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 
 MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
     'commonware.middleware.StrictTransportMiddleware',
+    'shared.middleware.ProfileMiddleware',
 ]
 
 # Add Jingo loader
