@@ -28,5 +28,5 @@ def add_click(user_id, banner_id, banner_img_id):
     stats.clicks = models.F('clicks') + 1
     stats.save()
 
-    instance.clicks = models.F('clicks') + 1
-    instance.save()
+    instance.badgeinstance_ptr.clicks = models.F('clicks') + 1
+    instance.badgeinstance_ptr.save()
