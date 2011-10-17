@@ -10,3 +10,6 @@
 [submodule "vendor-local/src/django-cache-machine"]
 	path = vendor-local/src/django-cache-machine
 	url = git://github.com/jbalogh/django-cache-machine.git
+[submodule "vendor-local/src/django-smuggler"]
+	path = vendor-local/src/django-smuggler
+	url = git://github.com/semente/django-smuggler.git

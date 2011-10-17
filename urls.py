@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'', include('banners.urls')),
     (r'^accounts/', include('users.urls')),
 
+    (r'^admin/', include('smuggler.urls')),
     (r'^admin/', include(admin.site.urls)),
 )
 

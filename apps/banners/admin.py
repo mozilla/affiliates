@@ -10,5 +10,5 @@ site.register(Banner, BannerAdmin)
 
 
 class BannerImageAdmin(admin.ModelAdmin):
-    pass
+    change_list_template = 'smuggler/change_list.html'
 site.register(BannerImage, BannerImageAdmin)

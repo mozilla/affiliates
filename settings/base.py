@@ -97,6 +97,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'shared',
     'news',
     'users',
+    'smuggler',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
@@ -113,6 +114,7 @@ TEMPLATE_LOADERS = [
 
 JINGO_EXCLUDE_APPS = [
     'admin',
+    'smuggler',
 ]
 
 # Set up logging to send emails on 500 errors
