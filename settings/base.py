@@ -31,8 +31,8 @@ BANNER_IMAGE_PATH = 'uploads/banners/'
 # CDN for absolutify
 CDN_DOMAIN = None
 
-# Affiliate links don't need a language redirect
-SUPPORTED_NONLOCALES += ['link']
+# Paths that do not need a locale
+SUPPORTED_NONLOCALES += ['link', 'admin']
 
 # URL to redirect to on affiliate link errors
 DEFAULT_AFFILIATE_LINK = 'http://mozilla.org'
