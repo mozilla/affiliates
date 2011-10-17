@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils.http import urlencode
 
 
-log = logging.getLogger('a.responsys')
+log = logging.getLogger('t.responsys')
 
 
 def make_source_url(request):

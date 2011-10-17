@@ -133,6 +133,10 @@ LOGGING = {
             'handlers': ['syslog'],
             'level': 'WARNING',
         },
+        't': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+        },
     }
 }
 
