@@ -12,10 +12,6 @@ from banners.models import Banner, BannerImage, BannerInstance
 from banners.tests import mock_size
 
 
-FRENCH_LANGUAGE_URL_MAP = {'fr': 'fr'}
-
-
-@patch.object(settings, 'LANGUAGE_URL_MAP', FRENCH_LANGUAGE_URL_MAP)
 @patch.object(BannerImage, 'size', mock_size)
 class CustomizeViewTests(TestCase):
     client_class = LocalizingClient
@@ -25,7 +21,7 @@ class CustomizeViewTests(TestCase):
         self.client.login(username='testuser42@asdf.asdf', password='asdfasdf')
 
         url = reverse('banners.customize', kwargs={'banner_pk': 1})
-        response = self.client.get('/%s%s' % ('fr', url))
+        response = self.client.get(url)
 
         banner_images = json.loads(response.context['json_banner_images'])
         eq_(banner_images['300x250 pixels']['Red']['pk'], 5)

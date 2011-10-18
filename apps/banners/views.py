@@ -3,7 +3,6 @@ import json
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.utils.translation import get_language
 from django.views.decorators.cache import never_cache
 
 from badges.views import dashboard
@@ -19,7 +18,8 @@ CACHE_LINK_INSTANCE = 'banner_link_instance_%s_%s'
 @login_required
 def customize(request, banner_pk=None):
     banner = get_object_or_404(Banner, pk=banner_pk)
-    banner_images = banner.bannerimage_set.filter(locale=get_language())
+    banner_locale = request.user.get_profile().locale
+    banner_images = banner.bannerimage_set.filter(locale=banner_locale)
 
     # In case of no matches, default to the installation language
     if not banner_images:
