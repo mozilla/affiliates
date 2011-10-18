@@ -79,7 +79,11 @@ class BannerImage(CachingMixin, ModelBase):
     @property
     def size(self):
         """Return a string representing the size of this image in pixels."""
-        return SIZE % {'width': self.image.width, 'height': self.image.height}
+        if self.image:
+            return SIZE % {'width': self.image.width,
+                           'height': self.image.height}
+        else:
+            return u''
 
     def __unicode__(self):
         return '%s: %s %s' % (self.banner.name, self.color, self.size)

@@ -11,4 +11,7 @@ site.register(Banner, BannerAdmin)
 
 class BannerImageAdmin(admin.ModelAdmin):
     change_list_template = 'smuggler/change_list.html'
+    list_display = ('banner', 'color', 'size', 'image')
+    list_editable = ('color', 'image')
+    list_filter = ('banner', 'color')
 site.register(BannerImage, BannerImageAdmin)
