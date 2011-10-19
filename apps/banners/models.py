@@ -39,7 +39,7 @@ class BannerImageQuerySet(CachingQuerySet):
             if img.size not in banner_images:
                 banner_images[img.size] = {}
 
-            banner_images[img.size][img.color] = {
+            banner_images[img.size][img.localized('color')] = {
                 'image_url': absolutify(img.image.url, cdn=True),
                 'pk': img.pk
             }
@@ -54,7 +54,7 @@ class BannerImageQuerySet(CachingQuerySet):
         for img in self:
             if img.size not in size_colors:
                 size_colors[img.size] = []
-            size_colors[img.size].append(img.color)
+            size_colors[img.size].append(img.localized('color'))
 
         return size_colors
 
