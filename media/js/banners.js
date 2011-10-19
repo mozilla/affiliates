@@ -19,6 +19,7 @@ $(function() {
                                   child_choices[k]+'</option>');
                 }
             }
+            $.uniform.update();
         }).change();
     }
 
