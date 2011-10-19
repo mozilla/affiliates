@@ -8,7 +8,7 @@
 {% call macros.badge_wizard(2) %}
   <p class="head">
     {# L10n: subcategory_name is the name of a group of banners, e.g. Firefox for Mobile. #}
-    {%- trans subcategory_name=subcategory.name -%}
+    {%- trans subcategory_name=subcategory.name|clean(tags=['span']) -%}
       Finally, choose the size and color of your <span>{{ subcategory_name }}</span>
       banner, then you can copy its code onto your website or blog.
     {%- endtrans -%}

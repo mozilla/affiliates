@@ -8,7 +8,7 @@
 {% call macros.badge_wizard(1) %}
   <p class="head">
     {# L10n: subcategory_name is the name of the group of banners being displayed below. #}
-    {%- trans subcategory_name=subcategory.name-%}
+    {%- trans subcategory_name=subcategory.name|clean(tags=['span'])-%}
       Now choose the type of <span>{{ subcategory_name }}</span>
       banner you want to display on your website or blog:
     {%- endtrans -%}
