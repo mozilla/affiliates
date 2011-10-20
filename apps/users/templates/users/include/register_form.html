@@ -11,7 +11,7 @@
   {{ register_form.email }}
   {{ register_form.password }}
   {{ register_form.agreement }}
-  <label for="register-agreement">
+  <label for="id_{{ register_form.agreement.html_name }}">
     {# L10n: {{ tos }} links to the terms of service, {{ privacy_policy }} links to Mozilla privacy policy. #}
     {% trans tos=url('tos'), privacy_policy='http://www.mozilla.org/legal/privacy/firefox.html' %}
 
@@ -23,7 +23,7 @@
   </label>
 
   {{ register_form.email_subscribe }}
-  <label for="{{ register_form.email_subscribe.html_name }}">
+  <label for="id_{{ register_form.email_subscribe.html_name }}">
     {{ _('I wish to receive information and notifications about Firefox and Mozilla via email.') }}
   </label>
 
