@@ -10,7 +10,7 @@ PROD_LANGUAGES = ('de', 'en-US', 'es', 'fy-NL', 'nl', 'pl', 'pt-BR', 'sl',
                   'zh-TW')
 
 # Email settings
-DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.com'
+DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 
 # User accounts
 AUTHENTICATION_BACKENDS = (
