@@ -159,7 +159,16 @@ a.button {
     position: relative;
     width: 284px;
 }
-
+.field-group {
+    width: 590px;
+}
+#profile-form .field-group input[type="text"] {
+    display: inline-block;
+    margin-right: 6px;
+}
+#profile-form .field-group div.selector {
+    display: inline-block;
+}
 #profile-form .has_bulb {
     display: inline-block;
     margin-bottom: 6px;

@@ -44,22 +44,20 @@
       {{ form.name }}
       {{ form.name.errors }}
     </div>
-    <div class="fields">
-      {{ form.address_1 }}
-      {{ form.address_1.errors }}
-      {{ form.city }}
-      {{ form.city.errors }}
-      {{ form.postal_code }}
-      {{ form.postal_code.errors }}
-    </div>
-    <div class="fields">
-      {{ form.address_2 }}
-      {{ form.address_2.errors }}
-      {{ form.state }}
-      {{ form.state.errors }}
-      {{ form.country }}
-      {{ form.country.errors }}
-    </div>
+  <div class="field-group">
+    {{ form.address_1 }}
+    {{ form.address_1.errors }}
+    {{ form.address_2 }}
+    {{ form.address_2.errors }}
+    {{ form.city }}
+    {{ form.city.errors }}
+    {{ form.state }}
+    {{ form.state.errors }}
+    {{ form.postal_code }}
+    {{ form.postal_code.errors }}      
+    {{ form.country }}
+    {{ form.country.errors }}
+  </div>
   </div>
   <div class="section">
     <div class="fields">
