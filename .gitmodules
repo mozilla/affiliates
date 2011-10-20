@@ -13,3 +13,6 @@
 [submodule "vendor-local/src/django-smuggler"]
 	path = vendor-local/src/django-smuggler
 	url = git://github.com/semente/django-smuggler.git
+[submodule "vendor-local/src/django-cronjobs"]
+	path = vendor-local/src/django-cronjobs
+	url = git://github.com/jsocol/django-cronjobs.git
