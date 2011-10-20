@@ -7,6 +7,7 @@ from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
+from badges.models import BadgeInstance
 from badges.tests import LocalizingClient
 from banners.models import Banner, BannerImage, BannerInstance
 from banners.tests import mock_size
@@ -54,6 +55,10 @@ class LinkViewTests(TestCase):
 
     @patch.object(settings, 'DEFAULT_AFFILIATE_LINK', 'http://testlink.com')
     def test_redirect_default_on_error(self):
+        """
+        Redirect to a default link when there's an error in an affiliate
+        link.
+        """
         kwargs = {'user_id': self.USER_ID,
                   'banner_id': self.BAD_BANNER_ID,
                   'banner_img_id': self.BANNER_IMG_ID}
@@ -62,3 +67,23 @@ class LinkViewTests(TestCase):
 
         eq_(response.status_code, 302)
         eq_(response['Location'], 'http://testlink.com')
+
+    def test_invalid_image_doesnt_create(self):
+        """
+        Don't create a BadgeInstance or BannerInstance if the BannerImage id
+        is wrong.
+        """
+        kwargs = {'user_id': self.USER_ID,
+                  'banner_id': 2,
+                  'banner_img_id': 777}
+        url = reverse('banners.link', kwargs=kwargs)
+        self.client.get(url)
+
+        with self.assertRaises(BannerInstance.DoesNotExist):
+            BannerInstance.objects.get(user__id=kwargs['user_id'],
+                                       badge__id=kwargs['banner_id'],
+                                       image__id=kwargs['banner_img_id'])
+
+        with self.assertRaises(BadgeInstance.DoesNotExist):
+            BadgeInstance.objects.get(user__id=kwargs['user_id'],
+                                      badge__id=kwargs['banner_id'])

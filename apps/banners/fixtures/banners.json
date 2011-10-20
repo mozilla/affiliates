@@ -57,6 +57,22 @@
         "fields": {}
     },
     {
+        "pk": 2,
+        "model": "badges.badge",
+        "fields": {
+            "child_type": "banner",
+            "preview_img": "uploads/badge_previews/120x240arrow_b.png",
+            "name": "Fast Forward",
+            "subcategory": 1,
+            "href": "http://www.mozilla.org"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "banners.banner",
+        "fields": {}
+    },
+    {
         "pk": 1,
         "model": "banners.bannerimage",
         "fields": {

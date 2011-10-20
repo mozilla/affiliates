@@ -4,13 +4,17 @@ from django.db import IntegrityError, models
 
 from celery.decorators import task
 
-from banners.models import BannerInstance
+from banners.models import BannerImage, BannerInstance
 
 
 @task
 def add_click(user_id, banner_id, banner_img_id):
     """Increment the click count for a banner."""
     now = datetime.now()
+
+    # Ensure that the banner image exists
+    if not BannerImage.objects.filter(pk=banner_img_id).exists():
+        return
 
     try:
         instance, created = BannerInstance.objects.get_or_create(
