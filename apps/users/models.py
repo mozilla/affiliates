@@ -65,7 +65,7 @@ class UserProfile(ModelBase):
     locale = LocaleField(verbose_name=_lazy(u'Locale'))
 
     def __unicode__(self):
-        return unicode(self.email)
+        return unicode(self.display_name)
 
 
 class RegisterManager(models.Manager):
