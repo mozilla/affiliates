@@ -3,7 +3,8 @@
 # codebase.
 set -e
 
-DB_HOST=sm-hudson01
+DB_HOST="localhost"
+DB_USER="hudson"
 
 cd $WORKSPACE
 VENV=$WORKSPACE/venv
@@ -57,7 +58,7 @@ CELERY_ALWAYS_EAGER = True
 SETTINGS
 
 echo "Creating database if we need it..."
-echo "CREATE DATABASE IF NOT EXISTS ${JOB_NAME}"|mysql -u root -h $DB_HOST
+echo "CREATE DATABASE IF NOT EXISTS ${JOB_NAME}"|mysql -u $DB_USER -h $DB_HOST
 
 echo "Starting tests..."
 export FORCE_DB=1
