@@ -36,7 +36,7 @@ pip install -q -r requirements/dev.txt
 cat > settings/local.py <<SETTINGS
 from settings.base import *
 
-ROOT_URLCONF = '${JOB_NAME}.urls'
+ROOT_URLCONF = 'workspace.urls'
 LOG_LEVEL = logging.ERROR
 # Database name has to be set because of sphinx
 DATABASES = {
