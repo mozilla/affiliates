@@ -17,14 +17,15 @@ Developer Setup
 
 0. (Recommended) Set up a virtualenv for the project.
 1. `git clone --recursive git://github.com/mozilla/affiliates.git`
-2. Set up a MySQL Database
-3. Rename `settings_local.py-dist` to `settings_local.py` and edit it.
+2. pip install -r requirements/compiled.txt
+3. Set up a MySQL Database
+4. Rename `settings/local.py-dist` to `settings/local.py` and edit it.
    * Enter the connection info for the database you set up.
    * Set `DEBUG` and `DEV` both to `True`.
-4. Run schematic migrations
+5. Run schematic migrations
    * __DO NOT RUN `syncdb`.__ Migrations handle initial setup.
    * You can use the vendor libraries: `./vendor/src/schematic/schematic migrations`
-5. `python manage.py runserver`
+6. `python manage.py runserver`
    * Run `python manage.py createsuperuser` if you want to create an admin account.
 
 Contributing
