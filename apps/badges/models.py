@@ -6,12 +6,8 @@ from django.core.cache import cache
 from django.db import models
 
 from caching.base import CachingManager, CachingMixin
-from tower import ugettext as _, ugettext_lazy as _lazy
 
-from shared.utils import unicode_choice_sorted
-
-
-LANGUAGE_CHOICES = unicode_choice_sorted(settings.LANGUAGES.items())
+from shared.models import LocaleField, ModelBase, MultiTableParentModel
 
 
 # Cache keys
@@ -21,61 +17,9 @@ CACHE_CLICKS_USER_TOTAL = 'clicks_user_total_%s'
 CACHE_TOP_USERS = 'top_users'
 
 
-class ModelBase(models.Model):
-    """Common functions that models across the app will need."""
-
-    def __init__(self, *args, **kwargs):
-        super(ModelBase, self).__init__(*args, **kwargs)
-
-        # Cache localized attributes
-        self._localized_attrs = {}
-
-    def localized(self, attr):
-        """Return a localized version of the requested attribute."""
-        if attr not in self._localized_attrs:
-            self._localized_attrs[attr] = _(getattr(self, attr))
-
-        return self._localized_attrs[attr]
-
-    class Meta:
-        abstract = True
-
-
-class MultiTableParentModel(ModelBase):
-    """
-    Provides boilerplate for models that will be the parent in a multi-table
-    inheritence relationship.
-    """
-    child_type = models.CharField(max_length=255, editable=False)
-
-    def save(self, *args, **kwargs):
-        """Set type to our classname on save."""
-        if not self.child_type:
-            self.child_type = self.__class__.__name__.lower()
-        return super(MultiTableParentModel, self).save(*args, **kwargs)
-
-    def child(self):
-        """Return this instance's child model instance."""
-        return getattr(self, self.child_type)
-
-    class Meta:
-        abstract = True
-
-
-class LocaleField(models.CharField):
-    description = ('CharField with locale settings specific to Affiliates '
-                   'defaults.')
-
-    def __init__(self, max_length=32, default=settings.LANGUAGE_CODE,
-                 choices=LANGUAGE_CHOICES, *args, **kwargs):
-        return super(LocaleField, self).__init__(
-            max_length=max_length, default=default, choices=choices,
-            *args, **kwargs)
-
-
 class Category(CachingMixin, ModelBase):
     """Top-level category that contains sub-categories."""
-    name = models.CharField(max_length=255, verbose_name=_lazy(u'name'))
+    name = models.CharField(max_length=255)
 
     objects = CachingManager()
 
@@ -91,9 +35,8 @@ class SubcategoryManager(CachingManager):
 class Subcategory(CachingMixin, ModelBase):
     """Second-level category that contains badges."""
     parent = models.ForeignKey(Category)
-    name = models.CharField(max_length=255, verbose_name=_lazy(u'name'))
+    name = models.CharField(max_length=255)
     preview_img = models.ImageField(upload_to=settings.BADGE_PREVIEW_PATH,
-                                    verbose_name=_lazy(u'category preview'),
                                     max_length=settings.MAX_FILEPATH_LENGTH)
 
     objects = SubcategoryManager()
@@ -107,10 +50,9 @@ class Badge(CachingMixin, MultiTableParentModel):
     Parent model for any banner, text link, or other item that users will put
     on their website as an affiliate link.
     """
-    name = models.CharField(max_length=255, verbose_name=_lazy(u'name'))
+    name = models.CharField(max_length=255)
     subcategory = models.ForeignKey(Subcategory)
     preview_img = models.ImageField(upload_to=settings.BADGE_PREVIEW_PATH,
-                                    verbose_name=_lazy(u'badge preview'),
                                     max_length=settings.MAX_FILEPATH_LENGTH)
     href = models.URLField(verbose_name=u'URL to redirect to')
 

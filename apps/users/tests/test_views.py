@@ -7,7 +7,7 @@ from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.tests import LocalizingClient
+from shared.tests import LocalizingClient
 from users.models import RegisterProfile
 
 

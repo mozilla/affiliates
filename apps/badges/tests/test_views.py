@@ -6,9 +6,8 @@ from django.core.urlresolvers import reverse
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.tests import LocalizingClient
 from badges.views import CACHE_SUBCAT_MAP
-from shared.tests import model_ids
+from shared.tests import LocalizingClient, model_ids
 
 
 class TestMonthStatsAjax(TestCase):

@@ -15,7 +15,7 @@ from django.utils.translation import get_language
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from badges.models import ModelBase, LocaleField
+from shared.models import ModelBase, LocaleField
 from users.utils import hash_password
 
 

@@ -1,11 +1,11 @@
 from django.conf import settings
 
+from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
 
-from badges.tests import LocalizingClient
-from funfactory.urlresolvers import reverse
+from shared.tests import LocalizingClient
 
 
 @patch.object(settings, 'LOGIN_VIEW_NAME', 'mock_login_view')

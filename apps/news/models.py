@@ -2,7 +2,7 @@ from django.db import models
 
 from caching.base import CachingManager, CachingMixin
 
-from badges.models import ModelBase
+from shared.models import ModelBase
 
 
 class NewsItemManager(CachingManager):

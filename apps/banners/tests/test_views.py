@@ -8,9 +8,9 @@ from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.models import BadgeInstance
-from badges.tests import LocalizingClient
 from banners.models import Banner, BannerImage, BannerInstance
 from banners.tests import mock_size
+from shared.tests import LocalizingClient
 
 
 @patch.object(BannerImage, 'size', mock_size)

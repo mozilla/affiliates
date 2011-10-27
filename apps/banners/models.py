@@ -7,9 +7,11 @@ from funfactory.manage import path
 from funfactory.urlresolvers import reverse
 from tower import ugettext_lazy as _lazy
 
-from badges.models import Badge, BadgeInstance, LocaleField, ModelBase
+from badges.models import Badge, BadgeInstance
 from banners import COLOR_CHOICES
+from shared.models import LocaleField, ModelBase
 from shared.utils import absolutify
+
 
 # L10n: Width and height are the width and height of an image.
 SIZE = _lazy('%(width)sx%(height)s pixels')
