@@ -1,6 +1,8 @@
 from django.contrib import admin
 
 from funfactory.admin import site
+from funfactory.urlresolvers import reverse
+
 from banners.models import Banner, BannerImage, BannerInstance
 
 
@@ -19,7 +21,14 @@ site.register(BannerImage, BannerImageAdmin)
 
 class BannerInstanceAdmin(admin.ModelAdmin):
     readonly_fields = ('clicks', 'created')
-    list_display = ('badge', 'user', 'image', 'clicks')
+    list_display = ('badge', 'user_display_name', 'image', 'clicks')
     list_filter = ('badge', 'image')
     search_fields = ('badge', 'user')
+
+    def user_display_name(self, instance):
+        user = instance.user
+        url = reverse('admin:auth_user_change', args=[user.id])
+        return '<a href="%s">%s</a>' % (url, user.userprofile.display_name)
+    user_display_name.allow_tags = True
+
 site.register(BannerInstance, BannerInstanceAdmin)
