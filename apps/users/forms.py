@@ -160,14 +160,14 @@ class RegisterForm(FormBase):
         'required': DISPLAY_NAME_REQUIRED
     })
     email = forms.EmailField(error_messages={'required': EMAIL_REQUIRED})
-    password = PasswordField()
+    registration_password = PasswordField()
     agreement = forms.BooleanField(error_messages={'required': AGREE_TOS_PP})
     email_subscribe = forms.BooleanField(required=False)
 
     placeholders = {
         'display_name': _lazy(u'Your display name'),
         'email': _lazy(u'Your email address'),
-        'password': _lazy(u'Your password'),
+        'registration_password': _lazy(u'Your password'),
     }
 
     def clean_email(self):

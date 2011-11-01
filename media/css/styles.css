@@ -126,3 +126,16 @@ p.heavy {
     font-size: 20px;
     line-height: 1.4em;
 }
+#login-form label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+/* Based on http://webaim.org/techniques/css/invisiblecontent/ */
+.accessibly-hidden {
+    position:absolute;
+    left:-99999em;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+}

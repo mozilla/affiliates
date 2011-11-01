@@ -51,7 +51,7 @@ def register(request):
         # activation details
         profile = RegisterProfile.objects.create_profile(
             form.cleaned_data['display_name'], form.cleaned_data['email'],
-            form.cleaned_data['password'])
+            form.cleaned_data['registration_password'])
 
         # Sign the user up for mailing lists if they wanted
         if form.cleaned_data['email_subscribe']:

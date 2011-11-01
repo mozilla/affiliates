@@ -159,12 +159,14 @@ a.button {
     position: relative;
     width: 284px;
 }
+#profile-form .section .field-group .fields {
+    margin-right: 16px;
+}
 .field-group {
     width: 590px;
 }
 #profile-form .field-group input[type="text"] {
-    display: inline-block;
-    margin-right: 6px;
+    display: block;
 }
 #profile-form .field-group div.selector {
     display: inline-block;
@@ -178,9 +180,17 @@ a.button {
     width: 567px;
 }
 
-#profile-form .section .fields label {
+#profile-form .section .fields label,
+#profile-form .section .fields_long label, 
+#profile-form .section .field-group label {
     display: block;
+    color: #484848;
     margin-bottom: 10px;
+    font-family: 'MuseoSans500', sans-serif;
+}
+
+#profile-form .section .field-group label {
+    display: inline-block;
 }
 
 #profile-form .section .fields label input {
