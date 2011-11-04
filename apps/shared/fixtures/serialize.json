@@ -1,0 +1,52 @@
+[
+    {
+        "pk": 71,
+        "model": "badges.category",
+        "fields": {
+            "name": "Test"
+        }
+    },
+    {
+        "pk": 71,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/qmo-logo.png",
+            "name": "Subtest",
+            "parent": 71
+        }
+    },
+    {
+        "pk": 71,
+        "model": "badges.badge",
+        "fields": {
+            "child_type": "banner",
+            "preview_img": "uploads/badge_previews/120x240arrow_b.png",
+            "name": "Fast Forward",
+            "subcategory": 71,
+            "href": "http://www.mozilla.org"
+        }
+    },
+    {
+        "pk": 71,
+        "model": "banners.banner",
+        "fields": {}
+    },
+    {
+        "pk": 71,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Blue",
+            "image": "uploads/banners/blue.png",
+            "banner": 71
+        }
+    },
+    {
+        "pk": 72,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Green",
+            "image": "uploads/banners/green.png",
+            "banner": 71
+        }
+    }
+]

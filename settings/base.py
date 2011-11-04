@@ -56,6 +56,12 @@ COOKIES_SECURE = True
 # CacheMachine config
 CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
 
+# Set up custom serializer and django-smuggler
+SERIALIZATION_MODULES = {
+    'json_files': 'shared.serializers.json_files',
+}
+SMUGGLER_FORMAT = 'json_files'
+
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
