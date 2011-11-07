@@ -8,6 +8,7 @@ from funfactory.manage import path
 from tower import ugettext_lazy as _lazy
 
 from badges.models import Badge, BadgeInstance, LocaleField, ModelBase
+from banners import COLOR_CHOICES
 from shared.utils import absolutify
 
 # L10n: Width and height are the width and height of an image.
@@ -68,9 +69,10 @@ class BannerImageManager(CachingManager):
 class BannerImage(CachingMixin, ModelBase):
     """Image that a user can choose for their specific banner."""
     banner = models.ForeignKey(Banner)
-    color = models.CharField(max_length=20, verbose_name=_lazy(u'image color'))
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES,
+                             verbose_name=u'image color')
     image = models.ImageField(upload_to=settings.BANNER_IMAGE_PATH,
-                              verbose_name=_lazy(u'image file'),
+                              verbose_name=u'image file',
                               max_length=settings.MAX_FILEPATH_LENGTH)
     locale = LocaleField()
 

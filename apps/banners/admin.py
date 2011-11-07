@@ -6,8 +6,13 @@ from funfactory.urlresolvers import reverse
 from banners.models import Banner, BannerImage, BannerInstance
 
 
+class BannerImageInline(admin.TabularInline):
+    model = BannerImage
+
+
 class BannerAdmin(admin.ModelAdmin):
-    pass
+    change_list_template = 'smuggler/change_list.html'
+    inlines = [BannerImageInline]
 site.register(Banner, BannerAdmin)
 
 

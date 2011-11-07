@@ -5,10 +5,10 @@ from badges.models import Category, Subcategory
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    change_list_template = 'smuggler/change_list.html'
 site.register(Category, CategoryAdmin)
 
 
 class SubcategoryAdmin(admin.ModelAdmin):
-    pass
+    change_list_template = 'smuggler/change_list.html'
 site.register(Subcategory, SubcategoryAdmin)
