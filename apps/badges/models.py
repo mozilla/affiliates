@@ -119,6 +119,17 @@ class Badge(CachingMixin, MultiTableParentModel):
         return self.name
 
 
+class BadgeLocale(CachingMixin, ModelBase):
+    """Stores the locales that a banner is available in."""
+    locale = LocaleField()
+    badge = models.ForeignKey(Badge)
+
+    objects = CachingManager()
+
+    def __unicode__(self):
+        return '%s in %s' & (self.badge, self.locale)
+
+
 class BadgeInstanceManager(CachingManager):
     def for_user_by_category(self, user):
         results = defaultdict(list)
