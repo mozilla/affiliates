@@ -8,6 +8,7 @@ from banners.models import Banner, BannerImage, BannerInstance
 
 class BannerImageInline(admin.TabularInline):
     model = BannerImage
+    extra = 0
 
 
 class BannerAdmin(admin.ModelAdmin):
