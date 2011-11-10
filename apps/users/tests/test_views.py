@@ -24,7 +24,7 @@ class RegisterTests(TestCase):
         response = self.client.post(reverse('users.register'),
                                     {'display_name': 'newbie',
                                      'email': 'newbie@example.com',
-                                     'password': 'asdf1234',
+                                     'registration_password': 'asdf1234',
                                      'agreement': 'on'})
         eq_(200, response.status_code)
 
@@ -42,7 +42,7 @@ class RegisterTests(TestCase):
         """
         params = {'display_name': 'newbie',
                   'email': 'newbie@example.com',
-                  'password': 'asdf1234',
+                  'registration_password': 'asdf1234',
                   'agreement': 'on',
                   'email_subscribe': 'on'}
         response = self.client.post(reverse('users.register'), params)

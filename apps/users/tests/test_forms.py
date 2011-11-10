@@ -121,7 +121,7 @@ class RegisterFormTests(TestCase):
     def _form(self, name, email, password, agreement=True):
         return forms.RegisterForm({'display_name': name,
                                    'email': email,
-                                   'password': password,
+                                   'registration_password': password,
                                    'agreement': agreement})
 
     def test_email(self):
