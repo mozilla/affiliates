@@ -1,13 +1,12 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
-from django.db.models import Sum
 
 from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.models import BadgeInstance, Category, ClickStats
+from badges.models import BadgeInstance, Category, ClickStats, Subcategory
 from badges.tests import ModelsTestCase
 from badges.tests.models import MultiTableParent, MultiTableChild
 
@@ -43,6 +42,20 @@ class MultiTableParentModelTests(ModelsTestCase):
 class FakeDatetime(datetime):
     def __new__(cls, *args, **kwargs):
         return datetime.__new__(datetime, *args, **kwargs)
+
+
+class SubcategoryTests(TestCase):
+    fixtures = ['subcategories']
+
+    def test_in_locale(self):
+        """Test that in_locale returns all subcategories with badges available
+        in the given locale.
+        """
+        results = Subcategory.objects.in_locale('en-us')
+        eq_(len(results), 2)
+
+        results = Subcategory.objects.in_locale('es')
+        eq_(len(results), 1)
 
 
 class BadgeInstanceTests(TestCase):

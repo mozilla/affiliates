@@ -1,5 +1,4 @@
 from collections import defaultdict
-from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -84,6 +83,11 @@ class Category(CachingMixin, ModelBase):
         return self.name
 
 
+class SubcategoryManager(CachingManager):
+    def in_locale(self, locale):
+        return self.filter(badge__badgelocale__locale=locale)
+
+
 class Subcategory(CachingMixin, ModelBase):
     """Second-level category that contains badges."""
     parent = models.ForeignKey(Category)
@@ -92,7 +96,7 @@ class Subcategory(CachingMixin, ModelBase):
                                     verbose_name=_lazy(u'category preview'),
                                     max_length=settings.MAX_FILEPATH_LENGTH)
 
-    objects = CachingManager()
+    objects = SubcategoryManager()
 
     def __unicode__(self):
         return self.name

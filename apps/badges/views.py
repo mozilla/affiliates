@@ -1,8 +1,9 @@
 import json
 
 from django.conf import settings
+from django.core.cache import cache
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils.http import urlquote_plus
 from django.views.decorators.cache import cache_control
@@ -23,6 +24,9 @@ from users.forms import RegisterForm, LoginForm
 
 TWEET_TEXT = _lazy(u'The Firefox Affiliates program is a great way to share '
                    'your love of Mozilla Firefox.')
+
+
+CACHE_SUBCAT_MAP = 'subcategory_map_%s'  # %s = locale
 
 
 @anonymous_csrf
@@ -46,16 +50,39 @@ def home(request, register_form=None, login_form=None):
 
 @login_required
 def new_badge_step1(request):
+    """Display groups of badges available to the user."""
+    user_locale = request.user.userprofile.locale
+
     categories = Category.objects.all()
 
+    # We don't want to display empty subcategories or categories, so we
+    # query each set manually to check for badges available in the user's
+    # locale.
+    key = CACHE_SUBCAT_MAP % user_locale
+    subcategory_map = cache.get(key)
+    if subcategory_map is None:
+        subcategory_map = {}
+
+        for category in categories:
+            subcategories = category.subcategory_set.in_locale(user_locale)
+            if len(subcategories) > 0:
+                subcategory_map[category.pk] = subcategories
+
+            cache.set(key, subcategory_map)
+
     return dashboard(request, 'badges/new_badge/step1.html',
-                        {'categories': categories})
+                        {'categories': categories,
+                         'subcategory_map': subcategory_map})
 
 
 @login_required
 def new_badge_step2(request, subcategory_pk):
+    """Display a set of badges for the user to choose from."""
+    user_locale = request.user.userprofile.locale
+
     subcategory = get_object_or_404(Subcategory, pk=subcategory_pk)
-    badges = Badge.objects.filter(subcategory=subcategory)
+    badges = get_list_or_404(Badge, subcategory=subcategory,
+                             badgelocale__locale=user_locale)
 
     return dashboard(request, 'badges/new_badge/step2.html',
                         {'subcategory': subcategory, 'badges': badges})

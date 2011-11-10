@@ -1,0 +1,199 @@
+[
+    {
+        "pk": 11,
+        "model": "badges.category",
+        "fields": {
+            "name": "Firefox"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.category",
+        "fields": {
+            "name": "Firefox Live"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/fpo-mobile_4.png",
+            "name": "Firefox for Mobile",
+            "parent": 11
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.subcategory",
+        "fields": {
+            "preview_img": "uploads/badge_previews/fpo-mobile_4.png",
+            "name": "Firefox Careers",
+            "parent": 11
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.badge",
+        "fields": {
+            "href": "http://www.google.com/",
+            "child_type": "banner",
+            "name": "Firefox for Mobile",
+            "preview_img": "uploads/badge_previews/fpo-mobile_11.png",
+            "subcategory": 11
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.badgelocale",
+        "fields": {
+            "badge": 11,
+            "locale": "en-US"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.badge",
+        "fields": {
+            "href": "http://www.google.com/",
+            "child_type": "banner",
+            "name": "Firefox for Mobile",
+            "preview_img": "uploads/badge_previews/fpo-mobile_11.png",
+            "subcategory": 11
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.badgelocale",
+        "fields": {
+            "badge": 12,
+            "locale": "es"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "badges.badge",
+        "fields": {
+            "href": "http://www.google.com/",
+            "child_type": "banner",
+            "name": "Firefox for Mobile",
+            "preview_img": "uploads/badge_previews/fpo-mobile_11.png",
+            "subcategory": 12
+        }
+    },
+    {
+        "pk": 13,
+        "model": "badges.badgelocale",
+        "fields": {
+            "badge": 13,
+            "locale": "en-US"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 11,
+            "user": 15,
+            "created": "2011-08-31 10:37:49",
+            "clicks": 1
+        }
+    },
+    {
+        "pk": 11,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 11,
+            "year": 2011,
+            "clicks": 1,
+            "month": 7
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 12,
+            "user": 16,
+            "created": "2011-08-31 10:37:49",
+            "clicks": 1
+        }
+    },
+    {
+        "pk": 12,
+        "model": "badges.clickstats",
+        "fields": {
+            "badge_instance": 12,
+            "year": 2011,
+            "clicks": 1,
+            "month": 7
+        }
+    },
+    {
+        "pk": 15,
+        "model": "auth.user",
+        "fields": {
+            "username": "testuser42",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-08-31 10:36:23",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$602f4d0d24578d9c9e39$f474a8a0fc00b6d542e480e9462d6140d77ccbcd120849eb890120b1109cdc61614a33a28bd73ba5daaa9f160a3287fd00e56e119a4d096026dac81f64499cec",
+            "email": "testuser42@asdf.asdf",
+            "date_joined": "2011-08-29 16:21:16"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "users.userprofile",
+        "fields": {
+            "city": "",
+            "name": "Test User 42",
+            "created": "2011-08-03 16:54:45",
+            "locale": "en-US",
+            "country": "us",
+            "modified": "2011-08-03 16:54:45",
+            "state": "",
+            "address_1": "",
+            "address_2": ""
+        }
+    },
+    {
+        "pk": 16,
+        "model": "auth.user",
+        "fields": {
+            "username": "testuser43",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2011-08-31 10:36:23",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha512$602f4d0d24578d9c9e39$f474a8a0fc00b6d542e480e9462d6140d77ccbcd120849eb890120b1109cdc61614a33a28bd73ba5daaa9f160a3287fd00e56e119a4d096026dac81f64499cec",
+            "email": "testuser43@asdf.asdf",
+            "date_joined": "2011-08-29 16:21:16"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "users.userprofile",
+        "fields": {
+            "city": "",
+            "name": "Test User 43",
+            "created": "2011-08-03 16:54:45",
+            "locale": "es",
+            "country": "us",
+            "modified": "2011-08-03 16:54:45",
+            "state": "",
+            "address_1": "",
+            "address_2": ""
+        }
+    }
+]
