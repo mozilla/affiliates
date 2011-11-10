@@ -1,3 +1,4 @@
 src/django-cache-machine
 src/django-smuggler
 src/django-cronjobs
+src/django-extensions

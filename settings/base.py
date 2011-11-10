@@ -104,6 +104,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'shared',
     'news',
     'users',
+    'django_extensions',
     'smuggler',
     'cronjobs',
     'django.contrib.sites',

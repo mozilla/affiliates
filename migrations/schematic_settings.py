@@ -28,3 +28,4 @@ else:
 
 db = s.format(**config)
 table = 'schema_version'
+handlers = {'.py': sys.executable + ' -B manage.py runscript migrations.%s'}

@@ -16,3 +16,6 @@
 [submodule "vendor-local/src/django-cronjobs"]
 	path = vendor-local/src/django-cronjobs
 	url = git://github.com/jsocol/django-cronjobs.git
+[submodule "vendor-local/src/django-extensions"]
+	path = vendor-local/src/django-extensions
+	url = git://github.com/django-extensions/django-extensions.git

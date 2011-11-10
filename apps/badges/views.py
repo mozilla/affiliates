@@ -65,7 +65,7 @@ def new_badge_step1(request):
 
         for category in categories:
             subcategories = category.subcategory_set.in_locale(user_locale)
-            if len(subcategories) > 0:
+            if subcategories:
                 subcategory_map[category.pk] = subcategories
 
             cache.set(key, subcategory_map)
