@@ -1,10 +1,10 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
 
 import jingo
 from caching.base import CachingManager, CachingMixin, CachingQuerySet
 from funfactory.manage import path
+from funfactory.urlresolvers import reverse
 from tower import ugettext_lazy as _lazy
 
 from badges.models import Badge, BadgeInstance, LocaleField, ModelBase
