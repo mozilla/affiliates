@@ -1,4 +1,6 @@
 import json
+import logging
+import socket
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -13,6 +15,9 @@ from shared.decorators import login_required
 
 
 CACHE_LINK_INSTANCE = 'banner_link_instance_%s_%s'
+
+
+log = logging.getLogger('a.banners')
 
 
 @login_required
@@ -46,6 +51,9 @@ def link(request, user_id, banner_id, banner_img_id):
     except Banner.DoesNotExist:
         return HttpResponseRedirect(settings.DEFAULT_AFFILIATE_LINK)
 
-    tasks.add_click.delay(user_id, banner_id, banner_img_id)
+    try:
+        tasks.add_click.delay(user_id, banner_id, banner_img_id)
+    except socket.timeout:
+        log.warning('Timeout connecting to celery for banner click.')
 
     return HttpResponseRedirect(banner.href)
