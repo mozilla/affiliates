@@ -3,7 +3,7 @@ from django.contrib import admin
 from funfactory.admin import site
 from funfactory.urlresolvers import reverse
 
-from badges.admin import BadgeLocaleAdminForm
+from badges.forms import BadgeLocaleAdminForm
 from banners.models import Banner, BannerImage, BannerInstance
 
 

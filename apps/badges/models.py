@@ -131,7 +131,7 @@ class BadgeLocale(CachingMixin, ModelBase):
     objects = CachingManager()
 
     def __unicode__(self):
-        return '%s in %s' & (self.badge, self.locale)
+        return '%s in %s' % (self.badge, self.locale)
 
 
 class BadgeInstanceManager(CachingManager):
@@ -227,6 +227,7 @@ class ClickStats(ModelBase):
     clicks = models.IntegerField(default=0)
 
     objects = ClickStatsManager()
+
     class Meta:
         unique_together = ('badge_instance', 'month', 'year')
 
