@@ -59,3 +59,12 @@ class LocaleField(models.CharField):
         return super(LocaleField, self).__init__(
             max_length=max_length, default=default, choices=choices,
             *args, **kwargs)
+
+
+class LocaleImage(ModelBase):
+    image = models.ImageField(upload_to=settings.LOCALE_IMAGE_PATH,
+                              max_length=settings.MAX_FILEPATH_LENGTH)
+    locale = LocaleField()
+
+    class Meta:
+        abstract = True

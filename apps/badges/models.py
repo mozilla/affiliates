@@ -7,7 +7,8 @@ from django.db import models
 
 from caching.base import CachingManager, CachingMixin
 
-from shared.models import LocaleField, ModelBase, MultiTableParentModel
+from shared.models import (LocaleField, LocaleImage, ModelBase,
+                           MultiTableParentModel)
 
 
 # Cache keys
@@ -36,10 +37,15 @@ class Subcategory(CachingMixin, ModelBase):
     """Second-level category that contains badges."""
     parent = models.ForeignKey(Category)
     name = models.CharField(max_length=255)
-    preview_img = models.ImageField(upload_to=settings.BADGE_PREVIEW_PATH,
-                                    max_length=settings.MAX_FILEPATH_LENGTH)
 
     objects = SubcategoryManager()
+
+    def preview_img_url(self, locale):
+        try:
+            badge = self.badge_set.order_by('?')[:1]
+            return badge[0].preview_img_url(locale)
+        except Badge.DoesNotExist:
+            return settings.DEFAULT_BADGE_PREVIEW
 
     def __unicode__(self):
         return self.name
@@ -52,14 +58,20 @@ class Badge(CachingMixin, MultiTableParentModel):
     """
     name = models.CharField(max_length=255)
     subcategory = models.ForeignKey(Subcategory)
-    preview_img = models.ImageField(upload_to=settings.BADGE_PREVIEW_PATH,
-                                    max_length=settings.MAX_FILEPATH_LENGTH)
     href = models.URLField(verbose_name=u'URL to redirect to')
 
     objects = CachingManager()
 
     def customize_url(self):
+        """Return a URL pointing to the customization page for this badge."""
         return self.child().customize_url()
+
+    def preview_img_url(self, locale):
+        """Return a URL pointing to a preview image for this badge."""
+        try:
+            return self.badgepreview_set.get(locale=locale).image.url
+        except BadgePreview.DoesNotExist:
+            return settings.DEFAULT_BADGE_PREVIEW
 
     def __unicode__(self):
         return self.name
@@ -74,6 +86,16 @@ class BadgeLocale(CachingMixin, ModelBase):
 
     def __unicode__(self):
         return '%s in %s' % (self.badge, self.locale)
+
+
+class BadgePreview(CachingMixin, LocaleImage):
+    badge = models.ForeignKey(Badge)
+
+    class Meta:
+        unique_together = ('locale', 'badge')
+
+    def __unicode__(self):
+        return 'Preview: %s(%s)' % (self.badge, self.locale)
 
 
 class BadgeInstanceManager(CachingManager):

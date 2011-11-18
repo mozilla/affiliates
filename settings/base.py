@@ -26,8 +26,11 @@ LOGIN_VIEW_NAME = 'home'
 MAX_FILEPATH_LENGTH = 250
 
 # Image file paths
-BADGE_PREVIEW_PATH = 'uploads/badge_previews/'
+def LOCALE_IMAGE_PATH(instance, filename):
+    return 'uploads/locale_images/%s/%s' % (instance.locale, filename)
 BANNER_IMAGE_PATH = 'uploads/banners/'
+
+DEFAULT_BADGE_PREVIEW = MEDIA_URL + 'img/template/default-preview.png'
 
 # CDN for absolutify
 CDN_DOMAIN = None
@@ -61,6 +64,9 @@ SERIALIZATION_MODULES = {
     'json_files': 'shared.serializers.json_files',
 }
 SMUGGLER_FORMAT = 'json_files'
+
+# Test options
+NOSE_ARGS = ['--nologcapture']
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
