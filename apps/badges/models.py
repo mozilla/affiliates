@@ -85,7 +85,7 @@ class Category(CachingMixin, ModelBase):
 
 class SubcategoryManager(CachingManager):
     def in_locale(self, locale):
-        return self.filter(badge__badgelocale__locale=locale)
+        return self.filter(badge__badgelocale__locale=locale).distinct()
 
 
 class Subcategory(CachingMixin, ModelBase):
