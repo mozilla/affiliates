@@ -1,11 +1,13 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.contrib.auth.models import User
 
-from nose.tools import eq_
+from mock import patch
+from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from badges.models import BadgeInstance, ClickStats, Subcategory
+from badges.models import Badge, BadgeInstance, ClickStats, Subcategory
 
 
 class FakeDatetime(datetime):
@@ -14,10 +16,11 @@ class FakeDatetime(datetime):
 
 
 class SubcategoryTests(TestCase):
-    fixtures = ['subcategories']
+    fixtures = ['subcategories', 'badge_previews']
 
     def test_in_locale(self):
-        """Test that in_locale returns all subcategories with badges available
+        """
+        Test that ``in_locale`` returns all subcategories with badges available
         in the given locale.
         """
         results = Subcategory.objects.in_locale('en-us')
@@ -25,6 +28,39 @@ class SubcategoryTests(TestCase):
 
         results = Subcategory.objects.in_locale('es')
         eq_(len(results), 1)
+
+    def test_preview_img_url(self):
+        """
+        Test that ``preview_img_url`` pulls a badge preview from within the
+        subcategory.
+        """
+        subcategory = Subcategory.objects.get(pk=21)
+        preview = subcategory.preview_img_url('en-us')
+
+        # Previews in subcategory 21 have 'cat1' in their path
+        ok_('cat1' in preview,
+            u'Preview not from correct subcategory: %s' % preview)
+
+
+class BadgeTests(TestCase):
+    fixtures = ['badge_previews']
+
+    @patch.object(settings, 'DEFAULT_BADGE_PREVIEW', 'default')
+    def test_preview_img_url_default(self):
+        """
+        Test that ``preview_img_url`` returns the default preview if a locale
+        preview does not exist.
+        """
+        badge = Badge.objects.get(pk=2)
+        preview = badge.preview_img_url('es')
+        eq_(preview, 'default')
+
+    def test_preview_img_url_locale(self):
+        """Test that ``preview_img_url`` returns the correct locale preview."""
+        badge = Badge.objects.get(pk=2)
+        preview = badge.preview_img_url('de')
+        ok_(preview.endswith('path/to/cat2/de/image.png'),
+            u'Incorrect preview image path.')
 
 
 class BadgeInstanceTests(TestCase):

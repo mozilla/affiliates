@@ -5,12 +5,9 @@ from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
 
-from shared.tests import LocalizingClient
-
 
 @patch.object(settings, 'LOGIN_VIEW_NAME', 'mock_login_view')
 class TestLoginRequired(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
     urls = 'shared.tests.urls'
 

@@ -10,6 +10,6 @@ CREATE TABLE `badges_badgepreview` (
     `locale` varchar(32) NOT NULL,
     `badge_id` integer NOT NULL,
     UNIQUE (`locale`, `badge_id`)
-);
+) CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `badges_badgepreview` ADD CONSTRAINT `badge_id_refs_id_ac77c140` FOREIGN KEY (`badge_id`) REFERENCES `badges_badge` (`id`);
 CREATE INDEX `badges_badgepreview_80db5b24` ON `badges_badgepreview` (`badge_id`);

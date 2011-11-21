@@ -17,7 +17,6 @@
         "pk": 1,
         "model": "badges.subcategory",
         "fields": {
-            "preview_img": "uploads/badge_previews/qmo-logo.png",
             "name": "Subtest",
             "parent": 1
         }
@@ -26,7 +25,6 @@
         "pk": 2,
         "model": "badges.subcategory",
         "fields": {
-            "preview_img": "uploads/badge_previews/mobile_dl_300x250_grn_1.png",
             "name": "SecondTest",
             "parent": 2
         }
@@ -35,7 +33,6 @@
         "pk": 3,
         "model": "badges.subcategory",
         "fields": {
-            "preview_img": "uploads/badge_previews/mobile_dl_300x250_red_1.png",
             "name": "Something",
             "parent": 2
         }
@@ -45,7 +42,6 @@
         "model": "badges.badge",
         "fields": {
             "child_type": "banner",
-            "preview_img": "uploads/badge_previews/120x240arrow_b.png",
             "name": "Fast Forward",
             "subcategory": 1,
             "href": "http://www.mozilla.org"
@@ -61,7 +57,6 @@
         "model": "badges.badge",
         "fields": {
             "child_type": "banner",
-            "preview_img": "uploads/badge_previews/120x240arrow_b.png",
             "name": "Fast Forward",
             "subcategory": 1,
             "href": "http://www.mozilla.org"

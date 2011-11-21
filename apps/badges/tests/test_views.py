@@ -1,17 +1,16 @@
 import json
 
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
 
+from funfactory.urlresolvers import reverse
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.views import CACHE_SUBCAT_MAP
-from shared.tests import LocalizingClient, model_ids
+from shared.tests import model_ids
 
 
 class TestMonthStatsAjax(TestCase):
-    client_class = LocalizingClient
     fixtures = ['badge_instance']
 
     def test_basic(self):
@@ -28,18 +27,16 @@ class TestMonthStatsAjax(TestCase):
 
 
 class TestHome(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
 
     def test_redirect_logged_in(self):
         self.client.login(username='mkelly@mozilla.com', password='asdfasdf')
         response = self.client.get(reverse('home'))
 
-        eq_(response.status_code, 302)
+        eq_(response.status_code, 301)
 
 
 class TestNewBadgeStep1(TestCase):
-    client_class = LocalizingClient
     fixtures = ['subcategories']
 
     def test_available_badges_displayed(self):
@@ -63,7 +60,6 @@ class TestNewBadgeStep1(TestCase):
 
 
 class TestNewBadgeStep2(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users', 'subcategories']
 
     def test_no_subcategory_404(self):
@@ -84,7 +80,6 @@ class TestNewBadgeStep2(TestCase):
 
 
 class TestMyBadges(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
 
     def test_new_user_redirect(self):

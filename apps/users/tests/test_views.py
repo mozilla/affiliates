@@ -1,20 +1,16 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import mail
-from django.core.urlresolvers import reverse
 
+from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
-from shared.tests import LocalizingClient
 from users.models import RegisterProfile
 
 
 class RegisterTests(TestCase):
-
-    client_class = LocalizingClient
-
     def test_new_profile(self):
         """
         Test new user registration.
@@ -67,7 +63,6 @@ class RegisterTests(TestCase):
 
 
 class LoginTests(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
 
     def test_basic_login(self):
@@ -91,7 +86,6 @@ class LoginTests(TestCase):
 
 
 class EditProfileTests(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
 
     def setUp(self):
@@ -124,7 +118,6 @@ class EditProfileTests(TestCase):
 
 
 class SendPasswordResetTests(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
 
     def test_basic(self):
@@ -154,7 +147,6 @@ class SendPasswordResetTests(TestCase):
 
 
 class PasswordResetTests(TestCase):
-    client_class = LocalizingClient
     fixtures = ['registered_users']
 
     def _request_reset(self, email):

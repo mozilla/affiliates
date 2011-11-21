@@ -17,7 +17,6 @@
         "pk": 11,
         "model": "badges.subcategory",
         "fields": {
-            "preview_img": "uploads/badge_previews/fpo-mobile_4.png",
             "name": "Firefox for Mobile",
             "parent": 11
         }
@@ -26,7 +25,6 @@
         "pk": 12,
         "model": "badges.subcategory",
         "fields": {
-            "preview_img": "uploads/badge_previews/fpo-mobile_4.png",
             "name": "Firefox Careers",
             "parent": 11
         }
@@ -38,7 +36,6 @@
             "href": "http://www.google.com/",
             "child_type": "banner",
             "name": "Firefox for Mobile",
-            "preview_img": "uploads/badge_previews/fpo-mobile_11.png",
             "subcategory": 11
         }
     },
@@ -57,7 +54,6 @@
             "href": "http://www.google.com/",
             "child_type": "banner",
             "name": "Firefox for Mobile",
-            "preview_img": "uploads/badge_previews/fpo-mobile_11.png",
             "subcategory": 11
         }
     },
@@ -76,7 +72,6 @@
             "href": "http://www.google.com/",
             "child_type": "banner",
             "name": "Firefox for Mobile",
-            "preview_img": "uploads/badge_previews/fpo-mobile_11.png",
             "subcategory": 12
         }
     },

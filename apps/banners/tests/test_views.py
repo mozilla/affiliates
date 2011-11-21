@@ -1,8 +1,8 @@
 import json
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 
+from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 from test_utils import TestCase
@@ -10,12 +10,10 @@ from test_utils import TestCase
 from badges.models import BadgeInstance
 from banners.models import Banner, BannerImage, BannerInstance
 from banners.tests import mock_size
-from shared.tests import LocalizingClient
 
 
 @patch.object(BannerImage, 'size', mock_size)
 class CustomizeViewTests(TestCase):
-    client_class = LocalizingClient
     fixtures = ['banners']
 
     def test_locale_images(self):

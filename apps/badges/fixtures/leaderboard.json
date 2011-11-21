@@ -118,7 +118,6 @@
         "pk": 15,
         "model": "badges.subcategory",
         "fields": {
-            "preview_img": "uploads/badge_previews/fpo-mobile_15.png",
             "name": "Firefox Plugins",
             "parent": 13
         }
@@ -130,7 +129,6 @@
             "href": "http://www.mozilla.org/",
             "child_type": "banner",
             "name": "Plugin Checker",
-            "preview_img": "uploads/badge_previews/fpo-mobile_22.png",
             "subcategory": 15
         }
     },

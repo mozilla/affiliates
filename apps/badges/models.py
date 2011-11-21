@@ -42,6 +42,7 @@ class Subcategory(CachingMixin, ModelBase):
 
     def preview_img_url(self, locale):
         try:
+            # TODO: Track timing data for this in statsd
             badge = self.badge_set.order_by('?')[:1]
             return badge[0].preview_img_url(locale)
         except Badge.DoesNotExist:
