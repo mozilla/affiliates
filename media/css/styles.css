@@ -14,16 +14,12 @@ a:hover, a:active {
     color: #447bc4;
 }
 p {
+    line-height: 1.5em;
     margin: 0 0 1em 0;
 }
+
 img {
     border: 0;
-}
-p,
-/*dd,*/
-#content li/*,
-#main-content li*/ {
-    line-height: 1.5;
 }
 
 strong {

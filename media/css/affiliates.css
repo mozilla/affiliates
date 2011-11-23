@@ -68,13 +68,13 @@ ul.banners_nav ~ .header {
 }
 
 .highlight-box .header h2 {
+    display: table-cell;
     font-family: MetaWebPro;
     font-size: 28px !important;
     font-style: normal;
-    left: 33px;
-    margin: 0;
-    position: relative;
-    top: 33px;
+    height: 98px;
+    padding: 0 20px;
+    vertical-align: middle;
 }
 
 .highlight-box .help_bulb_wrapper {
@@ -220,13 +220,13 @@ ul.errorlist li {
 .arrow_indicator_banner.current {
     display: block;
     left: 200px;
-    top: 77px;
+    top: 75px;
 }
 
 .arrow_indicator_banner.new {
     display: block;
     left: 420px;
-    top: 77px;
+    top: 75px;
 }
 
 input,
@@ -391,8 +391,9 @@ div.left-arrow span {
     float: left;
     list-style: none;
     margin: 0 0 5px 10px;
+    min-width: 131px;
+    padding: 0 10px;
     text-align: center;
-    width: 151px;
 }
 
 #content-nav li:first-child {
@@ -440,23 +441,41 @@ div.left-arrow span {
     padding: 33px 33px 28px;
 }
 
-.steps-buttons{
+.steps-buttons {
     background: none repeat scroll 0 0 #d3dfe7;
+    counter-reset: li;
+    font-family: "MetaWebPro";
+    font-size: 26px;
     margin: 0;
     overflow: hidden;
+    padding: 0;
 }
 
-.steps-buttons li{
-    background: none repeat scroll 0 0 #FFFFFF;
-    height: 63px;
-    width: 189px;
-    list-style: none;
-    float: left;
-    color: #474848;
-    padding-top: 11px;
+.steps-buttons li {
     background: url(../img/template/sprite-steps.png) no-repeat scroll 0 0 #FFFFFF;
+    color: #474848;
+    float: left;
+    height: 74px;
+    list-style: none;
+    position: relative;
+    width: 189px;
+}
+
+/* Using a CSS counter allows us to precisely position the numbers. */
+.steps-buttons li:before {
+    content: counter(li);
+    counter-increment: li;
+    float: left;
+    line-height: 72px;
+}
+
+.steps-buttons li p {
+    display: table-cell;
     font-family: "MetaWebPro";
     font-size: 15px;
+    height: 72px;
+    padding-left: 10px;
+    vertical-align: middle;
 }
 
 .steps-buttons li.first{
@@ -492,14 +511,6 @@ div.left-arrow span {
 
 .steps-buttons li.third.selected{
     background-position: 0 -148px;
-}
-
-.steps-buttons li span{
-    font-family: "MetaWebPro";
-    font-size: 26px;
-    margin-right: 7px;
-    position: relative;
-    top:2px;
 }
 
 #step-content{
@@ -780,7 +791,7 @@ div.head-box .date{
 /* Sidebar Navigation */
 #sidebar-nav {
     list-style: none;
-    margin: 15px 0 5px;
+    margin: 15px 0 5px -40px;
     overflow: hidden;
     text-align: right;
 }
@@ -793,10 +804,10 @@ div.head-box .date{
 #sidebar-nav li {
     float: right;
     list-style: none;
-    margin: 0 10px 0 0;
+    margin: 0 0 0 10px;
 }
 
-#sidebar-nav li:first-child {
+#sidebar-nav li:last-child {
     margin: 0;
 }
 
@@ -957,13 +968,13 @@ div.block-space{
 .banners_nav {
     list-style: none;
     margin: 0;
-    padding: 0 80px;
+    padding: 0;
     text-align: center;
 }
 
 .banners_nav li {
     background: url(../img/template/banner_nav_bar.png) no-repeat 0 15px;
-    float: left;
+    display: inline-block;
     font-family: 'MuseoSans500';
     list-style: none;
     margin: 0;
@@ -1070,12 +1081,13 @@ div.statistics-summary h3{
     font-size:16px;
     font-style:normal;
     font-family:MuseoSans500,sans-serif;
+    margin-top: .5em;
 }
 
 div.statistics-summary div.instructions{
-    font-size:11px;
-    text-align:left;
-    margin-top:20px;
+    font-size: 11px;
+    text-align: left;
+    margin-top: 10px;
 }
 
 .statistics-warning {

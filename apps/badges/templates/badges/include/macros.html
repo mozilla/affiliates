@@ -9,17 +9,17 @@
   </h2>
 </div>
 <div id="steps-started">
-  <ul class="steps-buttons">
+  <ol class="steps-buttons">
     <li class="first {{ 0|wizard_active(step) }}">
-      {{ _('<span>1</span>PICK A CATEGORY') }}
+      <p>{{ _('PICK A CATEGORY') }}</p>
     </li>
     <li class="second {{ 1|wizard_active(step) }}">
-      {{ _('<span>2</span>PICK A BANNER') }}
+      <p>{{ _('PICK A BANNER') }}</p>
     </li>
     <li class="third {{ 2|wizard_active(step) }}">
-      {{ _('<span>3</span>CONFIGURE &amp; POST') }}
+      <p>{{ _('CONFIGURE &amp; POST') }}</p>
     </li>
-  </ul>
+  </ol>
   <div id="step-content">
     {{ caller() }}
   </div>
