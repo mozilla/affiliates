@@ -5,47 +5,20 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.views.decorators.http import require_POST
-from django.utils.http import urlquote_plus
 from django.views.decorators.cache import cache_control
 
 import jingo
 from babel.dates import get_month_names
 from babel.numbers import format_number
-from session_csrf import anonymous_csrf
-from tower import ugettext_lazy as _lazy
 
 from badges.models import (Badge, BadgeInstance, Category, ClickStats,
                            Leaderboard, Subcategory)
 from news.models import NewsItem
 from shared.decorators import login_required
-from shared.utils import absolutify, current_locale, redirect
-from users.forms import RegisterForm, LoginForm
-
-
-TWEET_TEXT = _lazy(u'The Firefox Affiliates program is a great way to share '
-                   'your love of Mozilla Firefox.')
+from shared.utils import current_locale, redirect
 
 
 CACHE_SUBCAT_MAP = 'subcategory_map_%s'  # %s = locale
-
-
-@anonymous_csrf
-def home(request, register_form=None, login_form=None):
-    """Display the home page."""
-    # Redirect logged-in users
-    if request.user.is_authenticated():
-        return redirect('badges.new.step1')
-
-    if register_form is None:
-        register_form = RegisterForm()
-    if login_form is None:
-        login_form = LoginForm()
-
-    params = {'register_form': register_form,
-              'login_form': login_form,
-              'share_url': absolutify('/'),
-              'tweet_text': urlquote_plus(TWEET_TEXT)}
-    return jingo.render(request, 'badges/home.html', params)
 
 
 @login_required

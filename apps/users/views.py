@@ -17,7 +17,7 @@ from responsys import subscribe
 from session_csrf import anonymous_csrf
 from tower import ugettext as _
 
-from badges.views import home
+from shared.views import home
 from users import forms
 from users.models import RegisterProfile
 

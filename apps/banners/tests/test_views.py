@@ -5,11 +5,11 @@ from django.conf import settings
 from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
-from test_utils import TestCase
 
 from badges.models import BadgeInstance
 from banners.models import Banner, BannerImage, BannerInstance
 from banners.tests import mock_size
+from shared.tests import TestCase
 
 
 @patch.object(BannerImage, 'size', mock_size)
@@ -19,7 +19,8 @@ class CustomizeViewTests(TestCase):
     def test_locale_images(self):
         self.client.login(username='testuser42@asdf.asdf', password='asdfasdf')
 
-        url = reverse('banners.customize', kwargs={'banner_pk': 1})
+        with self.activate('en-US'):
+            url = reverse('banners.customize', kwargs={'banner_pk': 1})
         response = self.client.get(url)
 
         banner_images = json.loads(response.context['json_banner_images'])
@@ -38,7 +39,8 @@ class LinkViewTests(TestCase):
         kwargs = {'user_id': self.USER_ID,
                   'banner_id': self.BANNER_ID,
                   'banner_img_id': self.BANNER_IMG_ID}
-        url = reverse('banners.link', kwargs=kwargs)
+        with self.activate('en-US'):
+            url = reverse('banners.link', kwargs=kwargs)
         response = self.client.get(url)
 
         results = BannerInstance.objects.filter(
@@ -60,7 +62,8 @@ class LinkViewTests(TestCase):
         kwargs = {'user_id': self.USER_ID,
                   'banner_id': self.BAD_BANNER_ID,
                   'banner_img_id': self.BANNER_IMG_ID}
-        url = reverse('banners.link', kwargs=kwargs)
+        with self.activate('en-US'):
+            url = reverse('banners.link', kwargs=kwargs)
         response = self.client.get(url)
 
         eq_(response.status_code, 302)
@@ -74,7 +77,8 @@ class LinkViewTests(TestCase):
         kwargs = {'user_id': self.USER_ID,
                   'banner_id': 2,
                   'banner_img_id': 777}
-        url = reverse('banners.link', kwargs=kwargs)
+        with self.activate('en-US'):
+            url = reverse('banners.link', kwargs=kwargs)
         self.client.get(url)
 
         with self.assertRaises(BannerInstance.DoesNotExist):

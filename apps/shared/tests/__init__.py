@@ -1,11 +1,15 @@
+from contextlib import contextmanager
 from smtplib import SMTPException
 
 from django.conf import settings
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.management import call_command
 from django.db.models import loading
+from django.utils.translation import get_language
 
-from test_utils import TestCase
+import test_utils
+from tower import activate
+from funfactory.urlresolvers import get_url_prefix, Prefixer, set_url_prefix
 
 
 class BrokenSMTPBackend(BaseEmailBackend):
@@ -17,6 +21,21 @@ class BrokenSMTPBackend(BaseEmailBackend):
 def model_ids(models):
     """Generates a list of model ids from a list of model objects."""
     return [m.pk for m in models]
+
+
+class TestCase(test_utils.TestCase):
+    """Base class for Affiliates test cases."""
+    @contextmanager
+    def activate(self, locale):
+        """Context manager that temporarily activates a locale."""
+        old_prefix = get_url_prefix()
+        old_locale = get_language()
+        rf = test_utils.RequestFactory()
+        set_url_prefix(Prefixer(rf.get('/%s/' % (locale,))))
+        activate(locale)
+        yield
+        set_url_prefix(old_prefix)
+        activate(old_locale)
 
 
 class ModelsTestCase(TestCase):
