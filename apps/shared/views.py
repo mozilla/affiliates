@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.utils.http import urlquote_plus
+from django.utils.translation import get_language
 
 from session_csrf import anonymous_csrf
 from tower import ugettext_lazy as _lazy
@@ -21,6 +22,10 @@ def home(request, register_form=None, login_form=None):
     if request.user.is_authenticated():
         return redirect('badges.new.step1')
 
+    # en-US users see the BrowserID view instead
+    if get_language() == 'en-us':
+        return browserid_home(request)
+
     if register_form is None:
         register_form = RegisterForm()
     if login_form is None:
@@ -30,7 +35,12 @@ def home(request, register_form=None, login_form=None):
               'login_form': login_form,
               'share_url': absolutify('/'),
               'tweet_text': urlquote_plus(TWEET_TEXT)}
-    return render(request, 'shared/home.html', params)
+    return render(request, 'shared/home/normal.html', params)
+
+
+def browserid_home(request):
+    """Display the home page with a BrowserID login."""
+    return render(request, 'shared/home/browserid.html')
 
 
 @login_required

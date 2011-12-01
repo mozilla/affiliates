@@ -5,6 +5,11 @@
     position: relative;
     width: 345px;
 }
+
+#home-registration-forms h3 {
+    margin-top: 0;
+}
+
 #home-registration-forms input[type="text"],
 #home-registration-forms input[type="email"],
 #home-registration-forms input[type="password"] {
@@ -20,11 +25,7 @@
     margin-top:11px;
     margin-bottom:10px;
 }
-#home-registration-forms span{
-    font-size:170%;
-    font-style:italic;
-    line-height:169%;
-}
+
 #home-registration-forms p{
     font-size:113%;
     line-height:125%;

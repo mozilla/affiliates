@@ -1,0 +1,17 @@
+{% extends "shared/home/base.html" %}
+
+{% block highlight_box %}
+<div id="home-registration-forms" class="highlight-box">
+  {% include 'users/include/login_form.html' %}
+  <div class="divider-medium">
+    &nbsp;
+  </div>
+  <h3>{{ _("Don't have an account?") }}</h3>
+  <p>
+    {{ _('Want to be a Firefox Affiliate?') }}
+    <br/>
+    {{ _('Sign up now and start spreading the word.') }}
+  </p>
+  {% include 'users/include/register_form.html' %}
+</div>
+{% endblock %}

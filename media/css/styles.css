@@ -41,15 +41,6 @@ h1, h2, h3, h4, h5, h6 {
     font-style: italic;
     color: #484848;
 }
-h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
-    font-family: MetaBlack, "Trebuchet MS", sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-style: normal;
-    font-size: 130%;
-    display: block;
-    letter-spacing:  -0.02em;
-}
 h1 {
     font-size: 36px;
 }
@@ -115,7 +106,13 @@ p.heavy {
     line-height: 1.2em;
 }
 #main-feature h2 span {
+    font-family: MetaBlack, "Trebuchet MS", sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-style: normal;
     font-size: 65px;
+    display: block;
+    letter-spacing:  -0.02em;
 }
 #main-feature p {
     color: #484848;
@@ -134,4 +131,45 @@ p.heavy {
     width:1px;
     height:1px;
     overflow:hidden;
+}
+
+span.label {
+    background: #feb602;
+    background: -moz-linear-gradient(bottom, #feb602, #fee303 75%);
+    border-radius: 2px;
+    box-shadow: inset 0 -1px rgba(0, 0, 0, 0.24), 0 1px rgba(0, 0, 0, 0.26);
+    color: #4d410a;
+    font: normal bold 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-right: 2px;
+    padding: 5px 13px;
+    position: relative;
+    text-shadow: rgba(255, 255, 255, 0.67) 0 1px;
+    text-transform: uppercase;
+    top: -4px;
+}
+
+a.browserid {
+    color: #ffffff;
+    display: inline-block;
+    font: italic 16px Georgia, serif;
+    height: 37px;
+    line-height: 36px;
+    text-shadow: rgba(54, 54, 54, 0.30) 0 1px;
+}
+
+a.browserid span {
+    background: url("../img/template/browserid_mid.png") repeat-x;
+    display: inline-block;
+    padding: 0 10px;
+    height: 37px;
+}
+
+a.browserid:before {
+    content: url("../img/template/browserid_left.png");
+    vertical-align: top;
+}
+
+a.browserid:after {
+    content: url("../img/template/browserid_right.png");
+    vertical-align: top;
 }
