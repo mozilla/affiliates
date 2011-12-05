@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.http import base36_to_int
 from django.utils.translation import get_language
@@ -22,7 +22,7 @@ from users import forms
 from users.models import RegisterProfile
 
 
-log = logging.getLogger('a.register')
+log = logging.getLogger('a.users')
 
 
 @anonymous_csrf

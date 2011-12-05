@@ -47,6 +47,8 @@
 #home-registration-forms .register:hover {
     box-shadow: 0 1px rgba(0, 0, 0, 0.1), 0 -2px rgba(224, 239, 249, 0.9) inset, 0 0 100px rgba(255, 255, 255, 0.1) inset;
 }
+
+/* Registration Form */
 #register-form input[type="text"],
 #register-form input[type="email"],
 #register-form input[type="password"]{
@@ -56,15 +58,22 @@
     padding: 8px 6px;
     width: 235px;
 }
+
 #register-form input[type="checkbox"] {
     float: left;
 }
+
 #register-form label {
     display: block;
     padding-left: 20px;
     width: 275px;
     margin-bottom: 8px;
 }
+
+#browserid-registration {
+    display: none;
+}
+
 #forgot-password-form input[type="text"],
 #forgot-password-form input[type="password"] {
     margin-right: 10px;

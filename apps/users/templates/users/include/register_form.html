@@ -1,3 +1,4 @@
+{% block form_intro %}{% endblock %}
 {% if register_form.errors %}
   {% for field, errors in register_form.errors.items() %}
     {% for error in errors %}
@@ -9,10 +10,14 @@
   {{ csrf() }}
   <label for="id_{{ register_form.display_name.html_name }}" class="accessibly-hidden">{{ _('Your display name') }}</label>
   {{ register_form.display_name }}
-  <label for="id_{{ register_form.email.html_name }}" class="accessibly-hidden">{{ _('Your email address') }}</label>
-  {{ register_form.email }}
-  <label for="id_{{ register_form.registration_password.html_name }}" class="accessibly-hidden">{{ _('Your password') }}</label>
-  {{ register_form.registration_password }}
+  {% block extra_fields %}
+    <label for="id_{{ register_form.email.html_name }}" class="accessibly-hidden">{{ _('Your email address') }}</label>
+    {{ register_form.email }}
+    <label for="id_{{ register_form.registration_password.html_name }}" class="accessibly-hidden">
+      {{ _('Your password') }}
+    </label>
+    {{ register_form.registration_password }}
+  {% endblock %}
   {{ register_form.agreement }}
   <label for="id_{{ register_form.agreement.html_name }}">
     {# L10n: {{ tos }} links to the terms of service, {{ privacy_policy }} links to Mozilla privacy policy. #}

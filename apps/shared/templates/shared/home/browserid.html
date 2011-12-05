@@ -1,31 +1,49 @@
 {% extends "shared/home/base.html" %}
 
+{% block site_js %}
+  {{ super() }}
+
+  <script src="https://browserid.org/include.js"></script>
+  {{ js('browserid') }}
+{% endblock %}
+
 {% block highlight_box %}
-<div id="home-registration-forms" class="highlight-box">
-  <h3>
-    <span class="label">{{ _('New') }}</span>
-    {{ _('BrowserID is here!') }}
-  </h3>
-  <p>
-    {% trans browserid_url='https://browserid.org' %}
-      Firefox Affiliates has switched to <a href="{{ browserid_url }}">BrowserID</a>.
-      If you previously had an account, use the login button below and
-      sign up for BrowserID with the same email address you used for
-      signing up with Firefox Affiliates.
-    {% endtrans %}
-  </p>
-  <a href="#" class="browserid"><span>{{ _('Log In &raquo;') }}</span></a>
-  <div class="divider-medium">
-    &nbsp;
-  </div>
-  <h3>{{ _("Don't have an account?") }}</h3>
-  <p>
-    {% trans %}
-      Want to be a Firefox Affiliate? Sign up using BrowserID by
-      clicking the registration button below.
-    {% endtrans %}
-  </p>
-  <a href="#" class="browserid"><span>{{ _('Register &raquo;') }}</span></a>
-  {# {% include 'users/include/register_form.html' %} #}
+<div id="home-registration-forms"
+     class="highlight-box"
+     data-browserid-verify="{{ browserid_verify }}"
+     data-csrf="{{ csrf_token }}">
+  {% if register_form.errors %}
+    {% include 'browserid/include/register_form.html' %}
+  {% else %}
+    <div id="browserid-login">
+      <h3>
+        <span class="label">{{ _('New') }}</span>
+        {{ _('BrowserID is here!') }}
+      </h3>
+      <p>
+        {% trans browserid_url='https://browserid.org' %}
+        Firefox Affiliates has switched to <a href="{{ browserid_url }}">BrowserID</a>.
+        If you previously had an account, use the login button below and
+        sign up for BrowserID with the same email address you used for
+        signing up with Firefox Affiliates.
+        {% endtrans %}
+      </p>
+      <a href="#" class="browserid"><span>{{ _('Log In &raquo;') }}</span></a>
+      <div class="divider-medium">
+        &nbsp;
+      </div>
+      <h3>{{ _("Don't have an account?") }}</h3>
+      <p>
+        {% trans %}
+        Want to be a Firefox Affiliate? Sign up using BrowserID by
+        clicking the registration button below.
+        {% endtrans %}
+      </p>
+      <a href="#" class="browserid"><span>{{ _('Register &raquo;') }}</span></a>
+    </div>
+    <div id="browserid-registration">
+      {% include 'browserid/include/register_form.html' %}
+    </div>
+  {% endif %}
 </div>
 {% endblock %}

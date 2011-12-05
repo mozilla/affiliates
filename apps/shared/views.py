@@ -2,10 +2,13 @@ from django.shortcuts import render
 from django.utils.http import urlquote_plus
 from django.utils.translation import get_language
 
+from funfactory.urlresolvers import reverse
 from session_csrf import anonymous_csrf
 from tower import ugettext_lazy as _lazy
 
 from badges.views import dashboard
+from browserid.forms import RegisterForm as BrowserIDRegisterForm
+from browserid.views import register as browserid_register
 from shared.decorators import login_required
 from shared.utils import absolutify, redirect
 from users.forms import RegisterForm, LoginForm
@@ -40,7 +43,18 @@ def home(request, register_form=None, login_form=None):
 
 def browserid_home(request):
     """Display the home page with a BrowserID login."""
-    return render(request, 'shared/home/browserid.html')
+    register_form = BrowserIDRegisterForm(request.POST or None)
+    if request.method == 'POST':
+        # Attempting to register
+        response = browserid_register(request, register_form)
+        if response is not None:
+            return response
+
+    params = {'browserid_verify': reverse('browserid.verify'),
+              'register_form': register_form,
+              'share_url': absolutify('/'),
+              'tweet_text': urlquote_plus(TWEET_TEXT)}
+    return render(request, 'shared/home/browserid.html', params)
 
 
 @login_required

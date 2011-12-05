@@ -15,9 +15,15 @@ DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 # User accounts
 AUTHENTICATION_BACKENDS = (
     'users.backends.EmailBackend',
+    'django_browserid.BrowserIDBackend',
 )
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 PASSWORD_RESET_TIMEOUT_DAYS = 2
+
+# BrowserID
+BROWSERID_VERIFICATION_URL = 'https://browserid.org/verify'
+BROWSERID_DISABLE_CERT_CHECK = False
+BROWSERID_CREATE_USER = False
 
 # Login settings
 LOGIN_VIEW_NAME = 'home'
@@ -65,9 +71,6 @@ SERIALIZATION_MODULES = {
 }
 SMUGGLER_FORMAT = 'json_files'
 
-# Test options
-NOSE_ARGS = ['--nologcapture']
-
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
@@ -90,7 +93,7 @@ MINIFY_BUNDLES = {
     },
     'js': {
         'common': (
-            'js/libs/jquery-1.4.4.min.js',
+            'js/libs/jquery-1.7.1.js',
             'global/js/nav-main.js',
             'js/libs/jquery.placeholder.min.js',
             'js/libs/jquery.uniform.min.js',
@@ -101,18 +104,23 @@ MINIFY_BUNDLES = {
             'js/libs/mustache.js',
             'js/banners.js',
         ),
+        'browserid': (
+            'js/browserid.js',
+        ),
     }
 }
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     'badges',
     'banners',
+    'browserid',
     'shared',
     'news',
     'users',
     'django_extensions',
     'smuggler',
     'cronjobs',
+    'django_browserid',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
