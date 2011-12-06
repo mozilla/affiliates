@@ -1,5 +1,6 @@
 """Add all existing locales as enabled for all badges."""
-from badges.models import Badge, BadgeLocale, LANGUAGE_CHOICES
+from badges.models import Badge, BadgeLocale
+from shared.models import LANGUAGE_CHOICES
 
 
 def run():
