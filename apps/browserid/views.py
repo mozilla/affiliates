@@ -47,7 +47,7 @@ def verify(request):
         pass
 
     return HttpResponse(json.dumps(response_data),
-                             mimetype='application/json')
+                        mimetype='application/json')
 
 
 @require_POST

@@ -15,7 +15,7 @@ from django.utils.translation import get_language
 import jingo
 from responsys import subscribe
 from session_csrf import anonymous_csrf
-from tower import ugettext as _
+from tower import ugettext_lazy as _lazy
 
 from shared.views import home
 from users import forms
@@ -23,6 +23,9 @@ from users.models import RegisterProfile
 
 
 log = logging.getLogger('a.users')
+
+
+EDIT_PROFILE_SUCCESS = _lazy('Your profile was updated successfully!')
 
 
 @anonymous_csrf
@@ -80,12 +83,21 @@ def activate(request, activation_key=None):
 @login_required
 def edit_profile(request):
     """Edit an existing UserProfile."""
-    form = forms.EditProfileForm(request.POST or None,
-                                 instance=request.user.get_profile())
-    if request.POST and form.is_valid():
-        form.save()
-        messages.success(request, _('Your profile was updated successfully!'))
-        return HttpResponseRedirect(reverse('my_badges'))
+    if request.method == 'POST':
+        data = request.POST.copy()
+
+        # Remove password fields for BrowserID users
+        if not request.user.has_usable_password():
+            data['password'] = ''
+            data['password2'] = ''
+        form = forms.EditProfileForm(data, instance=request.user.get_profile())
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, unicode(EDIT_PROFILE_SUCCESS))
+            return HttpResponseRedirect(reverse('my_badges'))
+    else:
+        form = forms.EditProfileForm(instance=request.user.get_profile())
 
     return jingo.render(request, 'users/edit_profile.html', {'form': form})
 

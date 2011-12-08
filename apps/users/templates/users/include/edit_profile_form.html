@@ -10,23 +10,25 @@
       {{ form.display_name.errors }}
     </div>
   </div>
-  <div class="section">
-    <div class="fields">
-      <label for="id_{{ form.password.html_name }}">{{ _('NEW PASSWORD') }}</label>
-      {{ form.password }}
-      {{ form.password.errors }}
+  {% if user.has_usable_password() %}
+    <div class="section">
+      <div class="fields">
+        <label for="id_{{ form.password.html_name }}">{{ _('NEW PASSWORD') }}</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+      </div>
+      <div class="fields">
+        <label for="id_{{ form.password2.html_name }}">{{ _('RETYPE PASSWORD') }}</label>
+        {{ form.password2 }}
+      </div>
+      <p class="grey_label">
+        {% trans %}
+          8 or more characters, include Latin letters and
+          numbers. Note: No one else can see your password.
+        {% endtrans %}
+      </p>
     </div>
-    <div class="fields">
-      <label for="id_{{ form.password2.html_name }}">{{ _('RETYPE PASSWORD') }}</label>
-      {{ form.password2 }}
-    </div>
-    <p class="grey_label">
-      {% trans %}
-        8 or more characters, include Latin letters and
-        numbers. Note: No one else can see your password.
-      {% endtrans %}
-    </p>
-  </div>
+  {% endif %}
   <div class="section">
     <div>
       {% call macros.fields_title(_('ADDRESS'), 'address-help') %}
@@ -66,8 +68,8 @@
       <label for="id_{{ form.postal_code.html_name }}" class="accessibly-hidden">{{ _('Zip or Postal Code') }}</label>
       {{ form.postal_code }}
       {{ form.postal_code.errors }}
-    </div>    
-    <label for="id_{{ form.country.html_name }}" class="accessibly-hidden">{{ _('Country') }}</label>    
+    </div>
+    <label for="id_{{ form.country.html_name }}" class="accessibly-hidden">{{ _('Country') }}</label>
     {{ form.country }}
     {{ form.country.errors }}
   </div>
