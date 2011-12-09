@@ -16,6 +16,11 @@ from users.forms import RegisterForm, LoginForm
 
 TWEET_TEXT = _lazy(u'The Firefox Affiliates program is a great way to share '
                    'your love of Mozilla Firefox.')
+BROWSERID_NO_ASSERTION = _lazy(u'There was an error during authentication. '
+                               'Please try again.')
+BROWSERID_VERIFY_FAIL = _lazy(u'BrowserID could not verify your identity. '
+                              'Visit <a href="{url}">browserid.org</a> for '
+                              'more information.')
 
 
 @anonymous_csrf
@@ -53,7 +58,9 @@ def browserid_home(request):
     params = {'browserid_verify': reverse('browserid.verify'),
               'register_form': register_form,
               'share_url': absolutify('/'),
-              'tweet_text': urlquote_plus(TWEET_TEXT)}
+              'tweet_text': urlquote_plus(TWEET_TEXT),
+              'browserid_no_assertion': BROWSERID_NO_ASSERTION,
+              'browserid_verify_fail': BROWSERID_VERIFY_FAIL}
     return render(request, 'shared/home/browserid.html', params)
 
 

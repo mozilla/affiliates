@@ -11,7 +11,9 @@
 <div id="home-registration-forms"
      class="highlight-box"
      data-browserid-verify="{{ browserid_verify }}"
-     data-csrf="{{ csrf_token }}">
+     data-csrf="{{ csrf_token }}"
+     data-browserid-no-assertion="{{ browserid_no_assertion }}"
+     data-browserid-verify-fail="{{ browserid_verify_fail|f(url='https://browserid.org') }}">
   {% if register_form.errors %}
     {% include 'browserid/include/register_form.html' %}
   {% else %}
