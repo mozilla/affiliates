@@ -7,8 +7,7 @@ from django.db import models
 
 from caching.base import CachingManager, CachingMixin
 
-from shared.models import (LocaleField, LocaleImage, ModelBase,
-                           MultiTableParentModel)
+from shared.models import LocaleImage, ModelBase, MultiTableParentModel
 
 
 # Cache keys
@@ -28,24 +27,17 @@ class Category(CachingMixin, ModelBase):
         return self.name
 
 
-class SubcategoryManager(CachingManager):
-    def in_locale(self, locale):
-        return self.filter(badge__badgelocale__locale=locale).distinct()
-
-
 class Subcategory(CachingMixin, ModelBase):
     """Second-level category that contains badges."""
     parent = models.ForeignKey(Category)
     name = models.CharField(max_length=255)
-
-    objects = SubcategoryManager()
 
     def preview_img_url(self, locale):
         try:
             # TODO: Track timing data for this in statsd
             badge = self.badge_set.order_by('?')[:1]
             return badge[0].preview_img_url(locale)
-        except Badge.DoesNotExist:
+        except IndexError:
             return settings.DEFAULT_BADGE_PREVIEW
 
     def __unicode__(self):
@@ -69,24 +61,36 @@ class Badge(CachingMixin, MultiTableParentModel):
 
     def preview_img_url(self, locale):
         """Return a URL pointing to a preview image for this badge."""
+        set = self.badgepreview_set
+        #import ipdb; ipdb.set_trace()
+        return (
+            # First try the proper preview
+            self._get_preview(set, locale=locale) or
+
+            # Fallback to the default language
+            self._get_preview(set, locale=settings.LANGUAGE_CODE) or
+
+            # Fallback again to the first available locale
+            self._latest_preview(set) or
+
+            # Really? Nothing? Oh well. Firefox logo it is.
+            settings.DEFAULT_BADGE_PREVIEW)
+
+    def _get_preview(self, set, **kwargs):
         try:
-            return self.badgepreview_set.get(locale=locale).image.url
-        except BadgePreview.DoesNotExist:
-            return settings.DEFAULT_BADGE_PREVIEW
+            return set.get(**kwargs).image.url
+        except (BadgePreview.DoesNotExist,
+                BadgePreview.MultipleObjectsReturned):
+            return None
+
+    def _latest_preview(self, set):
+        result = list(set.all()[:1])
+        if result:
+            return result[0].image.url
+        return None
 
     def __unicode__(self):
         return self.name
-
-
-class BadgeLocale(CachingMixin, ModelBase):
-    """Stores the locales that a banner is available in."""
-    locale = LocaleField()
-    badge = models.ForeignKey(Badge)
-
-    objects = CachingManager()
-
-    def __unicode__(self):
-        return '%s in %s' % (self.badge, self.locale)
 
 
 class BadgePreview(CachingMixin, LocaleImage):

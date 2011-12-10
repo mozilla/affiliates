@@ -36,6 +36,7 @@ def LOCALE_IMAGE_PATH(instance, filename):
     return 'uploads/locale_images/%s/%s' % (instance.locale, filename)
 BANNER_IMAGE_PATH = 'uploads/banners/'
 
+# Default image for badge previews to fall back on
 DEFAULT_BADGE_PREVIEW = MEDIA_URL + 'img/template/default-preview.png'
 
 # CDN for absolutify
@@ -94,6 +95,7 @@ MINIFY_BUNDLES = {
     'js': {
         'common': (
             'js/libs/jquery-1.7.1.js',
+            'js/libs/underscore.js',
             'global/js/nav-main.js',
             'js/libs/jquery.placeholder.min.js',
             'js/libs/jquery.uniform.min.js',
@@ -129,6 +131,10 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
+]
+
+TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
+    'shared.context_processors.l10n'
 ]
 
 # Add Jingo loader

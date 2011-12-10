@@ -1,5 +1,3 @@
-import json
-
 from django.conf import settings
 
 from funfactory.urlresolvers import reverse
@@ -7,24 +5,8 @@ from mock import patch
 from nose.tools import eq_, ok_
 
 from badges.models import BadgeInstance
-from banners.models import Banner, BannerImage, BannerInstance
-from banners.tests import mock_size
+from banners.models import Banner, BannerInstance
 from shared.tests import TestCase
-
-
-@patch.object(BannerImage, 'size', mock_size)
-class CustomizeViewTests(TestCase):
-    fixtures = ['banners']
-
-    def test_locale_images(self):
-        self.client.login(username='testuser42@asdf.asdf', password='asdfasdf')
-
-        with self.activate('en-US'):
-            url = reverse('banners.customize', kwargs={'banner_pk': 1})
-        response = self.client.get(url)
-
-        banner_images = json.loads(response.context['json_banner_images'])
-        eq_(banner_images['300x250 pixels']['Red']['pk'], 5)
 
 
 class LinkViewTests(TestCase):

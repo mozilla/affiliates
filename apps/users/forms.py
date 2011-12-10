@@ -120,7 +120,6 @@ class EditProfileForm(forms.ModelForm):
         super(EditProfileForm, self).__init__(*args, **kwargs)
 
         # Style select fields correctly
-        self.fields['locale'].widget.attrs['class'] = 'js_uniform'
         self.fields['country'].widget.attrs['class'] = 'js_uniform'
 
         # Add placeholders for fields

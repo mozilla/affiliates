@@ -15,7 +15,7 @@ from funfactory.urlresolvers import reverse
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from shared.models import ModelBase, LocaleField
+from shared.models import ModelBase
 from users.utils import hash_password
 
 
@@ -61,8 +61,6 @@ class UserProfile(ModelBase):
                                    verbose_name=_lazy(u'Zip or Postal Code'))
     country = models.CharField(max_length=2, choices=COUNTRIES, blank=True,
                                verbose_name=_lazy(u'Country'))
-
-    locale = LocaleField(verbose_name=_lazy(u'Locale'))
 
     def __unicode__(self):
         return unicode(self.display_name)
@@ -121,8 +119,7 @@ class RegisterManager(models.Manager):
                         is_active=True)
             user.save()
             UserProfile.objects.create(user=user,
-                                       display_name=reg_profile.display_name,
-                                       locale=get_language().lower())
+                                       display_name=reg_profile.display_name)
             reg_profile.delete()
             return user
 

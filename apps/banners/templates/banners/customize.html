@@ -2,16 +2,20 @@
 {% block preview %}
 <div id="banner_preview"
      data-affiliate-link="{{ affiliate_link }}"
-     data-images="{{ json_banner_images }}"
+     data-images="{{ banner_images }}"
      data-template="{{ template }}">
 </div>
 {% endblock %}
 {% block custom_parameters %}
+  <div class="fields">
+    <h4>{{ _('Language') }}</h4>
+    <select id="language" class="js_uniform"></select>
+  </div>
   <div class="fields short">
     <h4>{{ _('Size') }}</h4>
-    <select id="size" class="js_uniform" data-choices="{{ json_size_colors }}"></select>
+    <select id="size" class="js_uniform"></select>
   </div>
-  <div class="fields">
+  <div class="fields short">
     <h4>{{ _('Color') }}</h4>
     <select id="color" class="js_uniform"></select>
   </div>

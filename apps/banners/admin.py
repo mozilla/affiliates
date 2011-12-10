@@ -4,7 +4,6 @@ from funfactory.admin import site
 from funfactory.urlresolvers import reverse
 
 from badges.admin import BadgePreviewInline
-from badges.forms import BadgeLocaleAdminForm
 from banners.models import Banner, BannerImage, BannerInstance
 
 
@@ -16,7 +15,6 @@ class BannerImageInline(admin.TabularInline):
 class BannerAdmin(admin.ModelAdmin):
     change_list_template = 'smuggler/change_list.html'
     inlines = [BadgePreviewInline, BannerImageInline]
-    form = BadgeLocaleAdminForm
 site.register(Banner, BannerAdmin)
 
 

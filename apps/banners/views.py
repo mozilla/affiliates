@@ -10,7 +10,7 @@ from django.views.decorators.cache import never_cache
 from badges.views import dashboard
 from banners import tasks
 from banners.urls import AFFILIATE_LINK
-from banners.models import Banner, BANNER_TEMPLATE
+from banners.models import Banner, BannerImage, BANNER_TEMPLATE
 from shared.decorators import login_required
 
 
@@ -23,25 +23,21 @@ log = logging.getLogger('a.banners')
 @login_required
 def customize(request, banner_pk=None):
     banner = get_object_or_404(Banner, pk=banner_pk)
-    banner_locale = request.user.get_profile().locale
-    banner_images = banner.bannerimage_set.filter(locale=banner_locale)
-
-    # In case of no matches, default to the installation language
-    if not banner_images:
-        banner_images = (banner.bannerimage_set.
-                         filter(locale=settings.LANGUAGE_CODE.lower()))
-
-    json_banner_images = json.dumps(banner_images.size_color_to_image_map())
-    json_size_colors = json.dumps(banner_images.size_to_color_map())
     affiliate_link = AFFILIATE_LINK % (request.user.pk, banner.pk)
+    banner_images = [{
+        'pk': img.pk,
+        'size': img.size,
+        'color': img.color,
+        'url': img.image.url,
+        'language': settings.LANGUAGES[img.locale]
+    } for img in BannerImage.objects.filter(banner=banner)]
 
     return dashboard(request, 'banners/customize.html',
                         {'banner': banner,
                          'affiliate_link': affiliate_link,
                          'subcategory': banner.subcategory,
                          'template': BANNER_TEMPLATE,
-                         'json_banner_images': json_banner_images,
-                         'json_size_colors': json_size_colors})
+                         'banner_images': json.dumps(banner_images)})
 
 
 @never_cache

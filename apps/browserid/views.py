@@ -65,8 +65,7 @@ def register(request, form):
             user.is_active = True;
             user.save()
 
-            UserProfile.objects.create(user=user, display_name=display_name,
-                                       locale=get_language().lower())
+            UserProfile.objects.create(user=user, display_name=display_name)
 
             # New user must be authenticated to log in
             user = authenticate(request=request)

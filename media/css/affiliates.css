@@ -908,15 +908,23 @@ div.block-space{
     padding: 10px;
 }
 
-#banner-user div.options .selector {
+#banner-user div.options .short .selector {
     width: 105px;
 }
 
-#banner-user div.options .selector span {
+#banner-user .selector span {
+    width: 210px;
+}
+
+#banner-user .selector select {
+    min-width: 245px;
+}
+
+#banner-user .short .selector span {
     width: 78px;
 }
 
-#banner-user div.options .selector select {
+#banner-user .short .selector select {
     min-width: 115px;
 }
 
@@ -929,6 +937,10 @@ div.block-space{
 }
 
 #banner-user div.fields {
+    margin-bottom: 10px;
+}
+
+#banner-user div.fields.short {
     width: 130px;
     float: left;
 }

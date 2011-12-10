@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 
 import jingo
-from caching.base import CachingManager, CachingMixin, CachingQuerySet
+from caching.base import CachingManager, CachingMixin
 from funfactory.manage import path
 from funfactory.urlresolvers import reverse
 from tower import ugettext_lazy as _lazy
@@ -32,42 +32,6 @@ class Banner(Badge):
         return reverse('banners.customize', kwargs={'banner_pk': self.pk})
 
 
-class BannerImageQuerySet(CachingQuerySet):
-    def size_color_to_image_map(self):
-        """
-        Return a dictionary that maps sizes and colors to these banner images.
-        """
-        banner_images = {}
-        for img in self:
-            if img.size not in banner_images:
-                banner_images[img.size] = {}
-
-            banner_images[img.size][img.localized('color')] = {
-                'image_url': absolutify(img.image.url, cdn=True),
-                'pk': img.pk
-            }
-
-        return banner_images
-
-    def size_to_color_map(self):
-        """
-        Return a dict that maps sizes to colors available for those sizes.
-        """
-        size_colors = {}
-        for img in self:
-            if img.size not in size_colors:
-                size_colors[img.size] = []
-            size_colors[img.size].append(img.localized('color'))
-
-        return size_colors
-
-
-class BannerImageManager(CachingManager):
-    def get_query_set(self):
-        """Overrides the default QuerySet class with a custom one."""
-        return BannerImageQuerySet(self.model, using=self._db)
-
-
 class BannerImage(CachingMixin, ModelBase):
     """Image that a user can choose for their specific banner."""
     banner = models.ForeignKey(Banner)
@@ -78,7 +42,7 @@ class BannerImage(CachingMixin, ModelBase):
                               max_length=settings.MAX_FILEPATH_LENGTH)
     locale = LocaleField()
 
-    objects = BannerImageManager()
+    objects = CachingManager()
 
     @property
     def size(self):
