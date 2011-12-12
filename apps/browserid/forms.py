@@ -11,7 +11,6 @@ class RegisterForm(FormBase):
     display_name = forms.CharField(max_length=255, error_messages={
         'required': DISPLAY_NAME_REQUIRED
     })
-    assertion = forms.CharField(widget=forms.HiddenInput())
     agreement = forms.BooleanField(error_messages={'required': AGREE_TOS_PP})
     email_subscribe = forms.BooleanField(required=False)
 

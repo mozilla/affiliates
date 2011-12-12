@@ -9,9 +9,9 @@ from django.http import (HttpResponse, HttpResponseBadRequest,
 from django.utils.translation import get_language
 from django.views.decorators.http import require_POST
 
-from django_browserid import get_audience, verify as verify_assertion
 from funfactory.urlresolvers import reverse
 
+from browserid.utils import verify as browserid_verify
 from shared.utils import redirect
 from users.models import UserProfile
 
@@ -29,22 +29,15 @@ def verify(request):
     if assertion is None:
         return HttpResponseBadRequest()
 
-    audience = get_audience(request)
-    verification = verify_assertion(assertion, audience)
+    verification = browserid_verify(request, assertion)
     if not verification:
         return HttpResponseForbidden()
 
     response_data = {'registered': False}
-    try:
-        user = authenticate(assertion=assertion, audience=audience)
-        if user is not None:
-            login(request, user)
-            response_data = {'registered': True,
-                             'redirect': reverse('my_badges')}
-    except User.MultipleObjectsReturned:
-        log.error('Multiple users found for email: %s' % verification['email'])
-    except User.DoesNotExist:
-        pass
+    user = authenticate(request=request)
+    if user is not None:
+        login(request, user)
+        response_data = {'registered': True, 'redirect': reverse('my_badges')}
 
     return HttpResponse(json.dumps(response_data),
                         mimetype='application/json')
@@ -52,16 +45,17 @@ def verify(request):
 
 @require_POST
 def register(request, form):
-    """Register a BrowserID-authed user with Affiliates."""
+    """Register a BrowserID-authed user with Affiliates.
+
+    Not hooked up to a urlconf; called by other views.
+    """
     if form.is_valid():
-        assertion = form.cleaned_data['assertion']
-        audience = get_audience(request)
-        verification = verify_assertion(assertion, audience)
+        verification = browserid_verify(request)
         if not verification:
-            return
+            return None
 
         # Check if user exists (and auth if they do)
-        user = authenticate(assertion=assertion, audience=audience)
+        user = authenticate(request=request)
         if user is None:
             email = verification['email']
             username = hashlib.sha1(email).hexdigest()[:30]
@@ -75,9 +69,7 @@ def register(request, form):
                                        locale=get_language().lower())
 
             # New user must be authenticated to log in
-            user = authenticate(assertion=assertion, audience=audience)
-
-
+            user = authenticate(request=request)
         login(request, user)
-
         return redirect('my_badges')
+    return None

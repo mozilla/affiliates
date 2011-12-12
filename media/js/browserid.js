@@ -28,7 +28,6 @@ $('a.browserid').click(function(e) {
                     if (data.registered) {
                         window.location.href = data.redirect;
                     } else {
-                        $('#id_assertion').val(assertion);
                         $('#browserid-login').fadeOut(400, function() {
                             $('#browserid-registration').fadeIn(400);
                         });

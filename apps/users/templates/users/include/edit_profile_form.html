@@ -47,32 +47,32 @@
       {{ form.name }}
       {{ form.name.errors }}
     </div>
-  <div class="field-group">
-    <div class="fields">
-      <label for="id_{{ form.address_1.html_name }}" class="accessibly-hidden">{{ _('Street') }}</label>
-      {{ form.address_1 }}
-      {{ form.address_1.errors }}
+    <div class="field-group">
+      <div class="fields">
+        <label for="id_{{ form.address_1.html_name }}" class="accessibly-hidden">{{ _('Street') }}</label>
+        {{ form.address_1 }}
+        {{ form.address_1.errors }}
+      </div>
+      <label for="id_{{ form.address_2.html_name }}" class="accessibly-hidden">{{ _('Apartment or Unit # (optional)') }}</label>
+      {{ form.address_2 }}
+      {{ form.address_2.errors }}
+      <div class="fields">
+        <label for="id_{{ form.city.html_name }}" class="accessibly-hidden">{{ _('City') }}</label>
+        {{ form.city }}
+        {{ form.city.errors }}
+      </div>
+      <label for="id_{{ form.state.html_name }}" class="accessibly-hidden">{{ _('State or Province') }}</label>
+      {{ form.state }}
+      {{ form.state.errors }}
+      <div class="fields">
+        <label for="id_{{ form.postal_code.html_name }}" class="accessibly-hidden">{{ _('Zip or Postal Code') }}</label>
+        {{ form.postal_code }}
+        {{ form.postal_code.errors }}
+      </div>
+      <label for="id_{{ form.country.html_name }}" class="accessibly-hidden">{{ _('Country') }}</label>
+      {{ form.country }}
+      {{ form.country.errors }}
     </div>
-    <label for="id_{{ form.address_2.html_name }}" class="accessibly-hidden">{{ _('Apartment or Unit # (optional)') }}</label>
-    {{ form.address_2 }}
-    {{ form.address_2.errors }}
-    <div class="fields">
-      <label for="id_{{ form.city.html_name }}" class="accessibly-hidden">{{ _('City') }}</label>
-      {{ form.city }}
-      {{ form.city.errors }}
-    </div>
-    <label for="id_{{ form.state.html_name }}" class="accessibly-hidden">{{ _('State or Province') }}</label>
-    {{ form.state }}
-    {{ form.state.errors }}
-    <div class="fields">
-      <label for="id_{{ form.postal_code.html_name }}" class="accessibly-hidden">{{ _('Zip or Postal Code') }}</label>
-      {{ form.postal_code }}
-      {{ form.postal_code.errors }}
-    </div>
-    <label for="id_{{ form.country.html_name }}" class="accessibly-hidden">{{ _('Country') }}</label>
-    {{ form.country }}
-    {{ form.country.errors }}
-  </div>
   </div>
   <div class="section">
     <div class="fields">

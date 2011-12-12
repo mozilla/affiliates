@@ -15,7 +15,7 @@ DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 # User accounts
 AUTHENTICATION_BACKENDS = (
     'users.backends.EmailBackend',
-    'django_browserid.BrowserIDBackend',
+    'browserid.backends.BrowserIDSessionBackend',
 )
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 PASSWORD_RESET_TIMEOUT_DAYS = 2

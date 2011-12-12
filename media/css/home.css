@@ -21,7 +21,8 @@
     margin: 0 18px 0 5px;
     margin-right: 21px;
 }
-#home-registration-forms div.divider-medium{
+#home-registration-forms div.divider-medium,
+#home-registration-forms hr.medium {
     margin-top:11px;
     margin-bottom:10px;
 }

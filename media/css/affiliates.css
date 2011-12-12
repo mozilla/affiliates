@@ -286,9 +286,11 @@ input[type="password"] {
     background: #FFFFFF;
 }
 
-div.divider-medium {
+div.divider-medium,
+hr.medium {
     background:transparent url(../img/template/sprites.png) no-repeat center -2px;
-    height:20px;
+    border: none;
+    height: 20px;
     margin: 5px 0;
     width:100%;
 }

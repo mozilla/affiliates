@@ -2,9 +2,11 @@ from contextlib import contextmanager
 from smtplib import SMTPException
 
 from django.conf import settings
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.management import call_command
 from django.db.models import loading
+from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
 import test_utils
@@ -67,3 +69,15 @@ class ModelsTestCase(TestCase):
         # Restore the settings.
         settings.INSTALLED_APPS = self._original_installed_apps
         loading.cache.loaded = False
+
+
+class SessionRequestFactory(RequestFactory):
+    """RequestFactory that adds session data to requests."""
+    def __init__(self, *args, **kwargs):
+        super(SessionRequestFactory, self).__init__(*args, **kwargs)
+        self.session_middleware = SessionMiddleware()
+
+    def request(self, *args, **kwargs):
+        request = super(SessionRequestFactory, self).request(*args, **kwargs)
+        self.session_middleware.process_request(request)
+        return request
