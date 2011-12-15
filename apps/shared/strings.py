@@ -30,6 +30,7 @@ _('Work <span>for</span> Mozilla')
 _('Plugin Checker')
 _('Download Aurora')
 _('Aurora <span>for</span> Android')
+_('Download Beta')
 
 # Colors
 _('Purple')
