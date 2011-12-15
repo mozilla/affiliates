@@ -989,12 +989,12 @@ div.block-space{
 }
 
 .banners_nav li a {
-    color: #444;
+    color: #447BC4;
 }
 
 .banners_nav li a:hover,
 .banners_nav li.selected a {
-    color: #447BC4;
+    color: #444;
 }
 
 .banners_content .banner_section {
