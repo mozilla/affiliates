@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden)
-from django.utils.translation import get_language
 from django.views.decorators.http import require_POST
 
 from funfactory.urlresolvers import reverse

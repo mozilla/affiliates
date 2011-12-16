@@ -30,6 +30,14 @@
         }
     },
     {
+        "pk": 13,
+        "model": "badges.subcategory",
+        "fields": {
+            "name": "No Badges",
+            "parent": 11
+        }
+    },
+    {
         "pk": 11,
         "model": "badges.badge",
         "fields": {
@@ -40,14 +48,6 @@
         }
     },
     {
-        "pk": 11,
-        "model": "badges.badgelocale",
-        "fields": {
-            "badge": 11,
-            "locale": "en-US"
-        }
-    },
-    {
         "pk": 12,
         "model": "badges.badge",
         "fields": {
@@ -55,14 +55,6 @@
             "child_type": "banner",
             "name": "Firefox for Mobile",
             "subcategory": 11
-        }
-    },
-    {
-        "pk": 12,
-        "model": "badges.badgelocale",
-        "fields": {
-            "badge": 12,
-            "locale": "es"
         }
     },
     {
@@ -73,14 +65,6 @@
             "child_type": "banner",
             "name": "Firefox for Mobile",
             "subcategory": 12
-        }
-    },
-    {
-        "pk": 13,
-        "model": "badges.badgelocale",
-        "fields": {
-            "badge": 13,
-            "locale": "en-US"
         }
     },
     {
@@ -150,7 +134,6 @@
             "city": "",
             "name": "Test User 42",
             "created": "2011-08-03 16:54:45",
-            "locale": "en-US",
             "country": "us",
             "modified": "2011-08-03 16:54:45",
             "state": "",
@@ -183,7 +166,6 @@
             "city": "",
             "name": "Test User 43",
             "created": "2011-08-03 16:54:45",
-            "locale": "es",
             "country": "us",
             "modified": "2011-08-03 16:54:45",
             "state": "",

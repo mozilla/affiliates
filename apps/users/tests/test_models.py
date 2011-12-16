@@ -44,13 +44,6 @@ class RegisterProfileTests(TestCase):
                           'trolololol')
         eq_(p.id, 11)
 
-    def test_activation_locale_detect(self):
-        p = self._profile()
-
-        # Activate french and check if the locale was set correctly
-        tower.activate('fr')
-        u = RegisterProfile.objects.activate_profile(p.activation_key)
-        eq_(u.get_profile().locale, 'fr')
 
 class UserTests(TestCase):
     fixtures = ['banners']

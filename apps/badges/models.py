@@ -61,17 +61,16 @@ class Badge(CachingMixin, MultiTableParentModel):
 
     def preview_img_url(self, locale):
         """Return a URL pointing to a preview image for this badge."""
-        set = self.badgepreview_set
-        #import ipdb; ipdb.set_trace()
+        previews = self.badgepreview_set
         return (
             # First try the proper preview
-            self._get_preview(set, locale=locale) or
+            self._get_preview(previews, locale=locale) or
 
             # Fallback to the default language
-            self._get_preview(set, locale=settings.LANGUAGE_CODE) or
+            self._get_preview(previews, locale=settings.LANGUAGE_CODE) or
 
             # Fallback again to the first available locale
-            self._latest_preview(set) or
+            self._latest_preview(previews) or
 
             # Really? Nothing? Oh well. Firefox logo it is.
             settings.DEFAULT_BADGE_PREVIEW)

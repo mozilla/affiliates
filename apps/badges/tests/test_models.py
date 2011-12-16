@@ -18,17 +18,6 @@ class FakeDatetime(datetime):
 class SubcategoryTests(TestCase):
     fixtures = ['subcategories', 'badge_previews']
 
-    def test_in_locale(self):
-        """
-        Test that ``in_locale`` returns all subcategories with badges available
-        in the given locale.
-        """
-        results = Subcategory.objects.in_locale('en-us')
-        eq_(len(results), 2)
-
-        results = Subcategory.objects.in_locale('es')
-        eq_(len(results), 1)
-
     def test_preview_img_url(self):
         """
         Test that ``preview_img_url`` pulls a badge preview from within the
@@ -45,20 +34,31 @@ class SubcategoryTests(TestCase):
 class BadgeTests(TestCase):
     fixtures = ['badge_previews']
 
+    def _preview(self, pk, locale):
+        return Badge.objects.get(pk=pk).preview_img_url(locale)
+
+    @patch.object(settings, 'LANGUAGE_CODE', 'de')
     @patch.object(settings, 'DEFAULT_BADGE_PREVIEW', 'default')
-    def test_preview_img_url_default(self):
+    def test_preview_img_url_fallbacks(self):
         """
-        Test that ``preview_img_url`` returns the default preview if a locale
-        preview does not exist.
+        Test that ``preview_img_url`` falls back to the proper banner images.
         """
-        badge = Badge.objects.get(pk=2)
-        preview = badge.preview_img_url('es')
-        eq_(preview, 'default')
+        # Test for preview that matches requested locale
+        ok_(self._preview(3, 'es').endswith('es/image.png'))
+
+        # Test for preview in app default locale
+        ok_(self._preview(2, 'es').endswith('de/image.png'))
+
+        # Test for preview in first available locale
+        ok_(self._preview(1, 'es').endswith('en-us/image.png'))
+
+        # Test for default when no previews are found
+        eq_(self._preview(4, 'es'), 'default')
+
 
     def test_preview_img_url_locale(self):
         """Test that ``preview_img_url`` returns the correct locale preview."""
-        badge = Badge.objects.get(pk=2)
-        preview = badge.preview_img_url('de')
+        preview = self._preview(2, 'de')
         ok_(preview.endswith('path/to/cat2/de/image.png'),
             u'Incorrect preview image path.')
 

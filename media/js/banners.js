@@ -49,21 +49,22 @@ $(function() {
     $.uniform.update();
 
     $language.change(function(e) {
-        var val = $language.val(),
+        var lang = $language.val(),
             sizes = _(banner_images).chain()
-                .filter(function(img){return img.language === val;})
+                .filter(function(img){return img.language === lang;})
                 .map(function(img){return img.size;})
                 .uniq().value();
 
         set_options($size, sizes);
-        $.uniform.update();
-        update_image();
+        $size.change();
     }).change();
 
     $size.change(function(e) {
-        var val = $size.val(),
+        var size = $size.val(),
+            lang = $language.val(),
             colors = _(banner_images).chain()
-                .filter(function(img) {return img.size === val;})
+                .filter(function(img) {return img.size === size &&
+                                       img.language === lang;})
                 .map(function(img) { return img.color; })
                 .uniq().value();
 
