@@ -112,6 +112,9 @@ MINIFY_BUNDLES = {
         '404': (
             'css/404.css',
         ),
+        'wizard': (
+            'css/wizard/step3.css',
+        ),
     },
     'js': {
         'common': (
@@ -194,35 +197,6 @@ LOGGING = {
 
 # Don't serve media by default
 SERVE_MEDIA = False
-
-DB_LOCALIZE = {
-    'badges': {
-        'Category': {
-            'comments': ['Category of badges to choose from.'],
-            'attrs': ['name']
-        },
-        'Subcategory': {
-            'comments': ['Subcategory of badges to choose from.'],
-            'attrs': ['name']
-        },
-        'Badge': {
-            'comments': ['Badge that user can display on their website.'],
-            'attrs': ['name']
-        },
-    },
-    'banners': {
-        'BannerImage': {
-            'comments': ['Color for badge images.'],
-            'attrs': ['color']
-        },
-    },
-    'news': {
-        'NewsItem': {
-            'comments': ['Site news/notifications shown to users.'],
-            'attrs': ['title', 'content']
-        }
-    }
-}
 
 # Tells the extract script what files to look for L10n in and what function
 # handles the extraction. The Tower library expects this.

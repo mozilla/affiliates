@@ -1,22 +1,16 @@
 $(function() {
+    var $preview = $('#banner_preview'),
+        $size = $('#size'),
+        $color = $('#color'),
+        $language = $('#language'),
+        banner_images = $preview.data('images');
+
     function set_options($list, options) {
         $list.empty();
         for (var k = 0; k < options.length; k++) {
             $list.append('<option value="' + options[k] + '">' + options[k] +
                          '</option>');
         }
-    }
-
-    var $preview = $('#banner_preview'),
-        $badge_code = $('#badge_code'),
-        $size = $('#size'),
-        $color = $('#color'),
-        $language = $('#language'),
-        banner_images = $preview.data('images');
-
-    function generate_affiliate_url(banner_img_id) {
-        return Mustache.to_html($preview.data('affiliate-link'),
-                                {banner_img_id: banner_img_id});
     }
 
     function update_image() {
@@ -31,13 +25,9 @@ $(function() {
         });
 
         if (image !== undefined) {
-            var banner = Mustache.to_html($preview.data('template'), {
-                url: generate_affiliate_url(image.pk),
+            $preview.html(Mustache.to_html('<img src="{{ img }}">', {
                 img: image.url
-            });
-
-            $preview.html(banner);
-            $badge_code.val(banner);
+            }));
         }
     }
 

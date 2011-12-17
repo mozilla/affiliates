@@ -4,6 +4,11 @@
 {% set content_section = 'first-section' %}
 {% set banner_section = 'new' %}
 
+{% block site_css %}
+  {{ super() }}
+  {{ css('wizard') }}
+{% endblock %}
+
 {% block dashboard_content %}
 {% call macros.badge_wizard(2) %}
   <p class="head">
@@ -13,31 +18,13 @@
       banner, then you can copy its code onto your website or blog.
     {%- endtrans -%}
   </p>
-  <div class="divider-notch">
-  </div>
-  <div id="banner-user">
-    <div class="banner-img">
+  <hr class="large">
+  <div id="customize">
+    <div class="options">
+      {% block custom_parameters %}{% endblock %}
+    </div>
+    <div class="preview">
       {% block preview %}{% endblock %}
-    </div>
-    <div class="banner-info">
-      <div class="options">
-        {% block custom_parameters %}{% endblock %}
-        <div class="clear"></div>
-      </div>
-      <div class="code">
-        {# L10n: Directions as in instructions. #}
-        <h3>{{ _('Directions') }}</h3>
-        <p>
-          {% trans %}
-            Copy the code below and paste it anywhere on your website or blog to link
-            to the Firefox download page. Your Firefox Affiliates ID is embedded in
-            this code.
-          {% endtrans %}
-        </p>
-        <textarea id="badge_code"></textarea>
-      </div>
-    </div>
-    <div class="clear">
     </div>
   </div>
   {{ macros.wizard_footer(

@@ -1,26 +1,31 @@
 {% extends 'badges/new_badge/step3.html' %}
+
 {% block preview %}
-<div id="banner_preview"
-     data-affiliate-link="{{ affiliate_link }}"
-     data-images="{{ banner_images }}"
-     data-template="{{ template }}">
-</div>
+  <div id="banner_preview"
+       data-affiliate-link="{{ affiliate_link }}"
+       data-images="{{ banner_images }}"
+       data-template="{{ template }}">
+  </div>
 {% endblock %}
+
 {% block custom_parameters %}
-  <div class="fields">
-    <h4>{{ _('Language') }}</h4>
-    <select id="language" class="js_uniform"></select>
-  </div>
-  <div class="fields short">
-    <h4>{{ _('Size') }}</h4>
-    <select id="size" class="js_uniform"></select>
-  </div>
-  <div class="fields short">
-    <h4>{{ _('Color') }}</h4>
-    <select id="color" class="js_uniform"></select>
-  </div>
+  <ul id="banner_options" class="clearfix">
+    <li>
+      <label for="language">{{ _('Language') }}</label>
+      <select id="language" class="js_uniform"></select>
+    </li>
+    <li>
+      <label for="size">{{ _('Size') }}</label>
+      <select id="size" class="js_uniform"></select>
+    </li>
+    <li>
+      <label for="color">{{ _('Color') }}</label>
+      <select id="color" class="js_uniform"></select>
+    </li>
+  </ul>
 {% endblock %}
+
 {% block site_js %}
-{{ super() }}
-{{ js('banners') }}
+  {{ super() }}
+  {{ js('banners') }}
 {% endblock %}
