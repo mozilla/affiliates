@@ -32,6 +32,18 @@ class Banner(Badge):
         return reverse('banners.customize', kwargs={'banner_pk': self.pk})
 
 
+class BannerImageManager(CachingManager):
+    def customize_values(self, **kwargs):
+        """Retrieve data needed for banner customization."""
+        return [{
+            'pk': img.pk,
+            'size': img.size,
+            'color': img.color,
+            'url': img.image.url,
+            'language': settings.LANGUAGES[img.locale]
+            } for img in self.filter(**kwargs)]
+
+
 class BannerImage(CachingMixin, ModelBase):
     """Image that a user can choose for their specific banner."""
     banner = models.ForeignKey(Banner)
@@ -42,7 +54,7 @@ class BannerImage(CachingMixin, ModelBase):
                               max_length=settings.MAX_FILEPATH_LENGTH)
     locale = LocaleField()
 
-    objects = CachingManager()
+    objects = BannerImageManager()
 
     @property
     def size(self):

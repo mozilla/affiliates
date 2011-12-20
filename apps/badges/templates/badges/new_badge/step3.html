@@ -4,11 +4,6 @@
 {% set content_section = 'first-section' %}
 {% set banner_section = 'new' %}
 
-{% block site_css %}
-  {{ super() }}
-  {{ css('wizard') }}
-{% endblock %}
-
 {% block dashboard_content %}
 {% call macros.badge_wizard(2) %}
   <p class="head">
@@ -19,16 +14,6 @@
     {%- endtrans -%}
   </p>
   <hr class="large">
-  <div id="customize">
-    <div class="options">
-      {% block custom_parameters %}{% endblock %}
-    </div>
-    <div class="preview">
-      {% block preview %}{% endblock %}
-    </div>
-  </div>
-  {{ macros.wizard_footer(
-      back_href=url('badges.new.step2', subcategory_pk=subcategory.pk)
-  ) }}
+  {% block customize %}{% endblock %}
 {% endcall %}
 {% endblock %}

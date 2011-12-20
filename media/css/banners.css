@@ -1,9 +1,6 @@
-/* Customize Step */
-#customize {
+.customize {
     margin: 0 25px;
 }
-
-/* Banners */
 
 #banner_options {
     list-style-type: none;
@@ -39,7 +36,7 @@
     width: auto;
 }
 
-#banner_preview {
+#preview {
     background: #F6F9FD;
     border: 1px solid #EDEDED;
     height: 450px;
@@ -49,6 +46,6 @@
     text-align: center;
 }
 
-#banner_preview img {
+#preview img {
     vertical-align: middle;
 }

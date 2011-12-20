@@ -1,28 +1,38 @@
 {% extends 'badges/new_badge/step3.html' %}
+{% import 'badges/include/macros.html' as macros %}
 
-{% block preview %}
-  <div id="banner_preview"
-       data-affiliate-link="{{ affiliate_link }}"
-       data-images="{{ banner_images }}"
-       data-template="{{ template }}">
-  </div>
+{% block customize %}
+  <form method="post">
+    {{ csrf() }}
+    <div class="customize">
+      {{ form.image }}
+      <ul id="banner_options" class="clearfix">
+        <li>
+          <label for="language">{{ _('Language') }}</label>
+          <select id="language" class="js_uniform"></select>
+        </li>
+        <li>
+          <label for="size">{{ _('Size') }}</label>
+          <select id="size" class="js_uniform"></select>
+        </li>
+        <li>
+          <label for="color">{{ _('Color') }}</label>
+          <select id="color" class="js_uniform"></select>
+        </li>
+      </ul>
+      <div id="preview" data-images="{{ banner_images }}"></div>
+    </div>
+    {% call macros.wizard_footer(back_href=back_href) %}
+      <button type="submit" class="save_changes">
+        {{ _('Save Banner &raquo;') }}
+      </button>
+    {% endcall %}
+  </form>
 {% endblock %}
 
-{% block custom_parameters %}
-  <ul id="banner_options" class="clearfix">
-    <li>
-      <label for="language">{{ _('Language') }}</label>
-      <select id="language" class="js_uniform"></select>
-    </li>
-    <li>
-      <label for="size">{{ _('Size') }}</label>
-      <select id="size" class="js_uniform"></select>
-    </li>
-    <li>
-      <label for="color">{{ _('Color') }}</label>
-      <select id="color" class="js_uniform"></select>
-    </li>
-  </ul>
+{% block site_css %}
+  {{ super() }}
+  {{ css('banners') }}
 {% endblock %}
 
 {% block site_js %}

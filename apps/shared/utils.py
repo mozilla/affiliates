@@ -39,7 +39,7 @@ def country_choices():
     return unicode_choice_sorted(items)
 
 
-def redirect(to, permanent=False, **kwargs):
+def redirect(to, permanent=False, anchor=None, **kwargs):
     """
     Returns a redirect response by applying funfactory's locale-aware reverse
     to the given string.
@@ -52,7 +52,11 @@ def redirect(to, permanent=False, **kwargs):
     else:
         redirect_class = HttpResponseRedirect
 
-    return redirect_class(reverse(to, **kwargs))
+    url = reverse(to, **kwargs)
+    if anchor:
+        url += '#%s' % anchor
+
+    return redirect_class(url)
 
 
 def current_locale():

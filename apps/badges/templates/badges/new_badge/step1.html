@@ -4,11 +4,6 @@
 {% set content_section = 'first-section' %}
 {% set banner_section = 'new' %}
 
-{% block site_css %}
-  {{ super() }}
-  {{ css('wizard') }}
-{% endblock %}
-
 {% block dashboard_content %}
 {% call macros.badge_wizard(0) %}
   {% for category in categories %}

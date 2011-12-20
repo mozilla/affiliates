@@ -3,41 +3,47 @@ import logging
 import socket
 
 from django.conf import settings
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
+from funfactory.urlresolvers import reverse
+
 from badges.views import dashboard
 from banners import tasks
-from banners.urls import AFFILIATE_LINK
-from banners.models import Banner, BannerImage, BANNER_TEMPLATE
+from banners.forms import BannerForm
+from banners.models import Banner, BannerImage, BannerInstance
 from shared.decorators import login_required
+from shared.utils import redirect
 
 
 CACHE_LINK_INSTANCE = 'banner_link_instance_%s_%s'
-
-
 log = logging.getLogger('a.banners')
 
 
 @login_required
 def customize(request, banner_pk=None):
     banner = get_object_or_404(Banner, pk=banner_pk)
-    affiliate_link = AFFILIATE_LINK % (request.user.pk, banner.pk)
-    banner_images = [{
-        'pk': img.pk,
-        'size': img.size,
-        'color': img.color,
-        'url': img.image.url,
-        'language': settings.LANGUAGES[img.locale]
-    } for img in BannerImage.objects.filter(banner=banner)]
+
+    # Create a new banner
+    form = BannerForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        image = form.cleaned_data['image']
+        instance, created = BannerInstance.objects.get_or_create(
+            badge=banner, user=request.user, image=image)
+        return redirect('my_badges', anchor='banner_%s' % instance.pk)
+
+    back_href = reverse('badges.new.step2',
+                        kwargs={'subcategory_pk': banner.subcategory.pk})
+    banner_images = BannerImage.objects.customize_values(banner=banner)
 
     return dashboard(request, 'banners/customize.html',
-                        {'banner': banner,
-                         'affiliate_link': affiliate_link,
-                         'subcategory': banner.subcategory,
-                         'template': BANNER_TEMPLATE,
-                         'banner_images': json.dumps(banner_images)})
+                     {'back_href': back_href,
+                      'banner': banner,
+                      'banner_images': json.dumps(banner_images),
+                      'form': form,
+                      'subcategory': banner.subcategory})
 
 
 @never_cache

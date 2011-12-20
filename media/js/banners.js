@@ -1,8 +1,9 @@
 $(function() {
-    var $preview = $('#banner_preview'),
+    var $preview = $('#preview'),
         $size = $('#size'),
         $color = $('#color'),
         $language = $('#language'),
+        $form_image = $('#id_image'),
         banner_images = $preview.data('images');
 
     function set_options($list, options) {
@@ -28,6 +29,7 @@ $(function() {
             $preview.html(Mustache.to_html('<img src="{{ img }}">', {
                 img: image.url
             }));
+            $form_image.val(image.pk);
         }
     }
 

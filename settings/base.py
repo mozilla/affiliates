@@ -112,8 +112,8 @@ MINIFY_BUNDLES = {
         '404': (
             'css/404.css',
         ),
-        'wizard': (
-            'css/wizard/step3.css',
+        'banners': (
+            'css/banners.css',
         ),
     },
     'js': {

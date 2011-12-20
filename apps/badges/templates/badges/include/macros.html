@@ -42,6 +42,9 @@
     {% if back_href is defined %}
       <a class="back" href="{{ back_href }}">{{ _('&laquo; Back') }}</a>
     {% endif %}
+    {% if caller %}
+      {{ caller() }}
+    {% endif %}
   </div>
 {% endmacro %}
 
@@ -50,7 +53,7 @@
     <h4>{{ name }}</h4>
     <ul>
       {% for instance in instances %}
-        <li class="banner_cols">
+        <li id="banner_{{ instance.pk }}" class="banner_cols">
           <div class="col_1">{{ loop.index }}</div>
           <div class="col_2">{{ instance.render()|safe }}</div>
           <div class="col_3">
