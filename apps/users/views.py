@@ -6,8 +6,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.http import base36_to_int
 from django.utils.translation import get_language
@@ -17,6 +16,7 @@ from responsys import subscribe
 from session_csrf import anonymous_csrf
 from tower import ugettext_lazy as _lazy
 
+from shared.utils import redirect
 from shared.views import home
 from users import forms
 from users.models import RegisterProfile
@@ -40,7 +40,7 @@ def login(request):
             if form.cleaned_data['remember_me']:
                 request.session.set_expiry(settings.SESSION_REMEMBER_DURATION)
 
-            return HttpResponseRedirect(reverse('my_badges'))
+            return redirect('my_badges')
 
     return home(request, login_form=form)
 
@@ -95,7 +95,7 @@ def edit_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, unicode(EDIT_PROFILE_SUCCESS))
-            return HttpResponseRedirect(reverse('my_badges'))
+            return redirect('my_badges')
     else:
         form = forms.EditProfileForm(instance=request.user.get_profile())
 
