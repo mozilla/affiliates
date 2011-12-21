@@ -89,6 +89,5 @@ class BannerInstance(BadgeInstance):
         })
 
     def affiliate_link(self):
-        return reverse('banners.link', kwargs={'user_id': self.user.pk,
-                                               'banner_id': self.badge.pk,
-                                               'banner_img_id': self.image.pk})
+        link = reverse('banners.link', kwargs={'banner_instance_id': self.pk})
+        return absolutify(link)
