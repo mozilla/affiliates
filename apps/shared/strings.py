@@ -12,6 +12,12 @@ _('Welcome to the new Firefox Affiliates program. Have a look around the '
   'site, grab some buttons and get on the leaderboard. Have feedback? Let us '
   'know at affiliates@mozilla.org.')
 
+_('Help us make Firefox Affiliates better')
+_('Firefox Affiliates has been live for over a month now, but we need your '
+  'help to keep making improvements to the system. If you are a web developer '
+  'familiar with HTML, CSS, Python or Django and want to get involved with '
+  'Mozilla, please contact us at affiliates@mozilla.org .')
+
 # Categories
 _('Firefox')
 _('Mozilla')
