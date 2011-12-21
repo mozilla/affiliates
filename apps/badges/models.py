@@ -125,9 +125,15 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
 
     objects = BadgeInstanceManager()
 
-    def render(self):
-        """Return the HTML to display this BadgeInstance."""
-        return self.child().render()
+    @property
+    def preview(self):
+        """Return the HTML to preview this BadgeInstance."""
+        return self.child().preview
+
+    @property
+    def code(self):
+        """Return the HTML to embed this BadgeInstance."""
+        return self.child().code
 
     def details_template(self):
         """

@@ -55,7 +55,7 @@
       {% for instance in instances %}
         <li id="banner_{{ instance.pk }}" class="banner_cols">
           <div class="col_1">{{ loop.index }}</div>
-          <div class="col_2">{{ instance.render()|safe }}</div>
+          <div class="col_2">{{ instance.preview|safe }}</div>
           <div class="col_3">
             <ul class="banner_info">
               <li>
@@ -71,6 +71,10 @@
                 <p><a href="{{ instance.badge.href }}">{{ instance.badge.href }}</a></p>
               </li>
               {% include instance.details_template() ignore missing %}
+              <li>
+                <h5>{{ _('EMBED CODE:') }}</h5>
+                <p><textarea class="embed-code">{{ instance.code }}</textarea></p>
+              </li>
             </ul>
           </div>
         </li>

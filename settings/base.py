@@ -102,6 +102,7 @@ MINIFY_BUNDLES = {
             'css/styles.css',
             'css/uniform.default.css',
             'css/affiliates.css',
+            'css/my_banners.css',
         ),
         'home': (
             'css/home.css',

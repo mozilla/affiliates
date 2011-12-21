@@ -74,7 +74,15 @@ class BannerInstance(BadgeInstance):
 
     details_template = 'banners/details.html'
 
-    def render(self):
+    @property
+    def preview(self):
+        """Return the HTML to preview this banner."""
+        return '<img src="%s" alt="%s">' % (self.image.image.url,
+                                            self.badge.name)
+
+    @property
+    def code(self):
+        """Return the code to embed this banner.."""
         return jingo.env.from_string(BANNER_TEMPLATE).render({
             'url': self.affiliate_link(),
             'img': absolutify(self.image.image.url)
