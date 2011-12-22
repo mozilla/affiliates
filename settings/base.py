@@ -153,6 +153,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django_extensions',
     'smuggler',
     'cronjobs',
+    'south',
     'django_browserid',
     'django.contrib.sites',
     'django.contrib.messages',
