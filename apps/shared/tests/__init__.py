@@ -11,7 +11,10 @@ from django.utils.translation import get_language
 
 import test_utils
 from tower import activate
-from funfactory.urlresolvers import get_url_prefix, Prefixer, set_url_prefix
+from funfactory.urlresolvers import (get_url_prefix, Prefixer, reverse,
+                                     set_url_prefix)
+
+from browserid.tests import mock_browserid
 
 
 class BrokenSMTPBackend(BaseEmailBackend):
@@ -23,6 +26,18 @@ class BrokenSMTPBackend(BaseEmailBackend):
 def model_ids(models):
     """Generates a list of model ids from a list of model objects."""
     return [m.pk for m in models]
+
+
+class SessionRequestFactory(RequestFactory):
+    """RequestFactory that adds session data to requests."""
+    def __init__(self, *args, **kwargs):
+        super(SessionRequestFactory, self).__init__(*args, **kwargs)
+        self.session_middleware = SessionMiddleware()
+
+    def request(self, *args, **kwargs):
+        request = super(SessionRequestFactory, self).request(*args, **kwargs)
+        self.session_middleware.process_request(request)
+        return request
 
 
 class TestCase(test_utils.TestCase):
@@ -38,6 +53,14 @@ class TestCase(test_utils.TestCase):
         yield
         set_url_prefix(old_prefix)
         activate(old_locale)
+
+    def browserid_login(self, email):
+        """Logs the test client in using BrowserID."""
+        factory = SessionRequestFactory()
+        with self.activate('en-US'):
+            request = factory.get(reverse('home'))
+        with mock_browserid(email):
+            self.client.login(request=request, assertion='asdf')
 
 
 class ModelsTestCase(TestCase):
@@ -69,15 +92,3 @@ class ModelsTestCase(TestCase):
         # Restore the settings.
         settings.INSTALLED_APPS = self._original_installed_apps
         loading.cache.loaded = False
-
-
-class SessionRequestFactory(RequestFactory):
-    """RequestFactory that adds session data to requests."""
-    def __init__(self, *args, **kwargs):
-        super(SessionRequestFactory, self).__init__(*args, **kwargs)
-        self.session_middleware = SessionMiddleware()
-
-    def request(self, *args, **kwargs):
-        request = super(SessionRequestFactory, self).request(*args, **kwargs)
-        self.session_middleware.process_request(request)
-        return request

@@ -30,9 +30,9 @@ def old_add_click(user_id, banner_id, banner_img_id):
     now = datetime.now()
 
     try:
-        instance = BannerInstance.objects.get(user_id=user_id,
-                                              badge_id=banner_id,
-                                              image_id=banner_img_id)
+        instance = BannerInstance.objects.get(user=user_id,
+                                              badge=banner_id,
+                                              image=banner_img_id)
     except BannerInstance.DoesNotExist:
         # Because this type of link is depreciated, we do not create new
         # banner instances with it.

@@ -73,7 +73,8 @@
         "fields": {
             "color": "Blue",
             "image": "uploads/banners/120x240arrow_b.png",
-            "banner": 1
+            "banner": 1,
+            "locale": "en-us"
         }
     },
     {
@@ -82,7 +83,8 @@
         "fields": {
             "color": "Green",
             "image": "uploads/banners/120x240arrow_g.png",
-            "banner": 1
+            "banner": 1,
+            "locale": "en-us"
         }
     },
     {
@@ -91,7 +93,8 @@
         "fields": {
             "color": "Red",
             "image": "uploads/banners/120x240arrow_r.png",
-            "banner": 1
+            "banner": 1,
+            "locale": "en-us"
         }
     },
     {
@@ -100,7 +103,8 @@
         "fields": {
             "color": "Green",
             "image": "uploads/banners/mobile_dl_300x250_grn_1.png",
-            "banner": 1
+            "banner": 1,
+            "locale": "en-us"
         }
     },
     {
