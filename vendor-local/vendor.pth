@@ -3,3 +3,4 @@ src/django-smuggler
 src/django-cronjobs
 src/django-extensions
 src/django-browserid
+src/django-csp

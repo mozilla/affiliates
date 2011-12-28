@@ -22,3 +22,6 @@
 [submodule "vendor-local/src/django-browserid"]
 	path = vendor-local/src/django-browserid
 	url = git://github.com/Osmose/django-browserid.git
+[submodule "vendor-local/src/django-csp"]
+	path = vendor-local/src/django-csp
+	url = git://github.com/mozilla/django-csp.git

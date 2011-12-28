@@ -72,6 +72,27 @@ SERIALIZATION_MODULES = {
 }
 SMUGGLER_FORMAT = 'json_files'
 
+# CSP Config
+CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
+CSP_SCRIPT_SRC = (
+    '\'self\'',
+    'https://browserid.org',
+    'https://statse.webtrendslive.com'
+)
+CSP_FRAME_SRC = (
+    '\'self\'',
+    'https://browserid.org'
+)
+CSP_IMG_SRC = (
+    '\'self\'',
+    'https://affiliates-cdn.mozilla.org',
+    'https://statse.webtrendslive.com'
+)
+CSP_FONT_SRC = (
+    '\'self\'',
+    'https://www.mozilla.org'
+)
+
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
@@ -119,6 +140,8 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'shared',
     'news',
     'users',
+
+    'csp',
     'django_extensions',
     'smuggler',
     'cronjobs',
@@ -131,6 +154,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
+    'csp.middleware.CSPMiddleware',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
