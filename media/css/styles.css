@@ -151,7 +151,7 @@ span.label {
 .browserid-button.loading {
     background: url('../img/template/loading.gif') no-repeat right center;
     display: inline-block;
-    padding-right: 40px;
+    padding-right: 55px;
 }
 
 .browserid-button a {
@@ -160,22 +160,27 @@ span.label {
     font: italic 16px Georgia, serif;
     height: 37px;
     line-height: 36px;
+    position: relative;
     text-shadow: rgba(54, 54, 54, 0.30) 0 1px;
 }
 
 .browserid-button a span {
     background: url("../img/template/browserid_mid.png") repeat-x;
     display: inline-block;
+    margin-left: 37px;
     padding: 0 10px;
     height: 37px;
 }
 
+.browserid-button a:before,
+.browserid-button a:after {
+    position: absolute;
+}
+
 .browserid-button a:before {
     content: url("../img/template/browserid_left.png");
-    vertical-align: top;
 }
 
 .browserid-button a:after {
     content: url("../img/template/browserid_right.png");
-    vertical-align: top;
 }
