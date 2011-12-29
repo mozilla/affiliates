@@ -8,6 +8,11 @@ $(
 
         // Enable placeholders in non-HTML5 browsers
         $('input[placeholder],textarea[placeholder]').placeholder();
+
+        // Banner code textboxes should select all of their contents on focus
+        $('textarea.embed-code').focus(function() {
+            this.select();
+        });
     }
 );
 
