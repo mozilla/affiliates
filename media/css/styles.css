@@ -148,7 +148,13 @@ span.label {
     top: -4px;
 }
 
-a.browserid {
+.browserid-button.loading {
+    background: url('../img/template/loading.gif') no-repeat right center;
+    display: inline-block;
+    padding-right: 40px;
+}
+
+.browserid-button a {
     color: #ffffff;
     display: inline-block;
     font: italic 16px Georgia, serif;
@@ -157,19 +163,19 @@ a.browserid {
     text-shadow: rgba(54, 54, 54, 0.30) 0 1px;
 }
 
-a.browserid span {
+.browserid-button a span {
     background: url("../img/template/browserid_mid.png") repeat-x;
     display: inline-block;
     padding: 0 10px;
     height: 37px;
 }
 
-a.browserid:before {
+.browserid-button a:before {
     content: url("../img/template/browserid_left.png");
     vertical-align: top;
 }
 
-a.browserid:after {
+.browserid-button a:after {
     content: url("../img/template/browserid_right.png");
     vertical-align: top;
 }

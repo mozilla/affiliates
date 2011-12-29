@@ -16,8 +16,12 @@ function showBrowserIDError(msg) {
     };
 }
 
-$('a.browserid').click(function(e) {
+$('.browserid-button a').click(function(e) {
     e.preventDefault();
+
+    var button = $(this).parent('.browserid-button');
+    button.addClass('loading');
+
     navigator.id.getVerifiedEmail(function(assertion) {
         if (assertion) {
             $.ajax({
@@ -37,7 +41,10 @@ $('a.browserid').click(function(e) {
                     400: showBrowserIDError(msg_no_assertion),
                     403: showBrowserIDError(msg_verify_fail)
                 },
-                error: showBrowserIDError(msg_no_assertion)
+                error: showBrowserIDError(msg_no_assertion),
+                complete: function() {
+                    button.removeClass('loading');
+                }
             });
         }
     });

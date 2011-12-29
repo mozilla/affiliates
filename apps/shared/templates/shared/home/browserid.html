@@ -30,7 +30,9 @@
         signing up with Firefox Affiliates.
         {% endtrans %}
       </p>
-      <a href="#" class="browserid"><span>{{ _('Log In &raquo;') }}</span></a>
+      <div class="browserid-button">
+        <a href="#"><span>{{ _('Log In &raquo;') }}</span></a>
+      </div>
       <hr class="medium">
       <h3>{{ _("Don't have an account?") }}</h3>
       <p>
@@ -39,7 +41,9 @@
         clicking the registration button below.
         {% endtrans %}
       </p>
-      <a href="#" class="browserid"><span>{{ _('Register &raquo;') }}</span></a>
+      <div class="browserid-button">
+        <a href="#"><span>{{ _('Register &raquo;') }}</span></a>
+      </div>
     </div>
     <div id="browserid-registration">
       {% include 'browserid/include/register_form.html' %}
