@@ -11,7 +11,7 @@ from tower import ugettext_lazy as _lazy
 from badges.models import Badge, BadgeInstance
 from banners import COLOR_CHOICES
 from shared.models import LocaleField, ModelBase
-from shared.utils import absolutify
+from shared.utils import absolutify, ugettext_locale as _locale
 
 
 # L10n: Width and height are the width and height of an image.
@@ -79,14 +79,15 @@ class BannerInstance(BadgeInstance):
     def preview(self):
         """Return the HTML to preview this banner."""
         return Markup('<img src="%s" alt="%s">' % (self.image.image.url,
-                                                   self.badge.name))
+                                                   _lazy(self.badge.name)))
 
     @property
     def code(self):
         """Return the code to embed this banner.."""
         return jingo.env.from_string(BANNER_TEMPLATE).render({
             'url': self.affiliate_link(),
-            'img': absolutify(self.image.image.url)
+            'img': absolutify(self.image.image.url),
+            'alt_text': _locale(self.badge.name, self.image.locale)
         })
 
     def affiliate_link(self):

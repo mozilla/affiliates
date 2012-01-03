@@ -57,7 +57,7 @@
         "model": "badges.badge",
         "fields": {
             "child_type": "banner",
-            "name": "Fast Forward",
+            "name": "Fast Forward 2",
             "subcategory": 1,
             "href": "http://www.mozilla.org"
         }

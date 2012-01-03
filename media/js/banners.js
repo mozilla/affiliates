@@ -4,7 +4,9 @@ $(function() {
         $color = $('#color'),
         $language = $('#language'),
         $form_image = $('#id_image'),
-        banner_images = $preview.data('images');
+        banner_images = $preview.data('images'),
+        banner_alt = $preview.data('alt'),
+        banner_template = '<img src="{{ img }}" alt="{{ alt }}">';
 
     function set_options($list, options) {
         $list.empty();
@@ -26,8 +28,9 @@ $(function() {
         });
 
         if (image !== undefined) {
-            $preview.html(Mustache.to_html('<img src="{{ img }}">', {
-                img: image.url
+            $preview.html(Mustache.to_html(banner_template, {
+                img: image.url,
+                alt: banner_alt
             }));
             $form_image.val(image.pk);
         }

@@ -1,12 +1,14 @@
 from django.conf import settings
+from django.utils.translation import get_language
 
 from babel.core import Locale
 from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
-from tower import activate
+from tower import activate, ugettext as _
 
-from shared.utils import absolutify, current_locale, redirect
+from shared.utils import (absolutify, current_locale, redirect,
+                          ugettext_locale as _locale)
 
 
 @patch.object(settings, 'SITE_ID', 1)
@@ -58,3 +60,22 @@ class TestCurrentLocale(TestCase):
         """
         activate('fy')
         eq_(Locale('en', 'US'), current_locale())
+
+
+def mock_ugettext(message, context=None):
+    if (get_language() == 'xxx'):
+        return 'translated'
+    else:
+        return 'untranslated'
+
+
+@patch('shared.utils.tower.ugettext', mock_ugettext)
+class TestUGetTextLocale(TestCase):
+    def test_basic(self):
+        """
+        Test that translating a string works and doesn't change the current
+        locale.
+        """
+        activate('fr')
+        eq_(_locale('message', 'xxx'), 'translated')
+        eq_(get_language(), 'fr')

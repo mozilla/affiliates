@@ -20,7 +20,7 @@
           <select id="color" class="js_uniform"></select>
         </li>
       </ul>
-      <div id="preview" data-images="{{ banner_images }}"></div>
+      <div id="preview" data-images="{{ banner_images }}" data-alt="{{ _(banner.name) }}"></div>
     </div>
     {% call macros.wizard_footer(back_href=back_href) %}
       <button type="submit" class="save_changes">

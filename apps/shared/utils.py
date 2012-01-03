@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.translation import get_language
 
+import tower
 from babel.core import Locale, UnknownLocaleError
 from funfactory.urlresolvers import reverse
 from product_details import product_details
@@ -31,6 +32,7 @@ def unicode_choice_sorted(choices):
     Sorts a list of 2-tuples by the second value, using a unicode-safe sort.
     """
     return sorted(choices, cmp=lambda x, y: locale.strcoll(x[1], y[1]))
+
 
 def country_choices():
     """Return a localized, sorted list of tuples of country names and values."""
@@ -69,3 +71,13 @@ def current_locale():
     except UnknownLocaleError:
         # Default to en-US
         return Locale('en', 'US')
+
+
+def ugettext_locale(message, locale):
+    """Translate a message in a specific locale."""
+    old_locale = get_language()
+    tower.activate(locale)
+    text = tower.ugettext(message)
+    tower.activate(old_locale)
+
+    return text
