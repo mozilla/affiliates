@@ -39,6 +39,7 @@ class BannerImageManager(CachingManager):
         return [{
             'pk': img.pk,
             'size': img.size,
+            'area': img.image.width * img.image.height,
             'color': img.color,
             'url': img.image.url,
             'language': settings.LANGUAGES[img.locale]
