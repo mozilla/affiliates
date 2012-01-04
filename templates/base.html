@@ -3,6 +3,23 @@
   <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <title>{% block page_title %}{{ _('Firefox Affiliates') }}{% endblock %}</title>
+
+    {# OpenGraph Metadata #}
+    <meta property="og:title" content="{{ _('Firefox Affiliates') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://mozcom-cdn.mozilla.net/img/firefox-100.jpg">
+    <meta property="og:url" content="https://affiliates.mozilla.org">
+    <meta property="og:site_name" content="{{ _('Firefox Affiliates') }}">
+    <meta property="og:description" content="{% trans %}
+
+        Firefox Affiliate buttons are a bit of html code that you put
+        on your website or blog to encourage visitors to your site to
+        download Firefox. When a visitor to your site clicks on a
+        button on your site and downloads Firefox, you get credit for
+        that download.
+
+    {% endtrans %}">
+
     {% block site_css %}
       {{ css('common') }}
     {% endblock %}
