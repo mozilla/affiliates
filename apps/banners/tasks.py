@@ -34,7 +34,7 @@ def old_add_click(user_id, banner_id, banner_img_id):
                                               badge=banner_id,
                                               image=banner_img_id)
     except BannerInstance.DoesNotExist:
-        # Because this type of link is depreciated, we do not create new
+        # Because this type of link is deprecated, we do not create new
         # banner instances with it.
         return
 

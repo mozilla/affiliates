@@ -54,7 +54,7 @@ def redirect(to, permanent=False, anchor=None, **kwargs):
 
     url = reverse(to, **kwargs)
     if anchor:
-        url += '#%s' % anchor
+        url = '#'.join([url, anchor])
 
     return redirect_class(url)
 

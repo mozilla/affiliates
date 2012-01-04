@@ -5,6 +5,7 @@ import jingo
 from caching.base import CachingManager, CachingMixin
 from funfactory.manage import path
 from funfactory.urlresolvers import reverse
+from jinja2 import Markup
 from tower import ugettext_lazy as _lazy
 
 from badges.models import Badge, BadgeInstance
@@ -77,8 +78,8 @@ class BannerInstance(BadgeInstance):
     @property
     def preview(self):
         """Return the HTML to preview this banner."""
-        return '<img src="%s" alt="%s">' % (self.image.image.url,
-                                            self.badge.name)
+        return Markup('<img src="%s" alt="%s">' % (self.image.image.url,
+                                                   self.badge.name))
 
     @property
     def code(self):
