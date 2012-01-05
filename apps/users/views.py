@@ -12,7 +12,7 @@ from django.utils.http import base36_to_int
 from django.utils.translation import get_language
 
 import jingo
-from responsys import subscribe
+from basket import subscribe
 from session_csrf import anonymous_csrf
 from tower import ugettext_lazy as _lazy
 
@@ -59,10 +59,9 @@ def register(request):
         # Sign the user up for mailing lists if they wanted
         if form.cleaned_data['email_subscribe']:
             try:
-                subscribe(settings.RESPONSYS_CAMPAIGN,
-                          form.cleaned_data['email'],
-                          lang=get_language(),
-                          source_url=request.build_absolute_uri())
+                subscribe(form.cleaned_data['email'],
+                          settings.BASKET_NEWSLETTER,
+                          lang=get_language())
             except Exception, err:
                 log.warning(err)
 

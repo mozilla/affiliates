@@ -9,7 +9,6 @@ from django.contrib.sites.models import Site
 from django.core import mail
 from django.db import models
 from django.template.loader import render_to_string
-from django.utils.translation import get_language
 
 from funfactory.urlresolvers import reverse
 from product_details import product_details

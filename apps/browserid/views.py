@@ -4,10 +4,13 @@ import logging
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.http import (HttpResponse, HttpResponseBadRequest,
                          HttpResponseForbidden)
+from django.utils.translation import get_language
 from django.views.decorators.http import require_POST
 
+from basket import subscribe
 from funfactory.urlresolvers import reverse
 
 from browserid.utils import verify as browserid_verify
@@ -65,6 +68,14 @@ def register(request, form):
             user.save()
 
             UserProfile.objects.create(user=user, display_name=display_name)
+
+            # Subscribe user to mailing lists
+            if form.cleaned_data['email_subscribe']:
+                try:
+                    subscribe(email, settings.BASKET_NEWSLETTER,
+                              lang=get_language())
+                except Exception, err:
+                    log.warning(err)
 
             # New user must be authenticated to log in
             user = authenticate(request=request)

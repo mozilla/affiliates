@@ -1,3 +1,4 @@
+src/basket-client
 src/django-cache-machine
 src/django-smuggler
 src/django-cronjobs

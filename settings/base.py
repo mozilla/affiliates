@@ -72,6 +72,10 @@ SERIALIZATION_MODULES = {
 }
 SMUGGLER_FORMAT = 'json_files'
 
+# Email subscription config
+BASKET_URL = 'https://basket.mozilla.com'
+BASKET_NEWSLETTER = 'mozilla-and-you'
+
 # CSP Config
 CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
 CSP_SCRIPT_SRC = (

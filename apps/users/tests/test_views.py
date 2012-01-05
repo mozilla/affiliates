@@ -32,7 +32,7 @@ class RegisterTests(TestCase):
         ok_(mail.outbox[0].body.find('activate/%s' % p.activation_key))
 
     @patch('users.views.subscribe')
-    @patch.object(settings, 'RESPONSYS_CAMPAIGN', 'testcamp', create=True)
+    @patch.object(settings, 'BASKET_NEWSLETTER', 'test-newsletter', create=True)
     def test_email_signup(self, subscribe):
         """
         Agreeing to subscribe to emails during registration calls subscribe.
@@ -46,9 +46,8 @@ class RegisterTests(TestCase):
             response = self.client.post(reverse('users.register'), params)
         eq_(200, response.status_code)
 
-        source_url = 'http://testserver%s' % response.request['PATH_INFO']
-        subscribe.assert_called_with('testcamp', u'newbie@example.com',
-                                     lang='en-us', source_url=source_url)
+        subscribe.assert_called_once_with('newbie@example.com',
+                                          'test-newsletter', lang='en-us')
 
     def test_activation(self):
         """Test basic account activation."""

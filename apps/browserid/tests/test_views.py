@@ -106,3 +106,14 @@ class RegisterTests(TestCase):
         eq_(result['response'].status_code, 302)
         ok_('_auth_user_id' in result['request'].session,
             'New user was not logged in.')
+
+    @mock_browserid('user@test.com')
+    @patch('browserid.views.subscribe')
+    @patch.object(settings, 'BASKET_NEWSLETTER', 'test-newsletter', create=True)
+    def test_email_subscription(self, subscribe):
+        """Subscribe user to mailing list if requested."""
+        result = self._register({'email_subscribe': True},
+                                email='user@test.com')
+        eq_(result['response'].status_code, 302)
+        subscribe.assert_called_once_with('user@test.com', 'test-newsletter',
+                                          lang='en-us')

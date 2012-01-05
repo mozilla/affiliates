@@ -25,3 +25,6 @@
 [submodule "vendor-local/src/django-csp"]
 	path = vendor-local/src/django-csp
 	url = git://github.com/mozilla/django-csp.git
+[submodule "vendor-local/src/basket-client"]
+	path = vendor-local/src/basket-client
+	url = git://github.com/mozilla/basket-client.git
