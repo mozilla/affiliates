@@ -137,12 +137,10 @@
 #content a.share_twitter {
     background: #FFF url(../img/template/sprites.png) no-repeat 12px -43px;
     padding-left: 55px;
-    width: 225px;
 }
 #content a.share_facebook {
     background: #FFF url(../img/template/sprites.png) no-repeat 12px -86px;
     padding-left: 55px;
-    width: 225px;
 }
 
 /* Thank you */
