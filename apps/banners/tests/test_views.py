@@ -4,11 +4,13 @@ from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 
-from banners.models import BannerInstance
+from banners.models import BannerImage, BannerInstance
+from banners.tests import mock_size
 from shared.tests import TestCase
 
 
 @patch.object(settings, 'LANGUAGES', {'en-us': 'English (US)', 'fr': 'French'})
+@patch.object(BannerImage, 'size', mock_size)
 class CustomizeViewTests(TestCase):
     fixtures = ['banners']
 
