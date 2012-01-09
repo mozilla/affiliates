@@ -75,6 +75,7 @@ class BannerInstance(BadgeInstance):
     image = models.ForeignKey(BannerImage)
 
     details_template = 'banners/details.html'
+    objects = CachingManager()
 
     @property
     def preview(self):
