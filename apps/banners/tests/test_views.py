@@ -4,13 +4,13 @@ from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 
-from banners.models import BannerImage, BannerInstance
-from banners.tests import mock_size
+from banners.models import BannerImageManager, BannerInstance
 from shared.tests import TestCase
 
 
+# Avoid calling methods that require an image file by mocking customize_values
+@patch.object(BannerImageManager, 'customize_values', lambda self, **kw: [])
 @patch.object(settings, 'LANGUAGES', {'en-us': 'English (US)', 'fr': 'French'})
-@patch.object(BannerImage, 'size', mock_size)
 class CustomizeViewTests(TestCase):
     fixtures = ['banners']
 
