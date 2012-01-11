@@ -14,6 +14,7 @@ from funfactory.urlresolvers import reverse
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
+from badges.models import BadgeInstance
 from shared.models import ModelBase
 from users.utils import hash_password
 
@@ -29,7 +30,9 @@ ACTIVATION_EMAIL_SUBJECT = _lazy('Please activate your Firefox Affiliates '
 
 # Extra User Methods
 def has_created_badges(self):
-    return self.badgeinstance_set.count() > 0
+    """Return whether a user has created a badge or not. Bypasses cache."""
+    badge_count = BadgeInstance.objects.no_cache().filter(user=self).count()
+    return badge_count > 0
 User.add_to_class('has_created_badges', has_created_badges)
 
 
