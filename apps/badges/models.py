@@ -106,7 +106,7 @@ class BadgeInstanceManager(CachingManager):
     def for_user_by_category(self, user):
         results = defaultdict(list)
 
-        instances = BadgeInstance.objects.filter(user=user)
+        instances = BadgeInstance.objects.no_cache().filter(user=user)
         for instance in instances:
             results[instance.badge.subcategory.parent.name].append(instance)
 
