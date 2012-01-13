@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 from django.db import models
 
@@ -11,6 +13,7 @@ from tower import ugettext_lazy as _lazy
 from badges.models import Badge, BadgeInstance
 from banners import COLOR_CHOICES
 from shared.models import LocaleField, ModelBase
+from shared.storage import OverwriteStorage
 from shared.utils import absolutify, ugettext_locale as _locale
 
 
@@ -21,6 +24,16 @@ SIZE = _lazy('%(width)sx%(height)s pixels')
 BANNER_TEMPLATE_FILE = 'apps/banners/templates/banners/banner_template.html'
 with open(path(BANNER_TEMPLATE_FILE)) as f:
     BANNER_TEMPLATE = f.read()
+
+
+def rename(instance, filename):
+    format = "%s_%s_%s_%s_%s.jpg" % (instance.banner_id,
+                                     instance.image.width,
+                                     instance.image.height,
+                                     instance.color,
+                                     instance.locale)
+    return os.path.join(settings.BANNER_IMAGE_PATH, format)
+overwritefs = OverwriteStorage()
 
 
 class Banner(Badge):
@@ -51,7 +64,8 @@ class BannerImage(CachingMixin, ModelBase):
     banner = models.ForeignKey(Banner)
     color = models.CharField(max_length=20, choices=COLOR_CHOICES,
                              verbose_name=u'image color')
-    image = models.ImageField(upload_to=settings.BANNER_IMAGE_PATH,
+    image = models.ImageField(upload_to=rename,
+                              storage=overwritefs,
                               verbose_name=u'image file',
                               max_length=settings.MAX_FILEPATH_LENGTH)
     locale = LocaleField()
