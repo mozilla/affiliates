@@ -13,7 +13,7 @@ from tower import ugettext_lazy as _lazy
 from badges.models import Badge, BadgeInstance
 from banners import COLOR_CHOICES
 from shared.models import LocaleField, ModelBase
-from shared.storage import OverwriteStorage
+from shared.storage import OverwritingStorage
 from shared.utils import absolutify, ugettext_locale as _locale
 
 
@@ -33,7 +33,6 @@ def rename(instance, filename):
                                      instance.color,
                                      instance.locale)
     return os.path.join(settings.BANNER_IMAGE_PATH, format)
-overwritefs = OverwriteStorage()
 
 
 class Banner(Badge):
@@ -65,7 +64,7 @@ class BannerImage(CachingMixin, ModelBase):
     color = models.CharField(max_length=20, choices=COLOR_CHOICES,
                              verbose_name=u'image color')
     image = models.ImageField(upload_to=rename,
-                              storage=overwritefs,
+                              storage=OverwritingStorage(),
                               verbose_name=u'image file',
                               max_length=settings.MAX_FILEPATH_LENGTH)
     locale = LocaleField()
