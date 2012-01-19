@@ -27,11 +27,8 @@ with open(path(BANNER_TEMPLATE_FILE)) as f:
 
 
 def rename(instance, filename):
-    format = "%s_%s_%s_%s_%s.jpg" % (instance.banner_id,
-                                     instance.image.width,
-                                     instance.image.height,
-                                     instance.color,
-                                     instance.locale)
+    extension = os.path.splitext(filename)[1]
+    format = "%s%s" % (instance.id, extension)
     return os.path.join(settings.BANNER_IMAGE_PATH, format)
 
 

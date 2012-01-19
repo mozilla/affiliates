@@ -7,31 +7,32 @@ import tempfile
 from django.core.files.base import ContentFile as C
 from django.core.files import File
 from django.conf import settings
-from nose.tools import assert_equal
+from nose.tools import assert_raises, eq_
 
 from shared.storage import OverwritingStorage
+from shared.tests import TestCase
 
-class TestOverwritingStorage(object):
-    def setup(self):
+class TestOverwritingStorage(TestCase):
+    def setUp(self):
         self.location = tempfile.mkdtemp(prefix="overwriting_storage_test")
         self.storage = OverwritingStorage(location=self.location)
 
-    def teardown(self):
+    def tearDown(self):
         shutil.rmtree(self.location)
 
     def test_new_file(self):
         s = self.storage
         assert not s.exists("foo")
         s.save("foo", C("new"))
-        assert_equal(s.open("foo").read(), "new")
+        eq_(s.open("foo").read(), "new")
 
     def test_overwriting_existing_file_with_string(self):
         s = self.storage
 
         s.save("foo", C("old"))
         name = s.save("foo", C("new"))
-        assert_equal(s.open("foo").read(), "new")
-        assert_equal(name, "foo")
+        eq_(s.open("foo").read(), "new")
+        eq_(name, "foo")
 
     def test_overwrite_with_file(self):
         s = self.storage
@@ -43,8 +44,8 @@ class TestOverwritingStorage(object):
         s.save("foo", C("old"))
         name = s.save("foo", File(open(input_file)))
 
-        assert_equal(s.open("foo").read(), "new")
-        assert_equal(name, "foo")
+        eq_(s.open("foo").read(), "new")
+        eq_(name, "foo")
 
     def test_upload_fails(self):
         s = self.storage
@@ -62,10 +63,7 @@ class TestOverwritingStorage(object):
 
         s.save("foo", C("old"))
 
-        try:
+        with assert_raises(Explosion):
             s.save("foo", ExplodingContentFile())
-            raise Exception("Oh no! ExplodingContentFile didn't explode.")
-        except Explosion:
-            pass
 
-        assert_equal(s.open("foo").read(), "old")
+        eq_(s.open("foo").read(), "old")
