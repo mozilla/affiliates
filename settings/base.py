@@ -224,6 +224,7 @@ SERVE_MEDIA = False
 SOUTH_MIGRATION_MODULES = {
     'auth': 'affiliates.migrations.auth',
 }
+SOUTH_TESTS_MIGRATE = False  # Disable migrations for tests.
 
 # Extra places to look for fixtures
 FIXTURE_DIRS = (

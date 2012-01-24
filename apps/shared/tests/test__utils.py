@@ -1,19 +1,27 @@
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.utils.translation import get_language
 
 from babel.core import Locale
 from mock import patch
 from nose.tools import eq_
 from test_utils import TestCase
-from tower import activate, ugettext as _
+from tower import activate
 
 from shared.utils import (absolutify, current_locale, redirect,
                           ugettext_locale as _locale)
 
 
-@patch.object(settings, 'SITE_ID', 1)
 class TestAbsolutify(TestCase):
     fixtures = ['sites']
+
+    def setUp(self):
+        self.patcher = patch.object(Site.objects, 'get_current')
+        self.mock = self.patcher.start()
+        self.mock.return_value = Site(domain='badge.mo.com', name='test')
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_basic(self):
         url = absolutify('/some/url')
