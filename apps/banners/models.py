@@ -1,3 +1,4 @@
+import hashlib
 import os
 
 from django.conf import settings
@@ -27,9 +28,15 @@ with open(path(BANNER_TEMPLATE_FILE)) as f:
 
 
 def rename(instance, filename):
+    props = '%d_%s_%s_%s_%s' % (instance.banner_id,
+                                instance.image.width,
+                                instance.image.height,
+                                instance.color,
+                                instance.locale)
+    hash = hashlib.sha1(props).hexdigest()
     extension = os.path.splitext(filename)[1]
-    format = "%s%s" % (instance.id, extension)
-    return os.path.join(settings.BANNER_IMAGE_PATH, format)
+    name = '%s%s' % (hash, extension)
+    return os.path.join(settings.BANNER_IMAGE_PATH, name)
 
 
 class Banner(Badge):
