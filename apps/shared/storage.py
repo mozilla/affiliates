@@ -30,6 +30,7 @@ class OverwritingStorage(FileSystemStorage):
         elif not os.path.isdir(directory):
             raise IOError("%s exists and is not a directory." % directory)
 
+        content.open()
         # This file has a file path that we can move.
         if hasattr(content, 'temporary_file_path'):
             temp_data_location = content.temporary_file_path()
