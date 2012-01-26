@@ -37,6 +37,8 @@ _('Plugin Checker')
 _('Download Aurora')
 _('Aurora <span>for</span> Android')
 _('Download Beta')
+# L10n: 3.6 refers to Firefox version 3.6
+_('3.6 Upgrade')
 
 # Colors
 _('Purple')
