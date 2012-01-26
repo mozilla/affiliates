@@ -468,6 +468,10 @@ div.left-arrow span {
     width: 189px;
 }
 
+.steps-buttons li a {
+    color: #474848;
+}
+
 /* Using a CSS counter allows us to precisely position the numbers. */
 .steps-buttons li:before {
     content: counter(li);

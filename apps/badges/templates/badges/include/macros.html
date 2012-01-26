@@ -11,10 +11,14 @@
 <div id="steps-started">
   <ol class="steps-buttons">
     <li class="first {{ 0|wizard_active(step) }}">
-      <p>{{ _('PICK A CATEGORY') }}</p>
+      {% if not 0|wizard_active(step) %}<a href="{{ url('badges.new.step1') }}">{% endif %}
+        <p>{{ _('PICK A CATEGORY') }}</p>
+      {% if not 0|wizard_active(step) %}</a>{% endif %}
     </li>
     <li class="second {{ 1|wizard_active(step) }}">
+      {% if not 1|wizard_active(step) %}<a href="{{ url('badges.new.step2', subcategory.pk) }}">{% endif %}
       <p>{{ _('PICK A BANNER') }}</p>
+      {% if not 1|wizard_active(step) %}</a>{% endif %}
     </li>
     <li class="third {{ 2|wizard_active(step) }}">
       <p>{{ _('CONFIGURE &amp; POST') }}</p>
