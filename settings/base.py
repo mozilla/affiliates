@@ -6,8 +6,8 @@ from funfactory.settings_base import *
 SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
-PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'nl', 'pl',
-                  'pt-BR', 'sl', 'sq', 'zh-TW')
+PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl',
+                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'zh-TW')
 
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
