@@ -11,14 +11,14 @@
 <div id="steps-started">
   <ol class="steps-buttons">
     <li class="first {{ 0|wizard_active(step) }}">
-      {% if not 0|wizard_active(step) %}<a href="{{ url('badges.new.step1') }}">{% endif %}
+      {% call wizard_breadcrumb(0, step, url('badges.new.step1')) %}
         <p>{{ _('PICK A CATEGORY') }}</p>
-      {% if not 0|wizard_active(step) %}</a>{% endif %}
+      {% endcall %}
     </li>
     <li class="second {{ 1|wizard_active(step) }}">
-      {% if not 1|wizard_active(step) %}<a href="{{ url('badges.new.step2', subcategory.pk) }}">{% endif %}
-      <p>{{ _('PICK A BANNER') }}</p>
-      {% if not 1|wizard_active(step) %}</a>{% endif %}
+      {% call wizard_breadcrumb(1, step, url('badges.new.step2', subcategory.pk)) %}
+        <p>{{ _('PICK A BANNER') }}</p>
+      {% endcall %}
     </li>
     <li class="third {{ 2|wizard_active(step) }}">
       <p>{{ _('CONFIGURE &amp; POST') }}</p>
@@ -40,6 +40,18 @@
     </a>
   </li>
 {% endmacro %}
+
+{% macro wizard_breadcrumb(current, step, url) -%}
+  {% if current < step %}
+    <a href="{{ url }}">
+  {% endif %}
+  {% if caller %}
+    {{ caller() }}
+  {% endif %}
+  {% if current < step %}
+    </a>
+  {% endif %}  
+{%- endmacro %}
 
 {% macro wizard_footer(back_href) %}
   <div id="footer-content" class="buttons">
