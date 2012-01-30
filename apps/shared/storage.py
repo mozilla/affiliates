@@ -35,7 +35,7 @@ class OverwritingStorage(FileSystemStorage):
         if hasattr(content, 'temporary_file_path'):
             # Content has a file that we can move.
             temp_data_location = content.temporary_file_path()
-            file_move_safe(temp_data_location, full_path)
+            file_move_safe(temp_data_location, full_path, allow_overwrite=True)
         else:
             # Write the content stream to a temporary file and move it.
             fd, tmp_path = mkstemp()
@@ -44,7 +44,7 @@ class OverwritingStorage(FileSystemStorage):
                 os.write(fd, chunk)
             locks.unlock(fd)
             os.close(fd)
-            file_move_safe(tmp_path, full_path)
+            file_move_safe(tmp_path, full_path, allow_overwrite=True)
 
         content.close()
         if settings.FILE_UPLOAD_PERMISSIONS is not None:
