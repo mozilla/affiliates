@@ -1,0 +1,15 @@
+SRC_DIR = '/data/engagement-dev/src/engagement-dev.allizom.org/affiliates-app'
+WWW_DIR = '/data/engagement-dev/www/affiliates-dev.allizom.org/affiliates-app'
+
+CRON_NAME = 'engagement-dev'
+
+DEPLOY_SCRIPT = "/data/engagement-dev/deploy -n affiliates-dev.allizom.org"
+REMOTE_UPDATE_SCRIPT = "/data/bin/update-www.sh engagement-dev.allizom.org""
+
+
+WEB_HOSTGROUP = 'engagement-dev'
+CELERY_HOSTGROUP = 'engagement-celery-dev'
+CELERY_SERVICE = 'celeryd-engagement-dev'
+
+UPDATE_REF = "origin/master"
+SSH_KEY = None
