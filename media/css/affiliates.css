@@ -472,6 +472,10 @@ div.left-arrow span {
     color: #474848;
 }
 
+.steps-buttons li a:hover p {
+    text-decoration: underline;
+}
+
 /* Using a CSS counter allows us to precisely position the numbers. */
 .steps-buttons li:before {
     content: counter(li);
