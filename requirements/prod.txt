@@ -9,3 +9,6 @@ django-cronjobs==0.2.3
 django-extensions==0.7.1
 
 requests>=0.9.1
+
+# oremj's commander
+-e git://github.com/oremj/commander.git
