@@ -1,12 +1,10 @@
 # Taken from http://djangosnippets.org/snippets/2173/
 
-import os
 import shutil
 import tempfile
 
 from django.core.files.base import ContentFile as C
 from django.core.files import File
-from django.conf import settings
 from nose.tools import assert_raises, eq_
 
 from shared.storage import OverwritingStorage
@@ -63,7 +61,5 @@ class TestOverwritingStorage(TestCase):
 
         s.save("foo", C("old"))
 
-        with assert_raises(Explosion):
-            s.save("foo", ExplodingContentFile())
-
+        assert_raises(Explosion, s.save, 'foo', ExplodingContentFile())
         eq_(s.open("foo").read(), "old")
