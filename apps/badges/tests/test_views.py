@@ -3,6 +3,7 @@ import json
 from funfactory.urlresolvers import reverse
 from nose.tools import eq_
 
+from badges.models import Category
 from shared.tests import TestCase
 
 
@@ -53,3 +54,29 @@ class TestMyBadges(TestCase):
         with self.activate('en-US'):
             response = self.client.get(reverse('my_badges'))
         eq_(response.status_code, 302)
+
+
+class TestDisplayedBadges(TestCase):
+    fixtures = ['subcategories']
+
+    def setUp(self):
+	self.client.login(username='testuser43@asdf.asdf', password='asdfasdf')
+
+    def test_step_1(self):
+	"""Test that step1 doesn't display categories with no displayed badges"""
+	with self.activate('en-US'):
+	    path = reverse('badges.new.step1')
+	response = self.client.get(path)
+
+	categories = response.context['categories']
+	category = Category.objects.filter(pk=11)
+
+	eq_(list(categories), list(category))
+
+    def test_step_2(self):
+	"""Test that views for subcategories with no displayed badges return a 404"""
+	with self.activate('en-US'):
+	    path = reverse('badges.new.step2', kwargs={'subcategory_pk': 14})
+	response = self.client.get(path)
+
+	eq_(response.status_code, 404)

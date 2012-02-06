@@ -47,6 +47,13 @@ def south(ctx):
         ctx.local("python2.6 ./manage.py syncdb")
         ctx.local("python2.6 ./manage.py migrate")
 
+
+@task
+def banners_htaccess(ctx):
+    with ctx.lcd(settings.SRC_DIR):
+        ctx.local("python2.6 ./manage.py banners_htaccess")
+
+
 @task
 def checkin_changes(ctx):
     ctx.local(settings.DEPLOY_SCRIPT)
@@ -94,6 +101,7 @@ def update(ctx):
     update_assets()
     update_locales()
     south()
+    banners_htaccess()
 
 @task
 def deploy(ctx):

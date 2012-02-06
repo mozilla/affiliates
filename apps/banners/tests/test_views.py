@@ -37,7 +37,15 @@ class CustomizeViewTests(TestCase):
         eq_(response.status_code, 200)
 
         with self.assertRaises(BannerInstance.DoesNotExist):
-            BannerInstance.objects.get(user=1, badge=1, image=999)
+	    BannerInstance.objects.get(user=1, badge=1, image=999)
+
+    def test_not_displayed_banner(self):
+	"""Test that views for non-displayed banners return a 404"""
+	with self.activate('en-US'):
+	    url = reverse('banners.customize', kwargs={'banner_pk': 3})
+	response = self.client.get(url)
+
+	eq_(response.status_code, 404)
 
 
 @patch.object(settings, 'DEFAULT_AFFILIATE_LINK', 'http://test.com')
