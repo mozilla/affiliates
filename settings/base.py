@@ -7,7 +7,7 @@ SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
 PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl',
-                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'zh-TW')
+                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-Latn', 'zh-TW')
 
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
