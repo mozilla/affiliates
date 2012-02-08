@@ -470,6 +470,7 @@ div.left-arrow span {
 
 .steps-buttons li a {
     color: #474848;
+    display: table-cell;
 }
 
 .steps-buttons li a:hover p {
