@@ -741,11 +741,12 @@ a.back:hover {
     margin-right: 20px;
 }
 
-#user-info div {
+#user-info h5 {
     color: #444;
     font-family: 'MetaWebPro', serif;
     font-size: 18px;
     overflow: hidden;
+    padding-top: 2px;
 }
 
 p.banners_counter {
