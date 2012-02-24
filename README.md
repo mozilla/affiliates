@@ -17,7 +17,7 @@ Developer Setup
 
 0. (Recommended) Set up a virtualenv for the project.
 1. `git clone --recursive git://github.com/mozilla/affiliates.git`
-2. pip install -r requirements/compiled.txt
+2. pip install -r requirements/dev.txt
 3. Set up a MySQL Database
 4. Copy `settings/local.py-dist` to `settings/local.py` and edit it.
    * Enter the connection info for the database you set up.
