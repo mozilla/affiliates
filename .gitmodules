@@ -19,9 +19,6 @@
 [submodule "vendor-local/src/django-extensions"]
 	path = vendor-local/src/django-extensions
 	url = git://github.com/django-extensions/django-extensions.git
-[submodule "vendor-local/src/django-browserid"]
-	path = vendor-local/src/django-browserid
-	url = git://github.com/Osmose/django-browserid.git
 [submodule "vendor-local/src/django-csp"]
 	path = vendor-local/src/django-csp
 	url = git://github.com/mozilla/django-csp.git
