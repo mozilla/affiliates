@@ -28,7 +28,7 @@ def update_code(ctx, tag):
 def update_locales(ctx):
     with ctx.lcd(os.path.join(settings.SRC_DIR, 'locale')):
         ctx.local("svn up")
-        ctx.local("./compile-mo.sh .")
+        ctx.local("./compile.sh .")
 
 
 @task
