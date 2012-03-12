@@ -7,7 +7,23 @@ SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
 PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl',
-                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-Latn', 'zh-TW')
+                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'zh-TW')
+
+# UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
+# manner.
+def lazy_langs():
+    from django.conf import settings
+    from product_details import product_details
+
+    available_langs = dict([(key.lower(), value) for key, value in
+                            product_details.languages.items()])
+    langs = DEV_LANGUAGES if settings.DEV else settings.PROD_LANGUAGES
+    langs = [lang.lower() for lang in langs]
+
+    return dict([(lang, available_langs[lang]['native'])
+                 for lang in langs if lang in available_langs])
+
+LANGUAGES = lazy(lazy_langs, dict)()
 
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
