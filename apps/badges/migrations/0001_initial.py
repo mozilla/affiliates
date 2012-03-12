@@ -33,14 +33,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('badges', ['Badge'])
 
-        # Adding model 'BadgeLocale'
-        db.create_table('badges_badgelocale', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('locale', self.gf('shared.models.LocaleField')(default='en-US', max_length=32)),
-            ('badge', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['badges.Badge'])),
-        ))
-        db.send_create_signal('badges', ['BadgeLocale'])
-
         # Adding model 'BadgePreview'
         db.create_table('badges_badgepreview', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -103,9 +95,6 @@ class Migration(SchemaMigration):
         # Deleting model 'Badge'
         db.delete_table('badges_badge')
 
-        # Deleting model 'BadgeLocale'
-        db.delete_table('badges_badgelocale')
-
         # Deleting model 'BadgePreview'
         db.delete_table('badges_badgepreview')
 
@@ -165,12 +154,6 @@ class Migration(SchemaMigration):
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        },
-        'badges.badgelocale': {
-            'Meta': {'object_name': 'BadgeLocale'},
-            'badge': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['badges.Badge']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'locale': ('shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
         },
         'badges.badgepreview': {
             'Meta': {'unique_together': "(('locale', 'badge'),)", 'object_name': 'BadgePreview'},

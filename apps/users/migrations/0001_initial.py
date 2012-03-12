@@ -1,6 +1,8 @@
 # encoding: utf-8
+import datetime
 from south.db import db
 from south.v2 import SchemaMigration
+from django.db import models
 
 class Migration(SchemaMigration):
 
@@ -19,7 +21,6 @@ class Migration(SchemaMigration):
             ('state', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('postal_code', self.gf('django.db.models.fields.CharField')(max_length=32, null=True, blank=True)),
             ('country', self.gf('django.db.models.fields.CharField')(max_length=2, blank=True)),
-            ('locale', self.gf('shared.models.LocaleField')(default='en-US', max_length=32)),
         ))
         db.send_create_signal('users', ['UserProfile'])
 
@@ -33,6 +34,7 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True)),
         ))
         db.send_create_signal('users', ['RegisterProfile'])
+
 
     def backwards(self, orm):
         
@@ -97,7 +99,6 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.CharField', [], {'max_length': '2', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'display_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'locale': ('shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'postal_code': ('django.db.models.fields.CharField', [], {'max_length': '32', 'null': 'True', 'blank': 'True'}),
