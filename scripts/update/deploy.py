@@ -44,6 +44,7 @@ def schematic(ctx):
 @task
 def south(ctx):
     with ctx.lcd(settings.SRC_DIR):
+        ctx.local("python2.6 ./manage.py syncdb")
         ctx.local("python2.6 ./manage.py migrate")
 
 @task
@@ -92,7 +93,7 @@ def pre_update(ctx, ref=settings.UPDATE_REF):
 def update(ctx):
     update_assets()
     update_locales()
-    schematic()
+    south()
 
 @task
 def deploy(ctx):
