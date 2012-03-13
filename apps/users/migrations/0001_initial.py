@@ -7,7 +7,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding model 'UserProfile'
         db.create_table('users_userprofile', (
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, primary_key=True)),
@@ -35,14 +35,19 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('users', ['RegisterProfile'])
 
+        # Adding constraint on auth.User's email fields
+        db.create_unique('auth_user', ['email'])
+
 
     def backwards(self, orm):
-        
+
         # Deleting model 'UserProfile'
         db.delete_table('users_userprofile')
 
         # Deleting model 'RegisterProfile'
         db.delete_table('users_registerprofile')
+
+        db.delete_index('auth_user', ['email'])
 
 
     models = {
