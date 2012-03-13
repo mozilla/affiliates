@@ -220,10 +220,6 @@ SERVE_MEDIA = False
 #    ('media/js/**.js', 'javascript'),
 # ]
 
-# Extra places where South can look for migrations
-SOUTH_MIGRATION_MODULES = {
-    'auth': 'affiliates.migrations.auth',
-}
 SOUTH_TESTS_MIGRATE = False  # Disable migrations for tests.
 
 # Extra places to look for fixtures
