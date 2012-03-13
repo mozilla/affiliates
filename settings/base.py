@@ -40,6 +40,10 @@ PASSWORD_RESET_TIMEOUT_DAYS = 2
 BROWSERID_VERIFICATION_URL = 'https://browserid.org/verify'
 BROWSERID_DISABLE_CERT_CHECK = False
 BROWSERID_CREATE_USER = False
+BROWSERID_LOCALES = [lang.lower() for lang in (
+    'cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl', 'pt-BR', 'sk',
+    'sl', 'sq', 'sr', 'zh-TW'
+    )]
 
 # Login settings
 LOGIN_VIEW_NAME = 'home'

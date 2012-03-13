@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.utils.http import urlquote_plus
 from django.utils.translation import get_language
@@ -31,7 +32,7 @@ def home(request, register_form=None, login_form=None):
         return redirect('badges.new.step1')
 
     # en-US users see the BrowserID view instead
-    if get_language() == 'en-us':
+    if get_language() in settings.BROWSERID_LOCALES:
         return browserid_home(request)
 
     if register_form is None:
