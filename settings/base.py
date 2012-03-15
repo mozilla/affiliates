@@ -171,6 +171,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 
     'csp',
     'django_extensions',
+    'django_statsd',
     'smuggler',
     'cronjobs',
     'south',
@@ -180,7 +181,11 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.admin',
 ]
 
-MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
+MIDDLEWARE_CLASSES = [
+    # Add timing middleware first to get accurate timings.
+    'django_statsd.middleware.GraphiteRequestTimingMiddleware',
+    'django_statsd.middleware.GraphiteMiddleware',
+] + list(MIDDLEWARE_CLASSES) + [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
@@ -246,3 +251,9 @@ SOUTH_TESTS_MIGRATE = False  # Disable migrations for tests.
 FIXTURE_DIRS = (
     path('fixtures'),
 )
+
+# Activate statsd patches to time database and cache hits.
+STATSD_PATCHES = [
+    'django_statsd.patches.db',
+    'django_statsd.patches.cache',
+]
