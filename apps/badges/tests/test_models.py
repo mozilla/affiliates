@@ -79,6 +79,13 @@ class BadgeInstanceTests(TestCase):
 class ClickStatsTests(TestCase):
     fixtures = ['badge_instance']
 
+    def test_total(self):
+        eq_(ClickStats.objects.total(), 24)
+
+    def test_total_for_badge(self):
+        badge = Badge.objects.get(id=2)
+        eq_(ClickStats.objects.total_for_badge(badge), 23)
+
     def test_total_for_user_basic(self):
         user = User.objects.get(id=6)
         eq_(ClickStats.objects.total_for_user(user), 23)

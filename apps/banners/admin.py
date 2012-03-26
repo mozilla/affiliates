@@ -13,6 +13,7 @@ class BannerImageInline(admin.TabularInline):
 
 
 class BannerAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'clicks')
     change_list_template = 'smuggler/change_list.html'
     inlines = [BadgePreviewInline, BannerImageInline]
 site.register(Banner, BannerAdmin)
