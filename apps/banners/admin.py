@@ -4,6 +4,7 @@ from funfactory.admin import site
 from funfactory.urlresolvers import reverse
 
 from badges.admin import BadgePreviewInline
+from badges.models import ClickStats
 from banners.models import Banner, BannerImage, BannerInstance
 
 
@@ -14,8 +15,14 @@ class BannerImageInline(admin.TabularInline):
 
 class BannerAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'clicks')
-    change_list_template = 'smuggler/change_list.html'
+    change_list_template = 'admin/banner_change_list.html'
     inlines = [BadgePreviewInline, BannerImageInline]
+
+    def changelist_view(self, request, extra_context={}):
+        extra_context.update(total=ClickStats.objects.total())
+        return super(BannerAdmin, self).changelist_view(request,
+            extra_context=extra_context)
+
 site.register(Banner, BannerAdmin)
 
 
