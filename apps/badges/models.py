@@ -11,9 +11,10 @@ from shared.models import LocaleImage, ModelBase, MultiTableParentModel
 
 
 # Cache keys
+CACHE_CLICKS_TOTAL = 'clicks_total'
+CACHE_CLICKS_BADGE_TOTAL = 'clicks_badge_total_%s'
 CACHE_CLICKS_AVG = 'clicks_avg_%s_%s'
 CACHE_CLICKS_USERPERIOD_TOTAL = 'clicks_userperiod_total_%s_%s_%s'
-CACHE_CLICKS_USER_TOTAL = 'clicks_user_total_%s'
 CACHE_TOP_USERS = 'top_users'
 
 
@@ -55,6 +56,10 @@ class Badge(CachingMixin, MultiTableParentModel):
                            verbose_name=u'URL to redirect to')
 
     objects = CachingManager()
+
+    @property
+    def clicks(self):
+        return ClickStats.objects.total_for_badge(self)
 
     def customize_url(self):
         """Return a URL pointing to the customization page for this badge."""
@@ -146,6 +151,27 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
 
 
 class ClickStatsManager(models.Manager):
+    def total(self):
+        """Return the total number of clicks"""
+        total = cache.get(CACHE_CLICKS_TOTAL)
+        if total is None:
+            total = self._total()
+            cache.set(CACHE_CLICKS_TOTAL, total)
+
+        return total
+
+    def total_for_badge(self, badge):
+        """
+        Return the total number of clicks for each badge.
+        """
+        key = CACHE_CLICKS_BADGE_TOTAL % (badge.pk)
+        total = cache.get(key)
+        if total is None:
+            total = self._total(badge_instance__badge=badge)
+            cache.set(key, total)
+
+        return total
+
     def total_for_user(self, user):
         """Return the total number of clicks found for the given user."""
         results = (BadgeInstance.objects.filter(user=user)
