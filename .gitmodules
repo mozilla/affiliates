@@ -28,3 +28,9 @@
 [submodule "vendor-local/src/django-browserid"]
 	path = vendor-local/src/django-browserid
 	url = git://github.com/mozilla/django-browserid.git
+[submodule "vendor-local/src/pystatsd"]
+	path = vendor-local/src/pystatsd
+	url = git://github.com/jsocol/pystatsd.git
+[submodule "vendor-local/src/django-statsd"]
+	path = vendor-local/src/django-statsd
+	url = git://github.com/andymckay/django-statsd.git

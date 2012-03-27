@@ -1,7 +1,9 @@
 src/basket-client
-src/django-cache-machine
-src/django-smuggler
-src/django-cronjobs
-src/django-extensions
 src/django-browserid
+src/django-cache-machine
+src/django-cronjobs
 src/django-csp
+src/django-extensions
+src/django-smuggler
+src/django-statsd
+src/pystatsd

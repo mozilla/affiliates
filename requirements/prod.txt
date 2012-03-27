@@ -10,6 +10,8 @@ django-extensions==0.7.1
 
 requests>=0.9.1
 south==0.7.3
+statsd
+django-statsd-mozilla
 
 # oremj's commander
 -e git://github.com/oremj/commander.git

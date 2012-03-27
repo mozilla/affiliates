@@ -7,7 +7,23 @@ SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
 PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl',
-                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-Latn', 'zh-TW')
+                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'zh-TW')
+
+# UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
+# manner.
+def lazy_langs():
+    from django.conf import settings
+    from product_details import product_details
+
+    available_langs = dict([(key.lower(), value) for key, value in
+                            product_details.languages.items()])
+    langs = DEV_LANGUAGES if settings.DEV else settings.PROD_LANGUAGES
+    langs = [lang.lower() for lang in langs]
+
+    return dict([(lang, available_langs[lang]['native'])
+                 for lang in langs if lang in available_langs])
+
+LANGUAGES = lazy(lazy_langs, dict)()
 
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
@@ -24,6 +40,10 @@ PASSWORD_RESET_TIMEOUT_DAYS = 2
 BROWSERID_VERIFICATION_URL = 'https://browserid.org/verify'
 BROWSERID_DISABLE_CERT_CHECK = False
 BROWSERID_CREATE_USER = False
+BROWSERID_LOCALES = [lang.lower() for lang in (
+    'cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl', 'pt-BR', 'sk',
+    'sl', 'sq', 'sr', 'zh-TW'
+    )]
 
 # Login settings
 LOGIN_VIEW_NAME = 'home'
@@ -151,6 +171,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 
     'csp',
     'django_extensions',
+    'django_statsd',
     'smuggler',
     'cronjobs',
     'south',
@@ -160,7 +181,11 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.admin',
 ]
 
-MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
+MIDDLEWARE_CLASSES = [
+    # Add timing middleware first to get accurate timings.
+    'django_statsd.middleware.GraphiteRequestTimingMiddleware',
+    'django_statsd.middleware.GraphiteMiddleware',
+] + list(MIDDLEWARE_CLASSES) + [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
@@ -226,3 +251,9 @@ SOUTH_TESTS_MIGRATE = False  # Disable migrations for tests.
 FIXTURE_DIRS = (
     path('fixtures'),
 )
+
+# Activate statsd patches to time database and cache hits.
+STATSD_PATCHES = [
+    'django_statsd.patches.db',
+    'django_statsd.patches.cache',
+]

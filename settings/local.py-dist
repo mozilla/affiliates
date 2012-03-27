@@ -72,3 +72,9 @@ RESPONSYS_CAMPAIGN = 'MOZILLA_AND_YOU'
 
 SITE_ID = 2
 SITE_URL = 'http://localhost:8000'
+
+# Uncomment to configure statsd
+# STATSD_CLIENT = 'django_statsd.clients.statsd'
+# STATSD_HOST = 'localhost'
+# STATSD_PORT = 8125
+# STATSD_PREFIX = 'affiliates'
