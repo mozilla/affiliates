@@ -1,0 +1,22 @@
+{% extends 'admin/index.html' %}
+
+{% block sidebar %}
+  {{ block.super }}
+  <br class="clear" />
+
+  <h1>Site statistics</h1>
+  {% for app_label, model_labels in app_model_labels.items %}
+    <div class="module">
+      <table>
+        <caption>{{ app_label|capfirst }}</caption>
+        {% for model_label in model_labels %}
+          <tr>
+            <th scope="row"><a href="#">{{ model_label }}</a></th>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endfor %}
+{% endblock %}

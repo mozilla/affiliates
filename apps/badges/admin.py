@@ -2,8 +2,9 @@ from django.contrib import admin
 
 from funfactory.admin import site
 
-from badges.models import BadgePreview, Category, Subcategory
+from badges.models import BadgeInstance, BadgePreview, Category, Subcategory
 from shared.admin import BaseModelAdmin
+from stats.admin import ModelStats
 
 
 class CategoryAdmin(BaseModelAdmin):
@@ -23,3 +24,8 @@ class BadgePreviewInline(admin.TabularInline):
     """
     model = BadgePreview
     extra = 0
+
+
+class BadgeInstanceStats(ModelStats):
+    datetime_field = 'created'
+site.register_stats(BadgeInstance, BadgeInstanceStats)

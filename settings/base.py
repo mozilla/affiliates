@@ -164,6 +164,7 @@ MINIFY_BUNDLES = {
 }
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
+    'stats',
     'badges',
     'banners',
     'browserid',
@@ -205,6 +206,7 @@ TEMPLATE_LOADERS = [
 JINGO_EXCLUDE_APPS = [
     'admin',
     'smuggler',
+    'stats',
 ]
 
 # Set up logging to send emails on 500 errors
