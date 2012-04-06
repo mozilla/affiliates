@@ -34,3 +34,6 @@
 [submodule "vendor-local/src/django-statsd"]
 	path = vendor-local/src/django-statsd
 	url = git://github.com/andymckay/django-statsd.git
+[submodule "vendor-local/src/django-qsstats-magic"]
+	path = vendor-local/src/django-qsstats-magic
+	url = git://github.com/kmike/django-qsstats-magic.git
