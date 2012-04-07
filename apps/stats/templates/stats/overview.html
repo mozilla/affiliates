@@ -1,0 +1,24 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+<button type="submit">Search!</button>
+</form>
+
+{% if results %}
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Val</th>
+    </tr>
+    {% for date, value in results reversed %}
+      <tr>
+        <td>{{ date }}</td>
+        <td>{{ value }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+{% endblock %}

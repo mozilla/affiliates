@@ -4,6 +4,12 @@ from django.contrib.admin import autodiscover
 
 from funfactory import admin
 
+from stats.monkeypatches import patch
+
+
+# Patch admin site for stats application
+patch()
+
 autodiscover()
 
 urlpatterns = patterns('',
