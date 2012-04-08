@@ -7,8 +7,9 @@ class ModelStats:
     """Encapsulates options and functionality for displaying statistics for a
     given model.
     """
+    display_name = None
     datetime_field = None
-    aggregate = None
+    aggregate = models.Count('id')
 
     def __init__(self, model, admin_site):
         self.model = model
@@ -20,8 +21,16 @@ class ModelStats:
                 if isinstance(field, models.DateTimeField)), None)
 
     @property
+    def slug(self):
+        return '%s_%s' % (self.__class__.__name__, self.model_name)
+
+    @property
+    def name(self):
+        return self.display_name or self.model_name
+
+    @property
     def admin_url(self):
-        return '%s/%s' % ('stats', self.model_name)
+        return '%s/%s' % ('stats', self.slug)
 
     @property
     def model_name(self):
@@ -36,3 +45,9 @@ class ModelStats:
         qs = self.model.objects.all()
         qss = QuerySetStats(qs, self.datetime_field, aggregate=self.aggregate)
         return qss.time_series(start, end, interval=interval)
+
+    def aggregate_for_period(self, start, end):
+        """Return the aggregate of all data for the given period."""
+        qs = self.model.objects.all()
+        date_filter = {'%s__range' % self.datetime_field: (start, end)}
+        return qs.filter(**date_filter).aggregate(agg=self.aggregate)['agg']

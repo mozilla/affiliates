@@ -1,4 +1,86 @@
+#stats-container {
+    border: 1px solid #DDD;
+    margin: 10px auto;
+    padding: 10px;
+    width: 800px;
+}
+
+#stats-container h1 {
+    background-color: #417690;
+    color: #FFFFFF;
+    margin: -10px -10px 0;
+    padding: 10px;
+}
+
+.stats-form {
+    border-top: 1px solid #CCC;
+    margin: 0 -10px 10px;
+}
+
+.stats-form ul {
+    background: white url(/admin-media/img/admin/nav-bg-reverse.gif) 0 -10px repeat-x;
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #CCC;
+    color: #555;
+    display: block;
+    margin: 0;
+    padding: 0 0 0 15px;
+}
+
+.stats-form ul li {
+    display: inline;
+    font-size: 12px;
+    font-weight: bold;
+    list-style-type: none;
+    margin-right: 25px;
+    padding: 0;
+}
+
+.stats-form label {
+    line-height: 24px;
+    margin-right: 5px;
+}
+
+.stats-form select {
+    vertical-align: middle;
+}
+
 #graph {
-    height: 300px;
-    width: 600px;
+    clear: both;
+    height: 400px;
+    width: 800px;
+}
+
+.stats-table {
+    margin: 10px -10px -10px;
+    border-top: 1px solid #DDD;
+    width: 820px;;
+}
+
+.stats-table tfoot td {
+    color: #000;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* jQuery-UI Admin Fixes */
+.ui-datepicker-prev {
+    float: left;
+}
+
+.ui-datepicker-next {
+    float: right;
+}
+
+.ui-datepicker-title {
+    text-align: center;
+}
+
+.ui-datepicker-calendar tbody td {
+    padding: 1px;
+}
+
+.ui-datepicker-calendar tbody a {
+    display: block;
+    padding: 3px 2px 3px 9px;
 }

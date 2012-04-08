@@ -27,5 +27,6 @@ class BadgePreviewInline(admin.TabularInline):
 
 
 class BadgeInstanceStats(ModelStats):
+    display_name = 'BadgeInstances created'
     datetime_field = 'created'
 site.register_stats(BadgeInstance, BadgeInstanceStats)

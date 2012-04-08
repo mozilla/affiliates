@@ -7,4 +7,6 @@ $(function() {
         }
         $.plot(graph, [data], {xaxis: {mode: 'time'}});
     }
+
+    $('#id_start, #id_end').datepicker();
 });

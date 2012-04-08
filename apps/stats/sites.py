@@ -1,5 +1,6 @@
 import json
 from collections import defaultdict
+from datetime import datetime, timedelta
 
 from django.http import Http404
 from django.shortcuts import render_to_response
@@ -21,7 +22,7 @@ class StatsAdminMixin(object):
 
         urlpatterns = super(StatsAdminMixin, self).get_urls()
         my_patterns = patterns('',
-            url(r'^stats/(?P<model_name>\w+)/$',
+            url(r'^stats/(?P<stat_slug>\w+)/$',
                 self.admin_view(self.overview),
                 name='stats.overview')
         )
@@ -31,7 +32,7 @@ class StatsAdminMixin(object):
     def register_stats(self, model_class, stats_class):
         """Register a stats object with this admin site."""
         stat = stats_class(model_class, self)
-        self.stats[stat.model_name] = stat
+        self.stats[stat.slug] = stat
 
     def index(self, request, extra_context=None):
         if extra_context is None:
@@ -44,26 +45,38 @@ class StatsAdminMixin(object):
 
         return super(StatsAdminMixin, self).index(request, extra_context)
 
-    def overview(self, request, model_name):
-        if model_name not in self.stats.keys():
+    def overview(self, request, stat_slug):
+        if stat_slug not in self.stats.keys():
             raise Http404
+        stat = self.stats[stat_slug]
 
         if request.method == 'POST':
             form = TimeSeriesSearchForm(request.POST)
-            if form.is_valid():
-                stat = self.stats[model_name]
-                results = stat.data_for_period(
-                    form.cleaned_data['start'], form.cleaned_data['end'],
-                    form.cleaned_data['interval'])
-                results_json = self.json_dumps(results)
         else:
-            form = TimeSeriesSearchForm()
+            form = TimeSeriesSearchForm({
+                'start': datetime.now() - timedelta(days=7),
+                'end': datetime.now(),
+                'interval': 'days'
+            })
+
+        if form.is_valid():
+            start = form.cleaned_data['start']
+            end = form.cleaned_data['end']
+            interval = form.cleaned_data['interval']
+
+            results = stat.data_for_period(start, end, interval)
+            results_json = self.json_dumps(results)
+            aggregate = stat.aggregate_for_period(start, end)
+        else:
             results = None
             results_json = None
+            aggregate = None
 
-        context = {'form': form, 'results': results,
+        context = {'form': form,
+                   'results': results,
                    'results_json': results_json,
-                   'title': '%s Statistics' % model_name}
+                   'aggregate': aggregate,
+                   'title': stat.name}
         context_instance = RequestContext(request, current_app=self.name)
         return render_to_response(self.overview_template, context,
                                   context_instance=context_instance)
