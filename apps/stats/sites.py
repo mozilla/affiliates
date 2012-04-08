@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 
 from django.http import Http404
@@ -54,11 +55,26 @@ class StatsAdminMixin(object):
                 results = stat.data_for_period(
                     form.cleaned_data['start'], form.cleaned_data['end'],
                     form.cleaned_data['interval'])
+                results_json = self.json_dumps(results)
         else:
             form = TimeSeriesSearchForm()
             results = None
+            results_json = None
 
-        context = {'form': form, 'results': results}
+        context = {'form': form, 'results': results,
+                   'results_json': results_json,
+                   'title': '%s Statistics' % model_name}
         context_instance = RequestContext(request, current_app=self.name)
         return render_to_response(self.overview_template, context,
                                   context_instance=context_instance)
+
+    def json_dumps(self, data):
+        """Dumps the given data to a JSON string, including datetime objects."""
+        # Handler courtesy of http://stackoverflow.com/q/455580
+        def handler(obj):
+            if hasattr(obj, 'isoformat'):
+                return obj.isoformat()
+            else:
+                raise TypeError, ('Object of type %s with value of %s is not '
+                                  'JSON serializable' % (type(obj), repr(obj)))
+        return json.dumps(data, default=handler)

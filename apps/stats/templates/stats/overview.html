@@ -1,5 +1,15 @@
 {% extends 'admin/base_site.html' %}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/admin_stats.css" />
+{% endblock %}
+
+{% block extrahead %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="{{ MEDIA_URL }}js/libs/jquery.flot.js"></script>
+<script src="{{ MEDIA_URL }}js/admin_stats.js"></script>
+{% endblock %}
+
 {% block content %}
 <form method="post">
   {% csrf_token %}
@@ -8,17 +18,18 @@
 </form>
 
 {% if results %}
-  <table>
-    <tr>
-      <th>Date</th>
-      <th>Val</th>
-    </tr>
-    {% for date, value in results reversed %}
-      <tr>
-        <td>{{ date }}</td>
-        <td>{{ value }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+<div id="graph" data-results="{{ results_json }}"></div>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Val</th>
+  </tr>
+  {% for date, value in results reversed %}
+  <tr>
+    <td>{{ date }}</td>
+    <td>{{ value }}</td>
+  </tr>
+  {% endfor %}
+</table>
 {% endif %}
 {% endblock %}
