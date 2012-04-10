@@ -11,7 +11,7 @@ RewriteCond %%{QUERY_STRING} from_affiliates
 RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ static_banners/$1.from_affiliates.$2 [L]
 
 RewriteCond %%{ENV:3_6_banner} "yes"
-RewriteCond %%{HTTP_USER_AGENT} !^.*Firefox.*$
+RewriteCond %%{HTTP_USER_AGENT} ^.*Firefox.*$
 # Current version + 3
 RewriteCond %%{HTTP_USER_AGENT} !^.*Firefox/(%s).*$
 RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ static_banners/$1.upgrade.$2
