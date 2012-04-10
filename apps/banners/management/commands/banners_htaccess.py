@@ -6,7 +6,7 @@ from settings import MEDIA_ROOT
 from product_details import product_details
 
 BANNERS_HASH = (
-#    '299839978f965e3b17d926572f91b4fbc340896c',
+    '5f5e8cc58fac3f658fca66be259590ea42963aa8',
 #    'b6132eb3c1efeef2b25c93bc8bbee8b469d8d5b4',
 )
 
