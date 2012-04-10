@@ -23,7 +23,7 @@ log = logging.getLogger('a.banners')
 
 @login_required
 def customize(request, banner_pk=None):
-    banner = get_object_or_404(Banner, pk=banner_pk)
+    banner = get_object_or_404(Banner, pk=banner_pk, displayed=True)
 
     # Create a new banner
     form = BannerForm(request.POST or None)

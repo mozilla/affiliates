@@ -68,6 +68,24 @@
         "fields": {}
     },
     {
+	"pk": 3,
+	"model": "badges.badge",
+	"fields": {
+	    "child_type": "banner",
+	    "name": "Not displayed",
+	    "subcategory": 1,
+	    "href": "http://www.mozilla.org",
+	    "displayed": 0
+	}
+    },
+    {
+	"pk": 3,
+	"model": "banners.banner",
+	"fields": {}
+    },
+
+
+    {
         "pk": 1,
         "model": "banners.bannerimage",
         "fields": {

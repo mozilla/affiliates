@@ -20,7 +20,7 @@ from shared.utils import current_locale, redirect
 @login_required
 def new_badge_step1(request):
     """Display groups of badges available to the user."""
-    categories = Category.objects.all()
+    categories = Category.objects.filter(subcategory__badge__displayed=True).distinct()
 
     return dashboard(request, 'badges/new_badge/step1.html',
                      {'categories': categories})
@@ -30,7 +30,7 @@ def new_badge_step1(request):
 def new_badge_step2(request, subcategory_pk):
     """Display a set of badges for the user to choose from."""
     subcategory = get_object_or_404(Subcategory, pk=subcategory_pk)
-    badges = get_list_or_404(Badge, subcategory=subcategory)
+    badges = get_list_or_404(Badge, subcategory=subcategory, displayed=True)
 
     return dashboard(request, 'badges/new_badge/step2.html',
                         {'subcategory': subcategory, 'badges': badges})

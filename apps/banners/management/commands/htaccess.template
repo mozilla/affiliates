@@ -1,0 +1,16 @@
+# Auto-generated file by manage.py banners_htaccess
+# DO NOT EDIT
+RewriteEngine On
+Options FollowSymLinks
+
+SetEnvIfNoCase Request_URI "%s" 3_6_banner=yes
+Header always append Vary "User-Agent" env=3_6_banner
+
+RewriteCond %%{ENV:3_6_banner} "yes"
+RewriteCond %%{QUERY_STRING} from_affiliates
+RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ static_banners/$1.from_affiliates.$2 [L]
+
+RewriteCond %%{ENV:3_6_banner} "yes"
+# Current version + 3
+RewriteCond %%{HTTP_USER_AGENT} !^.*Firefox/(%s)$
+RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ static_banners/$1.upgrade.$2
