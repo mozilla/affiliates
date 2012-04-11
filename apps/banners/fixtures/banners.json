@@ -136,6 +136,16 @@
         }
     },
     {
+        "pk": 6,
+        "model": "banners.bannerimage",
+        "fields": {
+            "color": "Blue",
+            "image": "uploads/banners/299839978f965e3b17d926572f91b4fbc340896c.png",
+            "banner": 1,
+            "locale": "fr"
+        }
+    },
+    {
         "pk": 2,
         "model": "badges.badgeinstance",
         "fields": {
@@ -151,6 +161,24 @@
         "model": "banners.bannerinstance",
         "fields": {
             "image": 1
+        }
+    },
+    {
+        "pk": 10,
+        "model": "badges.badgeinstance",
+        "fields": {
+            "child_type": "bannerinstance",
+            "badge": 1,
+            "user": 1,
+            "created": "2011-08-31 10:37:49",
+            "clicks": 4
+        }
+    },
+    {
+        "pk": 10,
+        "model": "banners.bannerinstance",
+        "fields": {
+            "image": 6
         }
     },
     {

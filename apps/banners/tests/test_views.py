@@ -37,26 +37,28 @@ class CustomizeViewTests(TestCase):
         eq_(response.status_code, 200)
 
         with self.assertRaises(BannerInstance.DoesNotExist):
-	    BannerInstance.objects.get(user=1, badge=1, image=999)
+            BannerInstance.objects.get(user=1, badge=1, image=999)
 
     def test_not_displayed_banner(self):
-	"""Test that views for non-displayed banners return a 404"""
-	with self.activate('en-US'):
-	    url = reverse('banners.customize', kwargs={'banner_pk': 3})
-	response = self.client.get(url)
+        """Test that views for non-displayed banners return a 404"""
+        with self.activate('en-US'):
+            url = reverse('banners.customize', kwargs={'banner_pk': 3})
+        response = self.client.get(url)
 
-	eq_(response.status_code, 404)
+        eq_(response.status_code, 404)
 
 
 @patch.object(settings, 'DEFAULT_AFFILIATE_LINK', 'http://test.com')
+@patch.object(settings, 'BANNERS_HASH', ('299839978f965e3b17d926572f91b4fbc340896c',))
+@patch.object(settings, 'FIREFOX_UPGRADE_REDIRECT', 'http://www.mozilla.org/firefox/speed/')
 class LinkViewTests(TestCase):
     fixtures = ['banners']
 
-    def _get_link(self, instance_id):
+    def _get_link(self, instance_id, **extra):
         with self.activate('en-US'):
             url = reverse('banners.link',
                           kwargs={'banner_instance_id': instance_id})
-        return self.client.get(url)
+        return self.client.get(url, **extra)
 
     def test_basic(self):
         """
@@ -75,6 +77,23 @@ class LinkViewTests(TestCase):
         """Test default redirect on an invalid bannerinstance."""
         response = self._get_link(999)
         eq_(response['Location'], 'http://test.com')
+
+    def test_special_banner_redirect(self):
+        """
+        Test that a special banner redirects to different locations depending
+        on the user agent
+        """
+        # Old Firefox
+        response = self._get_link(10, HTTP_USER_AGENT='Firefox/3.6.28')
+        eq_(response['Location'], settings.FIREFOX_UPGRADE_REDIRECT)
+
+        # Current Firefox
+        response = self._get_link(10, HTTP_USER_AGENT='Firefox/13.6.28')
+        eq_(response['Location'], 'http://www.mozilla.org')
+
+        # Other browser
+        response = self._get_link(10, HTTP_USER_AGENT='Fancy new browser')
+        eq_(response['Location'], 'http://www.mozilla.org')
 
 
 @patch.object(settings, 'DEFAULT_AFFILIATE_LINK', 'http://test.com')

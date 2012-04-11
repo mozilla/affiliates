@@ -1,6 +1,8 @@
 import json
 import logging
+import re
 import socket
+from os.path import basename, splitext
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -13,6 +15,7 @@ from badges.views import dashboard
 from banners import tasks
 from banners.forms import BannerForm
 from banners.models import Banner, BannerImage, BannerInstance
+from banners.utils import current_firefox_regexp
 from shared.decorators import login_required
 from shared.utils import redirect
 
@@ -49,7 +52,7 @@ def customize(request, banner_pk=None):
 def link(request, banner_instance_id):
     """Handle banner link."""
     try:
-        instance = (BannerInstance.objects.select_related('badge')
+        instance = (BannerInstance.objects.select_related('badge', 'image')
                     .get(pk=banner_instance_id))
     except BannerInstance.DoesNotExist:
         return HttpResponseRedirect(settings.DEFAULT_AFFILIATE_LINK)
@@ -58,6 +61,17 @@ def link(request, banner_instance_id):
         tasks.add_click.delay(banner_instance_id)
     except socket.timeout:
         log.warning('Timeout connecting to celery for banner click.')
+
+    # Special redirection for bug 719522
+    filename = splitext(basename(instance.image.image.path))[0]
+    if filename in settings.BANNERS_HASH:
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        versions_regexp = current_firefox_regexp()
+        ua_regexp = r"Firefox/(%s)" % versions_regexp
+
+        # Old Firefoxes go to an update page
+        if 'Firefox' in user_agent and not re.search(ua_regexp, user_agent):
+            return HttpResponseRedirect(settings.FIREFOX_UPGRADE_REDIRECT)
 
     return HttpResponseRedirect(instance.badge.href)
 

@@ -78,3 +78,14 @@ SITE_URL = 'http://localhost:8000'
 # STATSD_HOST = 'localhost'
 # STATSD_PORT = 8125
 # STATSD_PREFIX = 'affiliates'
+
+# Bug 719522
+# List of hashes of banner images for upgrade campaign
+BANNERS_HASH = (
+    '299839978f965e3b17d926572f91b4fbc340896c',
+    '5f5e8cc58fac3f658fca66be259590ea42963aa8',
+)
+
+# Bug 719522
+# Old Firefox get redirected there
+FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affaupgrade1&WT.mc_ev=click'
