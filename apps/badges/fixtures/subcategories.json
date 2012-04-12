@@ -38,6 +38,22 @@
         }
     },
     {
+	"pk": 14,
+	"model": "badges.subcategory",
+	"fields": {
+	    "name": "No badges displayed",
+	    "parent": 11
+	}
+    },
+    {
+	"pk": 15,
+	"model": "badges.subcategory",
+	"fields": {
+	    "name": "Also no badges displayed",
+	    "parent": 12
+	}
+    },
+    {
         "pk": 11,
         "model": "badges.badge",
         "fields": {
@@ -66,6 +82,28 @@
             "name": "Firefox for Mobile",
             "subcategory": 12
         }
+    },
+    {
+	"pk": 14,
+	"model": "badges.badge",
+	"fields": {
+	    "href": "http://www.google.com/",
+	    "child_type": "banner",
+	    "name": "Firefox for Mobile",
+	    "subcategory": 14,
+	    "displayed": 0
+	}
+    },
+    {
+	"pk": 15,
+	"model": "badges.badge",
+	"fields": {
+	    "href": "http://www.google.com/",
+	    "child_type": "banner",
+	    "name": "Firefox for Mobile",
+	    "subcategory": 15,
+	    "displayed": 0
+	}
     },
     {
         "pk": 11,

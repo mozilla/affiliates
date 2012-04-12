@@ -54,6 +54,7 @@ class Badge(CachingMixin, MultiTableParentModel):
     subcategory = models.ForeignKey(Subcategory)
     href = models.URLField(verify_exists=False,
                            verbose_name=u'URL to redirect to')
+    displayed = models.BooleanField(default=True)
 
     objects = CachingManager()
 

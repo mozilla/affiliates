@@ -6,8 +6,9 @@ from funfactory.settings_base import *
 SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
-PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'nl', 'pl',
-                  'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'zh-TW')
+PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'kr', 'nl',
+                  'pl', 'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'tr',
+                  'zh-TW')
 
 # UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
 # manner.

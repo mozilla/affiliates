@@ -3,10 +3,10 @@ $(function() {
         $size = $('#size'),
         $color = $('#color'),
         $language = $('#language'),
-        $form_image = $('#id_image'),
-        banner_images = $preview.data('images'),
-        banner_alt = $preview.data('alt'),
-        banner_template = '<img src="{{ img }}" alt="{{ alt }}">';
+	$form_image = $('#id_image'),
+	banner_images = $preview.data('images'),
+	banner_alt = $preview.data('alt'),
+	banner_template = '<img src="{{ img }}?from_affiliates" alt="{{ alt }}">';
 
     // Populate a select dropdown
     function set_options($list, options) {

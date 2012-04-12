@@ -96,16 +96,16 @@ class BannerInstance(BadgeInstance):
 
     @property
     def preview(self):
-        """Return the HTML to preview this banner."""
-        return Markup('<img src="%s" alt="%s">' % (self.image.image.url,
-                                                   _lazy(self.badge.name)))
+	"""Return the HTML to preview this banner."""
+	return Markup('<img src="%s?from_affiliates" alt="%s">' % (absolutify(self.image.image.url, cdn=True),
+						   _locale(self.badge.name, self.image.locale)))
 
     @property
     def code(self):
         """Return the code to embed this banner.."""
         return jingo.env.from_string(BANNER_TEMPLATE).render({
             'url': self.affiliate_link(),
-            'img': absolutify(self.image.image.url),
+	    'img': absolutify(self.image.image.url, cdn=True),
             'alt_text': _locale(self.badge.name, self.image.locale)
         })
 
