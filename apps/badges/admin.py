@@ -5,6 +5,7 @@ from funfactory.admin import site
 from badges.models import BadgeInstance, BadgePreview, Category, Subcategory
 from shared.admin import BaseModelAdmin
 from stats.admin import ModelStats
+from stats.options import ModelStats
 
 
 class CategoryAdmin(BaseModelAdmin):
@@ -29,4 +30,5 @@ class BadgePreviewInline(admin.TabularInline):
 class BadgeInstanceStats(ModelStats):
     display_name = 'BadgeInstances created'
     datetime_field = 'created'
+    filters = ['badge']
 site.register_stats(BadgeInstance, BadgeInstanceStats)

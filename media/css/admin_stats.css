@@ -1,20 +1,25 @@
 #stats-container {
     border: 1px solid #DDD;
     margin: 10px auto;
-    padding: 10px;
-    width: 800px;
+    position: relative;
+    width: 940px;
+}
+
+#stats-container.filtered {
+    width: 780px;
+    padding-right: 160px;
 }
 
 #stats-container h1 {
     background-color: #417690;
     color: #FFFFFF;
-    margin: -10px -10px 0;
+    margin: 0;
     padding: 10px;
 }
 
 .stats-form {
     border-top: 1px solid #CCC;
-    margin: 0 -10px 10px;
+    margin: 0;
 }
 
 .stats-form ul {
@@ -48,13 +53,13 @@
 #graph {
     clear: both;
     height: 400px;
-    width: 800px;
+    width: 100%;
 }
 
 .stats-table {
-    margin: 10px -10px -10px;
+    margin: 10px 0 0;
     border-top: 1px solid #DDD;
-    width: 820px;;
+    width: 100%;
 }
 
 .stats-table tfoot td {
@@ -62,6 +67,59 @@
     font-size: 12px;
     font-weight: bold;
 }
+
+.stats-filters {
+    background: #EFEFEF;
+    border-left: 1px solid #DDD;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 159px;
+}
+
+.stats-filters h2 {
+    background: url(/admin-media/img/admin/default-bg.gif);
+    color: #FFF;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    padding: 2px 5px;
+}
+
+.stats-filters h3 {
+    font-size: 12px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.stats-filters ul {
+    margin: 0 0 0 10px;
+    padding: 0;
+}
+
+.stats-filters li {
+    list-style-type: none;
+}
+
+.stats-filters li a {
+    color: #999;
+}
+
+.stats-filters li a:hover {
+    color: #003366;
+}
+
+.stats-filters li.selected {
+    border-left: 5px solid #999;
+    margin-left: -10px;
+    padding-left: 5px;
+}
+
+.stats-filters li.selected a {
+    color: #5B80B2;
+}
+
 
 /* jQuery-UI Admin Fixes */
 .ui-datepicker-prev {

@@ -21,11 +21,19 @@
 {% endblock %}
 
 {% block content %}
-<div id="stats-container">
+<div id="stats-container" class="{% if has_filters %} filtered{% endif %}">
+  {% if has_filters %}
+  <div class="stats-filters">
+    <h2>Filter</h2>
+    {% for spec in filter_specs %}
+      {{ spec.output }}
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <h1>{{ title }}</h1>
 
-  <form class="stats-form" method="post">
-    {% csrf_token %}
+  <form class="stats-form">
     <ul>
       {% for f in form %}
       <li>

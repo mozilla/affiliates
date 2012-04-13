@@ -1,0 +1,10 @@
+<div class="filter">
+  <h3>{{ name }}</h3>
+  <ul>
+    {% for choice in choices %}
+      <li class="{% if choice.selected %}selected{% endif %}">
+        <a href="{{ choice.link }}">{{ choice.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
