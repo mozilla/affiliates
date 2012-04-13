@@ -18,7 +18,7 @@ def absolutify(url, https=False, cdn=False):
     Use https=True for https, cdn=True to use settings.CDN_DOMAIN as
     the domain.
     """
-    protocol = 'http://' if not https else 'https://'
+    protocol = '//' if not https else 'https://'
     if cdn and settings.CDN_DOMAIN:
         domain = settings.CDN_DOMAIN
     else:
