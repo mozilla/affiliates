@@ -10,6 +10,8 @@ class DatabaseOperations(generic.DatabaseOperations):
     
     backend_name = "postgres"
 
+    @generic.copy_column_constraints
+    @generic.delete_column_constraints
     def rename_column(self, table_name, old, new):
         if old == new:
             # Short-circuit out
@@ -19,7 +21,8 @@ class DatabaseOperations(generic.DatabaseOperations):
             self.quote_name(old),
             self.quote_name(new),
         ))
-    
+
+    @generic.invalidate_table_constraints
     def rename_table(self, old_table_name, table_name):
         "will rename the table and an associated ID sequence and primary key index"
         # First, rename the table
@@ -56,13 +59,5 @@ class DatabaseOperations(generic.DatabaseOperations):
         "Rename an index individually"
         generic.DatabaseOperations.rename_table(self, old_index_name, index_name)
 
-    def _db_type_for_alter_column(self, field):
-        """
-        Returns a field's type suitable for ALTER COLUMN.
-        Strips CHECKs from PositiveSmallIntegerField) and PositiveIntegerField
-        @param field: The field to generate type for
-        """
-        super_result = super(DatabaseOperations, self)._db_type_for_alter_column(field)
-        if isinstance(field, models.PositiveSmallIntegerField) or isinstance(field, models.PositiveIntegerField):
-            return super_result.split(" ")[0]
-        return super_result
+    _db_type_for_alter_column = generic.alias("_db_positive_type_for_alter_column")
+    _alter_add_column_mods = generic.alias("_alter_add_positive_check")

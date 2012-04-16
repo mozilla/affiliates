@@ -172,23 +172,19 @@ class Command(DataCommand):
                 print >>sys.stderr, "Created %s. You can now apply this migration with: ./manage.py migrate %s" % (new_filename, app)
 
 
-MIGRATION_TEMPLATE = """# encoding: utf-8
+MIGRATION_TEMPLATE = """# -*- coding: utf-8 -*-
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        %(forwards)s
-
-
+%(forwards)s
     def backwards(self, orm):
-        %(backwards)s
-
-
+%(backwards)s
     models = %(frozen_models)s
 
-    %(complete_apps)s
-"""
+    %(complete_apps)s"""

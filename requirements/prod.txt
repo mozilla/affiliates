@@ -9,7 +9,7 @@ django-cronjobs==0.2.3
 django-extensions==0.7.1
 
 requests>=0.9.1
-south==0.7.3
+south==0.7.4
 statsd
 django-statsd-mozilla
 

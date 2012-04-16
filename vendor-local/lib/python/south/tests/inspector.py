@@ -16,6 +16,13 @@ class TestModelInspector(Monkeypatcher):
         name = HorribleModel._meta.get_field_by_name("name")[0]
         slug = HorribleModel._meta.get_field_by_name("slug")[0]
         user = HorribleModel._meta.get_field_by_name("user")[0]
+        o_set_null_on_delete = HorribleModel._meta.get_field_by_name("o_set_null_on_delete")[0]
+        o_cascade_delete = HorribleModel._meta.get_field_by_name("o_cascade_delete")[0]
+        o_protect = HorribleModel._meta.get_field_by_name("o_protect")[0]
+        o_default_on_delete = HorribleModel._meta.get_field_by_name("o_default_on_delete")[0]
+        o_set_on_delete_function = HorribleModel._meta.get_field_by_name("o_set_on_delete_function")[0]
+        o_set_on_delete_value = HorribleModel._meta.get_field_by_name("o_set_on_delete_value")[0]
+        o_no_action_on_delete = HorribleModel._meta.get_field_by_name("o_no_action_on_delete")[0]
         
         # Simple int retrieval
         self.assertEqual(
@@ -46,4 +53,50 @@ class TestModelInspector(Monkeypatcher):
             slug,
             ["unique", {"default": True}],
         )
-    
+        
+        # TODO this is repeated from the introspection_details in modelsinspector:
+        # better to refactor that so we can reference these settings, in case they
+        # must change at some point.
+        on_delete = ["rel.on_delete", {"default": CASCADE, "is_django_function": True, "converter": convert_on_delete_handler, }]
+        
+        # Foreign Key cascade update/delete
+        self.assertRaises(
+            IsDefault,
+            get_value,
+            o_cascade_delete,
+            on_delete,
+        )
+        self.assertEqual(
+            get_value(o_protect, on_delete),
+            "models.PROTECT",
+        )
+        self.assertEqual(
+            get_value(o_no_action_on_delete, on_delete),
+            "models.DO_NOTHING",
+        )
+        self.assertEqual(
+            get_value(o_set_null_on_delete, on_delete),
+            "models.SET_NULL",
+        )
+        self.assertEqual(
+            get_value(o_default_on_delete, on_delete),
+            "models.SET_DEFAULT",
+        )
+        # For now o_set_on_delete raises, see modelsinspector.py
+        #self.assertEqual(
+        #    get_value(o_set_on_delete_function, on_delete),
+        #    "models.SET(get_sentinel_object)",
+        #)
+        self.assertRaises(
+            ValueError,
+            get_value,
+            o_set_on_delete_function,
+            on_delete,
+        )
+        self.assertRaises(
+            ValueError,
+            get_value,
+            o_set_on_delete_value, # setting to a specific value not supported
+            on_delete,
+        )
+        

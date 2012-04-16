@@ -404,7 +404,7 @@ class ManualChanges(BaseChanges):
             try:
                 model_name, field_name = field_desc.split(".")
             except (TypeError, ValueError):
-                print "%r is not a valid field description." % field_desc
+                raise ValueError("%r is not a valid field description." % field_desc)
             model = models.get_model(self.migrations.app_label(), model_name)
             real_fields, meta, m2m_fields = self.split_model_def(model, model_defs[model_key(model)])
             yield ("AddField", {

@@ -7,11 +7,27 @@ import sys
 
 from django.core.management.color import no_style
 from django.db import transaction, models
+from django.db.utils import DatabaseError
 from django.db.backends.util import truncate_name
+from django.db.backends.creation import BaseDatabaseCreation
 from django.db.models.fields import NOT_PROVIDED
 from django.dispatch import dispatcher
 from django.conf import settings
 from django.utils.datastructures import SortedDict
+try:
+    from django.utils.functional import cached_property
+except ImportError:
+   class cached_property(object):
+       """
+       Decorator that creates converts a method with a single
+       self argument into a property cached on the instance.
+       """
+       def __init__(self, func):
+           self.func = func
+
+       def __get__(self, instance, type):
+           res = instance.__dict__[self.func.__name__] = self.func(instance)
+           return res
 
 from south.logger import get_logger
 
@@ -24,34 +40,89 @@ def alias(attrname):
         return getattr(self, attrname)(*args, **kwds)
     return func
 
+def invalidate_table_constraints(func):
+    def _cache_clear(self, table, *args, **opts):
+        self._set_cache(table, value=INVALID)
+        return func(self, table, *args, **opts)
+    return _cache_clear
+
+def delete_column_constraints(func):
+    def _column_rm(self, table, column, *args, **opts):
+        self._set_cache(table, column, value=[])
+        return func(self, table, column, *args, **opts)
+    return _column_rm
+
+def copy_column_constraints(func):
+    def _column_cp(self, table, column_old, column_new, *args, **opts):
+        db_name = self._get_setting('NAME')
+        self._set_cache(table, column_new, value=self.lookup_constraint(db_name, table, column_old))
+        return func(self, table, column_old, column_new, *args, **opts)
+    return _column_cp
+
+class INVALID(Exception):
+    def __repr__(self):
+        return 'INVALID'
+
+class DryRunError(ValueError):
+    pass
 
 class DatabaseOperations(object):
-
     """
     Generic SQL implementation of the DatabaseOperations.
     Some of this code comes from Django Evolution.
     """
 
-    # We assume the generic DB can handle DDL transactions. MySQL wil change this.
-    has_ddl_transactions = True
-
     alter_string_set_type = 'ALTER COLUMN %(column)s TYPE %(type)s'
     alter_string_set_null = 'ALTER COLUMN %(column)s DROP NOT NULL'
     alter_string_drop_null = 'ALTER COLUMN %(column)s SET NOT NULL'
-    has_check_constraints = True
     delete_check_sql = 'ALTER TABLE %(table)s DROP CONSTRAINT %(constraint)s'
-    allows_combined_alters = True
     add_column_string = 'ALTER TABLE %s ADD COLUMN %s;'
     delete_unique_sql = "ALTER TABLE %s DROP CONSTRAINT %s"
     delete_foreign_key_sql = 'ALTER TABLE %(table)s DROP CONSTRAINT %(constraint)s'
-    supports_foreign_keys = True
     max_index_name_length = 63
     drop_index_string = 'DROP INDEX %(index_name)s'
     delete_column_string = 'ALTER TABLE %s DROP COLUMN %s CASCADE;'
     create_primary_key_string = "ALTER TABLE %(table)s ADD CONSTRAINT %(constraint)s PRIMARY KEY (%(columns)s)"
     delete_primary_key_sql = "ALTER TABLE %(table)s DROP CONSTRAINT %(constraint)s"
+    add_check_constraint_fragment = "ADD CONSTRAINT %(constraint)s CHECK (%(check)s)"
+    rename_table_sql = "ALTER TABLE %s RENAME TO %s;"
     backend_name = None
     default_schema_name = "public"
+    
+    # Features
+    allows_combined_alters = True
+    supports_foreign_keys = True
+    has_check_constraints = True
+    has_booleans = True
+
+    @cached_property
+    def has_ddl_transactions(self):
+        "Tests the database using feature detection to see if it has DDL transactional support"
+        self._possibly_initialise()
+        connection = self._get_connection()
+        # Django 1.3's MySQLdb backend doesn't raise DatabaseError
+        exceptions = (DatabaseError, )
+        try:
+            from MySQLdb import OperationalError
+            exceptions += (OperationalError, )
+        except ImportError:
+            pass
+        # Now do the test
+        if getattr(connection.features, 'supports_transactions', True):
+            cursor = connection.cursor()
+            self.start_transaction()
+            cursor.execute('CREATE TABLE DDL_TRANSACTION_TEST (X INT)')
+            self.rollback_transaction()
+            try:
+                cursor.execute('CREATE TABLE DDL_TRANSACTION_TEST (X INT)')
+            except exceptions:
+                return False
+            else:
+                return True
+            finally:
+                cursor.execute('DROP TABLE DDL_TRANSACTION_TEST')
+        else:
+            return False
 
     def __init__(self, db_alias):
         self.debug = False
@@ -60,8 +131,50 @@ class DatabaseOperations(object):
         self.pending_transactions = 0
         self.pending_create_signals = []
         self.db_alias = db_alias
+        self._constraint_cache = {}
         self._initialised = False
-    
+
+    def lookup_constraint(self, db_name, table_name, column_name=None):
+        """ return a set() of constraints for db_name.table_name.column_name """
+        def _lookup():
+            table = self._constraint_cache[db_name][table_name]
+            if table is INVALID:
+                raise INVALID
+            elif column_name is None:
+                return table.items()
+            else:
+                return table[column_name]
+
+        try:
+            ret = _lookup()
+            return ret
+        except INVALID, e:
+            del self._constraint_cache[db_name][table_name]
+            self._fill_constraint_cache(db_name, table_name)
+        except KeyError, e:
+            if self._is_valid_cache(db_name, table_name):
+                return []
+            self._fill_constraint_cache(db_name, table_name)
+
+        return self.lookup_constraint(db_name, table_name, column_name)
+
+    def _set_cache(self, table_name, column_name=None, value=INVALID):
+        db_name = self._get_setting('NAME')
+        try:
+            if column_name is not None:
+                self._constraint_cache[db_name][table_name][column_name] = value
+            else:
+                self._constraint_cache[db_name][table_name] = value
+        except (LookupError, TypeError):
+            pass
+
+    def _is_valid_cache(self, db_name, table_name):
+        # we cache per-table so if the table is there it is valid
+        try:
+            return self._constraint_cache[db_name][table_name] is not INVALID
+        except KeyError:
+            return False
+
     def _is_multidb(self):
         try: 
             from django.db import connections
@@ -142,12 +255,18 @@ class DatabaseOperations(object):
         if self.debug:
             print "   = %s" % sql, params
 
-        get_logger().debug('south execute "%s" with params "%s"' % (sql, params))
-
         if self.dry_run:
             return []
 
-        cursor.execute(sql, params)
+        get_logger().debug('execute "%s" with params "%s"' % (sql, params))
+
+        try:
+            cursor.execute(sql, params)
+        except DatabaseError, e:
+            print >> sys.stderr, 'FATAL ERROR - The following SQL query failed: %s' % sql
+            print >> sys.stderr, 'The error was: %s' % e
+            raise
+
         try:
             return cursor.fetchall()
         except:
@@ -206,6 +325,7 @@ class DatabaseOperations(object):
         return self.pending_create_signals
 
 
+    @invalidate_table_constraints
     def create_table(self, table_name, fields):
         """
         Creates the table 'table_name'. 'fields' is a tuple of fields,
@@ -229,6 +349,7 @@ class DatabaseOperations(object):
     add_table = alias('create_table') # Alias for consistency's sake
 
 
+    @invalidate_table_constraints
     def rename_table(self, old_table_name, table_name):
         """
         Renames the table 'old_table_name' to 'table_name'.
@@ -237,9 +358,12 @@ class DatabaseOperations(object):
             # Short-circuit out.
             return
         params = (self.quote_name(old_table_name), self.quote_name(table_name))
-        self.execute('ALTER TABLE %s RENAME TO %s;' % params)
+        self.execute(self.rename_table_sql % params)
+        # Invalidate the not-yet-indexed table
+        self._set_cache(table_name, value=INVALID)
 
 
+    @invalidate_table_constraints
     def delete_table(self, table_name, cascade=True):
         """
         Deletes the table 'table_name'.
@@ -253,6 +377,7 @@ class DatabaseOperations(object):
     drop_table = alias('delete_table')
 
 
+    @invalidate_table_constraints
     def clear_table(self, table_name):
         """
         Deletes all rows from 'table_name'.
@@ -262,6 +387,7 @@ class DatabaseOperations(object):
 
 
 
+    @invalidate_table_constraints
     def add_column(self, table_name, name, field, keep_default=True):
         """
         Adds the column 'name' to the table 'table_name'.
@@ -299,6 +425,14 @@ class DatabaseOperations(object):
         except TypeError:
             return field.db_type()
         
+    def _alter_add_column_mods(self, field, name, params, sqls):
+        """
+        Subcommand of alter_column that modifies column definitions beyond
+        the type string -- e.g. adding constraints where they cannot be specified
+        as part of the type (overrideable)
+        """
+        pass
+
     def _alter_set_defaults(self, field, name, params, sqls): 
         "Subcommand of alter_column that sets default values (overrideable)"
         # Next, set any default
@@ -308,6 +442,7 @@ class DatabaseOperations(object):
         else:
             sqls.append(('ALTER COLUMN %s DROP DEFAULT' % (self.quote_name(name),), []))
 
+    @invalidate_table_constraints
     def alter_column(self, table_name, name, field, explicit_name=True, ignore_constraints=False):
         """
         Alters the given column name so it will match the given field.
@@ -321,6 +456,8 @@ class DatabaseOperations(object):
         """
         
         if self.dry_run:
+            if self.debug:
+                print '   - no dry run output for alter_column() due to dynamic DDL, sorry'
             return
 
         # hook for the field to do any resolution prior to it's attributes being queried
@@ -335,7 +472,8 @@ class DatabaseOperations(object):
             field.column = name
 
         if not ignore_constraints:
-            # Drop all check constraints. TODO: Add the right ones back.
+            # Drop all check constraints. Note that constraints will be added back
+            # with self.alter_string_set_type and self.alter_string_drop_null.
             if self.has_check_constraints:
                 check_constraints = self._constraints_affecting_columns(table_name, [name], "CHECK")
                 for constraint in check_constraints:
@@ -343,6 +481,13 @@ class DatabaseOperations(object):
                         'table': self.quote_name(table_name),
                         'constraint': self.quote_name(constraint),
                     })
+                    
+            # Drop or add UNIQUE constraint
+            unique_constraint = list(self._constraints_affecting_columns(table_name, [name], "UNIQUE"))
+            if field.unique and not unique_constraint:
+                self.create_unique(table_name, [name])
+            elif not field.unique and unique_constraint:
+                self.delete_unique(table_name, [name])
         
             # Drop all foreign key constraints
             try:
@@ -365,6 +510,8 @@ class DatabaseOperations(object):
         if params["type"] is not None:
             sqls.append((self.alter_string_set_type % params, []))
         
+        # Add any field- and backend- specific modifications
+        self._alter_add_column_mods(field, name, params, sqls)
         # Next, nullity
         if field.null:
             sqls.append((self.alter_string_set_null % params, []))
@@ -398,52 +545,56 @@ class DatabaseOperations(object):
                     )
                 )
 
+    def _fill_constraint_cache(self, db_name, table_name):
+
+        schema = self._get_schema_name()            
+        ifsc_tables = ["constraint_column_usage", "key_column_usage"]
+
+        self._constraint_cache.setdefault(db_name, {})
+        self._constraint_cache[db_name][table_name] = {}
+
+        for ifsc_table in ifsc_tables:
+            rows = self.execute("""
+                SELECT kc.constraint_name, kc.column_name, c.constraint_type
+                FROM information_schema.%s AS kc
+                JOIN information_schema.table_constraints AS c ON
+                    kc.table_schema = c.table_schema AND
+                    kc.table_name = c.table_name AND
+                    kc.constraint_name = c.constraint_name
+                WHERE
+                    kc.table_schema = %%s AND
+                    kc.table_name = %%s
+            """ % ifsc_table, [schema, table_name])
+            for constraint, column, kind in rows:
+                self._constraint_cache[db_name][table_name].setdefault(column, set())
+                self._constraint_cache[db_name][table_name][column].add((kind, constraint))
+        return
 
     def _constraints_affecting_columns(self, table_name, columns, type="UNIQUE"):
         """
         Gets the names of the constraints affecting the given columns.
         If columns is None, returns all constraints of the type on the table.
         """
-
         if self.dry_run:
-            raise ValueError("Cannot get constraints for columns during a dry run.")
+            raise DryRunError("Cannot get constraints for columns.")
 
         if columns is not None:
-            columns = set(columns)
+            columns = set(map(lambda s: s.lower(), columns))
 
-        if type == "CHECK":
-            ifsc_table = "constraint_column_usage"
-        else:
-            ifsc_table = "key_column_usage"
+        db_name = self._get_setting('NAME')
 
-        schema = self._get_schema_name()            
+        cnames = {}
+        for col, constraints in self.lookup_constraint(db_name, table_name):
+            for kind, cname in constraints:
+                if kind == type:
+                    cnames.setdefault(cname, set())
+                    cnames[cname].add(col.lower())
 
-        # First, load all constraint->col mappings for this table.
-        rows = self.execute("""
-            SELECT kc.constraint_name, kc.column_name
-            FROM information_schema.%s AS kc
-            JOIN information_schema.table_constraints AS c ON
-                kc.table_schema = c.table_schema AND
-                kc.table_name = c.table_name AND
-                kc.constraint_name = c.constraint_name
-            WHERE
-                kc.table_schema = %%s AND
-                kc.table_name = %%s AND
-                c.constraint_type = %%s
-        """ % ifsc_table, [schema, table_name, type])
-        
-        # Load into a dict
-        mapping = {}
-        for constraint, column in rows:
-            mapping.setdefault(constraint, set())
-            mapping[constraint].add(column)
-        
-        # Find ones affecting these columns
-        for constraint, itscols in mapping.items():
-            # If columns is None we definitely want this field! (see docstring)
-            if itscols == columns or columns is None:
-                yield constraint
+        for cname, cols in cnames.items():
+            if cols == columns or columns is None:
+                yield cname
 
+    @invalidate_table_constraints
     def create_unique(self, table_name, columns):
         """
         Creates a UNIQUE constraint on the columns on the given table.
@@ -462,6 +613,7 @@ class DatabaseOperations(object):
         ))
         return name
 
+    @invalidate_table_constraints
     def delete_unique(self, table_name, columns):
         """
         Deletes a UNIQUE constraint on precisely the columns on the given table.
@@ -472,6 +624,8 @@ class DatabaseOperations(object):
 
         # Dry runs mean we can't do anything.
         if self.dry_run:
+            if self.debug:
+                print '   - no dry run output for delete_unique_column() due to dynamic DDL, sorry'
             return
 
         constraints = list(self._constraints_affecting_columns(table_name, columns))
@@ -521,7 +675,7 @@ class DatabaseOperations(object):
                 field_output.append('UNIQUE')
 
             tablespace = field.db_tablespace or tablespace
-            if tablespace and self._get_connection().features.supports_tablespaces and field.unique:
+            if tablespace and getattr(self._get_connection().features, "supports_tablespaces", False) and field.unique:
                 # We must specify the index tablespace inline, because we
                 # won't be generating a CREATE INDEX statement for this field.
                 field_output.append(self._get_connection().ops.tablespace_sql(tablespace, inline=True))
@@ -538,11 +692,12 @@ class DatabaseOperations(object):
                         # If the default is a callable, then call it!
                         if callable(default):
                             default = default()
+                            
+                        default = field.get_db_prep_save(default, connection=self._get_connection())
+                        default = self._default_value_workaround(default)
                         # Now do some very cheap quoting. TODO: Redesign return values to avoid this.
                         if isinstance(default, basestring):
                             default = "'%s'" % default.replace("'", "''")
-                        elif isinstance(default, (datetime.date, datetime.time, datetime.datetime)):
-                            default = "'%s'" % default
                         # Escape any % signs in the output (bug #317)
                         if isinstance(default, basestring):
                             default = default.replace("%", "%%")
@@ -592,6 +747,15 @@ class DatabaseOperations(object):
         """
         return field
 
+    def _default_value_workaround(self, value):
+        """
+        DBMS-specific value alterations (this really works around
+        missing functionality in Django backends)
+        """
+        if isinstance(value, bool) and not self.has_booleans:
+            return int(value)
+        else:
+            return value 
 
     def foreign_key_sql(self, from_table_name, from_column_name, to_table_name, to_column_name):
         """
@@ -608,11 +772,14 @@ class DatabaseOperations(object):
         )
     
 
+    @invalidate_table_constraints
     def delete_foreign_key(self, table_name, column):
         "Drop a foreign key constraint"
         if self.dry_run:
+            if self.debug:
+                print '   - no dry run output for delete_foreign_key() due to dynamic DDL, sorry'
             return # We can't look at the DB to get the constraints
-        constraints = list(self._constraints_affecting_columns(table_name, [column], "FOREIGN KEY"))
+        constraints = self._find_foreign_constraints(table_name, column)
         if not constraints:
             raise ValueError("Cannot find a FOREIGN KEY constraint on table %s, column %s" % (table_name, column))
         for constraint_name in constraints:
@@ -623,17 +790,34 @@ class DatabaseOperations(object):
 
     drop_foreign_key = alias('delete_foreign_key')
 
+    def _find_foreign_constraints(self, table_name, column_name=None):
+        return list(self._constraints_affecting_columns(
+                    table_name, [column_name], "FOREIGN KEY"))
+
+    def _digest(self, *args):
+        """
+        Use django.db.backends.creation.BaseDatabaseCreation._digest
+        to create index name in Django style. An evil hack :(
+        """
+        if not hasattr(self, '_django_db_creation'):
+            self._django_db_creation = BaseDatabaseCreation(self._get_connection())
+        return self._django_db_creation._digest(*args)
 
     def create_index_name(self, table_name, column_names, suffix=""):
         """
         Generate a unique name for the index
         """
 
-        table_name = table_name.replace('"', '').replace('.', '_')
-        index_unique_name = ''
+        # If there is just one column in the index, use a default algorithm from Django
+        if len(column_names) == 1:
+            return truncate_name(
+                '%s_%s' % (table_name, self._digest(column_names[0])),
+                self._get_connection().ops.max_name_length()
+            )
 
-        if len(column_names) > 1:
-            index_unique_name = '_%x' % abs(hash((table_name, ','.join(column_names))))
+        # Else generate the name for the index by South
+        table_name = table_name.replace('"', '').replace('.', '_')
+        index_unique_name = '_%x' % abs(hash((table_name, ','.join(column_names))))
 
         # If the index name is too long, truncate it
         index_name = ('%s_%s%s%s' % (table_name, column_names[0], index_unique_name, suffix)).replace('"', '').replace('.', '_')
@@ -667,12 +851,14 @@ class DatabaseOperations(object):
             tablespace_sql
         )
 
+    @invalidate_table_constraints
     def create_index(self, table_name, column_names, unique=False, db_tablespace=''):
         """ Executes a create index statement """
         sql = self.create_index_sql(table_name, column_names, unique, db_tablespace)
         self.execute(sql)
 
 
+    @invalidate_table_constraints
     def delete_index(self, table_name, column_names, db_tablespace=''):
         """
         Deletes an index created with create_index.
@@ -691,10 +877,12 @@ class DatabaseOperations(object):
     drop_index = alias('delete_index')
 
 
+    @delete_column_constraints
     def delete_column(self, table_name, name):
         """
         Deletes the column 'column_name' from the table 'table_name'.
         """
+        db_name = self._get_setting('NAME')
         params = (self.quote_name(table_name), self.quote_name(name))
         self.execute(self.delete_column_string % params, [])
 
@@ -708,12 +896,15 @@ class DatabaseOperations(object):
         raise NotImplementedError("rename_column has no generic SQL syntax")
 
 
+    @invalidate_table_constraints
     def delete_primary_key(self, table_name):
         """
         Drops the old primary key.
         """
         # Dry runs mean we can't do anything.
         if self.dry_run:
+            if self.debug:
+                print '   - no dry run output for delete_primary_key() due to dynamic DDL, sorry'
             return
         
         constraints = list(self._constraints_affecting_columns(table_name, None, type="PRIMARY KEY"))
@@ -729,6 +920,7 @@ class DatabaseOperations(object):
     drop_primary_key = alias('delete_primary_key')
 
 
+    @invalidate_table_constraints
     def create_primary_key(self, table_name, columns):
         """
         Creates a new primary key on the specified columns.
@@ -907,6 +1099,33 @@ class DatabaseOperations(object):
         MockModel._meta = MockOptions()
         MockModel._meta.model = MockModel
         return MockModel
+
+    def _db_positive_type_for_alter_column(self, field):
+        """
+        A helper for subclasses overriding _db_type_for_alter_column:
+        Remove the check constraint from the type string for PositiveInteger
+        and PositiveSmallInteger fields.
+        @param field: The field to generate type for
+        """
+        super_result = super(type(self), self)._db_type_for_alter_column(field)
+        if isinstance(field, (models.PositiveSmallIntegerField, models.PositiveIntegerField)):
+            return super_result.split(" ", 1)[0]
+        return super_result
+        
+    def _alter_add_positive_check(self, field, name, params, sqls):
+        """
+        A helper for subclasses overriding _alter_add_column_mods:
+        Add a check constraint verifying positivity to PositiveInteger and
+        PositiveSmallInteger fields.
+        """
+        super(type(self), self)._alter_add_column_mods(field, name, params, sqls)
+        if isinstance(field, (models.PositiveSmallIntegerField, models.PositiveIntegerField)):
+            uniq_hash = abs(hash(tuple(params.values()))) 
+            d = dict(
+                     constraint = "CK_%s_PSTV_%s" % (name, hex(uniq_hash)[2:]),
+                     check = "%s >= 0" % self.quote_name(name))
+            sqls.append((self.add_check_constraint_fragment % d, []))
+    
 
 
 # Single-level flattening of lists

@@ -102,7 +102,7 @@ class Command(BaseCommand):
         sys.exit(code)
 
 
-MIGRATION_TEMPLATE = """# encoding: utf-8
+MIGRATION_TEMPLATE = """# -*- coding: utf-8 -*-
 import datetime
 from south.db import db
 from south.v2 import DataMigration
@@ -121,4 +121,5 @@ class Migration(DataMigration):
     models = %(frozen_models)s
 
     %(complete_apps)s
+    symmetrical = True
 """

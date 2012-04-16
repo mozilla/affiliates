@@ -12,21 +12,21 @@ def _ask_for_it_by_name(name):
         modulename = ".".join(bits[:-1])
     else:
         modulename=bits[0]
-        
+
     module = __import__(modulename, {}, {}, bits[-1])
-    
+
     if len(bits) == 1:
         return module
     else:
         return getattr(module, bits[-1])
 
 
-def ask_for_it_by_name(name): 
+def ask_for_it_by_name(name):
     "Returns an object referenced by absolute path. (Memoised outer wrapper)"
-    if name not in ask_for_it_by_name.cache: 
-        ask_for_it_by_name.cache[name] = _ask_for_it_by_name(name) 
-    return ask_for_it_by_name.cache[name] 
-ask_for_it_by_name.cache = {} 
+    if name not in ask_for_it_by_name.cache:
+        ask_for_it_by_name.cache[name] = _ask_for_it_by_name(name)
+    return ask_for_it_by_name.cache[name]
+ask_for_it_by_name.cache = {}
 
 
 def get_attribute(item, attribute):
@@ -56,17 +56,17 @@ def memoize(function):
     "Standard memoization decorator."
     name = function.__name__
     _name = '_' + name
-    
+
     def method(self):
         if not hasattr(self, _name):
             value = function(self)
             setattr(self, _name, value)
         return getattr(self, _name)
-    
+
     def invalidate():
         if hasattr(method, _name):
             delattr(method, _name)
-        
+
     method.__name__ = function.__name__
     method.__doc__ = function.__doc__
     method._invalidate = invalidate
