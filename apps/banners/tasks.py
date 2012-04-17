@@ -15,13 +15,7 @@ def add_click(banner_instance_id):
     except BannerInstance.DoesNotExist:
         return
 
-    stats, created = instance.clickstats_set.get_or_create(
-        month=now.month, year=now.year)
-    stats.clicks = models.F('clicks') + 1
-    stats.save()
-
-    instance.clicks = models.F('clicks') + 1
-    instance.save()
+    instance.add_click(now.year, now.month)
 
 
 @task
@@ -38,10 +32,4 @@ def old_add_click(user_id, banner_id, banner_img_id):
         # banner instances with it.
         return
 
-    stats, created = instance.clickstats_set.get_or_create(month=now.month,
-                                                           year=now.year)
-    stats.clicks = models.F('clicks') + 1
-    stats.save()
-
-    instance.clicks = models.F('clicks') + 1
-    instance.save()
+    instance.add_click(now.year, now.month)

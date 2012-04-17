@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -150,6 +151,18 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
         """
         return getattr(self.child(), 'details_template', None)
 
+    def add_click(self, year, month):
+        """Add a click to this instance and the associated ClickStats
+        object.
+        """
+        dt = datetime(year, month, 1)
+        stats, created = self.clickstats_set.get_or_create(datetime=dt)
+        stats.clicks = models.F('clicks') + 1
+        stats.save()
+
+        self.clicks = models.F('clicks') + 1
+        self.save()
+
 
 class ClickStatsManager(models.Manager):
     def total(self):
@@ -186,8 +199,8 @@ class ClickStatsManager(models.Manager):
         key = CACHE_CLICKS_USERPERIOD_TOTAL % (user.id, month, year)
         total = cache.get(key)
         if total is None:
-            total = self._total(badge_instance__user=user, month=month,
-                                year=year)
+            total = self._total(badge_instance__user=user,
+                                datetime__month=month, datetime__year=year)
             cache.set(key, total)
 
         return total
@@ -205,8 +218,8 @@ class ClickStatsManager(models.Manager):
         if average is None:
             clicks_sum = models.Sum('badgeinstance__clickstats__clicks')
             results = (User.objects
-                       .filter(badgeinstance__clickstats__month__exact=month,
-                               badgeinstance__clickstats__year__exact=year)
+                       .filter(badgeinstance__clickstats__datetime__month=month,
+                               badgeinstance__clickstats__datetime__year=year)
                        .annotate(clicks=clicks_sum)
                        .aggregate(models.Avg('clicks')))
 
@@ -224,14 +237,13 @@ class ClickStats(ModelBase):
     """Tracks historical data for an affiliate's referrals."""
     badge_instance = models.ForeignKey(BadgeInstance)
 
-    month = models.IntegerField(choices=[(k, k) for k in range(1, 13)])
-    year = models.IntegerField()
+    datetime = models.DateTimeField()
     clicks = models.IntegerField(default=0)
 
     objects = ClickStatsManager()
 
     class Meta:
-        unique_together = ('badge_instance', 'month', 'year')
+        unique_together = ('badge_instance', 'datetime')
 
 
 class LeaderboardManager(CachingManager):
