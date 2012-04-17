@@ -50,6 +50,10 @@ class FilterSpec(object):
         except (ValueError, TypeError):
             self.value = value
 
+    @property
+    def title(self):
+        return self.field.verbose_name
+
     def apply_filter(self, qs):
         """Apply the filter if it appears in the request's query string."""
         if self.value is not None:
@@ -95,5 +99,5 @@ class FilterSpec(object):
         return bool(choices)
 
     def output(self):
-        context = {'name': self.name, 'choices': self.get_choices}
+        context = {'title': self.title, 'choices': self.get_choices}
         return render_to_string('stats/filter.html', context)

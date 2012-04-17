@@ -1,10 +1,11 @@
+from datetime import datetime, timedelta
+
 from django.contrib import admin
 
 from funfactory.admin import site
 
-from badges.models import BadgeInstance, BadgePreview, Category, Subcategory
+from badges.models import BadgePreview, Category, ClickStats, Subcategory
 from shared.admin import BaseModelAdmin
-from stats.admin import ModelStats
 from stats.options import ModelStats
 
 
@@ -27,8 +28,12 @@ class BadgePreviewInline(admin.TabularInline):
     extra = 0
 
 
-class BadgeInstanceStats(ModelStats):
-    display_name = 'BadgeInstances created'
-    datetime_field = 'created'
-    filters = ['badge']
-site.register_stats(BadgeInstance, BadgeInstanceStats)
+class ClickStatsDisplay(ModelStats):
+    display_name = 'Banner clicks'
+    datetime_field = 'datetime'
+    filters = ['badge_instance__badge']
+    default_interval = 'months'
+
+    def default_start(self):
+        return datetime.now() - timedelta(days=100)
+site.register_stats(ClickStats, ClickStatsDisplay)

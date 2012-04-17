@@ -4,6 +4,9 @@ from django.http import Http404
 
 
 class StatsAdminMixin(object):
+    """Mixin for the AdminSite object that adds a new view for viewing
+    registered statistics pages.
+    """
     index_template = 'stats/index.html'
 
     # These should be instance methods... but considering that there's
@@ -13,6 +16,7 @@ class StatsAdminMixin(object):
     def get_urls(self):
         from django.conf.urls.defaults import patterns, url
 
+        # Add stats URLs to admin urlconf.
         urlpatterns = super(StatsAdminMixin, self).get_urls()
         my_patterns = patterns('',
             url(r'^stats/(?P<stat_slug>[-\w]+)/$',
@@ -42,6 +46,7 @@ class StatsAdminMixin(object):
         if extra_context is None:
             extra_context = {}
 
+        # Add list of stats to display to template context.
         app_stats = defaultdict(list)
         for model_label, stat in self.stats.items():
             app_stats[stat.app_name].append(stat)

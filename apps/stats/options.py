@@ -17,8 +17,9 @@ class ModelStats:
     given model.
     """
     aggregate = models.Count('id')
-    display_name = None
     datetime_field = None
+    default_interval = 'days'
+    display_name = None
     filters = []
     overview_template = 'stats/overview.html'
     qs = None
@@ -76,17 +77,26 @@ class ModelStats:
         date_filter = {'%s__range' % self.datetime_field: (start, end)}
         return qs.filter(**date_filter).aggregate(agg=self.aggregate)['agg']
 
+    def default_start(self):
+        """Generate the start date to use if no dates are specified."""
+        return datetime.now() - timedelta(days=7)
+
+    def default_end(self):
+        """Generate the end date to use if no dates are specified."""
+        return datetime.now()
+
     def overview(self, request):
         """Main display view for this statistic."""
+        # TODO: Better handling of datetime minute, second, and hour.
         form = StatsFilterForm(request.GET)
         if form.is_valid():
             start = form.cleaned_data['start']
             end = form.cleaned_data['end']
             interval = form.cleaned_data['interval']
         else:
-            start = datetime.now() - timedelta(days=7)
-            end = datetime.now()
-            interval = 'days'
+            start = self.default_start()
+            end = self.default_end()
+            interval = self.default_interval
 
         qs = self.qs
         filter_specs, has_filters = self.get_filters(request)

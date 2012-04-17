@@ -7,6 +7,7 @@ from badges.admin import BadgePreviewInline
 from badges.models import ClickStats
 from banners.models import Banner, BannerImage, BannerInstance
 from shared.admin import BaseModelAdmin
+from stats.options import ModelStats
 
 
 class BannerImageInline(admin.TabularInline):
@@ -48,3 +49,10 @@ class BannerInstanceAdmin(BaseModelAdmin):
     user_display_name.allow_tags = True
 
 site.register(BannerInstance, BannerInstanceAdmin)
+
+
+class BannerInstanceStats(ModelStats):
+    display_name = 'BannerInstances created'
+    datetime_field = 'created'
+    filters = ['badge', 'image__locale']
+site.register_stats(BannerInstance, BannerInstanceStats)
