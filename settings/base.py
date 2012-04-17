@@ -260,9 +260,5 @@ STATSD_PATCHES = [
 ]
 
 # Bug 719522
-# List of hashes of banner images for upgrade campaign
-BANNERS_HASH = []
-
-# Bug 719522
 # Old Firefox get redirected there
 FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affaupgrade1&WT.mc_ev=click'

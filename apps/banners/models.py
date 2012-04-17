@@ -98,7 +98,7 @@ class BannerInstance(BadgeInstance):
     def preview(self):
         """Return the HTML to preview this banner."""
         return Markup('<img src="%s?from_affiliates" alt="%s">' %
-                      (absolutify(self.image.image.url, cdn=True),
+                      (absolutify(self.image.image.url),
                        _locale(self.badge.name, self.image.locale)))
 
     @property
