@@ -6,3 +6,4 @@
 -r ../vendor/src/funfactory/funfactory/requirements/dev.txt
 
 fudge==1.0.3
+factory_boy

@@ -2,9 +2,8 @@ import json
 from datetime import datetime, timedelta
 
 from django.db import models
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.template.defaultfilters import slugify
+from django.template.response import TemplateResponse
 
 from qsstats import QuerySetStats
 
@@ -115,9 +114,7 @@ class ModelStats:
                    'aggregate': aggregate,
                    'filter_specs': filter_specs,
                    'has_filters': has_filters}
-        context_instance = RequestContext(request)
-        return render_to_response(self.overview_template, context,
-                                  context_instance=context_instance)
+        return TemplateResponse(request, self.overview_template, context)
 
     def json_dumps(self, data):
         """Dumps the given data to a JSON string, including datetime objects."""

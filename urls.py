@@ -8,7 +8,7 @@ from stats.monkeypatches import patch
 
 
 # Patch admin site for stats application
-patch()
+patch(admin.site)
 
 autodiscover()
 

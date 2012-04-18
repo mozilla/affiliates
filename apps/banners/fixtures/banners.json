@@ -186,9 +186,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 2,
-            "year": 2011,
-            "clicks": 4,
-            "month": 7
+            "datetime": "2011-07-01 00:00:00",
+            "clicks": 4
         }
     },
     {

@@ -9,9 +9,9 @@ class StatsAdminMixin(object):
     """
     index_template = 'stats/index.html'
 
-    # These should be instance methods... but considering that there's
-    # (usually) only one admin site object, I can live with this for now.
-    stats = {}
+    def _mixin_init(self):
+        """Fake init run by monkeypatching code."""
+        self.stats = {}
 
     def get_urls(self):
         from django.conf.urls.defaults import patterns, url
@@ -39,7 +39,7 @@ class StatsAdminMixin(object):
             if new_slug not in self.stats.keys():
                 return new_slug
             else:
-                slug = new_slug.append(affix)
+                new_slug = '%s%s' % (slug, affix)
                 affix += 1
 
     def index(self, request, extra_context=None):

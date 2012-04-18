@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from django.db import models
-
 from celery.decorators import task
 
 from banners.models import BannerInstance

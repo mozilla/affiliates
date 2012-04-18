@@ -197,9 +197,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 11,
-            "year": 2011,
-            "clicks": 2005025,
-            "month": 9
+            "datetime": "2011-09-01 00:00:00",
+            "clicks": 2005025
         }
     },
     {
@@ -207,9 +206,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 12,
-            "year": 2011,
-            "clicks": 3,
-            "month": 9
+            "datetime": "2011-09-01 00:00:00",
+            "clicks": 3
         }
     },
     {
@@ -217,9 +215,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 13,
-            "year": 2011,
-            "clicks": 5,
-            "month": 9
+            "datetime": "2011-09-01 00:00:00",
+            "clicks": 5
         }
     },
     {
@@ -227,9 +224,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 14,
-            "year": 2011,
-            "clicks": 4,
-            "month": 9
+            "datetime": "2011-09-01 00:00:00",
+            "clicks": 4
         }
     },
     {
@@ -237,9 +233,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 15,
-            "year": 2011,
-            "clicks": 3,
-            "month": 9
+            "datetime": "2011-09-01 00:00:00",
+            "clicks": 3
         }
     },
     {
@@ -247,9 +242,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 16,
-            "year": 2011,
-            "clicks": 2,
-            "month": 9
+            "datetime": "2011-09-01 00:00:00",
+            "clicks": 2
         }
     }
 ]

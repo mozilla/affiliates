@@ -92,3 +92,8 @@ class ModelsTestCase(TestCase):
         # Restore the settings.
         settings.INSTALLED_APPS = self._original_installed_apps
         loading.cache.loaded = False
+
+
+def refresh_model(instance):
+    """Retrieves the latest version of a model instance from the DB."""
+    return instance.__class__.objects.get(pk=instance.pk)

@@ -8,6 +8,8 @@ from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.models import Badge, BadgeInstance, ClickStats, Subcategory
+from badges.tests import ClickStatsFactory, BadgeInstanceFactory
+from shared.tests import refresh_model
 
 
 class FakeDatetime(datetime):
@@ -74,6 +76,20 @@ class BadgeInstanceTests(TestCase):
         categories = BadgeInstance.objects.for_user_by_category(user)
         expect = {'Firefox': [self.badge_instance]}
         eq_(categories, expect)
+
+    def test_add_click_basic(self):
+        """Test that add_click increments the correct clickstats object."""
+        cs = ClickStatsFactory(clicks=4, datetime=datetime(2012, 4, 1))
+        cs.badge_instance.add_click(2012, 4)
+        cs = refresh_model(cs)
+        eq_(cs.clicks, 5)
+
+    def test_add_click_normalized(self):
+        """Test that add_click increments the normalized click count."""
+        bi = BadgeInstanceFactory(clicks=4)
+        bi.add_click(2012, 4)
+        bi = refresh_model(bi)
+        eq_(bi.clicks, 5)
 
 
 class ClickStatsTests(TestCase):

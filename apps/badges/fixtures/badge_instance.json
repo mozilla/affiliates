@@ -72,9 +72,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 2,
-            "year": 2011,
-            "clicks": 1,
-            "month": 7
+            "datetime": "2011-07-01 00:00:00",
+            "clicks": 1
         }
     },
     {
@@ -82,9 +81,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 3,
-            "year": 2011,
-            "clicks": 10,
-            "month": 7
+            "datetime": "2011-07-01 00:00:00",
+            "clicks": 10
         }
     },
     {
@@ -92,9 +90,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 3,
-            "year": 2011,
-            "clicks": 11,
-            "month": 8
+            "datetime": "2011-08-01 00:00:00",
+            "clicks": 11
         }
     },
     {
@@ -102,9 +99,8 @@
         "model": "badges.clickstats",
         "fields": {
             "badge_instance": 4,
-            "year": 2011,
-            "clicks": 2,
-            "month": 7
+            "datetime": "2011-07-01 00:00:00",
+            "clicks": 2
         }
     },
     {
