@@ -106,7 +106,7 @@ class BannerInstance(BadgeInstance):
         """Return the code to embed this banner.."""
         return jingo.env.from_string(BANNER_TEMPLATE).render({
             'url': self.affiliate_link(),
-            'img': absolutify(self.image.image.url, cdn=True),
+            'img': absolutify(self.image.image.url),
             'alt_text': _locale(self.badge.name, self.image.locale)
         })
 
