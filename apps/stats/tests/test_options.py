@@ -66,9 +66,9 @@ class ModelStatsTests(ModelsTestCase):
         self._setup_test_models(testdata)
 
         m = MyModelStats(TestModel, self.admin_site)
-        result = m.aggregate_for_period(
-            TestModel.objects.all(), datetime(2012, 4, 1),
-            datetime(2012, 6, 30))
+        result = m.aggregate_for_period(TestModel.objects.all(),
+                                        datetime(2012, 4, 1),
+                                        datetime(2012, 6, 30))
         eq_(result, 23)
 
     def test_overview_defaults(self):

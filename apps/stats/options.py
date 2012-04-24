@@ -12,7 +12,8 @@ from stats.forms import StatsFilterForm
 
 
 class ModelStats:
-    """Encapsulates options and functionality for displaying statistics for a
+    """
+    Encapsulates options and functionality for displaying statistics for a
     given model.
     """
     aggregate = models.Count('id')
@@ -34,7 +35,7 @@ class ModelStats:
         if self.datetime_field is None:
             self.datetime_field = next(
                 (field.name for field in model._meta.fields
-                if isinstance(field, models.DateTimeField)), None)
+                 if isinstance(field, models.DateTimeField)), None)
 
     @property
     def slug(self):
@@ -105,7 +106,6 @@ class ModelStats:
         results = self.data_for_period(qs, start, end, interval)
         results_json = self.json_dumps(results)
         aggregate = self.aggregate_for_period(qs, start, end)
-
 
         context = {'title': self.name,
                    'form': form,

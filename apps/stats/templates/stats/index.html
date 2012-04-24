@@ -1,10 +1,11 @@
 {% extends 'admin/index.html' %}
+{% load i18n %}
 
 {% block sidebar %}
   {{ block.super }}
   <br class="clear" />
 
-  <h1>Site statistics</h1>
+  <h1>{% trans 'Site statistics' %}</h1>
   {% for app_label, stats in app_stats.items %}
     <div class="module">
       <table>

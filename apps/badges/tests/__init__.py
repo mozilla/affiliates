@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from factory import Factory, LazyAttribute, lazy_attribute, SubFactory
+from factory import Factory, LazyAttribute, SubFactory, lazy_attribute
 
-from badges.models import (Category, ClickStats, Badge, BadgeInstance,
+from badges.models import (Badge, BadgeInstance, Category, ClickStats,
                            Subcategory)
 from users.tests import UserFactory
 

@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from django.conf.urls.defaults import patterns, url
 from django.http import Http404
 
 
@@ -14,8 +15,6 @@ class StatsAdminMixin(object):
         self.stats = {}
 
     def get_urls(self):
-        from django.conf.urls.defaults import patterns, url
-
         # Add stats URLs to admin urlconf.
         urlpatterns = super(StatsAdminMixin, self).get_urls()
         my_patterns = patterns('',

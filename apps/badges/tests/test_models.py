@@ -8,7 +8,7 @@ from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.models import Badge, BadgeInstance, ClickStats, Subcategory
-from badges.tests import ClickStatsFactory, BadgeInstanceFactory
+from badges.tests import BadgeInstanceFactory, ClickStatsFactory
 from shared.tests import refresh_model
 
 
@@ -78,7 +78,7 @@ class BadgeInstanceTests(TestCase):
         eq_(categories, expect)
 
     def test_add_click_basic(self):
-        """Test that add_click increments the correct clickstats object."""
+        """Test that add_click increments the correct ClickStats."""
         cs = ClickStatsFactory(clicks=4, datetime=datetime(2012, 4, 1))
         cs.badge_instance.add_click(2012, 4)
         cs = refresh_model(cs)

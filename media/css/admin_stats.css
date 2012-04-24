@@ -12,7 +12,7 @@
 
 #stats-container h1 {
     background-color: #417690;
-    color: #FFFFFF;
+    color: #FFF;
     margin: 0;
     padding: 10px;
 }
@@ -32,7 +32,7 @@
     padding: 0 0 0 15px;
 }
 
-.stats-form ul li {
+.stats-form li {
     display: inline;
     font-size: 12px;
     font-weight: bold;

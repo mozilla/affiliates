@@ -55,8 +55,8 @@ class FilterSpecTests(ModelsTestCase):
         choice_urls = [c.link for c in filter_spec.get_choices()]
         eq_(len(choice_urls), 3)
         ok_('/test?' in choice_urls)
-        ok_(('/test?other=%s' % a.id) in choice_urls)
-        ok_(('/test?other=%s' % b.id) in choice_urls)
+        ok_('/test?other=%s' % a.id in choice_urls)
+        ok_('/test?other=%s' % b.id in choice_urls)
 
     def test_choices_boolean(self):
         """Test that the choices for a boolean filter include True and

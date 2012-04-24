@@ -151,10 +151,15 @@ class BadgeInstance(CachingMixin, MultiTableParentModel):
         """
         return getattr(self.child(), 'details_template', None)
 
-    def add_click(self, year, month):
-        """Add a click to this instance and the associated ClickStats
-        object.
-        """
+    def add_click(self, year=None, month=None):
+        """Add a click to this instance and associated ClickStats objects."""
+        if year is None or month is None:
+            now = datetime.now()
+            if year is None:
+                year = now.year
+            if month is None:
+                month = now.month
+
         dt = datetime(year, month, 1)
         stats, created = self.clickstats_set.get_or_create(datetime=dt)
         stats.clicks = models.F('clicks') + 1
