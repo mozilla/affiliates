@@ -1,19 +1,17 @@
 # encoding: utf-8
 import datetime
-from south.db import db
 from south.v2 import DataMigration
-from django.db import models
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
+        """Convert month/year fields values to a datetime."""
         for clickstats in orm.ClickStats.objects.all():
             clickstats.datetime = datetime(clickstats.year, clickstats.month, 0)
 
 
     def backwards(self, orm):
-        "Write your backwards methods here."
+        """Repopulate month and year fields from datetime values."""
         for clickstats in orm.ClickStats.objects.all():
             dt = clickstats.datetime
             clickstats.year = dt.year

@@ -1,4 +1,5 @@
 from collections import defaultdict
+from itertools import count
 
 from django.conf.urls.defaults import patterns, url
 from django.http import Http404
@@ -15,7 +16,7 @@ class StatsAdminMixin(object):
         self.stats = {}
 
     def get_urls(self):
-        # Add stats URLs to admin urlconf.
+        """Add stats URLs to admin urlconf."""
         urlpatterns = super(StatsAdminMixin, self).get_urls()
         my_patterns = patterns('',
             url(r'^stats/(?P<stat_slug>[-\w]+)/$',
@@ -32,14 +33,11 @@ class StatsAdminMixin(object):
 
     def _find_unique_slug(self, slug):
         """Generates a unique stat slug that isn't taken by an existing stat."""
-        new_slug = slug
-        affix = 1
-        while True:
-            if new_slug not in self.stats.keys():
-                return new_slug
-            else:
-                new_slug = '%s%s' % (slug, affix)
-                affix += 1
+        if slug not in self.stats.keys():
+            return slug
+
+        return next('%s%s' % (slug, affix) for affix in count(1)
+                    if '%s%s' % (slug, affix) not in self.stats.keys())
 
     def index(self, request, extra_context=None):
         if extra_context is None:

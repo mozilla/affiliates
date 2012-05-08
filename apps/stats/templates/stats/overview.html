@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block extrahead %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+<script src="{{ MEDIA_URL }}js/libs/jquery-1.7.1.js"></script>
+<script src="{{ MEDIA_URL }}js/libs/jquery-ui-1.8.18.min.js"></script>
 <script src="{{ MEDIA_URL }}js/libs/jquery.flot.js"></script>
 <script src="{{ MEDIA_URL }}js/admin_stats.js"></script>
 {% endblock %}
@@ -28,7 +28,7 @@
         <h2>{% trans 'Filter' %}</h2>
         {% for spec in filter_specs %}
           {{ spec.output }}
-          {% endfor %}
+        {% endfor %}
       </div>
     {% endif %}
 

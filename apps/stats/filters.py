@@ -81,7 +81,7 @@ class FilterSpec(object):
     def _link(self, **kwargs):
         """Build a new link to the stats display with the specified filters.
 
-        kwargs are added to the query string. If a kwargs has a value of None,
+        kwargs are added to the query string. If a kwarg has a value of None,
         it is removed from the query string.
         """
         path = self.request.path
