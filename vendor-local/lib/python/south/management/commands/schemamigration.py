@@ -152,8 +152,8 @@ class Command(DataCommand):
         
         # So, what's in this file, then?
         file_contents = MIGRATION_TEMPLATE % {
-            "forwards": "\n".join(forwards_actions or ["pass"]), 
-            "backwards": "\n".join(backwards_actions or ["pass"]), 
+            "forwards": "\n".join(forwards_actions or ["        pass"]),
+            "backwards": "\n".join(backwards_actions or ["        pass"]),
             "frozen_models":  freezer.freeze_apps_to_string(apps_to_freeze),
             "complete_apps": apps_to_freeze and "complete_apps = [%s]" % (", ".join(map(repr, apps_to_freeze))) or ""
         }
@@ -183,8 +183,10 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 %(forwards)s
+
     def backwards(self, orm):
 %(backwards)s
+
     models = %(frozen_models)s
 
     %(complete_apps)s"""

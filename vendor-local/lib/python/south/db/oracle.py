@@ -164,13 +164,6 @@ END;
             (self.alter_string_set_default, params.copy()),
         ]
 
-        # UNIQUE constraint
-        unique_constraint = list(self._constraints_affecting_columns(table_name, [name], 'UNIQUE'))
-        if field.unique and not unique_constraint:
-            self.create_unique(table_name, [name])
-        elif not field.unique and unique_constraint:
-            self.delete_unique(table_name, [name])
-
         # drop CHECK constraints. Make sure this is executed before the ALTER TABLE statements
         # generated above, since those statements recreate the constraints we delete here.
         check_constraints = self._constraints_affecting_columns(table_name, [name], "CHECK")
@@ -191,10 +184,40 @@ END;
                     params['nullity'] = ''
                     sql = sql_template % params
                     self.execute(sql)
+                # Oracle also has issues if we try to change a regular column
+                # to a LOB or vice versa (also REF, object, VARRAY or nested
+                # table, but these don't come up much in Django apps)
+                elif 'ORA-22858' in description or 'ORA-22859' in description:
+                    self._alter_column_lob_workaround(table_name, name, field)
                 else:
                     raise
 
-    @generic.copy_column_constraints
+    def _alter_column_lob_workaround(self, table_name, name, field):
+        """
+        Oracle refuses to change a column type from/to LOB to/from a regular
+        column. In Django, this shows up when the field is changed from/to
+        a TextField.
+        What we need to do instead is:
+        - Rename the original column
+        - Add the desired field as new
+        - Update the table to transfer values from old to new
+        - Drop old column
+        """
+        renamed = self._generate_temp_name(name)
+        self.rename_column(table_name, name, renamed)
+        self.add_column(table_name, name, field, keep_default=False)
+        self.execute("UPDATE %s set %s=%s" % (
+            self.quote_name(table_name),
+            self.quote_name(name),
+            self.quote_name(renamed),
+        ))
+        self.delete_column(table_name, renamed)
+
+    def _generate_temp_name(self, for_name):
+        suffix = hex(hash(for_name)).upper()[1:]
+        return self.normalize_name(for_name + "_" + suffix)
+    
+    @generic.copy_column_constraints #TODO: Appears to be nulled by the delete decorator below...
     @generic.delete_column_constraints
     def rename_column(self, table_name, old, new):
         if old == new:

@@ -5,6 +5,7 @@ from django.db.models import fields
 from south.db import generic
 from south.db.generic import delete_column_constraints, invalidate_table_constraints, copy_column_constraints
 from south.exceptions import ConstraintDropped
+from django.utils.encoding import smart_unicode
 
 class DatabaseOperations(generic.DatabaseOperations):
     """
@@ -178,18 +179,12 @@ class DatabaseOperations(generic.DatabaseOperations):
         ret_val = super(DatabaseOperations, self).alter_column(table_name, name, field, explicit_name, ignore_constraints=True)
         
         if not ignore_constraints:
-            unique_field_handled = False
             for cname, (ctype,args) in constraints.items():
                 params = dict(table = table,
                               constraint = qn(cname))
                 if ctype=='UNIQUE':
-                    if len(args)==1:
-                        unique_field_handled = True # 
-                    if len(args)>1 or field.unique:
-                        params['columns'] = ", ".join(map(qn,args))
-                        sql = self.create_unique_sql % params
-                    else:
-                        continue
+                    params['columns'] = ", ".join(map(qn,args))
+                    sql = self.create_unique_sql % params
                 elif ctype=='PRIMARY KEY':
                     params['columns'] = ", ".join(map(qn,args))
                     sql = self.create_primary_key_string % params
@@ -209,9 +204,6 @@ class DatabaseOperations(generic.DatabaseOperations):
                 else:
                     raise NotImplementedError("Don't know how to handle constraints of type "+ type)                    
                 self.execute(sql, [])
-            # Create unique constraint if necessary
-            if field.unique and not unique_field_handled:
-                self.create_unique(table_name, (name,))
             # Create foreign key if necessary
             if field.rel and self.supports_foreign_keys:
                 self.execute(
@@ -402,8 +394,11 @@ class DatabaseOperations(generic.DatabaseOperations):
         params = (self.quote_name(old_table_name), self.quote_name(table_name))
         self.execute('EXEC sp_rename %s, %s' % params)
 
-    _db_type_for_alter_column = generic.alias("_db_positive_type_for_alter_column")
-    _alter_add_column_mods = generic.alias("_alter_add_positive_check")
+    def _db_type_for_alter_column(self, field): 
+        return self._db_positive_type_for_alter_column(DatabaseOperations, field)
+
+    def _alter_add_column_mods(self, field, name, params, sqls):
+        return self._alter_add_positive_check(DatabaseOperations, field, name, params, sqls)
 
     @invalidate_table_constraints
     def delete_foreign_key(self, table_name, column):

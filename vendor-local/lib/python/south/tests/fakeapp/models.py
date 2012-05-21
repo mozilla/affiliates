@@ -5,6 +5,8 @@ from django.contrib.auth.models import User as UserAlias
 
 from south.modelsinspector import add_introspection_rules
 
+on_delete_is_available = hasattr(models, "PROTECT") # models here is django.db.models
+
 def default_func():
     return "yays"
 
@@ -36,13 +38,14 @@ class HorribleModel(models.Model):
     o1 = models.ForeignKey(Other1)
     o2 = models.ForeignKey('Other2')
     
-    o_set_null_on_delete = models.ForeignKey('Other3', null=True, on_delete=models.SET_NULL)
-    o_cascade_delete = models.ForeignKey('Other3', null=True, on_delete=models.CASCADE, related_name="cascademe")
-    o_protect = models.ForeignKey('Other3', null=True, on_delete=models.PROTECT, related_name="dontcascademe")
-    o_default_on_delete = models.ForeignKey('Other3', null=True, default=1, on_delete=models.SET_DEFAULT, related_name="setmedefault")
-    o_set_on_delete_function = models.ForeignKey('Other3', null=True, default=1, on_delete=models.SET(get_sentinel_object), related_name="setsentinel")
-    o_set_on_delete_value = models.ForeignKey('Other3', null=True, default=1, on_delete=models.SET(get_sentinel_object()), related_name="setsentinelwithactualvalue") # dubious case
-    o_no_action_on_delete = models.ForeignKey('Other3', null=True, default=1, on_delete=models.DO_NOTHING, related_name="deletemeatyourperil")
+    if on_delete_is_available:
+        o_set_null_on_delete = models.ForeignKey('Other3', null=True, on_delete=models.SET_NULL)
+        o_cascade_delete = models.ForeignKey('Other3', null=True, on_delete=models.CASCADE, related_name="cascademe")
+        o_protect = models.ForeignKey('Other3', null=True, on_delete=models.PROTECT, related_name="dontcascademe")
+        o_default_on_delete = models.ForeignKey('Other3', null=True, default=1, on_delete=models.SET_DEFAULT, related_name="setmedefault")
+        o_set_on_delete_function = models.ForeignKey('Other3', null=True, default=1, on_delete=models.SET(get_sentinel_object), related_name="setsentinel")
+        o_set_on_delete_value = models.ForeignKey('Other3', null=True, default=1, on_delete=models.SET(get_sentinel_object()), related_name="setsentinelwithactualvalue") # dubious case
+        o_no_action_on_delete = models.ForeignKey('Other3', null=True, default=1, on_delete=models.DO_NOTHING, related_name="deletemeatyourperil")
     
     
     # Now to something outside
