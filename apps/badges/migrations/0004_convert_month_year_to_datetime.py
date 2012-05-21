@@ -1,14 +1,15 @@
 # encoding: utf-8
 import datetime
+
 from south.v2 import DataMigration
+
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
         """Convert month/year fields values to a datetime."""
         for clickstats in orm.ClickStats.objects.all():
-            clickstats.datetime = datetime(clickstats.year, clickstats.month, 0)
-
+            clickstats.datetime = datetime.datetime(clickstats.year, clickstats.month, 1)
 
     def backwards(self, orm):
         """Repopulate month and year fields from datetime values."""
