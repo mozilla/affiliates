@@ -13,7 +13,7 @@ _('Welcome to the new Firefox Affiliates program. Have a look around the '
   'know at affiliates@mozilla.org.')
 
 _('Help us make Firefox Affiliates better')
-_('Firefox Affiliates has been live for over a month now, but we need your '
+_('Firefox Affiliates has been live for a while now, but we need your '
   'help to keep making improvements to the system. If you are a web developer '
   'familiar with HTML, CSS, Python or Django and want to get involved with '
   'Mozilla, please contact us at affiliates@mozilla.org .')
