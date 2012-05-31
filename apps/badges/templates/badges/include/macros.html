@@ -55,7 +55,7 @@
   {% endif %}
   {% if current < step and url %}
     </a>
-  {% endif %}  
+  {% endif %}
 {%- endmacro %}
 
 {% macro wizard_footer(back_href) %}
@@ -84,7 +84,7 @@
                 <p>{{ instance.created|babel_date('medium') }}</p>
               </li>
               <li>
-                <h5>{{ _('DOWNLOADS:') }}</h5>
+                <h5>{{ _('CLICKS:') }}</h5>
                 <p>{{ instance.clicks }}</p>
               </li>
               <li>
