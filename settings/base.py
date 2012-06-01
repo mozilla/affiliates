@@ -111,7 +111,8 @@ CSP_FRAME_SRC = (
 CSP_IMG_SRC = (
     '\'self\'',
     'https://affiliates-cdn.mozilla.org',
-    'https://statse.webtrendslive.com'
+    'https://statse.webtrendslive.com',
+    'https://secure.gravatar.com'
 )
 CSP_FONT_SRC = (
     '\'self\'',
