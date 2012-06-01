@@ -1,12 +1,15 @@
 from django.conf import settings
 from django.db import models
 
+from product_details import product_details
 from tower import ugettext as _
 
 from shared.utils import unicode_choice_sorted
 
 
-LANGUAGE_CHOICES = unicode_choice_sorted(settings.LANGUAGES.items())
+LANGUAGE_CHOICES = unicode_choice_sorted([(key.lower(), value['native'])
+                                          for key, value in
+                                          product_details.languages.items()])
 
 
 class ModelBase(models.Model):

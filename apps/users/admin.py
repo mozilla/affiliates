@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from funfactory.admin import site
 
 from users.models import UserProfile
+from shared.admin import BaseModelAdmin
 
 
 class UserProfileInline(admin.StackedInline):
@@ -17,7 +18,7 @@ class UserProfileInline(admin.StackedInline):
     )
 
 
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(BaseModelAdmin):
     list_display = ('user_displayname', 'email', 'is_active', 'last_login',
                     'date_joined')
     list_filter = ('is_active',)

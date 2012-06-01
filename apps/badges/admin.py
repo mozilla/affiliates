@@ -1,15 +1,17 @@
 from django.contrib import admin
 
 from funfactory.admin import site
+
 from badges.models import BadgePreview, Category, Subcategory
+from shared.admin import BaseModelAdmin
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseModelAdmin):
     change_list_template = 'smuggler/change_list.html'
 site.register(Category, CategoryAdmin)
 
 
-class SubcategoryAdmin(admin.ModelAdmin):
+class SubcategoryAdmin(BaseModelAdmin):
     change_list_template = 'smuggler/change_list.html'
 site.register(Subcategory, SubcategoryAdmin)
 
