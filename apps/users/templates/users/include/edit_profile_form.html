@@ -9,6 +9,18 @@
       {{ form.display_name }}
       {{ form.display_name.errors }}
     </div>
+    <div class="fields">
+      <div>
+        {% call macros.fields_title(_('Website URL'), 'website-help') %}
+          {% trans %}
+            This website will appear along with your username on the Affiliates 
+            leaderboard and on your profile.
+          {% endtrans %}
+        {% endcall %}
+      </div>
+      {{ form.website }}
+      {{ form.website.errors }}
+    </div>
   </div>
   {% if user.has_usable_password() %}
     <div class="section">

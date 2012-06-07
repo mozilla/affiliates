@@ -159,18 +159,29 @@ a.button {
     position: relative;
     width: 284px;
 }
+
 #profile-form .section .field-group .fields {
     margin-right: 16px;
 }
+
+.fields h4 {
+    height: 16px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
 .field-group {
     width: 590px;
 }
+
 #profile-form .field-group input[type="text"] {
     display: block;
 }
+
 #profile-form .field-group div.selector {
     display: inline-block;
 }
+
 #profile-form .has_bulb {
     display: inline-block;
     margin-bottom: 6px;

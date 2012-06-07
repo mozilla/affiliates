@@ -32,7 +32,15 @@
       {% for standing in leaderboard %}
       <li>
         <span class="download-number">{{ standing.ranking|babel_number }}</span>
-        <span class="display-name">{{ display_name(standing.user) }}</span>
+        <span class="display-name">
+          {% if standing.user.userprofile.website is not none %}
+            <a href="{{ standing.user.userprofile.website }}">
+              {{ display_name(standing.user) }}
+            </a>
+          {% else %}
+            {{ display_name(standing.user) }}
+          {% endif %}
+        </span>
         <span class="download-count">{{ standing.clicks|babel_number }}</span>
       </li>
       {% endfor %}
