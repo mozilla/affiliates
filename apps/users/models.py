@@ -4,10 +4,11 @@ import random
 import re
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 from django.contrib.sites.models import Site
 from django.core import mail
 from django.db import models
+from django.dispatch import receiver
 from django.template.loader import render_to_string
 
 from funfactory.urlresolvers import reverse
@@ -48,6 +49,16 @@ def get_linked_account(self):
 User.add_to_class('get_linked_account', get_linked_account)
 
 
+@receiver(models.signals.post_save, sender=User)
+def add_default_permissions(sender, **kwargs):
+    """Add default set of permissions to users when they are first created."""
+    if kwargs['created']:
+        user = kwargs['instance']
+        can_share_website = Permission.objects.get(codename='can_share_website')
+        user.user_permissions.add(can_share_website)
+        user.save()
+
+
 class UserProfile(ModelBase):
     """
     Stores information about a user account. Created post-activation.
@@ -68,9 +79,9 @@ class UserProfile(ModelBase):
     address_2 = models.CharField(max_length=255, blank=True, null=True,
                                  verbose_name=_lazy(u'Address Line 2'))
     city = models.CharField(max_length=255, blank=True, null=True,
-                                 verbose_name=_lazy(u'City'))
+                            verbose_name=_lazy(u'City'))
     state = models.CharField(max_length=255, blank=True, null=True,
-                                 verbose_name=_lazy(u'State or Province'))
+                             verbose_name=_lazy(u'State or Province'))
     postal_code = models.CharField(max_length=32, blank=True, null=True,
                                    verbose_name=_lazy(u'Zip or Postal Code'))
     country = models.CharField(max_length=2, choices=COUNTRIES, blank=True,
@@ -80,6 +91,11 @@ class UserProfile(ModelBase):
 
     def __unicode__(self):
         return unicode(self.display_name)
+
+    class Meta:
+        permissions = (
+            ('can_share_website', 'Can share website link on leaderboard'),
+        )
 
 
 class RegisterManager(models.Manager):

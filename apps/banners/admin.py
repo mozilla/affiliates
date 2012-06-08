@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from funfactory.admin import site
-
 from badges.admin import BadgePreviewInline
 from badges.models import ClickStats
 from banners.models import Banner, BannerImage, BannerInstance
@@ -24,7 +22,7 @@ class BannerAdmin(BaseModelAdmin):
         return super(BannerAdmin, self).changelist_view(request,
             extra_context=extra_context)
 
-site.register(Banner, BannerAdmin)
+admin.site.register(Banner, BannerAdmin)
 
 
 class BannerImageAdmin(BaseModelAdmin):
@@ -33,7 +31,7 @@ class BannerImageAdmin(BaseModelAdmin):
     list_editable = ('color', 'image')
     list_filter = ('banner', 'color', 'locale')
     formfield_overrides = {}
-site.register(BannerImage, BannerImageAdmin)
+admin.site.register(BannerImage, BannerImageAdmin)
 
 
 class BannerInstanceAdmin(BaseModelAdmin):
@@ -44,12 +42,11 @@ class BannerInstanceAdmin(BaseModelAdmin):
 
     def user_display_name(self, instance):
         return instance.user.userprofile.display_name
-
-site.register(BannerInstance, BannerInstanceAdmin)
+admin.site.register(BannerInstance, BannerInstanceAdmin)
 
 
 class BannerInstanceStats(ModelStats):
     display_name = 'BannerInstances created'
     datetime_field = 'created'
     filters = ['badge', 'image__locale']
-site.register_stats(BannerInstance, BannerInstanceStats)
+admin.site.register_stats(BannerInstance, BannerInstanceStats)

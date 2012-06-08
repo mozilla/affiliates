@@ -2,16 +2,19 @@ from urlparse import urlparse
 
 from django.conf import settings
 from django.conf.urls.defaults import include, patterns
-from django.contrib.admin import autodiscover
+from django.contrib import admin
 
-from funfactory import admin
+from funfactory.admin import site as patched_site
 
 from stats.monkeypatches import patch
 
+# TODO: Remove once Affiliates is upgraded to the latest funfactory, as it
+# patches this.
+admin.site = patched_site  # Patch with session_csrf fix
 
 # Patch admin site for stats application
 patch(admin.site)
-autodiscover()
+admin.autodiscover()
 
 handler404 = 'shared.views.view_404'
 handler500 = 'shared.views.view_500'

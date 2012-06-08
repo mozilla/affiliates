@@ -1,4 +1,4 @@
-from funfactory.admin import site
+from django.contrib import admin
 
 from news.models import NewsItem
 from shared.admin import BaseModelAdmin
@@ -7,4 +7,4 @@ from shared.admin import BaseModelAdmin
 class NewsItemAdmin(BaseModelAdmin):
     list_display = ('title', 'enabled', 'created', 'modified')
     list_editable = ('enabled',)
-site.register(NewsItem, NewsItemAdmin)
+admin.site.register(NewsItem, NewsItemAdmin)

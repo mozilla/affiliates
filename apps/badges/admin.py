@@ -2,8 +2,6 @@ from datetime import datetime, timedelta
 
 from django.contrib import admin
 
-from funfactory.admin import site
-
 from badges.models import BadgePreview, Category, ClickStats, Subcategory
 from shared.admin import BaseModelAdmin
 from stats.options import ModelStats
@@ -11,12 +9,12 @@ from stats.options import ModelStats
 
 class CategoryAdmin(BaseModelAdmin):
     change_list_template = 'smuggler/change_list.html'
-site.register(Category, CategoryAdmin)
+admin.site.register(Category, CategoryAdmin)
 
 
 class SubcategoryAdmin(BaseModelAdmin):
     change_list_template = 'smuggler/change_list.html'
-site.register(Subcategory, SubcategoryAdmin)
+admin.site.register(Subcategory, SubcategoryAdmin)
 
 
 class BadgePreviewInline(admin.TabularInline):
@@ -36,4 +34,4 @@ class ClickStatsDisplay(ModelStats):
 
     def default_start(self):
         return datetime.now() - timedelta(days=100)
-site.register_stats(ClickStats, ClickStatsDisplay)
+admin.site.register_stats(ClickStats, ClickStatsDisplay)
