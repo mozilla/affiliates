@@ -81,7 +81,7 @@ SITE_URL = 'http://localhost:8000'
 
 # Bug 719522
 # List of hashes of banner images for upgrade campaign
-BANNERS_HASH = (
-    '299839978f965e3b17d926572f91b4fbc340896c',
-    '5f5e8cc58fac3f658fca66be259590ea42963aa8',
-)
+#BANNERS_HASH = (
+#    '299839978f965e3b17d926572f91b4fbc340896c',
+#    '5f5e8cc58fac3f658fca66be259590ea42963aa8',
+#)
