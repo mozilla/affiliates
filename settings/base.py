@@ -7,7 +7,7 @@ SYSLOG_TAG = "http_app_affiliates"  # Make this unique to your project.
 
 # Language settings
 PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'ko', 'nl',
-                  'pl', 'pt-BR', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'tr',
+                  'pl', 'pt-BR', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'tr',
                   'zh-TW')
 
 # UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
