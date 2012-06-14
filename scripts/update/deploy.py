@@ -36,10 +36,6 @@ def update_assets(ctx):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("LANG=en_US.UTF-8 python2.6 manage.py compress_assets")
 
-@task
-def schematic(ctx):
-    with ctx.lcd(settings.SRC_DIR):
-        ctx.local("python2.6 ./vendor/src/schematic/schematic migrations")
 
 @task
 def south(ctx):
@@ -64,10 +60,12 @@ def deploy_app(ctx):
     ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
     ctx.remote("/bin/touch %s" % settings.REMOTE_WSGI)
 
+
 @hostgroups(settings.WEB_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
 def prime_app(ctx):
     for http_port in range(80, 82):
         ctx.remote("for i in {1..10}; do curl -so /dev/null -H 'Host: %s' -I http://localhost:%s/ & sleep 1; done" % (settings.REMOTE_HOSTNAME, http_port))
+
 
 @hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
 def update_celery(ctx):
@@ -83,7 +81,7 @@ def update_info(ctx):
         ctx.local("git log -3")
         ctx.local("git status")
         ctx.local("git submodule status")
-        ctx.local("python ./vendor/src/schematic/schematic -v migrations/")
+        ctx.local("python ./manage.py migrate --db-dry-run")
         with ctx.lcd("locale"):
             ctx.local("svn info")
             ctx.local("svn status")
@@ -103,12 +101,14 @@ def update(ctx):
     south()
     banners_htaccess()
 
+
 @task
 def deploy(ctx):
     checkin_changes()
     deploy_app()
     prime_app()
     update_celery()
+
 
 @task
 def update_affiliates(ctx, tag):
