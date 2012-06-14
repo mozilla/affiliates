@@ -13,12 +13,12 @@ class AdminModelFormTests(TestCase):
         Test that any LocaleFields in the form use English labels for the
         field choices.
         """
-        class TestModel(models.Model):
+        class TestLocaleFieldModel(models.Model):
             locale = LocaleField()
 
         class TestForm(AdminModelForm):
             class Meta:
-                model = TestModel
+                model = TestLocaleFieldModel
 
         f = TestForm()
         labels = dict(f.fields['locale'].choices)
