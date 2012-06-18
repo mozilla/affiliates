@@ -14,9 +14,6 @@ class Migration(SchemaMigration):
         # Deleting field 'ClickStats.month'
         db.delete_column('badges_clickstats', 'month')
 
-        # Adding unique constraint on 'ClickStats', fields ['badge_instance', 'datetime']
-        db.create_unique('badges_clickstats', ['badge_instance_id', 'datetime'])
-
 
     def backwards(self, orm):
 
@@ -25,9 +22,6 @@ class Migration(SchemaMigration):
 
         # Adding field 'ClickStats.month'
         db.add_column('badges_clickstats', 'month', self.gf('django.db.models.fields.IntegerField')(default=1), keep_default=False)
-
-        # Adding unique constraint on 'ClickStats', fields ['badge_instance']
-        db.create_unique('badges_clickstats', ['badge_instance_id'])
 
 
     models = {

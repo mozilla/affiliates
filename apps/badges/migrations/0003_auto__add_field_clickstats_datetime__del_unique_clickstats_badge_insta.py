@@ -14,8 +14,14 @@ class Migration(SchemaMigration):
         # Adding field 'ClickStats.datetime'
         db.add_column('badges_clickstats', 'datetime', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 4, 16, 16, 3, 36, 559485)), keep_default=False)
 
+        # Adding unique constraint on 'ClickStats', fields ['badge_instance', 'datetime']
+        db.create_unique('badges_clickstats', ['badge_instance_id', 'datetime'])
+
 
     def backwards(self, orm):
+
+        # Removing unique constraint on 'ClickStats', fields ['badge_instance', 'datetime']
+        db.delete_unique('badges_clickstats', ['badge_instance_id', 'datetime'])
 
         # Deleting field 'ClickStats.datetime'
         db.delete_column('badges_clickstats', 'datetime')
