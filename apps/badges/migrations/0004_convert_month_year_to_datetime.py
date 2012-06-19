@@ -10,6 +10,7 @@ class Migration(DataMigration):
         """Convert month/year fields values to a datetime."""
         for clickstats in orm.ClickStats.objects.all():
             clickstats.datetime = datetime.datetime(clickstats.year, clickstats.month, 1)
+            clickstats.save()
 
     def backwards(self, orm):
         """Repopulate month and year fields from datetime values."""
@@ -17,6 +18,7 @@ class Migration(DataMigration):
             dt = clickstats.datetime
             clickstats.year = dt.year
             clickstats.month = dt.month
+            clickstats.save()
 
 
     models = {
