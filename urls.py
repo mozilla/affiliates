@@ -1,3 +1,5 @@
+from urlparse import urlparse
+
 from django.conf import settings
 from django.conf.urls.defaults import include, patterns
 from django.contrib.admin import autodiscover
@@ -18,6 +20,8 @@ urlpatterns = patterns('',
     (r'', include('banners.urls')),
     (r'^accounts/', include('users.urls')),
     (r'^browserid/', include('browserid.urls')),
+    (r'^fb/', include('facebook.urls')),
+
 
     (r'^admin/', include('smuggler.urls')),
     (r'^admin/', include(admin.site.urls)),
@@ -25,8 +29,8 @@ urlpatterns = patterns('',
 
 ## In DEBUG mode, serve media files through Django.
 if settings.DEBUG or settings.SERVE_MEDIA:
-    # Remove leading and trailing slashes so the regex matches.
-    media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
+    # Remove host, leading and trailing slashes so the regex matches.
+    media_url = urlparse(settings.MEDIA_URL).path.lstrip('/').rstrip('/')
     urlpatterns += patterns('',
         (r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
          {'document_root': settings.MEDIA_ROOT}),

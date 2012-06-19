@@ -64,7 +64,7 @@ DEFAULT_BADGE_PREVIEW = MEDIA_URL + 'img/template/default-preview.png'
 CDN_DOMAIN = None
 
 # Paths that do not need a locale
-SUPPORTED_NONLOCALES += ['link', 'admin']
+SUPPORTED_NONLOCALES += ['link', 'admin', 'fb']
 
 # URL to redirect to on affiliate link errors
 DEFAULT_AFFILIATE_LINK = 'http://mozilla.org'
@@ -162,6 +162,11 @@ MINIFY_BUNDLES = {
         'browserid': (
             'js/browserid.js',
         ),
+
+        # Facebook app
+        'fb_oauth_redirect': (
+            'js/facebook/oauth_redirect.js',
+        ),
     }
 }
 
@@ -170,6 +175,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'badges',
     'banners',
     'browserid',
+    'facebook',
     'shared',
     'news',
     'users',
@@ -271,3 +277,6 @@ FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affau
 # Bug 719522
 # List of hashes of banner images for upgrade campaign
 BANNERS_HASH = []
+
+# Settings for Affiliates Facebook app
+FACEBOOK_PERMISSIONS = ''

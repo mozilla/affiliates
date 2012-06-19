@@ -1,6 +1,8 @@
 # This is an example settings_local.py file.
 # Copy it and add your local settings here.
 
+from urlparse import urljoin
+
 from .base import *
 
 
@@ -72,6 +74,7 @@ RESPONSYS_CAMPAIGN = 'MOZILLA_AND_YOU'
 
 SITE_ID = 2
 SITE_URL = 'http://localhost:8000'
+MEDIA_URL = urljoin(SITE_URL, MEDIA_URL)
 
 # Uncomment to configure statsd
 # STATSD_CLIENT = 'django_statsd.clients.statsd'
@@ -85,3 +88,8 @@ SITE_URL = 'http://localhost:8000'
 #    '299839978f965e3b17d926572f91b4fbc340896c',
 #    '5f5e8cc58fac3f658fca66be259590ea42963aa8',
 #)
+
+# Settings for Affiliates Facebook app
+#FACEBOOK_APP_ID = ''
+#FACEBOOK_APP_SECRET = ''
+#FACEBOOK_APP_NAMESPACE = ''
