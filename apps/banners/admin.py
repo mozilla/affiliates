@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 from funfactory.admin import site
-from funfactory.urlresolvers import reverse
 
 from badges.admin import BadgePreviewInline
 from badges.models import ClickStats
@@ -43,10 +42,7 @@ class BannerInstanceAdmin(BaseModelAdmin):
     search_fields = ('badge', 'user')
 
     def user_display_name(self, instance):
-        user = instance.user
-        url = reverse('admin:auth_user_change', args=[user.id])
-        return '<a href="%s">%s</a>' % (url, user.userprofile.display_name)
-    user_display_name.allow_tags = True
+        return instance.user.userprofile.display_name
 
 site.register(BannerInstance, BannerInstanceAdmin)
 
