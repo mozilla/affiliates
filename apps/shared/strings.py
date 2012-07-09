@@ -18,6 +18,14 @@ _('Firefox Affiliates has been live for a while now, but we need your '
   'familiar with HTML, CSS, Python or Django and want to get involved with '
   'Mozilla, please contact us at affiliates@mozilla.org .')
 
+_('Tell the world about Firefox for Android')
+_('Firefox for Android is here and we\'d like your help in spreading the '
+  'word. Just create a Firefox for Android banner and add it to your site in '
+  'one of more than 30 languages. The affiliate responsible for '
+  'the most Firefox for Android clicks will get a Firefox hoodie. If have '
+  'ideas for other buttons or want to help with Firefox Affiliates, please '
+  'contact us at affiliates@mozilla.org .')
+
 # Categories
 _('Firefox')
 _('Mozilla')
