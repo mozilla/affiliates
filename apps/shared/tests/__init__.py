@@ -10,9 +10,10 @@ from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
 import test_utils
-from tower import activate
 from funfactory.urlresolvers import (get_url_prefix, Prefixer, reverse,
                                      set_url_prefix)
+from nose.tools import ok_
+from tower import activate
 
 from browserid.tests import mock_browserid
 
@@ -61,6 +62,14 @@ class TestCase(test_utils.TestCase):
             request = factory.get(reverse('home'))
         with mock_browserid(email):
             self.client.login(request=request, assertion='asdf')
+
+    def assert_viewname_url(self, url, viewname, locale='en-US'):
+        """Compare a viewname's url to a given url."""
+        with self.activate(locale):
+            view_url = reverse(viewname)
+
+        return ok_(url.endswith(view_url),
+                   'URL Match failed: %s != %s' % (url, view_url))
 
 
 class ModelsTestCase(TestCase):

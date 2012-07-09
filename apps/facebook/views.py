@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
-import commonware.log
 import jingo
 from commonware.response.decorators import xframe_allow
 
@@ -11,9 +11,7 @@ from facebook.utils import decode_signed_request
 from shared.utils import redirect
 
 
-log = commonware.log.getLogger('a.facebook')
-
-
+@require_POST
 @csrf_exempt
 @xframe_allow
 def load_app(request):
@@ -26,7 +24,6 @@ def load_app(request):
     decoded_request = decode_signed_request(signed_request,
                                             settings.FACEBOOK_APP_SECRET)
     if decoded_request is None:
-        log.warning('Signed request was invalid: {0}'.format(signed_request))
         return redirect('home')
 
     user = (FacebookUser.objects.
@@ -40,4 +37,5 @@ def load_app(request):
         }
         return jingo.render(request, 'facebook/oauth_redirect.html', context)
 
+    # TODO: Replace with actual app landing page.
     return HttpResponse('Yay!')
