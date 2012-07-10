@@ -22,7 +22,7 @@ _('Tell the world about Firefox for Android')
 _('Firefox for Android is here and we\'d like your help in spreading the '
   'word. Just create a Firefox for Android banner and add it to your site in '
   'one of more than 30 languages. The affiliate responsible for '
-  'the most Firefox for Android clicks will get a Firefox hoodie. If have '
+  'the most Firefox for Android clicks will get a Firefox hoodie. If you have '
   'ideas for other buttons or want to help with Firefox Affiliates, please '
   'contact us at affiliates@mozilla.org .')
 
