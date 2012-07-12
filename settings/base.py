@@ -102,11 +102,13 @@ CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
 CSP_SCRIPT_SRC = (
     '\'self\'',
     'https://browserid.org',
+    'https://login.persona.org',
     'https://statse.webtrendslive.com'
 )
 CSP_FRAME_SRC = (
     '\'self\'',
-    'https://browserid.org'
+    'https://browserid.org',
+    'https://login.persona.org'
 )
 CSP_IMG_SRC = (
     '\'self\'',
