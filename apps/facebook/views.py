@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 import jingo
 from commonware.response.decorators import xframe_allow
 
+from facebook.auth import login
 from facebook.models import FacebookUser
 from facebook.utils import decode_signed_request
 from shared.utils import redirect
@@ -26,7 +27,7 @@ def load_app(request):
     if decoded_request is None:
         return redirect('home')
 
-    user = (FacebookUser.objects.
+    user, created = (FacebookUser.objects.
             get_or_create_user_from_decoded_request(decoded_request))
     if user is None:
         # User has yet to authorize the app, offer authorization.
@@ -36,6 +37,12 @@ def load_app(request):
             'app_permissions': settings.FACEBOOK_PERMISSIONS
         }
         return jingo.render(request, 'facebook/oauth_redirect.html', context)
+
+    # User has been authed, let's log them in.
+    login(request, user)
+
+    if user.is_new:
+        return jingo.render(request, 'facebook/first_run.html')
 
     # TODO: Replace with actual app landing page.
     return HttpResponse('Yay!')

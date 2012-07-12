@@ -15,6 +15,6 @@ class FacebookUserManager(CachingManager):
         """
         user_id = decoded_request.get('user_id', None)
         if user_id is None:
-            return None
+            return None, False
 
-        return self.get_or_create(user_id=user_id)
+        return self.get_or_create(id=user_id)

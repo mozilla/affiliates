@@ -200,6 +200,7 @@ MIDDLEWARE_CLASSES = [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
+    'facebook.middleware.FacebookAuthenticationMiddleware',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
@@ -280,3 +281,4 @@ BANNERS_HASH = []
 
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
+FACEBOOK_BANNER_IMAGE_PATH = 'uploads/facebook/banners/'
