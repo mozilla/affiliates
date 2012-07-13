@@ -1,4 +1,4 @@
-import locale
+from locale import strcoll as locale_strcoll
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -9,6 +9,14 @@ import tower
 from babel.core import Locale, UnknownLocaleError
 from funfactory.urlresolvers import reverse
 from product_details import product_details
+
+
+product_languages_lower = dict((locale.lower(), data) for locale, data in
+                               product_details.languages.items())
+"""
+Stores info about languages from product_details using lower-cased locale names
+(because the DB stores locales in that format).
+"""
 
 
 def absolutify(url, https=False, cdn=False):
@@ -31,7 +39,7 @@ def unicode_choice_sorted(choices):
     """
     Sorts a list of 2-tuples by the second value, using a unicode-safe sort.
     """
-    return sorted(choices, cmp=lambda x, y: locale.strcoll(x[1], y[1]))
+    return sorted(choices, cmp=lambda x, y: locale_strcoll(x[1], y[1]))
 
 
 def country_choices():

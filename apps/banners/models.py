@@ -15,7 +15,8 @@ from badges.models import Badge, BadgeInstance
 from banners import COLOR_CHOICES
 from shared.models import LocaleField, ModelBase
 from shared.storage import OverwritingStorage
-from shared.utils import absolutify, ugettext_locale as _locale
+from shared.utils import (absolutify, product_languages_lower,
+                          ugettext_locale as _locale)
 
 
 # L10n: Width and height are the width and height of an image.
@@ -58,7 +59,7 @@ class BannerImageManager(CachingManager):
             'area': img.image.width * img.image.height,
             'color': img.color,
             'url': img.image.url,
-            'language': settings.LANGUAGES[img.locale]
+            'language': product_languages_lower[img.locale]['native']
             } for img in self.filter(**kwargs)]
 
 
