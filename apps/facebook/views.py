@@ -16,7 +16,10 @@ from shared.utils import redirect
 @csrf_exempt
 @xframe_allow
 def load_app(request):
-    """Handles initial request when app is loaded."""
+    """
+    Create or authenticate the Facebook user and direct them to the correct
+    area of the app upon their entry.
+    """
     signed_request = request.POST.get('signed_request', None)
     if signed_request is None:
         # App wasn't loaded within a canvas, redirect to the home page.

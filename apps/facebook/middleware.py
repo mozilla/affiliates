@@ -3,7 +3,7 @@ from facebook.models import FacebookUser
 
 
 class FacebookAuthenticationMiddleware(object):
-    """Handles loading data about the currently-logged-in Facebook app user."""
+    """Load data about the currently-logged-in Facebook app user."""
 
     def process_request(self, request):
         if SESSION_KEY in request.session:

@@ -1,5 +1,9 @@
 from time import time
 
+from factory import Factory, Sequence
+
+from facebook.models import FacebookUser
+
 
 def create_payload(user_id=None, algorithm='HMAC-SHA256', country='us',
                    locale='en_US'):
@@ -16,3 +20,8 @@ def create_payload(user_id=None, algorithm='HMAC-SHA256', country='us',
     if user_id:
         payload['user_id'] = user_id
     return payload
+
+
+class FacebookUserFactory(Factory):
+    FACTORY_FOR = FacebookUser
+    id = Sequence(lambda n: 'test%s' % n)

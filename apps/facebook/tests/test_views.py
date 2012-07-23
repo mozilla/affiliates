@@ -2,6 +2,7 @@ from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 
+from facebook.models import FacebookUser
 from facebook.tests import create_payload
 from shared.tests import TestCase
 
@@ -53,10 +54,23 @@ class LoadAppTests(TestCase):
         ok_('facebook/oauth_redirect.html' in templates, 'oauth_redirect.html '
             'not found in template list: {0}.'.format(templates))
 
+    @patch.object(FacebookUser, 'is_new', False)
     def test_has_authorization(self):
-        """If the user has authorized the app, show the main banner view."""
+        """
+        If the user has authorized the app and isn't new, show the main
+        banner view.
+        """
         # TODO: Update this when we actually have a main banner view. :D
         payload = create_payload(user_id=1)
         response = self.load_app(payload)
         eq_(response.status_code, 200)
         eq_(response.content, 'Yay!')
+
+    @patch.object(FacebookUser, 'is_new', True)
+    def test_firstrun_page(self):
+        """If the user is new, show the firstrun page."""
+        payload = create_payload(user_id=1)
+        response = self.load_app(payload)
+        templates = [t.name for t in response.templates]
+        ok_('facebook/first_run.html' in templates, 'first_run.html not found '
+            'in template list: {0}'.format(templates))

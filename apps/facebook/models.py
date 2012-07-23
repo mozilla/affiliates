@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -12,8 +13,8 @@ from shared.storage import OverwritingStorage
 
 
 class FacebookUser(CachingMixin, ModelBase):
-    """Stores information about a user from the Facebook app."""
-    id = models.CharField(max_length=128, primary_key=True, default='')
+    """Represent a user of the Facebook app."""
+    id = models.CharField(max_length=128, primary_key=True)
     affiliates_user = models.ForeignKey(User, null=True)
 
     objects = FacebookUserManager()
@@ -25,7 +26,7 @@ class FacebookUser(CachingMixin, ModelBase):
 
 
 def fb_banner_rename(instance, filename):
-    """Determines the filename for FacebookBanner images."""
+    """Determine the filename for FacebookBanner images."""
     extension = os.path.splitext(filename)[1]
     new_filename = '{0}_{1}.{2}'.format(instance.id, instance.locale, extension)
     return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
@@ -46,6 +47,6 @@ class FacebookBannerInstance(ModelBase):
     text = models.CharField(max_length=256)
     can_be_an_ad = models.BooleanField(default=False)
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.now)
     total_clicks = models.IntegerField()
     leaderboard_position = models.IntegerField()

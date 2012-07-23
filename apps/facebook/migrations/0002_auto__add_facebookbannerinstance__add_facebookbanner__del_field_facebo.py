@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
-from django.db import models
 
 
 class Migration(SchemaMigration):
@@ -37,20 +35,18 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.CharField')(default='', max_length=128, primary_key=True),
                       keep_default=False)
 
-
     def backwards(self, orm):
+        # User chose to not deal with backwards NULL issues for 'FacebookUser.user_id'
+        raise RuntimeError("Cannot reverse this migration. 'FacebookUser.user_id' and its values cannot be restored.")
+
         # Deleting model 'FacebookBannerInstance'
         db.delete_table('facebook_facebookbannerinstance')
 
         # Deleting model 'FacebookBanner'
         db.delete_table('facebook_facebookbanner')
 
-
-        # User chose to not deal with backwards NULL issues for 'FacebookUser.user_id'
-        raise RuntimeError("Cannot reverse this migration. 'FacebookUser.user_id' and its values cannot be restored.")
         # Deleting field 'FacebookUser.id'
         db.delete_column('facebook_facebookuser', 'id')
-
 
     models = {
         'auth.group': {
