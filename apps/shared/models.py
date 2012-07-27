@@ -4,12 +4,11 @@ from django.db import models
 from product_details import product_details
 from tower import ugettext as _
 
-from shared.utils import unicode_choice_sorted
 
-
-LANGUAGE_CHOICES = unicode_choice_sorted([(key.lower(), value['native'])
-                                          for key, value in
-                                          product_details.languages.items()])
+ENGLISH_LANGUAGE_CHOICES = sorted(
+    [(key.lower(), u'{0} ({1})'.format(key, value['English']))
+     for key, value in product_details.languages.items()]
+)
 
 
 class ModelBase(models.Model):
@@ -58,7 +57,7 @@ class LocaleField(models.CharField):
                    'defaults.')
 
     def __init__(self, max_length=32, default=settings.LANGUAGE_CODE,
-                 choices=LANGUAGE_CHOICES, *args, **kwargs):
+                 choices=ENGLISH_LANGUAGE_CHOICES, *args, **kwargs):
         return super(LocaleField, self).__init__(
             max_length=max_length, default=default, choices=choices,
             *args, **kwargs)
