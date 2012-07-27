@@ -35,7 +35,7 @@ class FacebookUser(CachingMixin, ModelBase):
 def fb_banner_rename(instance, filename):
     """Determine the filename for FacebookBanner images."""
     extension = os.path.splitext(filename)[1]
-    new_filename = '{0}_{1}.{2}'.format(instance.id, instance.locale, extension)
+    new_filename = '{0}{1}'.format(slugify(instance.name), extension)
     return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
 
 
@@ -61,5 +61,5 @@ class FacebookBannerInstance(ModelBase):
     can_be_an_ad = models.BooleanField(default=False)
 
     created = models.DateTimeField(default=datetime.now)
-    total_clicks = models.IntegerField()
-    leaderboard_position = models.IntegerField()
+    total_clicks = models.IntegerField(default=0)
+    leaderboard_position = models.IntegerField(default=-1)
