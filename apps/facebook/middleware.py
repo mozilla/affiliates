@@ -11,4 +11,4 @@ class FacebookAuthenticationMiddleware(object):
                 user = FacebookUser.objects.get(id=request.session[SESSION_KEY])
             except FacebookUser.DoesNotExist:
                 return None
-            request.fb_user = user
+            request.user = user

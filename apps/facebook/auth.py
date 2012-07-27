@@ -18,5 +18,5 @@ def login(request, user):
         # Logging in, create a new session key.
         request.session.cycle_key()
     request.session[SESSION_KEY] = user.id
-    request.fb_user = user
+    request.user = user
     user_logged_in.send(sender=user.__class__, request=request, user=user)

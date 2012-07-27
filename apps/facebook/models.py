@@ -24,6 +24,12 @@ class FacebookUser(CachingMixin, ModelBase):
         """A user is new if they have yet to create a Facebook banner."""
         return not self.banner_instance_set.exists()
 
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
 
 def fb_banner_rename(instance, filename):
     """Determine the filename for FacebookBanner images."""

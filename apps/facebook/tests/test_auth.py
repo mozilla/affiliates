@@ -52,15 +52,15 @@ class LoginTests(TestCase):
         login(request, user)
         ok_(request.session.session_key != old_key)
 
-    def test_request_fb_user(self):
+    def test_request_user(self):
         """
-        After a user is logged in, the fb_user attribute should be set on the
+        After a user is logged in, the user attribute should be set on the
         request object.
         """
         request = self.request()
         user = FacebookUserFactory()
         login(request, user)
-        eq_(request.fb_user, user)
+        eq_(request.user, user)
 
     def test_user_logged_in_signal(self):
         mock_signal = Mock(spec=lambda x: x)

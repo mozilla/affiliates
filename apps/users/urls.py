@@ -1,7 +1,7 @@
 from django.contrib.auth.views import logout
 from django.conf.urls.defaults import patterns, url
 
-from badges.utils import reverse_lazy
+from shared.utils import reverse_lazy
 from users import views
 
 

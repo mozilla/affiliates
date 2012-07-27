@@ -3,6 +3,7 @@ from locale import strcoll as locale_strcoll
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.utils.functional import lazy
 from django.utils.translation import get_language
 
 import tower
@@ -89,3 +90,6 @@ def ugettext_locale(message, locale):
     tower.activate(old_locale)
 
     return text
+
+
+reverse_lazy = lazy(reverse, str)

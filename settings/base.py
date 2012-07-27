@@ -200,8 +200,12 @@ MIDDLEWARE_CLASSES = [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
-    'facebook.middleware.FacebookAuthenticationMiddleware',
 ]
+
+# Facebook auth middleware needs to come after AuthMiddleware but before
+# session-csrf middleware so that it will generate csrf tokens.
+auth_index = MIDDLEWARE_CLASSES.index('django.contrib.auth.middleware.AuthenticationMiddleware')
+MIDDLEWARE_CLASSES.insert(auth_index + 1, 'facebook.middleware.FacebookAuthenticationMiddleware')
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'shared.context_processors.l10n'
