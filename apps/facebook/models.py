@@ -4,6 +4,7 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from caching.base import CachingMixin
 
@@ -45,6 +46,10 @@ class FacebookBanner(ModelBase):
     image = models.ImageField(upload_to=fb_banner_rename,
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)
+
+
+class FacebookBannerLocale(ModelBase):
+    banner = models.ForeignKey(FacebookBanner, related_name='locale_set')
     locale = LocaleField()
 
 
