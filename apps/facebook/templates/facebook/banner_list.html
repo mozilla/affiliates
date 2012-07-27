@@ -1,0 +1,13 @@
+{% extends 'facebook/base.html' %}
+
+{% block content %}
+  <h1>My Banners</h1>
+  <ol>
+    {% for banner_instance in banner_instances %}
+      <li>
+        <img src="{{ banner_instance.banner.image.url }}">
+        <p>{{ banner_instance.text }}</p>
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}

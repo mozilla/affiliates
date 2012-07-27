@@ -7,6 +7,8 @@ import jingo
 from commonware.response.decorators import xframe_allow
 
 from facebook.auth import login
+from facebook.decorators import fb_login_required
+from facebook.forms import FacebookBannerInstanceForm
 from facebook.models import FacebookUser
 from facebook.utils import decode_signed_request
 from shared.utils import redirect
@@ -48,4 +50,25 @@ def load_app(request):
         return jingo.render(request, 'facebook/first_run.html')
 
     # TODO: Replace with actual app landing page.
-    return HttpResponse('Yay!')
+    return banner_list(request)
+
+
+@fb_login_required
+@xframe_allow
+def create_banner(request):
+    form = FacebookBannerInstanceForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        banner_instance = form.save(commit=False)
+        banner_instance.user = request.user
+        banner_instance.save()
+        return banner_list(request)
+
+    return jingo.render(request, 'facebook/create_banner.html', {'form': form})
+
+
+@fb_login_required
+@xframe_allow
+def banner_list(request):
+    banner_instances = request.user.banner_instance_set.all()
+    return jingo.render(request, 'facebook/banner_list.html',
+                        {'banner_instances': banner_instances})

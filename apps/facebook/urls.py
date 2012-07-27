@@ -1,6 +1,10 @@
 from django.conf.urls.defaults import patterns, url
 
+from facebook import views
+
 
 urlpatterns = patterns('facebook.views',
-    url(r'^/?', 'load_app', name='facebook.load_app'),
+    url(r'^/?$', views.load_app, name='facebook.load_app'),
+    url(r'^create_banner/?$', views.create_banner, name='facebook.create_banner'),
+    url(r'^banner_list/?$', views.banner_list, name='facebook.banner_list'),
 )

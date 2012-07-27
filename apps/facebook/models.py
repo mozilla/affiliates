@@ -34,6 +34,8 @@ def fb_banner_rename(instance, filename):
 
 class FacebookBanner(ModelBase):
     """A banner that users can customize and share on Facebook."""
+    name = models.CharField(max_length=255, default='Banner', unique=True,
+                            verbose_name='Banner name')
     image = models.ImageField(upload_to=fb_banner_rename,
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)

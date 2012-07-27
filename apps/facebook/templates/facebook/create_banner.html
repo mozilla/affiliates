@@ -1,0 +1,19 @@
+{% extends 'facebook/base.html' %}
+
+{% block content %}
+  <h1>Create a Banner</h1>
+  <form method="post">
+    {{ csrf() }}
+    <ul>
+      {% for field_key in ['banner', 'text', 'can_be_an_ad'] %}
+        {% set field = form[field_key] %}
+        <li>
+          {{ field.label_tag() }}
+          {{ field }}
+          {{ field.errors }}
+        </li>
+      {% endfor %}
+    </ul>
+    <button type="submit">Create Banner &raquo;</button>
+  </form>
+{% endblock %}
