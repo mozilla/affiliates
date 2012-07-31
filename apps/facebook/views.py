@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -56,7 +55,7 @@ def load_app(request):
 @fb_login_required
 @xframe_allow
 def create_banner(request):
-    form = FacebookBannerInstanceForm(request.POST or None)
+    form = FacebookBannerInstanceForm(request, request.POST or None)
     if request.method == 'POST' and form.is_valid():
         banner_instance = form.save(commit=False)
         banner_instance.user = request.user

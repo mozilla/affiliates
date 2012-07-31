@@ -25,6 +25,14 @@ class FacebookUser(CachingMixin, ModelBase):
         """A user is new if they have yet to create a Facebook banner."""
         return not self.banner_instance_set.exists()
 
+    # The next few methods and properties are useful for pretending to be a real
+    # Django user object.
+
+    @property
+    def is_active(self):
+        """Assume Facebook users are always active... for now."""
+        return True
+
     def is_authenticated(self):
         return True
 

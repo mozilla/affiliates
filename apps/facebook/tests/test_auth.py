@@ -22,7 +22,7 @@ class LoginTests(TestCase):
         """
         Create a mock request object.
         """
-        request = self.factory.get('/')
+        request = self.factory.get(url)
         session_middleware.process_request(request)
         return request
 

@@ -16,6 +16,7 @@ from nose.tools import ok_
 from tower import activate
 
 from browserid.tests import mock_browserid
+from facebook.tests import FacebookAuthClient
 
 
 class BrokenSMTPBackend(BaseEmailBackend):
@@ -43,6 +44,8 @@ class SessionRequestFactory(RequestFactory):
 
 class TestCase(test_utils.TestCase):
     """Base class for Affiliates test cases."""
+    client_class = FacebookAuthClient
+
     @contextmanager
     def activate(self, locale):
         """Context manager that temporarily activates a locale."""

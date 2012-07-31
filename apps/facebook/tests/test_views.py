@@ -2,8 +2,9 @@ from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 
-from facebook.models import FacebookUser
-from facebook.tests import create_payload
+from facebook.models import FacebookBannerInstance, FacebookUser
+from facebook.tests import (create_payload, FacebookBannerFactory,
+                            FacebookUserFactory)
 from shared.tests import TestCase
 
 
@@ -50,9 +51,7 @@ class LoadAppTests(TestCase):
         """
         payload = create_payload(user_id=None)
         response = self.load_app(payload)
-        templates = [t.name for t in response.templates]
-        ok_('facebook/oauth_redirect.html' in templates, 'oauth_redirect.html '
-            'not found in template list: {0}.'.format(templates))
+        self.assertTemplateUsed(response, 'facebook/oauth_redirect.html')
 
     @patch.object(FacebookUser, 'is_new', False)
     def test_has_authorization(self):
@@ -60,17 +59,42 @@ class LoadAppTests(TestCase):
         If the user has authorized the app and isn't new, show the main
         banner view.
         """
-        # TODO: Update this when we actually have a main banner view. :D
         payload = create_payload(user_id=1)
         response = self.load_app(payload)
-        eq_(response.status_code, 200)
-        eq_(response.content, 'Yay!')
+        self.assertTemplateUsed(response, 'facebook/banner_list.html')
 
     @patch.object(FacebookUser, 'is_new', True)
     def test_firstrun_page(self):
         """If the user is new, show the firstrun page."""
         payload = create_payload(user_id=1)
         response = self.load_app(payload)
-        templates = [t.name for t in response.templates]
-        ok_('facebook/first_run.html' in templates, 'first_run.html not found '
-            'in template list: {0}'.format(templates))
+        self.assertTemplateUsed(response, 'facebook/first_run.html')
+
+
+class CreateBannerTests(TestCase):
+    def setUp(self):
+        self.user = FacebookUserFactory.create()
+        self.client.fb_login(self.user)
+
+    def create_banner(self, **post_data):
+        """Execute create_banner view. kwargs are POST arguments."""
+        with self.activate('en-US'):
+            return self.client.post(reverse('facebook.create_banner'),
+                                    post_data)
+
+    def test_invalid_form(self):
+        """If the form is invalid, redisplay it."""
+        response = self.create_banner(banner='asdf')
+        self.assertTemplateUsed(response, 'facebook/create_banner.html')
+
+    def test_valid_form(self):
+        """
+        If the form is valid, create a new banner instance and show the banner
+        list.
+        """
+        banner = FacebookBannerFactory.create()
+        response = self.create_banner(banner=banner.id, text='asdf')
+
+        ok_(FacebookBannerInstance.objects.filter(banner=banner, text='asdf')
+            .exists())
+        self.assertTemplateUsed(response, 'facebook/banner_list.html')
