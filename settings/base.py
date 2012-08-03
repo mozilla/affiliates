@@ -208,7 +208,8 @@ auth_index = MIDDLEWARE_CLASSES.index('django.contrib.auth.middleware.Authentica
 MIDDLEWARE_CLASSES.insert(auth_index + 1, 'facebook.middleware.FacebookAuthenticationMiddleware')
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
-    'shared.context_processors.l10n'
+    'shared.context_processors.l10n',
+    'facebook.context_processors.shared_settings',
 ]
 
 # Add Jingo loader
@@ -286,3 +287,12 @@ BANNERS_HASH = []
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
 FACEBOOK_BANNER_IMAGE_PATH = 'uploads/facebook/banners/'
+FACEBOOK_DOWNLOAD_URL = 'https://www.mozilla.org/firefox'
+
+
+# FACEBOOK_APP_URL is lazily evaluated because it depends on the namespace
+# setting in local settings.
+def facebook_app_url_lazy():
+    from django.conf import settings
+    return '//apps.facebook.com/%s' % settings.FACEBOOK_APP_NAMESPACE
+FACEBOOK_APP_URL = lazy(facebook_app_url_lazy, str)()
