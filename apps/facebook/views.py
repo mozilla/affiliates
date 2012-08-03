@@ -1,16 +1,18 @@
 from django.conf import settings
+from django.shortcuts import redirect as django_redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 import jingo
 from commonware.response.decorators import xframe_allow
+from funfactory.urlresolvers import reverse
 
 from facebook.auth import login
 from facebook.decorators import fb_login_required
 from facebook.forms import FacebookBannerInstanceForm
 from facebook.models import FacebookUser
 from facebook.utils import decode_signed_request
-from shared.utils import redirect
+from shared.utils import absolutify, redirect
 
 
 @require_POST
@@ -69,5 +71,15 @@ def create_banner(request):
 @xframe_allow
 def banner_list(request):
     banner_instances = request.user.banner_instance_set.all()
-    return jingo.render(request, 'facebook/banner_list.html',
-                        {'banner_instances': banner_instances})
+    post_banner_share_url = absolutify(reverse('facebook.post_banner_share'),
+                                       https=request.is_secure())
+    ctx = {'banner_instances': banner_instances,
+           'post_banner_share_url': post_banner_share_url}
+    return jingo.render(request, 'facebook/banner_list.html', ctx)
+
+
+def post_banner_share(request):
+    """
+    Redirect user back to the app after they've posted a banner to their feed.
+    """
+    return django_redirect(settings.FACEBOOK_APP_URL)

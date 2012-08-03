@@ -1,12 +1,26 @@
 {% extends 'facebook/base.html' %}
 
+{% block site_js %}
+  {{ super() }}
+  {{ js('fb_banner_list') }}
+{% endblock %}
+
 {% block content %}
   <h1>My Banners</h1>
-  <ol>
+  <ol class="banner-list"
+      data-feed-redirect-uri="{{ post_banner_share_url }}">
     {% for banner_instance in banner_instances %}
       <li>
         <img src="{{ banner_instance.banner.image.url }}">
         <p>{{ banner_instance.text }}</p>
+        <p>
+          <a class="post-to-wall"
+             data-img="{{ banner_instance.banner.image.url }}"
+             data-text="{{ banner_instance.text }}"
+             href="#">
+             Post to Wall
+          </a>
+        </p>
       </li>
     {% endfor %}
   </ol>
