@@ -3,19 +3,21 @@
 
     // Redirect the frame to the Feed Dialog when a "Post to Wall" link is
     // clicked.
-    $(document).on('click', '.post-to-wall', function(e) {
+    $(document).on('click', '.share-banner', function(e) {
         e.preventDefault();
 
-        var $link = $(this);
-        var $body = $('body');
+        // Link contains link-specific data, banner_list contains page-specific
+        // data, and body contains site-wide data.
+        var $share_link = $(this);
         var $banner_list = $('.banner-list');
+        var $body = $('body');
 
         var params = $.param({
             app_id: $body.data('appId'),
+            picture: $share_link.data('img'),
+            description: $link.data('text'),
             link: $body.data('fxDownloadUrl'),
-            redirect_uri: $banner_list.data('feedRedirectUri'),
-            picture: $link.data('img'),
-            description: $link.data('text')
+            redirect_uri: $banner_list.data('shareBannerRedirect')
         });
 
         window.top.location = FEED_URL + '?' + params;

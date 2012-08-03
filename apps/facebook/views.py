@@ -71,10 +71,10 @@ def create_banner(request):
 @xframe_allow
 def banner_list(request):
     banner_instances = request.user.banner_instance_set.all()
-    post_banner_share_url = absolutify(reverse('facebook.post_banner_share'),
+    share_banner_redirect = absolutify(reverse('facebook.post_banner_share'),
                                        https=request.is_secure())
     ctx = {'banner_instances': banner_instances,
-           'post_banner_share_url': post_banner_share_url}
+           'share_banner_redirect': share_banner_redirect}
     return jingo.render(request, 'facebook/banner_list.html', ctx)
 
 
