@@ -20,14 +20,20 @@ Stores info about languages from product_details using lower-cased locale names
 """
 
 
-def absolutify(url, https=False, cdn=False):
+def absolutify(url, https=None, cdn=False):
     """
     Return the given url with an added domain and protocol.
 
     Use https=True for https, cdn=True to use settings.CDN_DOMAIN as
     the domain.
     """
-    protocol = '//' if not https else 'https://'
+    if https is None:
+        protocol = '//'
+    elif https is True:
+        protocol = 'https://'
+    else:
+        protocol = 'http://'
+
     if cdn and settings.CDN_DOMAIN:
         domain = settings.CDN_DOMAIN
     else:

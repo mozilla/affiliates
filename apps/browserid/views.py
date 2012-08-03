@@ -64,7 +64,7 @@ def register(request, form):
             display_name = form.cleaned_data['display_name']
 
             user = User.objects.create_user(username, email)
-            user.is_active = True;
+            user.is_active = True
             user.save()
 
             UserProfile.objects.create(user=user, display_name=display_name)
