@@ -58,7 +58,7 @@ def checkin_changes(ctx):
 @hostgroups(settings.WEB_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
 def deploy_app(ctx):
     ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
-    ctx.remote("/bin/touch %s" % settings.REMOTE_WSGI)
+    ctx.remote("sudo /bin/touch %s" % settings.REMOTE_WSGI)
 
 
 @hostgroups(settings.WEB_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
@@ -70,7 +70,7 @@ def prime_app(ctx):
 @hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
 def update_celery(ctx):
     ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
-    ctx.remote('/sbin/service %s restart' % settings.CELERY_SERVICE)
+    ctx.remote('sudo /sbin/service %s restart' % settings.CELERY_SERVICE)
 
 
 @task
