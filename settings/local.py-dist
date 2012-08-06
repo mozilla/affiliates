@@ -93,3 +93,12 @@ MEDIA_URL = urljoin(SITE_URL, MEDIA_URL)
 #FACEBOOK_APP_ID = ''
 #FACEBOOK_APP_SECRET = ''
 #FACEBOOK_APP_NAMESPACE = ''
+
+# If you're doing local development without a test facebook app, set this to
+# True to wrap the facebook app in an iframe and to mock authentication.
+FACEBOOK_DEBUG = False
+
+# User ID to use for mocking Facebook authentication in debug mode.
+# To get the user id for your Facebook account, visit
+# https://developers.facebook.com/tools/explorer.
+#FACEBOOK_DEBUG_USER_ID = ''

@@ -15,7 +15,7 @@ def lazy_middleware_classes():
     from django.conf import settings
     middleware = settings.STATIC_MIDDLEWARE_CLASSES
 
-    if settings.DEBUG:
+    if settings.DEBUG and not settings.TEST:
         middleware.insert(0, 'facebook.middleware.FacebookDebugMiddleware')
 
     return middleware
