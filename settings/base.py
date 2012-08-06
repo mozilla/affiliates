@@ -26,6 +26,10 @@ def lazy_langs():
 
 LANGUAGES = lazy(lazy_langs, dict)()
 
+# Tells the product_details module where to find our local JSON files.
+# This ultimately controls how LANGUAGES are constructed.
+PROD_DETAILS_DIR = path('lib/product_details_json')
+
 # Email settings
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 
