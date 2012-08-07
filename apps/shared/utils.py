@@ -98,4 +98,4 @@ def ugettext_locale(message, locale):
     return text
 
 
-reverse_lazy = lazy(reverse, str)
+reverse_lazy = lazy(reverse, unicode)

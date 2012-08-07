@@ -203,3 +203,15 @@ class PasswordResetTests(TestCase):
                                                        'uidb36': 1}))
         eq_(response.status_code, 200)
         eq_(response.context['validlink'], False)
+
+
+class LogoutTests(TestCase):
+    def test_logout_redirect(self):
+        """After a user logs out, they should be redirected to the homepage."""
+        User.objects.create_user('logout_test', 'logout_test@example.com',
+                                 'asdf1234')
+        with self.activate('en-US'):
+            self.client.login(username='logout_test@example.com',
+                              password='asdf1234')
+            response = self.client.get(reverse('users.logout'))
+            self.assertRedirects(response, reverse('home'))
