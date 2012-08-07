@@ -15,6 +15,11 @@ class FacebookAuthenticationMiddleware(object):
     """Load data about the currently-logged-in Facebook app user."""
 
     def process_request(self, request):
+        # Exit early if we are not in the Facebook app section of the site to
+        # avoid clashing with the Django auth middleware.
+        if not request.path.startswith('/fb'):
+            return None
+
         if SESSION_KEY in request.session:
             try:
                 user = FacebookUser.objects.get(id=request.session[SESSION_KEY])
