@@ -8,6 +8,7 @@ from mock import patch
 from facebook.auth import SESSION_KEY
 from facebook.models import FacebookUser
 from facebook.tests import create_payload
+from facebook.utils import in_facebook_app
 from facebook.views import load_app
 
 
@@ -17,7 +18,7 @@ class FacebookAuthenticationMiddleware(object):
     def process_request(self, request):
         # Exit early if we are not in the Facebook app section of the site to
         # avoid clashing with the Django auth middleware.
-        if not request.path.startswith('/fb'):
+        if not in_facebook_app(request):
             return None
 
         if SESSION_KEY in request.session:
@@ -44,7 +45,7 @@ class FacebookDebugMiddleware(object):
 
     def process_request(self, request):
         self.is_active = (getattr(settings, 'FACEBOOK_DEBUG', False) and
-                          request.path.startswith('/fb'))
+                          in_facebook_app(request))
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         """Mock in signed_request if user is viewing the login view."""

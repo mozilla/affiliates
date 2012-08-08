@@ -47,3 +47,10 @@ def modified_url_b64decode(b64string):
         b64string = b64string.encode('utf-8')
     b64string = b64string + ('=' * (4 - len(b64string) % 4))
     return base64.b64decode(b64string, '-_')
+
+
+def in_facebook_app(request):
+    """
+    Determine if the given request points to a page within the Facebook app.
+    """
+    return request.path.startswith('/fb')
