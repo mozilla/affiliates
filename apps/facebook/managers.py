@@ -1,4 +1,9 @@
+from django.conf import settings
+from django.contrib.auth.models import User
+
 from caching.base import CachingManager
+
+from shared.tokens import TokenGenerator
 
 
 class FacebookUserManager(CachingManager):
@@ -18,3 +23,32 @@ class FacebookUserManager(CachingManager):
             return None, False
 
         return self.get_or_create(id=user_id)
+
+
+class FacebookAccountLinkManager(CachingManager):
+    def get_token_generator(self, link):
+        return TokenGenerator(link.generate_token_state,
+                              delay=settings.FACEBOOK_LINK_DELAY)
+
+    def create_link(self, facebook_user, affiliates_email):
+        """
+        Attempts to link a FacebookUser to an Affiliates user account. The link
+        has to be confirmed via a link in the verification email before it is
+        finalized.
+        """
+        try:
+            affiliates_user = User.objects.get(email=affiliates_email)
+        except User.DoesNotExist:
+            return False
+
+        # Exit early if the link is already active.
+        link = self.get_or_create(facebook_user=facebook_user,
+                                  affiliates_user=affiliates_user)
+        if link.is_active:
+            return False
+
+        # Even if the link is old, generate a fresh activation code.
+        token_generator = self.get_token_generator(link)
+        link.activation_code = token_generator.generate_token()
+        link.save()
+        return link

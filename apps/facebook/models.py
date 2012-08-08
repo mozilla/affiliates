@@ -16,7 +16,6 @@ from shared.storage import OverwritingStorage
 class FacebookUser(CachingMixin, ModelBase):
     """Represent a user of the Facebook app."""
     id = models.CharField(max_length=128, primary_key=True)
-    affiliates_user = models.ForeignKey(User, null=True)
 
     objects = FacebookUserManager()
 
@@ -38,6 +37,22 @@ class FacebookUser(CachingMixin, ModelBase):
 
     def is_anonymous(self):
         return False
+
+
+class FacebookAccountLink(CachingMixin, ModelBase):
+    """Represents the link between a FacebookUser and normal User account."""
+    facebook_user = models.OneToOneField(FacebookUser,
+                                         related_name='account_link')
+    affiliates_user = models.OneToOneField(User, related_name='account_link')
+    activation_code = models.CharField(max_length=128, blank=True)
+    is_active = models.BooleanField(default=False)
+
+    def generate_token_state(self):
+        """
+        Generate a string for use in generating an activation token. This string
+        should change post-activation.
+        """
+        return unicode(self.id) + 'active' if self.is_active else 'inactive'
 
 
 def fb_banner_rename(instance, filename):
