@@ -24,6 +24,22 @@ class FacebookUser(CachingMixin, ModelBase):
         """A user is new if they have yet to create a Facebook banner."""
         return not self.banner_instance_set.exists()
 
+    @property
+    def account_link(self):
+        """
+        When the account link doesn't exist, Django raises a DoesNotExist error.
+        We'd rather have this behave like a ForeignKey and return None.
+        See https://code.djangoproject.com/ticket/10227 for details.
+        """
+        try:
+            return self._account_link
+        except FacebookAccountLink.DoesNotExist:
+            return None
+
+    @property
+    def is_linked(self):
+        return self.account_link and self.account_link.is_active
+
     # The next few methods and properties are useful for pretending to be a real
     # Django user object.
 
@@ -42,8 +58,8 @@ class FacebookUser(CachingMixin, ModelBase):
 class FacebookAccountLink(CachingMixin, ModelBase):
     """Represents the link between a FacebookUser and normal User account."""
     facebook_user = models.OneToOneField(FacebookUser,
-                                         related_name='account_link')
-    affiliates_user = models.OneToOneField(User, related_name='account_link')
+                                         related_name='_account_link')
+    affiliates_user = models.OneToOneField(User, related_name='_account_link')
     activation_code = models.CharField(max_length=128, blank=True)
     is_active = models.BooleanField(default=False)
 

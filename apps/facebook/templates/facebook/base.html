@@ -13,7 +13,15 @@
         {% block content %}
         {% endblock %}
       </section>
-      <aside></aside>
+      <aside>
+        {% if account_link_form %}
+          <form id="account-link-form">
+            <p>Link your account!</p>
+            <input type="email" placeholder="email@example.com">
+            <button type="submit">Link!</button>
+          </form>
+        {% endif %}
+      </aside>
     </div>
     {% block site_js %}
       {{ js('fb_common') }}

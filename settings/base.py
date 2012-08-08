@@ -219,7 +219,7 @@ MIDDLEWARE_CLASSES.insert(auth_index + 1, 'facebook.middleware.FacebookAuthentic
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'shared.context_processors.l10n',
-    'facebook.context_processors.shared_settings',
+    'facebook.context_processors.app_context',
 ]
 
 # Add Jingo loader

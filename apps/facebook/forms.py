@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.contrib.auth.models import User
 
 from facebook.models import FacebookBanner, FacebookBannerInstance
 from shared.forms import AdminModelForm
@@ -40,3 +41,19 @@ class FacebookBannerAdminForm(AdminModelForm):
         # values.
         locales = self.instance.locale_set.all()
         self.fields['locales'].initial = [l.locale for l in locales]
+
+
+class FacebookAccountLinkForm(forms.Form):
+    affiliates_email = forms.EmailField()
+
+    def clean_affiliates_email(self):
+        """
+        Ensure that the email address corresponds to a valid Affiliates account.
+        """
+        email = self.cleaned_data['affiliates_email']
+        try:
+            User.objects.get(email=email)
+        except User.DoesNotExist:
+            # English is okay here since this error is never shown to the user.
+            raise forms.ValidationError('Affiliates account not found.')
+        return email
