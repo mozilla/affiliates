@@ -5,9 +5,9 @@ from django.utils.translation import get_language
 from babel.core import Locale
 from mock import patch
 from nose.tools import eq_
-from test_utils import TestCase
 from tower import activate
 
+from shared.tests import TestCase
 from shared.utils import (absolutify, current_locale, redirect,
                           ugettext_locale as _locale)
 
@@ -46,12 +46,14 @@ class TestRedirect(TestCase):
     urls = 'shared.tests.urls'
 
     def test_basic(self):
-        response = redirect('mock_view')
+        with self.activate('en-US'):
+            response = redirect('mock_view')
         eq_(response.status_code, 302)
         eq_(response['Location'], '/en-US/mock_view')
 
     def test_permanent(self):
-        response = redirect('mock_view', permanent=True)
+        with self.activate('en-US'):
+            response = redirect('mock_view', permanent=True)
         eq_(response.status_code, 301)
         eq_(response['Location'], '/en-US/mock_view')
 
