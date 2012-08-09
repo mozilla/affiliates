@@ -55,9 +55,29 @@ class FacebookUser(CachingMixin, ModelBase):
         return False
 
 
+class AnonymousFacebookUser(object):
+    """
+    Represent an anonymous user of the Facebook app.
+
+    The primary use of this class is to implement a similar API as FacebookUser
+    so that code in the Facebook app can perform checks like is_linked
+    regardless of whether the user is logged in or not.
+    """
+    is_new = False
+    account_link = None
+    is_linked = False
+    is_active = False
+
+    def is_authenticated(self):
+        return False
+
+    def is_anonymous(self):
+        return True
+
+
 class FacebookAccountLink(CachingMixin, ModelBase):
     """Represents the link between a FacebookUser and normal User account."""
-    facebook_user = models.OneToOneField(FacebookUser,
+    facebook_user = models.OneToOneField(FacebookUser, unique=True,
                                          related_name='_account_link')
     affiliates_user = models.OneToOneField(User, related_name='_account_link')
     activation_code = models.CharField(max_length=128, blank=True)

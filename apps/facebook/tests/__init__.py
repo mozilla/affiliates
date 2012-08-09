@@ -6,8 +6,9 @@ from django.test.client import Client
 from factory import Factory, SubFactory, Sequence
 from mock import patch
 
+from facebook import models
 from facebook.auth import login as fb_login
-from facebook.models import FacebookBanner, FacebookBannerLocale, FacebookUser
+from users.tests import UserFactory
 
 
 def create_payload(user_id=None, algorithm='HMAC-SHA256', country='us',
@@ -43,16 +44,22 @@ class FacebookAuthClient(Client):
 
 
 class FacebookUserFactory(Factory):
-    FACTORY_FOR = FacebookUser
+    FACTORY_FOR = models.FacebookUser
     id = Sequence(lambda n: 'test%s' % n)
 
 
+class FacebookAccountLinkFactory(Factory):
+    FACTORY_FOR = models.FacebookAccountLink
+    facebook_user = SubFactory(FacebookUserFactory)
+    affiliates_user = SubFactory(UserFactory)
+
+
 class FacebookBannerFactory(Factory):
-    FACTORY_FOR = FacebookBanner
+    FACTORY_FOR = models.FacebookBanner
     name = Sequence(lambda n: 'test%s' % n)
     image = Sequence(lambda n: 'non-existant-path')
 
 
 class FacebookBannerLocaleFactory(Factory):
-    FACTORY_FOR = FacebookBannerLocale
+    FACTORY_FOR = models.FacebookBannerLocale
     banner = SubFactory(FacebookBannerFactory)

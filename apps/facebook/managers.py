@@ -41,9 +41,13 @@ class FacebookAccountLinkManager(CachingManager):
         except User.DoesNotExist:
             return False
 
-        # Exit early if the link is already active.
-        link = self.get_or_create(facebook_user=facebook_user,
-                                  affiliates_user=affiliates_user)
+        try:
+            link = self.get(facebook_user=facebook_user)
+        except self.model.DoesNotExist:
+            link = self.model(facebook_user=facebook_user)
+        link.affiliates_user = affiliates_user
+
+        # Exit early if an active link already exists.
         if link.is_active:
             return False
 

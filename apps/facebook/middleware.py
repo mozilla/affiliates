@@ -6,7 +6,7 @@ import jingo
 from mock import patch
 
 from facebook.auth import SESSION_KEY
-from facebook.models import FacebookUser
+from facebook.models import AnonymousFacebookUser, FacebookUser
 from facebook.tests import create_payload
 from facebook.utils import in_facebook_app
 from facebook.views import load_app
@@ -21,6 +21,8 @@ class FacebookAuthenticationMiddleware(object):
         if not in_facebook_app(request):
             return None
 
+        # Default to an anonymous user.
+        request.user = AnonymousFacebookUser()
         if SESSION_KEY in request.session:
             try:
                 user = FacebookUser.objects.get(id=request.session[SESSION_KEY])

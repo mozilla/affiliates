@@ -1,10 +1,11 @@
 from django.test.client import RequestFactory
 
-from nose.tools import ok_
+from nose.tools import eq_, ok_
 
-from facebook.forms import FacebookBannerInstanceForm
+from facebook.forms import FacebookAccountLinkForm, FacebookBannerInstanceForm
 from facebook.tests import FacebookBannerFactory, FacebookBannerLocaleFactory
 from shared.tests import TestCase
+from users.tests import UserFactory
 
 
 class FacebookBannerInstanceFormTests(TestCase):
@@ -48,3 +49,17 @@ class FacebookBannerInstanceFormTests(TestCase):
 
         form = self.form('fr', {'text': 'asdf', 'banner': en_banner.id})
         ok_(not form.is_valid())
+
+
+class FacebookAccountLinkFormTests(TestCase):
+    def test_affiliates_email_validation(self):
+        """
+        The affiliates_email field is only valid if an Affiliates user exists
+        with the specified email address.
+        """
+        form = FacebookAccountLinkForm({'affiliates_email': 'dne@example.com'})
+        eq_(form.is_valid(), False)
+
+        user = UserFactory.create()
+        form = FacebookAccountLinkForm({'affiliates_email': user.email})
+        eq_(form.is_valid(), True)
