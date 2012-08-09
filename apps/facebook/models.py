@@ -8,7 +8,7 @@ from django.template.defaultfilters import slugify
 
 from caching.base import CachingMixin
 
-from facebook.managers import FacebookUserManager
+from facebook.managers import FacebookAccountLinkManager, FacebookUserManager
 from shared.models import LocaleField, ModelBase
 from shared.storage import OverwritingStorage
 
@@ -79,9 +79,11 @@ class FacebookAccountLink(CachingMixin, ModelBase):
     """Represents the link between a FacebookUser and normal User account."""
     facebook_user = models.OneToOneField(FacebookUser, unique=True,
                                          related_name='_account_link')
-    affiliates_user = models.OneToOneField(User, related_name='_account_link')
+    affiliates_user = models.ForeignKey(User, related_name='account_links')
     activation_code = models.CharField(max_length=128, blank=True)
     is_active = models.BooleanField(default=False)
+
+    objects = FacebookAccountLinkManager()
 
     def generate_token_state(self):
         """

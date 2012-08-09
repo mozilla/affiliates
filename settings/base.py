@@ -299,6 +299,9 @@ FACEBOOK_PERMISSIONS = ''
 FACEBOOK_BANNER_IMAGE_PATH = 'uploads/facebook/banners/'
 FACEBOOK_DOWNLOAD_URL = 'https://www.mozilla.org/firefox'
 
+# Period of time that an account link activation link is valid, in seconds.
+FACEBOOK_LINK_DELAY = 60 * 60 * 24 * 2  # 2 Days
+
 
 # FACEBOOK_APP_URL is lazily evaluated because it depends on the namespace
 # setting in local settings.

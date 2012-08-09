@@ -29,6 +29,16 @@ class FacebookAccountLinkManagerTests(TestCase):
         result = self.manager.create_link(link.facebook_user, user.email)
         eq_(result, False)
 
+    def test_create_link_affiliates_already_linked(self):
+        """
+        If the Affiliates user is already linked to another account, create_link
+        should return False.
+        """
+        link = FacebookAccountLinkFactory.create(is_active=True)
+        fb_user = FacebookUserFactory.create()
+        result = self.manager.create_link(fb_user, link.affiliates_user.email)
+        eq_(result, False)
+
     def test_create_link_inactive_link(self):
         """
         If a link exists but is inactive, create_link should return the link.
@@ -50,4 +60,4 @@ class FacebookAccountLinkManagerTests(TestCase):
         eq_(link.affiliates_user, user)
         eq_(link.facebook_user, fb_user)
         eq_(link.is_active, False)
-        ok_(self.filter(pk=link.pk).exists())
+        ok_(self.manager.filter(pk=link.pk).exists())
