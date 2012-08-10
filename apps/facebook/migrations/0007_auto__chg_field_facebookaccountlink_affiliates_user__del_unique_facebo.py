@@ -8,6 +8,10 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Create normal index on facebook_facebookaccountlink to avoid error
+        # when removing unique constraint.
+        db.create_index('facebook_facebookaccountlink', ['affiliates_user_id'])
+
         # Removing unique constraint on 'FacebookAccountLink', fields ['affiliates_user']
         db.delete_unique('facebook_facebookaccountlink', ['affiliates_user_id'])
 
@@ -21,6 +25,8 @@ class Migration(SchemaMigration):
         db.alter_column('facebook_facebookaccountlink', 'affiliates_user_id', self.gf('django.db.models.fields.related.OneToOneField')(unique=True, to=orm['auth.User']))
         # Adding unique constraint on 'FacebookAccountLink', fields ['affiliates_user']
         db.create_unique('facebook_facebookaccountlink', ['affiliates_user_id'])
+        # Remove normal index from facebook_facebookaccountlink.
+        db.delete_index('facebook_facebookaccountlink', ['affiliates_user_id'])
 
 
     models = {
