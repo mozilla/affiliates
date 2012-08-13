@@ -45,16 +45,22 @@ class FacebookDebugMiddleware(object):
         self.csp_patcher = patch.object(settings, 'CSP_FRAME_SRC',
                                         new_csp_frame_src)
 
+        # Mock out decode function for authentication.
+        self.decode_patcher = patch('facebook.views.decode_signed_request')
+
     def process_request(self, request):
-        self.is_active = (getattr(settings, 'FACEBOOK_DEBUG', False) and
-                          in_facebook_app(request))
+        request._fb_debug = (getattr(settings, 'FACEBOOK_DEBUG', False) and
+                             in_facebook_app(request))
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         """Mock in signed_request if user is viewing the login view."""
-        if not self.is_active:
+        if not request._fb_debug:
             return None
 
-        self.csp_patcher.start()
+        # Add patcher to requests to avoid stopping them when they haven't
+        # started.
+        request.csp_patcher = self.csp_patcher
+        request.csp_patcher.start()
 
         user_id = getattr(settings, 'FACEBOOK_DEBUG_USER_ID', None)
         if view_func == load_app and user_id:
@@ -63,21 +69,20 @@ class FacebookDebugMiddleware(object):
             post['signed_request'] = 'signed_request'
             request.POST = post
 
-            self.decode_patcher = patch('facebook.views.decode_signed_request')
-            decode_mock = self.decode_patcher.start()
+            request.decode_patcher = self.decode_patcher
+            decode_mock = request.decode_patcher.start()
             decode_mock.return_value = create_payload(user_id=user_id)
 
     def process_response(self, request, response):
         """Add an iframe wrapper and deactivate decode patch."""
-        if not self.is_active:
+        if not request._fb_debug:
             return response
 
-        # Disable CSP patcher as it has already been added to the response by
-        # now.
-        self.csp_patcher.stop()
+        if getattr(request, 'csp_patcher', False):
+            request.csp_patcher.stop()
 
-        if self.decode_patcher is not None:
-            self.decode_patcher.stop()
+        if getattr(request, 'decode_patcher', False):
+            request.decode_patcher.stop()
 
         # Use a base64 data URI to shove the response content into an iframe.
         template = jingo.env.get_template('facebook/debug_wrapper.html')

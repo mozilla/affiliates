@@ -9,7 +9,7 @@ def app_context(request):
     Adds context data that is shared across the Facebook app.
     """
     if not in_facebook_app(request):
-        return None
+        return {}
 
     ctx = {'FACEBOOK_DOWNLOAD_URL': settings.FACEBOOK_DOWNLOAD_URL,
             'FACEBOOK_APP_ID': settings.FACEBOOK_APP_ID,
