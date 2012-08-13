@@ -2,3 +2,11 @@
     height: 100px;
     width: 250px;
 }
+
+.save_changes:after {
+    content: '»';
+}
+
+.banners_nav {
+    text-transform: uppercase;
+}

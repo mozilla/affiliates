@@ -388,6 +388,7 @@ div.left-arrow span {
 #content-nav {
     margin: 15px 0 5px;
     overflow: hidden;
+    text-transform: uppercase;
 }
 
 #content-nav li {
