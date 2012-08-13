@@ -1,6 +1,6 @@
 from django.utils.functional import wraps
 
-from facebook.models import FacebookUser
+from facebook.utils import is_logged_in
 from shared.utils import redirect
 
 
@@ -12,8 +12,7 @@ def fb_login_required(func):
     """
     @wraps(func)
     def inner(request, *args, **kwargs):
-        if (request.user.is_authenticated() and
-            isinstance(request.user, FacebookUser)):
+        if is_logged_in(request):
             return func(request, *args, **kwargs)
         else:
             return redirect('home')

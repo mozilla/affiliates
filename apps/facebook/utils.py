@@ -5,6 +5,8 @@ import json
 
 import commonware.log
 
+from facebook.models import FacebookUser
+
 
 log = commonware.log.getLogger('a.facebook')
 
@@ -54,3 +56,11 @@ def in_facebook_app(request):
     Determine if the given request points to a page within the Facebook app.
     """
     return request.path.startswith('/fb')
+
+
+def is_logged_in(request):
+    """
+    Determine if the given request contains an active Facebook user session.
+    """
+    return (request.user.is_authenticated() and
+            isinstance(request.user, FacebookUser))
