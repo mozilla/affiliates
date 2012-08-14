@@ -15,7 +15,7 @@
         var params = $.param({
             app_id: $body.data('appId'),
             picture: $share_link.data('img'),
-            description: $link.data('text'),
+            description: $share_link.data('text'),
             link: $body.data('fxDownloadUrl'),
             redirect_uri: $banner_list.data('shareBannerRedirect')
         });
