@@ -3,6 +3,7 @@
   <head>
     <title>Affiliates Facebook</title>
     {% block site_css %}
+      {{ css('fb_base') }}
     {% endblock %}
   </head>
   <body data-fx-download-url="{{ FACEBOOK_DOWNLOAD_URL }}"
@@ -15,11 +16,16 @@
       </section>
       <aside>
         {% if account_link_form %}
-          <form id="account-link-form">
+          <form id="account-link-form" action="{{ absolutify(url('facebook.link_accounts')) }}">
+            {{ csrf() }}
             <p>Link your account!</p>
-            <input type="email" placeholder="email@example.com">
+            {{ account_link_form.affiliates_email }}
             <button type="submit">Link!</button>
           </form>
+          <div id="account-link-success">
+            <p>{{ _('Thanks for linking your affiliates.mozilla.org account.') }}</p>
+            <p>{{ _('If the email address you entered has an account, you will receive a confirmation email.') }}</p>
+          </div>
         {% endif %}
       </aside>
     </div>

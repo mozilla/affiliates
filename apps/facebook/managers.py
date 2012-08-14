@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
+import jingo
 from caching.base import CachingManager
+from tower import ugettext as _
 
 from shared.tokens import TokenGenerator
 
@@ -60,3 +63,15 @@ class FacebookAccountLinkManager(CachingManager):
         link.activation_code = token_generator.generate_token()
         link.save()
         return link
+
+    def send_activation_email(self, request, link):
+        """
+        Send an email to an Affiliates user to confirm that they consent to
+        linking their account with a Facebook account.
+        """
+        subject = _('Link your Firefox Affiliates account')
+        message = jingo.render_to_string(request,
+                                         'facebook/link_activation_email.html',
+                                         {'link': link})
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+                  [link.affiliates_user.email])

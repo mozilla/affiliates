@@ -85,6 +85,10 @@ class FacebookAccountLink(CachingMixin, ModelBase):
 
     objects = FacebookAccountLinkManager()
 
+    @property
+    def activation_link(self):
+        return self.activation_code  # TODO: Generate link.
+
     def generate_token_state(self):
         """
         Generate a string for use in generating an activation token. This string

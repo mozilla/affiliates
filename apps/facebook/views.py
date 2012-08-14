@@ -1,3 +1,4 @@
+from django import http
 from django.conf import settings
 from django.shortcuts import redirect as django_redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -9,9 +10,9 @@ from funfactory.urlresolvers import reverse
 
 from facebook.auth import login
 from facebook.decorators import fb_login_required
-from facebook.forms import FacebookBannerInstanceForm
-from facebook.models import FacebookUser
-from facebook.utils import decode_signed_request
+from facebook.forms import FacebookAccountLinkForm, FacebookBannerInstanceForm
+from facebook.models import FacebookAccountLink, FacebookUser
+from facebook.utils import decode_signed_request, is_logged_in
 from shared.utils import absolutify, redirect
 
 
@@ -84,3 +85,26 @@ def post_banner_share(request):
     Redirect user back to the app after they've posted a banner to their feed.
     """
     return django_redirect(settings.FACEBOOK_APP_URL)
+
+
+@require_POST
+def link_accounts(request):
+    """
+    Link the current user's account with an Affiliates account. Called via AJAX
+    by the frontend.
+    """
+    if not is_logged_in(request):
+        # Only logged in users can link accounts.
+        return http.HttpResponseForbidden()
+
+    form = FacebookAccountLinkForm(request.POST or None)
+    if form.is_valid():
+        affiliates_email = form.cleaned_data['affiliates_email']
+        link = FacebookAccountLink.objects.create_link(request.user,
+                                                       affiliates_email)
+        if link:
+            FacebookAccountLink.objects.send_activation_email(request, link)
+
+    # Tell the user we were successful regardless of outcome in order to avoid
+    # revealing valid emails.
+    return http.HttpResponse()

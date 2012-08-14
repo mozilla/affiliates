@@ -29,7 +29,10 @@
 {{ _('What are you doing here?') }}
 {{ _('Did you make a left at that last URL instead of a right? No problem. Here are some tips to get you back on your way:') }}
 {{ _('If you typed in the address, check your spelling. Could just be a typo.') }}
-{{ _('If you followed a link, it\'s probably broken. Please contact us and we\'ll fix it.') }}
+{% trans email='affiliates@mozilla.com' %}
+  If you followed a link, it’s probably broken. Please
+  <a href="mailto:{{ email }}">contact us</a> and we’ll fix it.
+{% endtrans %}
 {% trans link='#' %}
 If you're not sure what you're looking for, start at <a href="{{ link }}">mozilla.org</a>.
 {% endtrans %}
@@ -163,20 +166,6 @@ Linked to <a href="{{ link }}">affiliates.mozilla.org</a>
 {% trans email_address='email@address.com' %}
 Remove {{ email_address }}
 {% endtrans %}
-{{ _('Thanks for linking your affiliates.mozilla.org account.') }}
-{{ _('If the email address you entered has an account, you will receive a confirmation email.') }}
-
-{# Link Confirmation Email #}
-{# L10n: Text used in email sent by application. #}
-{{ _('Hi there!') }}
-{# L10n: Text used in email sent by application. #}
-{{ _('Thank you for linking your Firefox Affiliates account with the Affiliates Facebook application. Please click on the link below and you\'ll get credit for any clicks that you drive through Facebook on the main Affiliates leaderboard.') }}
-{# L10n: Text used in email sent by application. #}
-{{ _('If you didn\'t request to link your account, just ignore this e-mail and your account will not be linked.') }}
-{# L10n: Text used in email sent by application. #}
-{{ _('Thanks!') }}
-{# L10n: Text used in email sent by application. #}
-{{ _('The Firefox Affiliates Team') }}
 
 {# Newsletter Signup #}
 {{ _('Get Firefox News') }}
