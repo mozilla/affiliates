@@ -13,7 +13,7 @@ from browserid.views import register
 from shared.tests import SessionRequestFactory, TestCase
 
 
-@patch.object(settings, 'SITE_URL', 'http://testserver', create=True)
+@patch.object(settings, 'SITE_URL', 'http://testserver')
 class VerifyTests(TestCase):
     fixtures = ['registered_users']
 

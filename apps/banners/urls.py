@@ -6,7 +6,7 @@ from shared.utils import absolutify
 # Reverse won't let us use placeholder values (so Javascript can replace the
 # banner_img_id), so we store this link as a string.
 AFFILIATE_LINK = absolutify('/link/banner/%s/%s/{{ banner_img_id }}',
-                            https=True)
+                            protocol='https')
 
 
 urlpatterns = patterns('banners.views',

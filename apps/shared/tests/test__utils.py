@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.utils.translation import get_language
 
 from babel.core import Locale
@@ -16,30 +15,33 @@ class TestAbsolutify(TestCase):
     fixtures = ['sites']
 
     def setUp(self):
-        self.patcher = patch.object(Site.objects, 'get_current')
-        self.mock = self.patcher.start()
-        self.mock.return_value = Site(domain='badge.mo.com', name='test')
+        self.patcher = patch.object(settings, 'SITE_URL', 'http://badge.mo.com')
+        self.patcher.start()
 
     def tearDown(self):
         self.patcher.stop()
 
     def test_basic(self):
         url = absolutify('/some/url')
-        eq_(url, '//badge.mo.com/some/url')
+        eq_(url, 'http://badge.mo.com/some/url')
 
-    def test_https(self):
-        """Test that https=True forces an https url."""
-        url = absolutify('/some/url', https=True)
+    def test_protocol(self):
+        url = absolutify('/some/url', protocol='https')
         eq_(url, 'https://badge.mo.com/some/url')
+
+    def test_relative_protocol(self):
+        """If protocol is a blank string, use a protocol-relative URL."""
+        url = absolutify('/some/url', protocol='')
+        eq_(url, '//badge.mo.com/some/url')
 
     def test_cdn(self):
         with patch.object(settings, 'CDN_DOMAIN', None):
             url = absolutify('/some/url', cdn=True)
-            eq_(url, '//badge.mo.com/some/url')
+            eq_(url, 'http://badge.mo.com/some/url')
 
         with patch.object(settings, 'CDN_DOMAIN', 'cdn.badge.mo.com'):
             url = absolutify('/some/url', cdn=True)
-            eq_(url, '//cdn.badge.mo.com/some/url')
+            eq_(url, 'http://cdn.badge.mo.com/some/url')
 
 
 class TestRedirect(TestCase):

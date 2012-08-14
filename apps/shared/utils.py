@@ -1,7 +1,7 @@
 from locale import strcoll as locale_strcoll
+from urlparse import urlparse
 
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils.functional import lazy
 from django.utils.translation import get_language
@@ -20,26 +20,29 @@ Stores info about languages from product_details using lower-cased locale names
 """
 
 
-def absolutify(url, https=None, cdn=False):
+def absolutify(url, protocol=None, cdn=False):
     """
-    Return the given url with an added domain and protocol.
+    Return the given url with an added domain and protocol. Uses
+    settings.SITE_URL to determine the default domain and protocol.
 
-    Use https=True for https, cdn=True to use settings.CDN_DOMAIN as
+    Use protocol to specify a protocol, cdn=True to use settings.CDN_DOMAIN as
     the domain.
     """
-    if https is None:
-        protocol = '//'
-    elif https is True:
-        protocol = 'https://'
-    else:
-        protocol = 'http://'
+    parsed_site_url = urlparse(settings.SITE_URL)
 
     if cdn and settings.CDN_DOMAIN:
         domain = settings.CDN_DOMAIN
     else:
-        domain = Site.objects.get_current().domain
+        domain = parsed_site_url.netloc
 
-    return ''.join((protocol, domain, url))
+    if protocol is None:
+        protocol = parsed_site_url.scheme
+
+    # Add : to protocol unless protocol is blank (relative protocols)
+    if protocol != '':
+        protocol = '%s:' % protocol
+
+    return ''.join((protocol, '//', domain, url))
 
 
 def unicode_choice_sorted(choices):

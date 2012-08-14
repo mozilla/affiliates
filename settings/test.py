@@ -4,3 +4,5 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
+
+SITE_URL = 'http://badge.mo.com'

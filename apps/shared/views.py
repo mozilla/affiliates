@@ -42,7 +42,7 @@ def home(request, register_form=None, login_form=None):
 
     params = {'register_form': register_form,
               'login_form': login_form,
-              'share_url': absolutify('/', https=True),
+              'share_url': absolutify('/', protocol='https'),
               'tweet_text': urlquote_plus(TWEET_TEXT)}
     return render(request, 'shared/home/normal.html', params)
 
@@ -58,7 +58,7 @@ def browserid_home(request):
 
     params = {'browserid_verify': reverse('browserid.verify'),
               'register_form': register_form,
-              'share_url': absolutify('/', https=True),
+              'share_url': absolutify('/', protocol='https'),
               'tweet_text': urlquote_plus(TWEET_TEXT),
               'browserid_no_assertion': BROWSERID_NO_ASSERTION,
               'browserid_verify_fail': BROWSERID_VERIFY_FAIL}

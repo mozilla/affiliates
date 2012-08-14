@@ -12,7 +12,7 @@ from users.models import UserProfile
 
 
 GRAVATAR_URL = getattr(settings, 'GRAVATAR_URL', 'http://www.gravatar.com')
-DEFAULT_GRAVATAR = absolutify(settings.DEFAULT_GRAVATAR, https=True)
+DEFAULT_GRAVATAR = absolutify(settings.DEFAULT_GRAVATAR, protocol='https')
 
 
 @register.function
@@ -32,7 +32,6 @@ def gravatar_url(arg, size=80):
 @register.function
 def gravatar_img(arg, size=80):
     return Markup('<img src="%s">' % gravatar_url(arg, size=size))
-
 
 
 @register.function
