@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.utils.translation import get_language
 
 from babel.core import Locale
@@ -8,7 +9,7 @@ from tower import activate
 
 from shared.tests import TestCase
 from shared.utils import (absolutify, current_locale, redirect,
-                          ugettext_locale as _locale)
+                          get_object_or_none, ugettext_locale as _locale)
 
 
 class TestAbsolutify(TestCase):
@@ -92,3 +93,13 @@ class TestUGetTextLocale(TestCase):
         activate('fr')
         eq_(_locale('message', 'xxx'), 'translated')
         eq_(get_language(), 'fr')
+
+
+class TestGetObjectOrNone(TestCase):
+    def test_get(self):
+        user = User.objects.create_user('get_object_or_none_test', 'a@b.com',
+                                        None)
+        eq_(get_object_or_none(User, username='get_object_or_none_test'), user)
+
+    def test_none(self):
+        eq_(get_object_or_none(User, username='does.not.exist'), None)

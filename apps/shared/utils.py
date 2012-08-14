@@ -102,3 +102,14 @@ def ugettext_locale(message, locale):
 
 
 reverse_lazy = lazy(reverse, unicode)
+
+
+def get_object_or_none(klass, *args, **kwargs):
+    """
+    Runs klass.objects.get with the given arguments and returns None if no
+    matching object is found.
+    """
+    try:
+        return klass.objects.get(*args, **kwargs)
+    except klass.DoesNotExist:
+        return None

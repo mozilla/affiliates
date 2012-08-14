@@ -7,6 +7,7 @@ from caching.base import CachingManager
 from tower import ugettext as _
 
 from shared.tokens import TokenGenerator
+from shared.utils import get_object_or_none
 
 
 class FacebookUserManager(CachingManager):
@@ -39,9 +40,8 @@ class FacebookAccountLinkManager(CachingManager):
         has to be confirmed via a link in the verification email before it is
         finalized.
         """
-        try:
-            affiliates_user = User.objects.get(email=affiliates_email)
-        except User.DoesNotExist:
+        affiliates_user = get_object_or_none(User, email=affiliates_email)
+        if affiliates_user is None:
             return False
 
         # Exit early if the affiliates user already has an active account link.
