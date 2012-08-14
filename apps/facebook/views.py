@@ -1,6 +1,6 @@
 from django import http
 from django.conf import settings
-from django.shortcuts import redirect as django_redirect
+from django.shortcuts import get_object_or_404, redirect as django_redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -108,3 +108,12 @@ def link_accounts(request):
     # Tell the user we were successful regardless of outcome in order to avoid
     # revealing valid emails.
     return http.HttpResponse()
+
+
+def activate_link(request, activation_code):
+    """Activate a FacebookAccountLink."""
+    link = FacebookAccountLink.objects.activate_link(activation_code)
+    if link:
+        return django_redirect(settings.FACEBOOK_APP_URL)
+    else:
+        raise http.Http404

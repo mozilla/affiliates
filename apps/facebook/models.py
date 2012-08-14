@@ -7,10 +7,12 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from caching.base import CachingMixin
+from funfactory.urlresolvers import reverse
 
 from facebook.managers import FacebookAccountLinkManager, FacebookUserManager
 from shared.models import LocaleField, ModelBase
 from shared.storage import OverwritingStorage
+from shared.utils import absolutify
 
 
 class FacebookUser(CachingMixin, ModelBase):
@@ -87,7 +89,8 @@ class FacebookAccountLink(CachingMixin, ModelBase):
 
     @property
     def activation_link(self):
-        return self.activation_code  # TODO: Generate link.
+        return absolutify(reverse('facebook.activate_link',
+                                  args=[self.activation_code]))
 
     def generate_token_state(self):
         """

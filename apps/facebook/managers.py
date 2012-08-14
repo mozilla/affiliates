@@ -75,3 +75,17 @@ class FacebookAccountLinkManager(CachingManager):
                                          {'link': link})
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                   [link.affiliates_user.email])
+
+    def activate_link(self, activation_code):
+        """Verify activation code and activate the corresponding link."""
+        link = get_object_or_none(self.model, activation_code=activation_code)
+        if link is None or link.is_active:
+            return None
+
+        token_generator = self.get_token_generator(link)
+        if not token_generator.verify_token(activation_code):
+            return None
+
+        link.is_active = True
+        link.save()
+        return link

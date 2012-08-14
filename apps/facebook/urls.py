@@ -16,4 +16,7 @@ urlpatterns = patterns('facebook.views',
 
     url(r'^link_accounts/?$', views.link_accounts,
         name='facebook.link_accounts'),
+
+    url(r'^links/([0-9A-Za-z]+-[0-9A-Za-z]+)/activate/?$', views.activate_link,
+        name='facebook.activate_link'),
 )

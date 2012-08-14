@@ -11,7 +11,6 @@
             url: url,
             data: $form.serialize(),
             success: function() {
-                alert('test');
                 $form.fadeOut(500, function() {
                     $('#account-link-success').fadeIn(500);
                 });
