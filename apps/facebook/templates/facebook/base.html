@@ -28,6 +28,10 @@
           </div>
         {% else %}
           <p>Your account is linked!</p>
+          <form id="account-link-delete-form" action="{{ url('facebook.links.remove') }}" method="post">
+            {{ csrf() }}
+            <button type="submit">Delete link</button>
+          </form>
         {% endif %}
       </aside>
     </div>

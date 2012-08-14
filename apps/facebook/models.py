@@ -89,7 +89,7 @@ class FacebookAccountLink(CachingMixin, ModelBase):
 
     @property
     def activation_link(self):
-        return absolutify(reverse('facebook.activate_link',
+        return absolutify(reverse('facebook.links.activate',
                                   args=[self.activation_code]))
 
     def generate_token_state(self):

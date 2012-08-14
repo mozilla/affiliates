@@ -111,9 +111,16 @@ def link_accounts(request):
 
 
 def activate_link(request, activation_code):
-    """Activate a FacebookAccountLink."""
     link = FacebookAccountLink.objects.activate_link(activation_code)
     if link:
         return django_redirect(settings.FACEBOOK_APP_URL)
     else:
         raise http.Http404
+
+
+@fb_login_required
+@require_POST
+def remove_link(request):
+    link = get_object_or_404(FacebookAccountLink, facebook_user=request.user)
+    link.delete()
+    return banner_list(request)

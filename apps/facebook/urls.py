@@ -14,9 +14,12 @@ urlpatterns = patterns('facebook.views',
     url(r'^post_banner_share/?$', views.post_banner_share,
         name='facebook.post_banner_share'),
 
-    url(r'^link_accounts/?$', views.link_accounts,
+    url(r'^links/create/?$', views.link_accounts,
         name='facebook.link_accounts'),
 
     url(r'^links/([0-9A-Za-z]+-[0-9A-Za-z]+)/activate/?$', views.activate_link,
-        name='facebook.activate_link'),
+        name='facebook.links.activate'),
+
+    url(r'^links/remove/?$', views.remove_link,
+        name='facebook.links.remove'),
 )
