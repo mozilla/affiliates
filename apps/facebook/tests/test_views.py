@@ -2,10 +2,12 @@ from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
 
-from facebook.models import FacebookBannerInstance, FacebookUser
-from facebook.tests import (create_payload, FacebookBannerFactory,
-                            FacebookUserFactory)
+from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
+                             FacebookUser)
+from facebook.tests import (create_payload, FacebookAccountLinkFactory,
+                            FacebookBannerFactory, FacebookUserFactory)
 from shared.tests import TestCase
+from users.tests import UserFactory
 
 
 class LoadAppTests(TestCase):
@@ -98,3 +100,44 @@ class CreateBannerTests(TestCase):
         ok_(FacebookBannerInstance.objects.filter(banner=banner, text='asdf')
             .exists())
         self.assertTemplateUsed(response, 'facebook/banner_list.html')
+
+
+class LinkAccountsTests(TestCase):
+    def setUp(self):
+        self.user = FacebookUserFactory.create()
+        with self.activate('en-US'):
+            self.url = reverse('facebook.link_accounts')
+
+    def test_not_logged_in(self):
+        """If not logged in, return a 403 Forbidden."""
+        response = self.client.post(self.url)
+        eq_(response.status_code, 403)
+
+    @patch.object(FacebookAccountLink.objects, 'create_link')
+    def test_link_failure(self, create_link):
+        """If creating a link fails, still return a 200 OK."""
+        create_link.return_value = None
+        self.client.fb_login(self.user)
+        UserFactory.create(email='a@example.com')
+
+        response = self.client.post(self.url,
+                                    {'affiliates_email': 'a@example.com'})
+        eq_(response.status_code, 200)
+
+    @patch.object(FacebookAccountLink.objects, 'send_activation_email')
+    @patch.object(FacebookAccountLink.objects, 'create_link')
+    def test_link_success(self, create_link, send_activation_email):
+        """
+        If creating a link succeeds, send an activation email and return a 200
+        OK.
+        """
+        link = FacebookAccountLinkFactory.create()
+        create_link.return_value = link
+        self.client.fb_login(self.user)
+        UserFactory.create(email='a@example.com')
+
+        response = self.client.post(self.url,
+                                    {'affiliates_email': 'a@example.com'})
+        eq_(response.status_code, 200)
+        ok_(send_activation_email.called)
+        eq_(send_activation_email.call_args[0][1], link)

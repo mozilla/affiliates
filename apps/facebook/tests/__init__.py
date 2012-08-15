@@ -8,6 +8,7 @@ from mock import patch
 
 from facebook import models
 from facebook.auth import login as fb_login
+from shared.tokens import TokenGenerator
 from users.tests import UserFactory
 
 
@@ -63,3 +64,18 @@ class FacebookBannerFactory(Factory):
 class FacebookBannerLocaleFactory(Factory):
     FACTORY_FOR = models.FacebookBannerLocale
     banner = SubFactory(FacebookBannerFactory)
+
+
+class FacebookAccountLinkFactory(Factory):
+    FACTORY_FOR = models.FacebookAccountLink
+    facebook_user = SubFactory(FacebookUserFactory)
+    affiliates_user = SubFactory(UserFactory)
+
+    @classmethod
+    def _prepare(cls, create, **kwargs):
+        link = super(FacebookAccountLinkFactory, cls)._prepare(create, **kwargs)
+        if create and 'activation_code' not in kwargs.keys():
+            token_generator = TokenGenerator(link.generate_token_state)
+            link.activation_code = token_generator.generate_token()
+            link.save()
+        return link

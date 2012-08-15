@@ -67,7 +67,7 @@ If you get {{ click_count }} clicks or more, we would like to have permission to
 {{ _('Using Affiliate banners') }}
 
 {{ _('What is Firefox Affiliates?') }}
-{{ _('Firefox Affiliates allows you to build banners and place them on your Facebook profile to encourage visitors to download Firefox. When a visitor to your page or status update clicks on a banner and visits the Firefox download page, you get credit for that click. Affiliates who get a lot of clicks through their profile will be featured on our leaderboard and be elegible for fun stuff like Firefox T-shirts and, if you opt in, we may feature your banner in a paid-ad on the Facebook ad network. While we do send out prizes and gifts to our Affiliates from time to time, Firefox Affiliates does not offer monetary rewards for hosting Firefox banners.') }}
+{{ _('Firefox Affiliates allows you to build banners and place them on your Facebook profile to encourage visitors to download Firefox. When a visitor to your page or status update clicks on a banner and visits the Firefox download page, you get credit for that click. Affiliates who get a lot of clicks through their profile will be featured on our leaderboard and be eligible for fun stuff like Firefox T-shirts and, if you opt in, we may feature your banner in a paid-ad on the Facebook ad network. While we do send out prizes and gifts to our Affiliates from time to time, Firefox Affiliates does not offer monetary rewards for hosting Firefox banners.') }}
 
 {{ _('How do I add a banner to my Facebook profile?') }}
 {% trans link='#' %}
@@ -79,8 +79,11 @@ Select a banner design that you like using the <a href="{{ link }}">banner build
 
 {{ _('Can my banner become a paid Facebook ad?') }}
 {% trans link='mailto:affiliates@mozilla.org', click_count=50 %}
-Once you've reached {{ click_count }} clicks on a Facebook banner, your banner will become eligable to be a paid Facebook ad. This means that Mozilla will pay to have an ad placed on the Facebook ad network sharting your message of why you love Firefox. We will notify you if your banner is chosen to be a paid ad in your region. If you do not want to participate in this, don't click the opt-in when you build your banner. If you've opted in by accident, please contact us at <a href="{{ link }}">affiliates@mozilla.org</a> and we'll make sure you aren't included in the ad selection.
+If you checked the box to allow your banner to be featured in a paid Facebook ad, once you've reached {{ click_count }} clicks on a Facebook banner, your banner will become eligable to be a paid Facebook ad. This means that Mozilla will pay to have an ad placed on the Facebook ad network sharing (remove the t in sharing) your message of why you love Firefox. We will notify you if your banner is chosen to be a paid ad in your region. If you do not want to participate in this, don't click the opt-in when you build your banner. If you've opted in by accident, please contact us at <a href="{{ link }}">affiliates@mozilla.org</a> and we'll make sure you aren't included in the ad selection.
 {% endtrans %}
+
+{{ _('If I opted in to having my banner become a paid Facebook ad, what exactly am I giving you permission to do?') }}
+{{ _('You are giving us permission to use, reproduce, distribute, edit, and display your photo, if it is included in your banner, and your message about why you love Firefox, for commercial purposes, specifically in a paid ad on Facebook. You are also acknowledging that you will not be paid for the use of your banner.') }}
 
 {{ _('How do I remove the application?') }}
 {% trans link='mailto:affiliates@mozilla.org' %}
@@ -99,12 +102,13 @@ To connect your affiliates.mozilla.org account to this application, please use t
 {{ _('The leaderboard updates every day at midnight Pacific Time, so be sure to check in to see where you stand.') }}
 
 {{ _('Is there a prize for getting the most Firefox clicks?') }}
-{{ _('From time to time we\'ll run contests to see who can get the most clicks for different Firefox products and campaigns. The winners get Firefox T-shirts, hoodies and other awesome things we have at Mozilla HQ.') }}
+{{ _('No, though From time to time we may run contests to see who can get the most clicks for different Firefox products and campaigns. The winners will get Firefox T-shirts, hoodies and other awesome things we have at Mozilla HQ.') }}
 
 {{ _('I think my click statistics are wrong. Is there any way to fix them?') }}
 {% trans link='mailto:affiliates@mozilla.org' %}
 Let us know. Send us a note at <a href="{{ link }}">affiliates@mozilla.org</a> and tell us what the problem is.
 {% endtrans %}
+
 
 
 {# First Run #}
