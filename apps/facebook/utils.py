@@ -2,10 +2,9 @@ import base64
 import hashlib
 import hmac
 import json
+from datetime import datetime
 
 import commonware.log
-
-from facebook.models import FacebookUser
 
 
 log = commonware.log.getLogger('a.facebook')
@@ -62,5 +61,12 @@ def is_logged_in(request):
     """
     Determine if the given request contains an active Facebook user session.
     """
+    from facebook.models import FacebookUser
     return (request.user.is_authenticated() and
             isinstance(request.user, FacebookUser))
+
+
+def current_hour():
+    """Return a datetime representing the current hour."""
+    now = datetime.now()
+    return datetime(now.year, now.month, now.day, now.hour)

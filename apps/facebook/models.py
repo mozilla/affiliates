@@ -10,6 +10,7 @@ from caching.base import CachingMixin
 from funfactory.urlresolvers import reverse
 
 from facebook.managers import FacebookAccountLinkManager, FacebookUserManager
+from facebook.utils import current_hour
 from shared.models import LocaleField, ModelBase
 from shared.storage import OverwritingStorage
 from shared.utils import absolutify
@@ -131,3 +132,13 @@ class FacebookBannerInstance(ModelBase):
     created = models.DateTimeField(default=datetime.now)
     total_clicks = models.IntegerField(default=0)
     leaderboard_position = models.IntegerField(default=-1)
+
+    @property
+    def link(self):
+        return absolutify(reverse('facebook.banners.link', args=[self.id]))
+
+
+class FacebookClickStats(ModelBase):
+    banner_instance = models.ForeignKey(FacebookBannerInstance)
+    hour = models.DateTimeField(default=current_hour)
+    clicks = models.IntegerField(default=0)

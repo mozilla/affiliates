@@ -16,7 +16,7 @@
             app_id: $body.data('appId'),
             picture: $share_link.data('img'),
             description: $share_link.data('text'),
-            link: $body.data('fxDownloadUrl'),
+            link: $share_link.data('link'),
             redirect_uri: $banner_list.data('shareBannerRedirect')
         });
 

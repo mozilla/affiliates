@@ -13,10 +13,12 @@
       <li>
         <img src="{{ absolutify(banner_instance.banner.image.url) }}">
         <p>{{ banner_instance.text }}</p>
+        <p>Clicks: {{ banner_instance.total_clicks }}</p>
         <p>
           <a class="share-banner"
              data-img="{{ absolutify(banner_instance.banner.image.url) }}"
              data-text="{{ banner_instance.text }}"
+             data-link="{{ banner_instance.link }}"
              href="#">
              Post to Wall
           </a>

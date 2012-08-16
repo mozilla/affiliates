@@ -11,6 +11,7 @@ from funfactory.urlresolvers import reverse
 from facebook.auth import login
 from facebook.decorators import fb_login_required
 from facebook.forms import FacebookAccountLinkForm, FacebookBannerInstanceForm
+from facebook.tasks import add_click
 from facebook.models import FacebookAccountLink, FacebookUser
 from facebook.utils import decode_signed_request, is_logged_in
 from shared.utils import absolutify, redirect
@@ -124,3 +125,12 @@ def remove_link(request):
     link = get_object_or_404(FacebookAccountLink, facebook_user=request.user)
     link.delete()
     return banner_list(request)
+
+
+def follow_banner_link(request, banner_instance_id):
+    """
+    Add a click to a banner instance and redirect the user to the Firefox
+    download page.
+    """
+    add_click.delay(banner_instance_id)
+    return django_redirect(settings.FACEBOOK_DOWNLOAD_URL)
