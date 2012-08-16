@@ -66,6 +66,13 @@ class FacebookBannerLocaleFactory(Factory):
     banner = SubFactory(FacebookBannerFactory)
 
 
+class FacebookBannerInstanceFactory(Factory):
+    FACTORY_FOR = models.FacebookBannerInstance
+    banner = SubFactory(FacebookBannerFactory)
+    user = SubFactory(FacebookUserFactory)
+    text = Sequence(lambda n: 'test%s' % n)
+
+
 class FacebookAccountLinkFactory(Factory):
     FACTORY_FOR = models.FacebookAccountLink
     facebook_user = SubFactory(FacebookUserFactory)
