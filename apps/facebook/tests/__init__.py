@@ -86,3 +86,8 @@ class FacebookAccountLinkFactory(Factory):
             link.activation_code = token_generator.generate_token()
             link.save()
         return link
+
+
+class FacebookClickStatsFactory(Factory):
+    FACTORY_FOR = models.FacebookClickStats
+    banner_instance = SubFactory(FacebookBannerInstanceFactory)
