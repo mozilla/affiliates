@@ -9,12 +9,11 @@
         $.ajax({
             type: 'POST',
             url: url,
-            data: $form.serialize(),
-            success: function() {
-                $form.fadeOut(500, function() {
-                    $('#account-link-success').fadeIn(500);
-                });
-            }
+            data: $form.serialize()
+        }).done(function() {
+            $form.fadeOut(500, function() {
+                $('#account-link-success').fadeIn(500);
+            });
         });
     });
 })($);
