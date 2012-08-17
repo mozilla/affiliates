@@ -1,0 +1,34 @@
+{% extends 'facebook/base.html' %}
+
+{% block content %}
+  <h1>Leaderboard</h1>
+  <h2>You!</h2>
+  <table border="1">
+    <tr>
+      <th>Position</th>
+      <th>ID</th>
+      <th>Clicks</th>
+    </tr>
+    <tr>
+      <td>{{ request.user.leaderboard_position }}</td>
+      <td>{{ request.user.id }}</td>
+      <td>{{ request.user.total_clicks }}</td>
+    </tr>
+  </table>
+
+  <h2>Others!</h2>
+  <table border="1">
+    <tr>
+      <th>Position</th>
+      <th>ID</th>
+      <th>Clicks</th>
+    </tr>
+    {% for user in top_users %}
+      <tr>
+        <td>{{ user.leaderboard_position }}</td>
+        <td>{{ user.id }}</p>
+        <td>{{ user.total_clicks }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

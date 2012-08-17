@@ -120,6 +120,7 @@ def activate_link(request, activation_code):
 
 
 @fb_login_required
+@xframe_allow
 @require_POST
 def remove_link(request):
     link = get_object_or_404(FacebookAccountLink, facebook_user=request.user)
@@ -134,3 +135,11 @@ def follow_banner_link(request, banner_instance_id):
     """
     add_click.delay(banner_instance_id)
     return django_redirect(settings.FACEBOOK_DOWNLOAD_URL)
+
+
+@fb_login_required
+@xframe_allow
+def leaderboard(request):
+    top_users = FacebookUser.objects.order_by('leaderboard_position')[:25]
+    return jingo.render(request, 'facebook/leaderboard.html',
+                        {'top_users': top_users})

@@ -24,3 +24,5 @@ class UpdateFacebookLeaderboardTests(TestCase):
 
         eq_(user1.leaderboard_position, 1)
         eq_(user2.leaderboard_position, 2)
+        eq_(user1.total_clicks, 4)
+        eq_(user2.total_clicks, 2)

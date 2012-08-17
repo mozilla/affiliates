@@ -25,4 +25,6 @@ urlpatterns = patterns('facebook.views',
 
     url(r'^banners/(\d+)/link?$', views.follow_banner_link,
         name='facebook.banners.link'),
+
+    url(r'^leaderboard/?$', views.leaderboard, name='facebook.leaderboard'),
 )

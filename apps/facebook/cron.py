@@ -25,7 +25,7 @@ def update_facebook_leaderboard():
             GROUP BY user.id
             ORDER BY clicks DESC
         ) AS t
-        SET user.leaderboard_position = t.rank
+        SET user.leaderboard_position = t.rank, user.total_clicks = t.clicks
         WHERE t.user_id = user.id;
     """)
 
