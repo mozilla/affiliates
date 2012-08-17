@@ -1,19 +1,129 @@
 {% extends 'facebook/base.html' %}
 
+{# ToDo: indicate selected nav tab #}
+
 {% block content %}
-  <h1>Create a Banner</h1>
-  <form method="post">
-    {{ csrf() }}
+<nav class="nav-sub">
+  <ul>
+    <li><a href="#">{{ _('Current banners') }}</a></li>
+    <li class="selected"><span>{{ _('Create a new banner') }}</span></li>
+  </ul>
+</nav>
+        
+<form method="post">
+  {{ csrf() }}
+
+  {# Note: leaving this bit here temporarily, for reference. This logic all gets incorporated into the form below but I'm not sure where. #}
+  <ul>
+    {% for field_key in ['banner', 'text', 'can_be_an_ad'] %}
+      {% set field = form[field_key] %}
+      <li>
+        {{ field.label_tag() }}
+        {{ field }}
+        {{ field.errors }}
+      </li>
+    {% endfor %}
+  </ul>
+
+  <section id="select">
+    {# L10n: Banner styles are images that will be used as the background of a banner that the user creates. #}
+    <h2>{{ _('First, choose one of the banner styles below.') }}</h2>
     <ul>
-      {% for field_key in ['banner', 'text', 'can_be_an_ad'] %}
-        {% set field = form[field_key] %}
-        <li>
-          {{ field.label_tag() }}
-          {{ field }}
-          {{ field.errors }}
-        </li>
-      {% endfor %}
+    {# ToDo: fill in correct values for each radio button #}
+      <li><label for="style-desk1">
+        <input type="radio" id="style-desk1" name="style" value="foo" data-image="desktop1">
+        <img src="{{ MEDIA_URL }}img/facebook/banners/desktop1-thumb.png" width="100" height="72"
+        {# L10n: Description of a banner for use in alt attribute for accessibility. #}
+        alt="{{ _('Download Firefox (Large Firefox logo rising in front of an orange background)') }}">
+      </label></li>
+      
+      <li><label for="style-desk2">
+        <input type="radio" id="style-desk2" name="style" value="bar" data-image="desktop2">
+        <img src="{{ MEDIA_URL }}img/facebook/banners/desktop2-thumb.png" width="100" height="72"
+        {# L10n: Description of a banner for use in alt attribute for accessibility. #}
+        alt="{{ _('Download Firefox (Small Firefox logo on a light blue background)') }}">
+      </label></li>
+      
+      <li><label for="style-desk3">
+        <input type="radio" id="style-desk3" name="style" value="baz" data-image="desktop3">
+        <img src="{{ MEDIA_URL }}img/facebook/banners/desktop3-thumb.png" width="100" height="72"
+        {# L10n: Description of a banner for use in alt attribute for accessibility. #}
+        alt="{{ _('Download Firefox (Large Firefox logo resting on a light blue background)') }}">
+      </label></li>
+      
+      <li><label for="style-mobi1">
+        <input type="radio" id="style-mobi1" name="style" value="zip" data-image="mobile1">
+        <img src="{{ MEDIA_URL }}img/facebook/banners/mobile1-thumb.png" width="100" height="72"
+        {# L10n: Description of a banner for use in alt attribute for accessibility. #}
+        alt="{{ _('Download Firefox (For Android. A mobile phone in front of a faded Firefox logo with a light blue background)') }}">
+      </label></li>
+      
+      <li><label for="style-mobi2">
+        <input type="radio" id="style-mobi2" name="style" value="zing" data-image="mobile2">
+        <img src="{{ MEDIA_URL }}img/facebook/banners/mobile2-thumb.png" width="100" height="72"
+        {# L10n: Description of a banner for use in alt attribute for accessibility. #}
+        alt="{{ _('Download Firefox (For Android. A mobile phone displaying a large Firefox logo on its screen, over a light blue background)') }}">
+      </label></li>
+      
+      <li><label for="style-mobi3">
+        <input type="radio" id="style-mobi3" name="style" value="zoom" data-image="mobile3">
+        <img src="{{ MEDIA_URL }}img/facebook/banners/mobile3-thumb.png" width="100" height="72"
+        {# L10n: Description of a banner for use in alt attribute for accessibility. #}
+        alt="{{ _('Download Firefox (For Android. Firefox logo floating over a mobile phone resting on an orange background)') }}">
+      </label></li>
     </ul>
-    <button type="submit">Create Banner &raquo;</button>
-  </form>
+  </section>
+
+  <section id="configure">
+    <div id="banner-preview">
+      {# L10n: Used above a box showing what a banner will look like once it is created. #}
+      <h3>{{ _('Your banner preview') }}</h3>
+      <figure>
+        <img id="banner" src="{{ MEDIA_URL }}img/facebook/banners/placeholder.png" alt="" width="300" height="216">
+        <img id="userpic" src="[[ profile image ]]" alt="" width="53" height="53">
+      </figure>
+    </div>
+    
+    {# ToDo: Integrate and style the error messages. #}
+    
+    <div id="banner-msg">
+      <h2><label for="message">{{ _('Next, tell the world why you love Firefox in 90 characters or less.') }}</label></h2>
+      <p>
+        {# L10n: &hellip; is an ellipses, the three dots like "I love Firefox because..." #}
+        <textarea id="message" placeholder="{{ _('I love Firefox because&hellip;') }}" maxlength="90" rows="2"></textarea>
+      </p>
+    </div>
+    
+    <fieldset id="banner-opts">
+      <p>
+        <label for="profile-img"><input type="checkbox" id="profile-img" name="profile-img" value="yes"> {{ _('Use my profile image') }}</label>
+      </p>
+      <p>
+        {# L10n: Label for a checkbox that gives us permission to use the user's banner in a paid Facebook ad. #}
+        <label for="permit-ad"><input type="checkbox" id="permit-ad" name="permit-ad" value="yes"> {{ _('Feature me in a paid Facebook ad.') }}</label>
+        {# L10n: Used on a link that, when clicked, pops up a text bubble with an explanation of a form field. #}
+        <a href="#ad-note" class="note-link">{{ _('What does this mean?') }}</a>
+      </p>
+      <p id="ad-note" aria-hidden="true">
+      {% trans link='mailto:affiliates@mozilla.org', click_count=50 %}
+        If you get {{ click_count }} clicks or more, we would like to have permission 
+        to turn your banner into a paid ad on Facebook in your region. By checking 
+        this box you are granting us permission to use your banner in a paid Facebook 
+        ad, including your profile photo if you checked the box to include it in the 
+        banner, and the text you added to the banner. For a full description of the 
+        rights you are granting and more information, see the FAQs. Don't want to be 
+        featured in an ad? Make sure you don't opt in. If you opted in and don't want 
+        to be featured anymore, send us a note at <a href="{{ link }}">affiliates@mozilla.org</a> 
+        and we'll make sure your ad is removed.
+      {% endtrans %}
+      </p>
+    </fieldset>
+    
+    <div class="fm-submit">
+      <button type="submit" name="save" class="button-blue"><i>{{ _('Save') }}</i></button>
+      <button type="submit" name="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>
+    </div>
+  
+  </section>
+</form>
 {% endblock %}

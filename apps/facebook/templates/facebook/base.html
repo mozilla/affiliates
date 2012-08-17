@@ -9,32 +9,123 @@
   <body data-fx-download-url="{{ FACEBOOK_DOWNLOAD_URL }}"
         data-app-id="{{ FACEBOOK_APP_ID }}">
     <div class="container">
-      <nav></nav>
-      <section>
-        {% block content %}
-        {% endblock %}
-      </section>
-      <aside>
-        {% if account_link_form %}
-          <form id="account-link-form" action="{{ absolutify(url('facebook.link_accounts')) }}">
-            {{ csrf() }}
-            <p>Link your account!</p>
-            {{ account_link_form.affiliates_email }}
-            <button type="submit">Link!</button>
-          </form>
-          <div id="account-link-success">
-            <p>{{ _('Thanks for linking your affiliates.mozilla.org account.') }}</p>
-            <p>{{ _('If the email address you entered has an account, you will receive a confirmation email.') }}</p>
+      <header class="head">
+        <hgroup>
+          {# ToDo: make this link work  #}
+          <h1><a href="#">{{ _('Firefox Affiliates') }}</a></h1>
+          <h2>{{ _('Help us share Firefox with the world') }}</h2>
+        </hgroup>
+
+        <aside class="download">
+          {# ToDo: make this link work  #}
+          <a href="#" class="button-blue">{{ _('Invite your friends to Download Firefox!') }}</a>
+        </aside>
+      </header>
+
+      <nav class="nav-tabs">
+        <ul>
+          <li class="selected"><a href="#">{{ _('My banners') }}</a></li>
+          {# L10n: Refers to Frequently Asked Questions, a page that shows answers to common questions about the app. #}
+          <li><a href="#">{{ _('FAQs') }}</a></li>
+          {# L10n: Refers to a page that shows the top 25 users with the most clicks on their banners. #}
+          <li><a href="#">{{ _('Leaderboard') }}</a></li>
+        </ul>
+      </nav>
+
+      <div class="main">
+      {% block content %}
+
+      {% endblock %}
+      </div><!-- /.main -->
+
+      <aside class="sub">
+
+        <div id="user-tools" class="module">
+          <h2>
+            <img class="avatar" src="[[profile image]]" alt="" width="35" height="35">
+            [[User Name]]
+          </h2>
+
+          {% if account_link_form %}
+          <div class="account-link">
+            {# ToDo: Build the linked version of this, with the option to unlink the account. #}
+
+            {# L10n: Account linking lets a user associate an Affiliates account with their Facebook app account. Description is in another string. :D #}
+            <p class="not-linked"><a href="#link-account">{{ _('Link your Firefox Affiliates account') }}</a></p>
+
+            <form method="post" id="link-account">
+              <p>
+              {% trans link='https://affiliates.mozilla.org' %}
+              Do you already have an account from affiliates.mozilla.org? You can link
+              your account to this application and you'll get credit for any clicks that
+              you drive through Facebook. To connect your account, just click here and
+              fill in your information. We'll send you an email to confirm. If you'd like
+              to sign up for an account, just visit <a href="{{ link }}">affiliates.mozilla.org</a>.
+              {% endtrans %}
+              </p>
+              <p class="email">
+                <input type="email" name="affiliate-email" placeholder="{{ _('Enter e-mail') }}">
+                {# L10n: Label used for the account linking button. #}
+                <button type="submit">{{ _('Submit') }}</button>
+              </p>
+            </form>
           </div>
-        {% else %}
-          <p>Your account is linked!</p>
-          <form id="account-link-delete-form" action="{{ url('facebook.links.remove') }}" method="post">
-            {{ csrf() }}
-            <button type="submit">Delete link</button>
+          {% endif %}
+
+          <h3>{{ _('Your Statistics Summary') }}</h3>
+          <div class="calendar">
+            [[calendar widget goes here]]
+          </div>
+          <p class="note">{{ _('You can filter results by selecting a specific month using the calendar above.') }}</p>
+          <p class="total">{{ _('Total clicks') }} <strong>234</strong></p>
+        </div>
+
+        <div id="help" class="module">
+          <h2>{{ _('Be a part of the Firefox movement') }}</h2>
+          <h3>{{ _('It\'s easy!') }}</h3>
+          <ol>
+            {# ToDo: make these links work  #}
+            <li><a href="#">{{ _('Create your custom banner.') }}</a></li>
+            <li><a href="#">{{ _('Share you banner with friends.') }}</a></li>
+            <li><a href="#">{{ _('Get clicks and you could be featured in a paid Facebook ad.') }}</a></li>
+          </ol>
+        </div>
+
+        <div id="newsletter" class="module">
+          <h2>{{ _('Get Firefox News') }}</h2>
+          <form method="post">
+            <p>
+              <label for="news-email">{{ _('Your email address') }}</label>
+              <input type="email" id="news-email" name="email" required>
+            </p>
+            <div class="options">
+              <p>
+                [[ country dropdown goes here ]]
+              </p>
+              <p>
+                <label for="news-format-html"><input type="radio" id="news-format-html" name="format" value="html" checked> HTML</label>
+                {# L10n: Used in a choice field where users can choose between receiving HTML-based or Text-only newsletter emails. #}
+                <label for="news-format-text"><input type="radio" id="news-format-text" name="format" value="text"> {{ _('Text') }}</label>
+              </p>
+              <p>
+                <label for="news-agree">
+                  <input type="checkbox" id="news-agree" name="news-agree" required>
+                  {% trans link='privacy_policy' %}
+                  I agree to the <a href="{{ link }}">Privacy Policy</a>
+                  {% endtrans %}
+                </label>
+              </p>
+            </div>
+            <p>
+              <em class="note">{{ _('We will only send you Mozilla-related information.') }}</em>
+              {# L10n: Label used for the newsletter signup button. #}
+              <button type="submit" class="button-blue">{{ _('Sign me up!') }}</button>
+            </p>
           </form>
-        {% endif %}
-      </aside>
-    </div>
+        </div>
+
+      </aside><!-- /.sub -->
+    </div><!-- /.container -->
     {% block site_js %}
       {{ js('fb_common') }}
     {% endblock %}

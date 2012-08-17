@@ -63,7 +63,7 @@ body {
 }
 
 .container {
-  width: 720px;
+  width: 700px;
   margin: 0 auto 1em;
 }
 .container:after {
@@ -159,7 +159,17 @@ a:active {
 }
 .head h2 {
   font-size: 1em;
+  letter-spacing: normal;
   margin: 0;
+}
+
+.head h1 a:link,
+.head h1 a:visited,
+.head h1 a:hover,
+.head h1 a:focus,
+.head h1 a:active {
+  color: #484848;
+  text-decoration: none;
 }
 
 .head .download {
@@ -241,7 +251,10 @@ a:active {
   text-align: center;
   text-decoration: none;
   background: #f7f7f7;
+  background: -moz-linear-gradient(top, #f7f7f7 75%, #efefef 90%, #e0e0e0 100%);
   background: -webkit-linear-gradient(top, #f7f7f7 75%, #efefef 90%, #e0e0e0 100%);
+  background: -ms-linear-gradient(top, #f7f7f7 75%, #efefef 90%, #e0e0e0 100%);
+  background: -o-linear-gradient(top, #f7f7f7 75%, #efefef 90%, #e0e0e0 100%);
   background: linear-gradient(to bottom, #f7f7f7 75%, #efefef 90%, #e0e0e0 100%);
   border: solid #ddd;
   border-width: 1px 1px 0;
@@ -252,11 +265,14 @@ a:active {
 .nav-tabs a:focus,
 .nav-tabs a:active {
   background: #fcfcfc;
+  background: -moz-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
   background: -webkit-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
+  background: -ms-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
+  background: -o-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
   background: linear-gradient(to bottom, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);  
 }
 
-.nav-tabs .current a {
+.nav-tabs .selected a {
   background: #fefefe;
   color: #484848;
   border-color: #fff;
@@ -298,8 +314,8 @@ a:active {
   background: #f8f8f8;  
 }
 
-.nav-sub .current a,
-.nav-sub .current span {
+.nav-sub .selected a,
+.nav-sub .selected span {
   color: #fff;
   border: 1px solid #666;
   background: #979c9d;
@@ -471,7 +487,150 @@ a:active {
   background: url(../img/facebook/arrow-go-r.png) right center no-repeat;
 }
 
-/* @Sidebar */
-.module {
-
+/* @User tools */
+#user-tools h2 {
+  padding: .5em 0 .5em 45px;
 }
+
+#user-tools .avatar {
+  float: left;
+  margin: -.5em 0 0 -45px;
+  box-shadow: 1px 1px 1px rgba(0,135,183,.5);
+}
+
+#user-tools .not-linked,
+#user-tools .linked {
+  font-size: .6875em;
+  font-style: italic;
+  margin: 15px 0;
+  padding: .25em 0;
+}
+
+#user-tools .linked {
+  padding-left: 25px;
+  background: url(../img/facebook/status-good.png) left center no-repeat;
+}
+
+#link-account {
+  display: none;
+  font-size: .6875em;
+  width: 180px;
+  margin: 0 -20px 20px;
+  padding: 15px 20px;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0,0,0,.75);
+  background: #919597;
+  background: #919597 -moz-linear-gradient(top, rgba(0,0,0,.25) 0, rgba(0,0,0,0) 30px);
+  background: #919597 -ms-linear-gradient(top, rgba(0,0,0,.25) 0, rgba(0,0,0,0) 30px);
+  background: #919597 -o-linear-gradient(top, rgba(0,0,0,.25) 0, rgba(0,0,0,0) 30px);
+  background: #919597 -webkit-linear-gradient(top, rgba(0,0,0,.25) 0, rgba(0,0,0,0) 30px);
+  background: #919597 linear-gradient(to bottom, rgba(0,0,0,.25) 0, rgba(0,0,0,0) 30px);
+}
+
+#link-account:before {
+  content: "\00a0"; 
+  display: block; 
+  position: absolute; 
+  top: 0; 
+  left: 101px; 
+  width: 0; 
+  height: 0;
+  border-width: 8px 8px 0 8px; 
+  border-style: solid; 
+  border-color: #fefefe transparent;
+}
+
+#link-account a {
+  color: #cae9ff;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+#link-account .email input,
+#link-account .email button {
+  border: 1px solid #777;
+  border-radius: .5em;
+  color: #484848;
+  background-color: #fff;
+  padding: 4px 6px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,.01), inset 0 -3px 0 rgba(0,0,0,.05);
+}
+
+#link-account .email input {
+  width: 130px;
+  float: left;
+  margin-right: 4px;
+}
+
+#link-account .email button {
+  cursor: pointer;
+  width: 28px;
+  text-indent: -999em;
+  background: #fff url(../img/facebook/status-good.png) center center no-repeat;
+}
+
+#user-tools .calendar {
+  margin: 1em 0;
+}
+
+.module .note {
+  font-size: .625em;
+  color: #666;
+}
+
+#user-tools .total {
+  overflow: auto;
+  font-size: .875em;
+  border-top: 1px solid #ccc;
+  padding: 15px 20px;
+  margin: 1em -20px -20px;
+}
+
+#user-tools .total strong {
+  float: right;
+  color: #690;
+  font-weight: normal;
+}
+
+/* @Help */
+#help h2 {
+  font-size: 1em;
+  letter-spacing: normal;
+  padding: 20px 20px 20px 82px;
+  margin: -20px -20px 1em;
+  background: url(../img/facebook/fx-logo-md.png) 15px center no-repeat;
+  background: url(../img/facebook/fx-logo-md.png) 15px center no-repeat, linear-gradient(to top, rgba(0,0,0,.07), rgba(0,0,0,0) 20px);
+  border-bottom: 1px solid #ccc;
+}
+
+#help h3 {
+  margin: 0 0 .75em;
+}
+
+#help ol {
+  margin: 0 0 0 20px;
+  list-style: decimal;
+  font: .857em Georgia, Times, serif;
+}
+
+#help li {
+  margin: 0 0 .75em;
+}
+
+/* @Newsletter */
+#newsletter {
+  
+}
+
+#news-email {
+  border: 1px solid #ccc;
+  border-radius: .5em;
+  color: #484848;
+  background-color: #fff;
+  padding: 4px 6px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,.01), inset 0 -3px 0 rgba(0,0,0,.05);
+  width: 164px;
+}
+
