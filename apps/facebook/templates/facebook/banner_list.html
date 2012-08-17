@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block content %}
+{% set sub_nav_section = 'banner_list' %}
+{% include 'facebook/include/sub-nav.html' %}
+
   <h1>My Banners</h1>
   <ol class="banner-list"
       data-share-banner-redirect="{{ share_banner_redirect }}">

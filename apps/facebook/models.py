@@ -125,7 +125,7 @@ class FacebookBannerLocale(ModelBase):
 class FacebookBannerInstance(ModelBase):
     """Specific instance of a customized banner."""
     user = models.ForeignKey(FacebookUser, related_name='banner_instance_set')
-    banner = models.ForeignKey(FacebookBanner)
+    banner = models.ForeignKey(FacebookBanner, default=None)
     text = models.CharField(max_length=256)
     can_be_an_ad = models.BooleanField(default=False)
 

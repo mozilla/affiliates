@@ -53,21 +53,28 @@
             {# L10n: Account linking lets a user associate an Affiliates account with their Facebook app account. Description is in another string. :D #}
             <p class="not-linked"><a href="#link-account">{{ _('Link your Firefox Affiliates account') }}</a></p>
 
-            <form method="post" id="link-account">
-              <p>
-              {% trans link='https://affiliates.mozilla.org' %}
-              Do you already have an account from affiliates.mozilla.org? You can link
-              your account to this application and you'll get credit for any clicks that
-              you drive through Facebook. To connect your account, just click here and
-              fill in your information. We'll send you an email to confirm. If you'd like
-              to sign up for an account, just visit <a href="{{ link }}">affiliates.mozilla.org</a>.
-              {% endtrans %}
-              </p>
-              <p class="email">
-                <input type="email" name="affiliate-email" placeholder="{{ _('Enter e-mail') }}">
-                {# L10n: Label used for the account linking button. #}
-                <button type="submit">{{ _('Submit') }}</button>
-              </p>
+            <form method="post" id="link-account" action="{{ absolutify(url('facebook.link_accounts')) }}">
+              <div class="form">
+                {{ csrf() }}
+                <p>
+                  {% trans link='https://affiliates.mozilla.org' %}
+                  Do you already have an account from affiliates.mozilla.org? You can link
+                  your account to this application and you'll get credit for any clicks that
+                  you drive through Facebook. To connect your account, just click here and
+                  fill in your information. We'll send you an email to confirm. If you'd like
+                  to sign up for an account, just visit <a href="{{ link }}">affiliates.mozilla.org</a>.
+                  {% endtrans %}
+                </p>
+                <p class="email">
+                  {{ account_link_form.affiliates_email }}
+                  {# L10n: Label used for the account linking button. #}
+                  <button type="submit">{{ _('Submit') }}</button>
+                </p>
+              </div>
+              <div class="success-msg">
+                <p>{{ _('Thanks for linking your affiliates.mozilla.org account.') }}</p>
+                <p>{{ _('If the email address you entered has an account, you will receive a confirmation email.') }}</p>
+              </div>
             </form>
           </div>
           {% endif %}

@@ -95,50 +95,50 @@ body {
 }
 
 /* @Headings ***/
-h1, h2, h3, h4, h5, h6 { 
-  margin: 0 0 .25em; 
-  color: #484848; 
-  line-height: 1; 
-  font-family: "Open Sans Light", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif; 
-  font-weight: normal; 
-  text-shadow: 0 1px 0 rgba(255,255,255,0.75); 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 .25em;
+  color: #484848;
+  line-height: 1;
+  font-family: "Open Sans Light", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+  font-weight: normal;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.75);
 }
-h1 { 
-  font-size: 3em; 
-  letter-spacing: -2px; 
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
 }
-h2 { 
-  font-size: 2em; 
-  letter-spacing: -1px; 
+h2 {
+  font-size: 2em;
+  letter-spacing: -1px;
 }
-h3 { 
-  font-size: 1.75em; 
-  letter-spacing: -0.5px; 
+h3 {
+  font-size: 1.75em;
+  letter-spacing: -0.5px;
 }
-h4 { 
-  font-size: 1.5em; 
-  letter-spacing: -0.25px; 
+h4 {
+  font-size: 1.5em;
+  letter-spacing: -0.25px;
 }
 h5,
-.module h2 { 
-  font-size: 1.125em; 
+.module h2 {
+  font-size: 1.125em;
 }
 h6,
-.module h3 { 
-  font-size: 1em; 
+.module h3 {
+  font-size: 1em;
 }
 
 /* @Links ***/
-a:link, 
-a:visited { 
-  color: #2983c8; 
-  text-decoration: none; 
+a:link,
+a:visited {
+  color: #2983c8;
+  text-decoration: none;
 }
-a:hover, 
-a:focus, 
-a:active { 
-  color: #20679e; 
-  text-decoration: underline; 
+a:hover,
+a:focus,
+a:active {
+  color: #20679e;
+  text-decoration: underline;
 }
 
 /* @Header */
@@ -269,7 +269,7 @@ a:active {
   background: -webkit-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
   background: -ms-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
   background: -o-linear-gradient(top, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
-  background: linear-gradient(to bottom, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);  
+  background: linear-gradient(to bottom, #fcfcfc 75%, #f3f3f3 90%, #efefef 100%);
 }
 
 .nav-tabs .selected a {
@@ -311,7 +311,7 @@ a:active {
 .nav-sub a:hover,
 .nav-sub a:focus,
 .nav-sub a:active {
-  background: #f8f8f8;  
+  background: #f8f8f8;
 }
 
 .nav-sub .selected a,
@@ -374,6 +374,11 @@ a:active {
   position: relative;
 }
 
+.banner-choice {
+  height: 72px;
+  width: 100px;
+}
+
 #banner-preview h3 {
   background: #484848;
   color: #fff;
@@ -395,6 +400,11 @@ a:active {
   box-shadow: 0 0 15px rgba(0,0,0,.05), 2px 2px 3px rgba(0,0,0,.15);
 }
 
+#banner {
+  height: 216px;
+  width: 300px;
+}
+
 #userpic {
   position: absolute;
   right: 15px;
@@ -413,7 +423,7 @@ a:active {
   font-size: .875em;
 }
 
-#message {
+#id_text {
   display: block;
   width: 315px;
   padding: 10px;
@@ -528,15 +538,15 @@ a:active {
 }
 
 #link-account:before {
-  content: "\00a0"; 
-  display: block; 
-  position: absolute; 
-  top: 0; 
-  left: 101px; 
-  width: 0; 
+  content: "\00a0";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 101px;
+  width: 0;
   height: 0;
-  border-width: 8px 8px 0 8px; 
-  border-style: solid; 
+  border-width: 8px 8px 0 8px;
+  border-style: solid;
   border-color: #fefefe transparent;
 }
 
@@ -546,6 +556,10 @@ a:active {
 
 button::-moz-focus-inner {
   border: 0;
+}
+
+#link-account .success-msg {
+  display: none;
 }
 
 #link-account .email input,
@@ -621,7 +635,7 @@ button::-moz-focus-inner {
 
 /* @Newsletter */
 #newsletter {
-  
+
 }
 
 #news-email {

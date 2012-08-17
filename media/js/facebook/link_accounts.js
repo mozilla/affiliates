@@ -1,6 +1,6 @@
 (function($) {
     // Handle submission of the account linking form.
-    $(document).on('submit', '#account-link-form', function(e) {
+    $(document).on('submit', '#link-account', function(e) {
         e.preventDefault();
 
         var $form = $(this);
@@ -11,9 +11,16 @@
             url: url,
             data: $form.serialize()
         }).done(function() {
-            $form.fadeOut(500, function() {
-                $('#account-link-success').fadeIn(500);
+            $form.find('.form').fadeOut(500, function() {
+                $form.find('.success-msg').fadeIn(500);
             });
         });
+    });
+
+    // Show/hide the account linking form
+    $(".not-linked a").click(function(e){
+        e.preventDefault();
+        $("#link-account").slideToggle('fast');
+        $(this).blur();
     });
 })($);

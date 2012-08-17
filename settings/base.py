@@ -151,7 +151,7 @@ MINIFY_BUNDLES = {
 
         # Facebook app
         'fb_base': (
-            'css/facebook/base.css',
+            'css/facebook.css',
         ),
     },
     'js': {
@@ -175,14 +175,16 @@ MINIFY_BUNDLES = {
         # Facebook app
         'fb_common': (
             'js/libs/jquery-1.7.1.js',
-            'js/facebook/link_accounts.js',
-            'js/facebook/init.js',
+            'js/facebook/link_accounts.js'
         ),
         'fb_oauth_redirect': (
             'js/facebook/oauth_redirect.js',
         ),
         'fb_banner_list': (
             'js/facebook/post_to_wall.js',
+        ),
+        'fb_create_banner': (
+            'js/facebook/create_banner.js',
         ),
     }
 }
