@@ -23,4 +23,15 @@
         $("#link-account").slideToggle('fast');
         $(this).blur();
     });
+
+    // Common startup options.
+    $(document).ready(function() {
+        // Hide newsletter options
+        $("#newsletter .options").hide();
+    });
+
+    // Show newsletter options
+    $("#news-email").focus(function(){
+        $("#newsletter .options").slideDown('fast');
+    });
 })($);

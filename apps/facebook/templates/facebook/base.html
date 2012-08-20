@@ -100,10 +100,10 @@
 
         <div id="newsletter" class="module">
           <h2>{{ _('Get Firefox News') }}</h2>
-          <form method="post">
+          <form method="post" action="/path/to/handler">
             <p>
               <label for="news-email">{{ _('Your email address') }}</label>
-              <input type="email" id="news-email" name="email" required>
+              <input type="email" id="news-email" name="email" placeholder="{{ _('Your email address') }}" required>
             </p>
             <div class="options">
               <p>
@@ -121,10 +121,10 @@
                   I agree to the <a href="{{ link }}">Privacy Policy</a>
                   {% endtrans %}
                 </label>
+                <em class="note">{{ _('We will only send you Mozilla-related information.') }}</em>
               </p>
             </div>
-            <p>
-              <em class="note">{{ _('We will only send you Mozilla-related information.') }}</em>
+            <p class="news-submit">
               {# L10n: Label used for the newsletter signup button. #}
               <button type="submit" class="button-blue">{{ _('Sign me up!') }}</button>
             </p>

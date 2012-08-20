@@ -9,7 +9,7 @@ fieldset { border: 0; }
 legend { color: inherit; } /* For IE */
 ul, ol { list-style: none; }
 a img { border: 0; }
-input, select, textarea { font-family: inherit; font-size: 100%; }
+input, select, textarea { font-family: inherit; font-size: 100%; max-width: 100%; }
 img, video { max-width: 100%; height: auto; }
 
 /* Regular */
@@ -634,17 +634,56 @@ button::-moz-focus-inner {
 }
 
 /* @Newsletter */
-#newsletter {
-
+#newsletter h2 {
+  margin: 0 0 1em;
 }
 
 #news-email {
   border: 1px solid #ccc;
   border-radius: .5em;
   color: #484848;
-  background-color: #fff;
+  background-color: #fafafa;
+  font-size: .75em;
   padding: 4px 6px;
   box-shadow: inset 0 0 8px rgba(0,0,0,.01), inset 0 -3px 0 rgba(0,0,0,.05);
   width: 164px;
 }
 
+#newsletter label {
+  position: absolute;
+  left: -999em;
+}
+
+#newsletter .options {
+  font-size: .75em;
+}
+
+#newsletter .options label {
+  position: static;
+  left: auto;
+}
+
+#newsletter p {
+  margin: 0 0 .5em;
+}
+
+#newsletter .note {
+  display: block;
+  font-size: .857em;
+  margin: 1em 0;
+}
+
+#newsletter .news-submit {
+  text-align: right;
+  margin: 0;
+}
+
+#newsletter button {
+  font-size: .75em;
+  padding: 4px 20px;
+}
+
+#newsletter button:after {
+  content: "\00A0\00BB"; /* nbsp raquo */
+  font-size: 1.2em;
+}
