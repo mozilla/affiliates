@@ -15,6 +15,9 @@ urlpatterns = patterns('facebook.views',
         views.banner_create_image_check,
         name='facebook.banners.create_image_check'),
 
+    url(r'^banners/(\d+)/share/?$', views.banner_share,
+        name='facebook.banners.share'),
+
     url(r'^post_banner_share/?$', views.post_banner_share,
         name='facebook.post_banner_share'),
 

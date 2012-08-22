@@ -1,10 +1,5 @@
 {% extends 'facebook/base.html' %}
 
-{% block site_js %}
-  {{ super() }}
-  {{ js('fb_banner_list') }}
-{% endblock %}
-
 {% block content %}
 {% set sub_nav_section = 'banner_list' %}
 {% include 'facebook/include/sub-nav.html' %}
@@ -18,11 +13,7 @@
         <p>{{ banner_instance.text }}</p>
         <p>Clicks: {{ banner_instance.total_clicks }}</p>
         <p>
-          <a class="share-banner"
-             data-img="{{ absolutify(banner_instance.image.url) }}"
-             data-text="{{ banner_instance.text }}"
-             data-link="{{ banner_instance.link }}"
-             href="#">
+          <a class="share-banner" href="{{ url('facebook.banners.share', banner_instance.id) }}">
              Post to Wall
           </a>
         </p>

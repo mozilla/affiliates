@@ -66,8 +66,9 @@
 
     <div class="fm-submit">
       <img src="{{ MEDIA_URL }}img/template/loading.gif" class="loading">
-      <button type="submit" name="submit" value="save" class="button-blue"><i>{{ _('Save') }}</i></button>
-      <button type="submit" name="submit" value="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>
+      <button type="submit" name="_next_action" value="save" class="button-blue"><i>{{ _('Save') }}</i></button>
+      <button type="submit" name="_next_action" value="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>
+      <input type="hidden" name="next_action" value="save">
     </div>
 
   </section>

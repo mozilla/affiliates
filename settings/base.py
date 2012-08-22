@@ -182,8 +182,9 @@ MINIFY_BUNDLES = {
         'fb_oauth_redirect': (
             'js/facebook/oauth_redirect.js',
         ),
-        'fb_banner_list': (
-            'js/facebook/post_to_wall.js',
+        'fb_banner_share': (
+            'js/libs/jquery-1.7.1.js',
+            'js/facebook/banner_share.js',
         ),
         'fb_banner_create': (
             'js/facebook/banner_create.js',

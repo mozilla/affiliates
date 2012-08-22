@@ -99,4 +99,11 @@
         // TODO: Actually implement save & share.
         window.location = $form.data('next');
     }
+
+    // Special case: We need to know which button was used to submit the form,
+    // so we need to override the default click behavior of the submit buttons.
+    $('button[name="_next_action"]').click(function(e) {
+        // Set the hidden input's value to the clicked button's value.
+        $(':input[name="next_action"]').val($(this).val());
+    });
 })($);

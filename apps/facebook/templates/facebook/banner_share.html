@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <body data-app-id="{{ FACEBOOK_APP_ID }}"
+        data-img="{{ absolutify(banner_instance.image.url) }}"
+        data-text="{{ banner_instance.text }}"
+        data-link="{{ banner_instance.link }}"
+        data-next="{{ next }}">
+    {{ js('fb_banner_share') }}
+  </body>
+</html>
