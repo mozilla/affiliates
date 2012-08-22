@@ -78,16 +78,16 @@ class CreateBannerTests(TestCase):
         self.user = FacebookUserFactory.create()
         self.client.fb_login(self.user)
 
-    def create_banner(self, **post_data):
-        """Execute create_banner view. kwargs are POST arguments."""
+    def banner_create(self, **post_data):
+        """Execute banner_create view. kwargs are POST arguments."""
         with self.activate('en-US'):
-            return self.client.post(reverse('facebook.create_banner'),
+            return self.client.post(reverse('facebook.banner_create'),
                                     post_data)
 
     def test_invalid_form(self):
         """If the form is invalid, redisplay it."""
-        response = self.create_banner(banner='asdf')
-        self.assertTemplateUsed(response, 'facebook/create_banner.html')
+        response = self.banner_create(banner='asdf')
+        self.assertTemplateUsed(response, 'facebook/banner_create.html')
 
     def test_valid_form(self):
         """
@@ -95,7 +95,7 @@ class CreateBannerTests(TestCase):
         list.
         """
         banner = FacebookBannerFactory.create()
-        response = self.create_banner(banner=banner.id, text='asdf')
+        response = self.banner_create(banner=banner.id, text='asdf')
 
         ok_(FacebookBannerInstance.objects.filter(banner=banner, text='asdf')
             .exists())

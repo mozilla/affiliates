@@ -77,6 +77,8 @@ class BannerRadioSelect(forms.RadioSelect):
 
 
 class FacebookBannerInstanceForm(forms.ModelForm):
+    use_profile_image = forms.BooleanField(required=False)
+
     def __init__(self, request, *args, **kwargs):
         super(FacebookBannerInstanceForm, self).__init__(*args, **kwargs)
 

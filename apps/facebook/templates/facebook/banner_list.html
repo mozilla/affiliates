@@ -14,12 +14,12 @@
       data-share-banner-redirect="{{ share_banner_redirect }}">
     {% for banner_instance in banner_instances %}
       <li>
-        <img src="{{ absolutify(banner_instance.banner.image.url) }}">
+        <img src="{{ absolutify(banner_instance.image.url) }}">
         <p>{{ banner_instance.text }}</p>
         <p>Clicks: {{ banner_instance.total_clicks }}</p>
         <p>
           <a class="share-banner"
-             data-img="{{ absolutify(banner_instance.banner.image.url) }}"
+             data-img="{{ absolutify(banner_instance.image.url) }}"
              data-text="{{ banner_instance.text }}"
              data-link="{{ banner_instance.link }}"
              href="#">

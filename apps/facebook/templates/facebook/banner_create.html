@@ -4,14 +4,14 @@
 
 {% block site_js %}
   {{ super() }}
-  {{ js('fb_create_banner') }}
+  {{ js('fb_banner_create') }}
 {% endblock %}
 
 {% block content %}
 {% set sub_nav_section = 'banner_create' %}
 {% include 'facebook/include/sub-nav.html' %}
 
-<form method="post">
+<form id="create-banner-form" method="post" action="{{ url('facebook.banner_create') }}">
   {{ csrf() }}
   <section id="select">
     {# L10n: Banner styles are images that will be used as the background of a banner that the user creates. #}
@@ -25,7 +25,7 @@
       <h3>{{ _('Your banner preview') }}</h3>
       <figure>
         <img id="banner" src="{{ MEDIA_URL }}img/facebook/banners/placeholder.png" alt="" width="300" height="216">
-        <img id="userpic" src="[[ profile image ]]" alt="" width="53" height="53">
+        <img id="userpic" src="https://graph.facebook.com/{{ request.user.id }}/picture" alt="" width="53" height="53">
       </figure>
     </div>
 
@@ -40,7 +40,7 @@
 
     <fieldset id="banner-opts">
       <p>
-        <label for="profile-img"><input type="checkbox" id="profile-img" name="profile-img" value="yes"> {{ _('Use my profile image') }}</label>
+        {{ form.use_profile_image.label_tag([form.use_profile_image, _('Use my profile image')]|join(' ')) }}
       </p>
       <p>
         {# L10n: Label for a checkbox that gives us permission to use the user's banner in a paid Facebook ad. #}
@@ -65,8 +65,9 @@
     </fieldset>
 
     <div class="fm-submit">
-      <button type="submit" name="save" class="button-blue"><i>{{ _('Save') }}</i></button>
-      <button type="submit" name="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>
+      <img src="{{ MEDIA_URL }}img/template/loading.gif" class="loading">
+      <button type="submit" name="submit" value="save" class="button-blue"><i>{{ _('Save') }}</i></button>
+      <button type="submit" name="submit" value="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>
     </div>
 
   </section>

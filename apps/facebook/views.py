@@ -1,6 +1,7 @@
 from django import http
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect as django_redirect
+from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -11,9 +12,11 @@ from funfactory.urlresolvers import reverse
 from facebook.auth import login
 from facebook.decorators import fb_login_required
 from facebook.forms import FacebookAccountLinkForm, FacebookBannerInstanceForm
-from facebook.tasks import add_click
-from facebook.models import FacebookAccountLink, FacebookUser
+from facebook.tasks import add_click, generate_banner_instance_image
+from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
+                             FacebookUser)
 from facebook.utils import decode_signed_request, is_logged_in
+from shared.http import JSONResponse
 from shared.utils import absolutify, redirect
 
 
@@ -58,15 +61,40 @@ def load_app(request):
 
 @fb_login_required
 @xframe_allow
-def create_banner(request):
+def banner_create(request):
     form = FacebookBannerInstanceForm(request, request.POST or None)
     if request.method == 'POST' and form.is_valid():
         banner_instance = form.save(commit=False)
         banner_instance.user = request.user
         banner_instance.save()
-        return banner_list(request)
 
-    return jingo.render(request, 'facebook/create_banner.html', {'form': form})
+        # The create form is submitted via an AJAX call. If the user wants to
+        # include their profile picture on a banner, we return a 202 Accepted to
+        # indicate we are processing the image. If they don't, we just return
+        # a 201 Created to signify that the banner instance has been created
+        # and it is safe to continue.
+        if form.cleaned_data['use_profile_image']:
+            generate_banner_instance_image.delay(banner_instance.id)
+            payload = {
+                'check_url': reverse('facebook.banners.create_image_check',
+                                     args=[banner_instance.id]),
+                'next': absolutify(reverse('facebook.banner_list'))
+            }
+            return JSONResponse(payload, status=202)  # 202 Accepted
+        else:
+            payload = {'next': absolutify(reverse('facebook.banner_list'))}
+            return JSONResponse(payload, status=201)  # 201 Created
+
+    return jingo.render(request, 'facebook/banner_create.html', {'form': form})
+
+
+@fb_login_required
+@never_cache
+def banner_create_image_check(request, instance_id):
+    """Check the status of generating a custom image for a banner instance."""
+    banner_instance = get_object_or_404(FacebookBannerInstance, id=instance_id)
+    is_complete = bool(banner_instance.custom_image)
+    return JSONResponse({'is_complete': is_complete})
 
 
 @fb_login_required

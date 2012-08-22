@@ -497,6 +497,10 @@ a:active {
   background: url(../img/facebook/arrow-go-r.png) right center no-repeat;
 }
 
+.fm-submit .loading {
+  display: none;
+}
+
 /* @User tools */
 #user-tools h2 {
   padding: .5em 0 .5em 45px;

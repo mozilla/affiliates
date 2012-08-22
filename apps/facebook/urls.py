@@ -6,10 +6,14 @@ from facebook import views
 urlpatterns = patterns('facebook.views',
     url(r'^/?$', views.load_app, name='facebook.load_app'),
 
-    url(r'^create_banner/?$', views.create_banner,
-        name='facebook.create_banner'),
+    url(r'^banners/new?$', views.banner_create,
+        name='facebook.banner_create'),
 
-    url(r'^banner_list/?$', views.banner_list, name='facebook.banner_list'),
+    url(r'^banners/?$', views.banner_list, name='facebook.banner_list'),
+
+    url(r'^banners/(\d+)/create_image_check/?$',
+        views.banner_create_image_check,
+        name='facebook.banners.create_image_check'),
 
     url(r'^post_banner_share/?$', views.post_banner_share,
         name='facebook.post_banner_share'),
