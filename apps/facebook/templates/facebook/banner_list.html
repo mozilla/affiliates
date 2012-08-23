@@ -4,20 +4,57 @@
 {% set sub_nav_section = 'banner_list' %}
 {% include 'facebook/include/sub-nav.html' %}
 
-  <h1>My Banners</h1>
-  <ol class="banner-list"
-      data-share-banner-redirect="{{ share_banner_redirect }}">
-    {% for banner_instance in banner_instances %}
-      <li>
-        <img src="{{ absolutify(banner_instance.image.url) }}">
-        <p>{{ banner_instance.text }}</p>
-        <p>Clicks: {{ banner_instance.total_clicks }}</p>
-        <p>
-          <a class="share-banner" href="{{ url('facebook.banners.share', banner_instance.id) }}">
-             Post to Wall
-          </a>
-        </p>
-      </li>
-    {% endfor %}
-  </ol>
+<div class="banner-list">
+  <h2>{{ _('These are the banners you\'ve created so far:') }}</h2>
+
+  {% for banner_instance in banner_instances %}
+  <section class="current-banner">
+    <h3 class="number">{{ loop.index }}</h3>
+    <figure>
+      {# ToDo: Alt text should match the displayed banner style. #}
+      <img class="banner" src="{{ absolutify(banner_instance.image.url) }}" alt="[[appropriate alt text here]]">
+      <figcaption>
+        <dl class="meta">
+          {# L10n: Heading referring to when a banner was created. #}
+          <dt>{{ _('Creation date') }}</dt>
+          <dd>{{ banner_instance.created|babel_date('medium') }}</dd>
+
+          {# L10n: Heading above the number of clicks a banner has received. #}
+          <dt>{{ _('Clicks') }}</dt>
+          <dd>{{ banner_instance.total_clicks }}</dd>
+        </dl>
+        <ul class="util">
+          {# L10n: Link that, when clicked, shows a dialog for posting a banner to a user's Facebook feed. #}
+          <li><a class="share-banner" href="{{ url('facebook.banners.share', banner_instance.id) }}">{{ _('Post to Feed') }}</a>
+          </li>
+        </ul>
+      </figcaption>
+    </figure>
+
+    {# ToDo: This wasn't shown in the mockups; does it belong on this page? If so I'll work it into the layout. Just dropping it here for now. #}
+    <p>{{ banner_instance.text }}</p>
+
+    <div class="goal-meter">
+      <div class="meter">
+        {% set percent_complete = (banner_instance.total_clicks / FACEBOOK_CLICK_GOAL) * 100 %}
+        {% if percent_complete > 100 %}
+          {% set percent_complete = 100 %}
+        {% endif %}
+        <span style="width: {{ percent_complete|int }}%;">
+          <em class="count">{{ banner_instance.total_clicks }}</em>
+        </span>
+      </div>
+      <p class="goal">
+      {% trans count=FACEBOOK_CLICK_GOAL %}
+      Click Goal: <span>{{ count }}</span>
+      {% endtrans %}
+      </p>
+    </div>
+  </section>
+  {% endfor %}
+
+  <aside class="create-new">
+    <a href="{{ url('facebook.banner_create') }}" class="button-blue go">{{ _('Create a new banner') }}</a>
+  </aside>
+</div>
 {% endblock %}
