@@ -22,6 +22,12 @@ class FacebookUser(CachingMixin, ModelBase):
     leaderboard_position = models.IntegerField(default=2147483647)  # Max Int
     total_clicks = models.IntegerField(default=0)
 
+    # Personal info from Facebook
+    full_name = models.CharField(max_length=256, blank=True)
+    first_name = models.CharField(max_length=256, blank=True)
+    last_name = models.CharField(max_length=256, blank=True)
+    locale = models.CharField(max_length=32, blank=True)
+
     objects = FacebookUserManager()
 
     @property

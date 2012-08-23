@@ -8,7 +8,7 @@ from mock import patch
 from facebook.auth import SESSION_KEY
 from facebook.models import AnonymousFacebookUser, FacebookUser
 from facebook.tests import create_payload
-from facebook.utils import in_facebook_app
+from facebook.utils import activate_locale, in_facebook_app
 from facebook.views import load_app
 
 
@@ -29,6 +29,9 @@ class FacebookAuthenticationMiddleware(object):
             except FacebookUser.DoesNotExist:
                 return None
             request.user = user
+
+            # Activate locale now that we know who the user is.
+            activate_locale(request, user.locale)
 
 
 class FacebookDebugMiddleware(object):

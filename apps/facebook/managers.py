@@ -1,13 +1,20 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
+import commonware
 import jingo
+import requests
 from caching.base import CachingManager
 from tower import ugettext as _
 
 from shared.tokens import TokenGenerator
 from shared.utils import get_object_or_none
+
+
+log = commonware.log.getLogger('a.facebook')
 
 
 class FacebookUserManager(CachingManager):
@@ -27,6 +34,33 @@ class FacebookUserManager(CachingManager):
             return None, False
 
         return self.get_or_create(id=user_id)
+
+    def update_user_info(self, user):
+        """
+        Retrieve info from the Facebook graph about the given user and update
+        our cached copies of the data.
+        """
+        try:
+            response = requests.get('https://graph.facebook.com/%s' % user.id)
+        except requests.exceptions.RequestException, e:
+            log.error('Error retrieving Facebook Graph information for user '
+                      '%s: %s' % (user.id, e))
+            return
+
+        try:
+            graph_data = json.loads(response.content)
+        except ValueError, e:
+            log.error('Malformed response from Facebook graph for user %s: %s'
+                      % (user.id, response.content))
+            return
+
+        user.locale = graph_data.get('locale', False) or user.locale
+        user.full_name = graph_data.get('name', False) or user.full_name
+        user.first_name = graph_data.get('first_name', False) or user.first_name
+        user.last_name = graph_data.get('last_name', False) or user.last_name
+        user.save()
+
+        return user
 
 
 class FacebookAccountLinkManager(CachingManager):

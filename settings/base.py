@@ -308,10 +308,13 @@ BANNERS_HASH = []
 
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
+FACEBOOK_CLICK_GOAL = 50
+
 FACEBOOK_BANNER_IMAGE_PATH = 'uploads/facebook/banners/'
 FACEBOOK_BANNER_INSTANCE_IMAGE_PATH = 'uploads/facebook/banner_instances/'
 FACEBOOK_DOWNLOAD_URL = 'https://www.mozilla.org/firefox'
 FACEBOOK_CUSTOM_IMG_BORDER = {'width': 3, 'color': '#CCC'}
+FACEBOOK_LOCALES = ('en-us', 'de', 'zh-tw', 'nl', 'pl', 'pt-br')
 
 # Coordinates for the Facebook profile image when pasted onto a banner image.
 # Format is (left, upper)

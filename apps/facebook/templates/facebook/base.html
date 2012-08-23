@@ -40,8 +40,8 @@
 
         <div id="user-tools" class="module">
           <h2>
-            <img class="avatar" src="[[profile image]]" alt="" width="35" height="35">
-            [[User Name]]
+            <img class="avatar" src="{{ request.user.picture_url }}" alt="" width="35" height="35">
+            {{ request.user.full_name }}
           </h2>
 
           {% if account_link_form %}

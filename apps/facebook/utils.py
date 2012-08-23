@@ -4,7 +4,11 @@ import hmac
 import json
 from datetime import datetime
 
+from django.conf import settings
+from django.utils.translation import get_language
+
 import commonware.log
+import tower
 
 
 log = commonware.log.getLogger('a.facebook')
@@ -70,3 +74,23 @@ def current_hour():
     """Return a datetime representing the current hour."""
     now = datetime.now()
     return datetime(now.year, now.month, now.day, now.hour)
+
+
+def activate_locale(request, locale):
+    """
+    Activates the specified locale if it is in the list of supported locales.
+    """
+    # HACK: It's not totally clear to me where Django or tower do the matching
+    # that equates locales like es-LA to es, and I'm scared enough of getting it
+    # wrong to want to avoid it for the first release. So instead, we'll
+    # activate the requested locale, and then check what locale got chosen by
+    # django as the usable locale, and match that against our locale whitelist.
+    # TODO: Properly filter out locales prior to calling activate.
+    tower.activate(locale)
+    lang = get_language()
+    if lang not in settings.FACEBOOK_LOCALES:
+        lang = lang.split('-')[0]
+        if lang not in settings.FACEBOOK_LOCALES:
+            locale = 'en-US'
+            tower.activate(locale)
+    request.locale = locale

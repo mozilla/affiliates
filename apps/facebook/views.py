@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 import jingo
+import tower
 from commonware.response.decorators import xframe_allow
 from funfactory.urlresolvers import reverse
 
@@ -15,7 +16,7 @@ from facebook.forms import FacebookAccountLinkForm, FacebookBannerInstanceForm
 from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
-from facebook.utils import decode_signed_request, is_logged_in
+from facebook.utils import activate_locale, decode_signed_request, is_logged_in
 from shared.http import JSONResponse
 from shared.utils import absolutify, redirect
 
@@ -51,6 +52,11 @@ def load_app(request):
 
     # User has been authed, let's log them in.
     login(request, user)
+
+    # Normally the FacebookAuthenticationMiddleware activates the locale for
+    # the user, but since it does not run for this view, we need to activate it
+    # manually.
+    activate_locale(request, user.locale)
 
     if user.is_new:
         return jingo.render(request, 'facebook/first_run.html')
