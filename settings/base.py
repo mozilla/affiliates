@@ -311,14 +311,11 @@ FACEBOOK_PERMISSIONS = ''
 FACEBOOK_BANNER_IMAGE_PATH = 'uploads/facebook/banners/'
 FACEBOOK_BANNER_INSTANCE_IMAGE_PATH = 'uploads/facebook/banner_instances/'
 FACEBOOK_DOWNLOAD_URL = 'https://www.mozilla.org/firefox'
+FACEBOOK_CUSTOM_IMG_BORDER = {'width': 3, 'color': '#CCC'}
 
 # Coordinates for the Facebook profile image when pasted onto a banner image.
 # Format is (left, upper)
-FACEBOOK_CUSTOM_IMG_COORDS = (237, 153)
-
-# Size to resize Facebook profile images to when pasted onto a banner image.
-# Format is (width, height)
-FACEBOOK_CUSTOM_IMG_SIZE = (53, 53)
+FACEBOOK_CUSTOM_IMG_COORDS = (235, 151)
 
 # Period of time that an account link activation link is valid, in seconds.
 FACEBOOK_LINK_DELAY = 60 * 60 * 24 * 2  # 2 Days

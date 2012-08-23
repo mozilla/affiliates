@@ -45,6 +45,10 @@ class FacebookUser(CachingMixin, ModelBase):
     def is_linked(self):
         return self.account_link and self.account_link.is_active
 
+    @property
+    def picture_url(self):
+        return 'https://graph.facebook.com/%s/picture?type=square' % self.id
+
     # The next few methods and properties are useful for pretending to be a real
     # Django user object.
 

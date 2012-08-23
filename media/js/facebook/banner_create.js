@@ -93,13 +93,6 @@
         ping();
     }
 
-    // Redirect to the banner list or the share dialog depending on which
-    // button the user selected.
-    function postBannerCreate() {
-        // TODO: Actually implement save & share.
-        window.location = $form.data('next');
-    }
-
     // Special case: We need to know which button was used to submit the form,
     // so we need to override the default click behavior of the submit buttons.
     $('button[name="_next_action"]').click(function(e) {

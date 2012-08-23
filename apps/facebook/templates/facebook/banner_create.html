@@ -25,7 +25,7 @@
       <h3>{{ _('Your banner preview') }}</h3>
       <figure>
         <img id="banner" src="{{ MEDIA_URL }}img/facebook/banners/placeholder.png" alt="" width="300" height="216">
-        <img id="userpic" src="https://graph.facebook.com/{{ request.user.id }}/picture" alt="" width="53" height="53">
+        <img id="userpic" src="{{ request.user.picture_url }}" alt="" width="50" height="50">
       </figure>
     </div>
 
@@ -65,6 +65,7 @@
     </fieldset>
 
     <div class="fm-submit">
+      {# Placeholder spinner until we get a better looking one. #}
       <img src="{{ MEDIA_URL }}img/template/loading.gif" class="loading">
       <button type="submit" name="_next_action" value="save" class="button-blue"><i>{{ _('Save') }}</i></button>
       <button type="submit" name="_next_action" value="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>

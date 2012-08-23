@@ -1,18 +1,12 @@
-import os
-from os.path import abspath, dirname
-
 from django.contrib.auth.models import User
 
 from funfactory.urlresolvers import reverse
 from nose.tools import eq_
 
 from facebook.models import FacebookBannerLocale
-from facebook.tests import FacebookBannerFactory, FacebookBannerLocaleFactory
+from facebook.tests import (FacebookBannerFactory, FacebookBannerLocaleFactory,
+                            path)
 from shared.tests import TestCase
-
-
-def path(*a):
-    return os.path.join(dirname(abspath(__file__)), *a)
 
 
 class FacebookBannerAdminTests(TestCase):

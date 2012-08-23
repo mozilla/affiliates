@@ -1,4 +1,6 @@
+import os
 from contextlib import nested
+from os.path import abspath, dirname
 from time import time
 
 from django.test.client import Client
@@ -10,6 +12,10 @@ from facebook import models
 from facebook.auth import login as fb_login
 from shared.tokens import TokenGenerator
 from users.tests import UserFactory
+
+
+def path(*a):
+    return os.path.join(dirname(abspath(__file__)), *a)
 
 
 def create_payload(user_id=None, algorithm='HMAC-SHA256', country='us',

@@ -1,3 +1,5 @@
+import json
+
 from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
@@ -5,8 +7,10 @@ from nose.tools import eq_, ok_
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
 from facebook.tests import (create_payload, FacebookAccountLinkFactory,
-                            FacebookBannerFactory, FacebookUserFactory)
+                            FacebookBannerFactory,
+                            FacebookBannerInstanceFactory, FacebookUserFactory)
 from shared.tests import TestCase
+from shared.utils import absolutify
 from users.tests import UserFactory
 
 
@@ -84,22 +88,87 @@ class CreateBannerTests(TestCase):
             return self.client.post(reverse('facebook.banner_create'),
                                     post_data)
 
-    def test_invalid_form(self):
-        """If the form is invalid, redisplay it."""
-        response = self.banner_create(banner='asdf')
-        self.assertTemplateUsed(response, 'facebook/banner_create.html')
-
-    def test_valid_form(self):
+    @patch('facebook.views.generate_banner_instance_image.delay')
+    def test_use_profile_image(self, delay):
         """
-        If the form is valid, create a new banner instance and show the banner
-        list.
+        If the user checked `use_profile_image`, create a banner instance,
+        trigger the celery task and return a 202 Accepted.
         """
         banner = FacebookBannerFactory.create()
-        response = self.banner_create(banner=banner.id, text='asdf')
+        response = self.banner_create(banner=banner.id, text='asdf',
+                                      next_action='', use_profile_image=True)
 
-        ok_(FacebookBannerInstance.objects.filter(banner=banner, text='asdf')
+        # Asserts that banner instance exists.
+        instance = FacebookBannerInstance.objects.get(banner=banner,
+                                                      user=self.user)
+        delay.assert_called_with(instance.id)
+
+        # Assert response contians the expected links.
+        eq_(response.status_code, 202)
+        response_data = json.loads(response.content)
+        with self.activate('en-US'):
+            eq_(response_data['next'],
+                absolutify(reverse('facebook.banner_list')))
+            eq_(response_data['check_url'],
+                reverse('facebook.banners.create_image_check',
+                        args=[instance.id]))
+
+    def test_no_profile_image(self):
+        """
+        If the user did not check `use_profile_image`, create the banner
+        instance and return a 201 Created.
+        """
+        banner = FacebookBannerFactory.create()
+        response = self.banner_create(banner=banner.id, text='asdf',
+                                      next_action='', use_profile_image=False)
+        ok_(FacebookBannerInstance.objects.filter(banner=banner, user=self.user)
             .exists())
-        self.assertTemplateUsed(response, 'facebook/banner_list.html')
+
+        eq_(response.status_code, 201)
+        response_data = json.loads(response.content)
+        with self.activate('en-US'):
+            eq_(response_data['next'],
+                absolutify(reverse('facebook.banner_list')))
+
+    def test_save_and_share(self):
+        """
+        If the user clicks the `Save and Share` button, the `next` link should
+        point to the share page for the new banner instance.
+        """
+        banner = FacebookBannerFactory.create()
+        response = self.banner_create(banner=banner.id, text='asdf',
+                                      next_action='share',
+                                      use_profile_image=False)
+        instance = FacebookBannerInstance.objects.get(banner=banner,
+                                                      user=self.user)
+
+        response_data = json.loads(response.content)
+        with self.activate('en-US'):
+            eq_(response_data['next'],
+                absolutify(reverse('facebook.banners.share',
+                           args=[instance.id])))
+
+
+class BannerCreateImageCheckTests(TestCase):
+    def setUp(self):
+        self.user = FacebookUserFactory.create()
+        self.client.fb_login(self.user)
+
+    def check(self, instance_id):
+        with self.activate('en-US'):
+            url = reverse('facebook.banners.create_image_check',
+                          args=[instance_id])
+            return self.client.get(url)
+
+    def test_basic(self):
+        instance = FacebookBannerInstanceFactory.create(user=self.user)
+        response = self.check(instance.id)
+        eq_(json.loads(response.content)['is_complete'], False)
+
+        instance = FacebookBannerInstanceFactory.create(user=self.user,
+                                                        custom_image='test')
+        response = self.check(instance.id)
+        eq_(json.loads(response.content)['is_complete'], True)
 
 
 class LinkAccountsTests(TestCase):
