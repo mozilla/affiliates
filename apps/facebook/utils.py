@@ -98,4 +98,4 @@ def activate_locale(request, locale):
     # middleware doesn't run during tests and wouldn't normally set it then
     # either.
     if not settings.TEST:
-        request.locale = locale
+        request.locale = lang
