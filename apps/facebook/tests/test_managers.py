@@ -1,13 +1,62 @@
+import json
+
 from django.core import mail
 from django.test.client import RequestFactory
 
+import requests
+from mock import Mock, patch
 from nose.tools import eq_, ok_
 
-from facebook.models import FacebookAccountLink
+from facebook.models import FacebookAccountLink, FacebookUser
 from facebook.tests import FacebookAccountLinkFactory, FacebookUserFactory
 from shared.tests import TestCase
-from shared.tokens import TokenGenerator
 from users.tests import UserFactory
+
+
+def _r(content):
+    response = requests.Response()
+    response._content = content
+    return response
+
+
+@patch.object(requests, 'get')
+class FacebookUserManagerTests(TestCase):
+    manager = FacebookUser.objects
+
+    def user(self, **kwargs):
+        user = FacebookUserFactory(**kwargs)
+        user.save = Mock()
+        return user
+
+    def test_request_error(self, get):
+        """If requests encounters an error, do nothing."""
+        get.side_effect = requests.exceptions.RequestException
+        user = self.user()
+        self.manager.update_user_info(user)
+        ok_(not user.save.called)
+
+    def test_json_error(self, get):
+        """If there is an error parsing Facebook's JSON, do nothing."""
+        get.return_value = _r('malformed.json')
+        user = self.user()
+
+        self.manager.update_user_info(user)
+        ok_(not user.save.called)
+
+    def test_successful_update(self, get):
+        """
+        If the JSON retrieved from Facebook is valid, update the user object.
+        """
+        get.return_value = _r(json.dumps({'locale': 'en-US', 'name': 'Fred'}))
+        user = self.user(full_name='Rob', first_name='Bob')
+
+        self.manager.update_user_info(user)
+        ok_(user.save.called)
+
+        eq_(user.locale, 'en-US')  # Empty value replaced.
+        eq_(user.full_name, 'Fred')  # Value replaced.
+        eq_(user.first_name, 'Bob')  # Value preserved.
+        eq_(user.last_name, '')  # Empty value preserved.
 
 
 class FacebookAccountLinkManagerTests(TestCase):

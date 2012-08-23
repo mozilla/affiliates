@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 
+from mock import patch
 from nose.tools import eq_
 
 from facebook.auth import login as fb_login
 from facebook.decorators import fb_login_required
+from facebook.models import FacebookUser
 from facebook.tests import FacebookUserFactory
 from shared.tests import TestCase
 
@@ -54,7 +56,8 @@ class FBLoginRequiredTests(TestCase):
         response = view(request)
         eq_(response.status_code, 302)
 
-    def test_facebook_auth(self):
+    @patch.object(FacebookUser.objects, 'update_user_info')
+    def test_facebook_auth(self, update_user_info):
         """
         If the user has authed via the Facebook auth mechanism, execute the
         view.

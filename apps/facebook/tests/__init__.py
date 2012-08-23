@@ -5,10 +5,11 @@ from time import time
 
 from django.test.client import Client
 
-from factory import Factory, SubFactory, Sequence
+from factory import Factory, LazyAttribute, SubFactory, Sequence
 from mock import patch
 
 from facebook import models
+from facebook.models import FacebookUser
 from facebook.auth import login as fb_login
 from shared.tokens import TokenGenerator
 from users.tests import UserFactory
@@ -43,9 +44,11 @@ class FacebookAuthClient(Client):
         """
         # Instead of duplicating code, we just mock out the authentication
         # mechanisms from the test client code!
+        # We also mock out update_user_info to avoid requests calls.
         ctx = nested(patch('django.test.client.authenticate'),
-                     patch('django.test.client.login', fb_login))
-        with ctx as (authenticate, unused):
+                     patch('django.test.client.login', fb_login),
+                     patch.object(FacebookUser.objects, 'update_user_info'))
+        with ctx as (authenticate, unused, unused):
             authenticate.return_value = fb_user
             return super(FacebookAuthClient, self).login()
 

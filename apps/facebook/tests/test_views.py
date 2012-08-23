@@ -14,6 +14,7 @@ from shared.utils import absolutify
 from users.tests import UserFactory
 
 
+@patch.object(FacebookUser.objects, 'update_user_info')
 class LoadAppTests(TestCase):
     def load_app(self, payload):
         """
@@ -33,7 +34,7 @@ class LoadAppTests(TestCase):
 
             return self.client.post(reverse('facebook.load_app'), post_data)
 
-    def test_no_signed_request(self):
+    def test_no_signed_request(self, update_user_info):
         """
         If no signed request is provided, the app was loaded outside of the
         Facebook canvas, and we should redirect to the homepage.
@@ -43,14 +44,14 @@ class LoadAppTests(TestCase):
             eq_(response.status_code, 302)
             self.assert_viewname_url(response['Location'], 'home')
 
-    def test_invalid_signed_request(self):
+    def test_invalid_signed_request(self, update_user_info):
         """If the signed request is invalid, redirect to the homepage."""
         with self.activate('en-US'):
             response = self.load_app(False)
             eq_(response.status_code, 302)
             self.assert_viewname_url(response['Location'], 'home')
 
-    def test_no_authorization(self):
+    def test_no_authorization(self, update_user_info):
         """
         If the user has yet to authorize the app, ask the user for
         authorization via the oauth_redirect.html template.
@@ -60,7 +61,7 @@ class LoadAppTests(TestCase):
         self.assertTemplateUsed(response, 'facebook/oauth_redirect.html')
 
     @patch.object(FacebookUser, 'is_new', False)
-    def test_has_authorization(self):
+    def test_has_authorization(self, update_user_info):
         """
         If the user has authorized the app and isn't new, show the main
         banner view.
@@ -70,7 +71,7 @@ class LoadAppTests(TestCase):
         self.assertTemplateUsed(response, 'facebook/banner_list.html')
 
     @patch.object(FacebookUser, 'is_new', True)
-    def test_firstrun_page(self):
+    def test_firstrun_page(self, update_user_info):
         """If the user is new, show the firstrun page."""
         payload = create_payload(user_id=1)
         response = self.load_app(payload)

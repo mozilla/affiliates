@@ -3,10 +3,15 @@ import hashlib
 import hmac
 import json
 
+from django.conf import settings
+from django.test.client import RequestFactory
+
+from mock import patch
 from nose.tools import eq_
 
 from facebook.tests import create_payload
-from facebook.utils import decode_signed_request, modified_url_b64decode
+from facebook.utils import (activate_locale, decode_signed_request,
+                            modified_url_b64decode)
 from shared.tests import TestCase
 
 
@@ -75,3 +80,45 @@ class ModifiedUrlB64DecodeTests(TestCase):
     def test_basic_decode(self):
         """Test that basic decoding functionality works."""
         eq_(modified_url_b64decode('UA=='), 'P')
+
+
+class ActivateLocaleTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    @patch.object(settings, 'TEST', False)
+    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))
+    def test_not_in_whitelist(self):
+        """
+        If the given locale is not in the whitelist, default back to en-us.
+        """
+        request = self.factory.get('/')
+        activate_locale(request, 'de')
+        eq_(request.locale, 'en-us')
+
+    @patch.object(settings, 'TEST', False)
+    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'de'))
+    @patch('facebook.utils.get_language', lambda: 'de-de')
+    def test_language_code_in_whitelist(self):
+        """If only a locale's language code is in the whitelist, use it."""
+        request = self.factory.get('/')
+        activate_locale(request, 'de-de')
+        eq_(request.locale, 'de-de')
+
+    @patch.object(settings, 'TEST', False)
+    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))
+    @patch('facebook.utils.get_language', lambda: 'en-us')
+    def test_locale_in_whitelist(self):
+        """If a locale is in the whitelist, use it."""
+        request = self.factory.get('/')
+        activate_locale(request, 'en-us')
+        eq_(request.locale, 'en-us')
+
+    @patch.object(settings, 'TEST', True)
+    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))
+    @patch('facebook.utils.get_language', lambda: 'en-us')
+    def test_testing_dont_set_request_locale(self):
+        """If settings.TEST is True, do not set the locale on the request."""
+        request = self.factory.get('/')
+        activate_locale(request, 'en-us')
+        eq_(getattr(request, 'locale', None), None)
