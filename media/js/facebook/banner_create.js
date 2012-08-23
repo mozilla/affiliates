@@ -82,7 +82,7 @@
                 type: 'GET',
                 url: check_url
             }).done(function(data) {
-                if (data.is_complete) {
+                if (data.is_processed) {
                     window.location = next;
                 } else {
                     setTimeout(ping, 3000);

@@ -163,12 +163,12 @@ class BannerCreateImageCheckTests(TestCase):
     def test_basic(self):
         instance = FacebookBannerInstanceFactory.create(user=self.user)
         response = self.check(instance.id)
-        eq_(json.loads(response.content)['is_complete'], False)
+        eq_(json.loads(response.content)['is_processed'], False)
 
         instance = FacebookBannerInstanceFactory.create(user=self.user,
-                                                        custom_image='test')
+                                                        processed=True)
         response = self.check(instance.id)
-        eq_(json.loads(response.content)['is_complete'], True)
+        eq_(json.loads(response.content)['is_processed'], True)
 
 
 class LinkAccountsTests(TestCase):

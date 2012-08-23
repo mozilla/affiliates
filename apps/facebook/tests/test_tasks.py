@@ -58,6 +58,7 @@ class GenerateBannerInstanceImageTests(TestCase):
         self.generate(instance.id)
         instance = FacebookBannerInstance.objects.get(id=instance.id)
         eq_(bool(instance.custom_image), False)
+        eq_(instance.processed, False)
 
     @patch.object(requests, 'get', image_response('images', 'fb_picture.jpg'))
     @patch('facebook.tasks.Image')
@@ -66,9 +67,10 @@ class GenerateBannerInstanceImageTests(TestCase):
         Image.open.side_effect = ValueError
         instance = self.instance()
 
-        eq_(self.generate(instance.id), None)
+        self.generate(instance.id)
         instance = FacebookBannerInstance.objects.get(id=instance.id)
         eq_(bool(instance.custom_image), False)
+        eq_(instance.processed, False)
 
     @patch.object(requests, 'get', image_response('images', 'fb_picture.jpg'))
     def test_banner_generation(self):
@@ -79,6 +81,7 @@ class GenerateBannerInstanceImageTests(TestCase):
 
         self.generate(instance.id)
         instance = FacebookBannerInstance.objects.get(id=instance.id)
+        eq_(instance.processed, True)
 
         custom_im = Image.open(instance.custom_image)
         reference_im = Image.open(path('images', 'expected_banner.png'))

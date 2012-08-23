@@ -150,6 +150,7 @@ class FacebookBannerInstance(ModelBase):
 
     created = models.DateTimeField(default=datetime.now)
     total_clicks = models.IntegerField(default=0)
+    processed = models.BooleanField(default=False)
 
     @property
     def link(self):

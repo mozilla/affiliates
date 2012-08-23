@@ -81,3 +81,5 @@ def generate_banner_instance_image(banner_instance_id):
         custom_image_file = InMemoryUploadedFile(io, None, 'custom_image.png',
                                                  'image/png', io.len, None)
         banner_instance.custom_image.save('custom_image.png', custom_image_file)
+        banner_instance.processed = True
+        banner_instance.save()

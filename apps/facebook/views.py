@@ -91,6 +91,9 @@ def banner_create(request):
             }
             return JSONResponse(payload, status=202)  # 202 Accepted
         else:
+            # No processing needed.
+            banner_instance.processed = True
+            banner_instance.save()
             return JSONResponse({'next': next}, status=201)  # 201 Created
 
     return jingo.render(request, 'facebook/banner_create.html', {'form': form})
@@ -101,14 +104,13 @@ def banner_create(request):
 def banner_create_image_check(request, instance_id):
     """Check the status of generating a custom image for a banner instance."""
     banner_instance = get_object_or_404(FacebookBannerInstance, id=instance_id)
-    is_complete = bool(banner_instance.custom_image)
-    return JSONResponse({'is_complete': is_complete})
+    return JSONResponse({'is_processed': banner_instance.processed})
 
 
 @fb_login_required
 @xframe_allow
 def banner_list(request):
-    banner_instances = request.user.banner_instance_set.all()
+    banner_instances = request.user.banner_instance_set.filter(processed=True)
     return jingo.render(request, 'facebook/banner_list.html',
                         {'banner_instances': banner_instances})
 
