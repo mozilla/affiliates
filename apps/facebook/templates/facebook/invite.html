@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <body data-app-id="{{ FACEBOOK_APP_ID }}"
+        data-picture="{{ absolutify([MEDIA_URL, 'img/facebook/fx-logo-lg.png']|join('')) }}"
+        data-name="{{ _('Mozilla Firefox') }}"
+        data-description="{{ _('Different by design. It\'s fast, flexible and secure. Share Firefox with your friends today.') }}"
+        data-link="{{ FACEBOOK_DOWNLOAD_URL }}"
+        data-next="{{ next }}">
+    {{ js('fb_invite') }}
+  </body>
+</html>

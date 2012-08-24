@@ -34,4 +34,8 @@ urlpatterns = patterns('facebook.views',
         name='facebook.banners.link'),
 
     url(r'^leaderboard/?$', views.leaderboard, name='facebook.leaderboard'),
+
+    url(r'^invite/?$', views.invite, name='facebook.invite'),
+
+    url(r'^invite/done?$', views.post_invite, name='facebook.post_invite'),
 )

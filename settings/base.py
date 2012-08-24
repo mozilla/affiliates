@@ -186,6 +186,10 @@ MINIFY_BUNDLES = {
             'js/libs/jquery-1.7.1.js',
             'js/facebook/banner_share.js',
         ),
+        'fb_invite': (
+            'js/libs/jquery-1.7.1.js',
+            'js/facebook/invite.js',
+        ),
         'fb_banner_create': (
             'js/facebook/banner_create.js',
         ),

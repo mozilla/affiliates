@@ -1,14 +1,15 @@
 from django import http
 from django.conf import settings
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect as django_redirect
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 import jingo
-import tower
 from commonware.response.decorators import xframe_allow
 from funfactory.urlresolvers import reverse
+from tower import ugettext as _
 
 from facebook.auth import login
 from facebook.decorators import fb_login_required
@@ -137,6 +138,8 @@ def post_banner_share(request):
     """
     Redirect user back to the app after they've posted a banner to their feed.
     """
+    messages.success(request, _('You have successfully posted a banner to your '
+                                'wall !'))
     return django_redirect(settings.FACEBOOK_APP_URL)
 
 
@@ -195,3 +198,21 @@ def leaderboard(request):
     top_users = FacebookUser.objects.order_by('leaderboard_position')[:25]
     return jingo.render(request, 'facebook/leaderboard.html',
                         {'top_users': top_users})
+
+
+@fb_login_required
+@xframe_allow
+def invite(request):
+    protocol = 'https' if request.is_secure() else 'http'
+    next = absolutify(reverse('facebook.post_invite'), protocol=protocol)
+    return jingo.render(request, 'facebook/invite.html', {'next': next})
+
+
+def post_invite(request):
+    """
+    Redirect user back to the app after they've invited friends to download
+    Firefox.
+    """
+    messages.success(request, _('You have successfully sent a message to one '
+                                'of your friends!'))
+    return django_redirect(settings.FACEBOOK_APP_URL)

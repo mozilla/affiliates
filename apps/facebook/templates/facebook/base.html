@@ -15,8 +15,7 @@
         </hgroup>
 
         <aside class="download">
-          {# ToDo: make this link work  #}
-          <a href="#" class="button-blue">{{ _('Invite your friends to Download Firefox!') }}</a>
+          <a href="{{ url('facebook.invite') }}" class="button-blue">{{ _('Invite your friends to Download Firefox!') }}</a>
         </aside>
       </header>
 
@@ -31,6 +30,13 @@
       </nav>
 
       <div class="main">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
       {% block content %}
 
       {% endblock %}
@@ -89,10 +95,9 @@
           <h2>{{ _('Be a part of the Firefox movement') }}</h2>
           <h3>{{ _('It\'s easy!') }}</h3>
           <ol>
-            {# ToDo: make these links work  #}
-            <li><a href="#">{{ _('Create your custom banner.') }}</a></li>
-            <li><a href="#">{{ _('Share you banner with friends.') }}</a></li>
-            <li><a href="#">{{ _('Get clicks and you could be featured in a paid Facebook ad.') }}</a></li>
+            <li><a href="{{ url('facebook.banner_create') }}">{{ _('Create your custom banner.') }}</a></li>
+            <li><a href="{{ url('facebook.invite') }}">{{ _('Invite your friends to Download Firefox!') }}</a></li>
+            <li><a href="{{ url('facebook.leaderboard') }}">{{ _('Get clicks and you could be featured in a paid Facebook ad.') }}</a></li>
           </ol>
         </div>
 
