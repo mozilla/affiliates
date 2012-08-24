@@ -1,34 +1,48 @@
 {% extends 'facebook/base.html' %}
 
 {% block content %}
-  <h1>Leaderboard</h1>
-  <h2>You!</h2>
-  <table border="1">
-    <tr>
-      <th>Position</th>
-      <th>ID</th>
-      <th>Clicks</th>
-    </tr>
-    <tr>
-      <td>{{ request.user.leaderboard_position }}</td>
-      <td>{{ request.user.id }}</td>
-      <td>{{ request.user.total_clicks }}</td>
-    </tr>
-  </table>
+  <h2 class="page-title">{{ _('Affiliates with the most clicks') }}</h2>
 
-  <h2>Others!</h2>
-  <table border="1">
-    <tr>
-      <th>Position</th>
-      <th>ID</th>
-      <th>Clicks</th>
-    </tr>
+  <form class="select-country" method="post">
+    <p>
+      <select name="country">
+        {# L10n: Used in a dropdown that lets users filter the Leaderboard by country. Refers to the default filter, which shows all countries. #}
+        <option value="all" selected>{{ _('All') }}</option>
+        <option value="us">United States</option>
+        <option value="ca">Canada</option>
+        <option value="ch">Switzerland</option>
+        <option value="etc">And so on</option>
+      </select>
+    </p>
+  </form>
+
+  <table class="board">
+    <thead>
+      <tr>
+        {# L10n: Column heading in the leaderboard #}
+        <th class="rank" scope="col">{{ _('Rank') }}</th>
+        {# L10n: Column heading in the leaderboard #}
+        <th class="user" scope="col">{{ _('User') }}</th>
+        {# L10n: Column heading in the leaderboard #}
+        <th class="clicks" scope="col">{{ _('Total clicks') }}</th>
+      </tr>
+    </thead>
+    <tbody class="you">
+      <tr>
+        <th class="rank" scope="row">{{ request.user.leaderboard_position }}</th>
+        <td class="user"><img class="avatar" src="[[ profile picture ]]" alt="" width="35" height="35"> {{ request.user.id }}</td>
+        <td class="clicks">{{ request.user.total_clicks }}</td>
+      </tr>
+    </tbody>
+    <tbody class="leaders">
     {% for user in top_users %}
       <tr>
-        <td>{{ user.leaderboard_position }}</td>
-        <td>{{ user.id }}</p>
-        <td>{{ user.total_clicks }}</td>
+        <th class="rank" scope="row">{{ user.leaderboard_position }}</th>
+        <td class="user"><img class="avatar" src="[[ profile picture ]]" alt="" width="27" height="27"> {{ user.id }}</td>
+        <td class="clicks">{{ user.total_clicks }}</td>
       </tr>
     {% endfor %}
+    </tbody>
   </table>
+
 {% endblock %}

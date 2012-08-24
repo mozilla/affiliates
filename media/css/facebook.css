@@ -150,6 +150,13 @@ h6,
   font-size: 1em;
 }
 
+.page-title {
+  font-size: 1.25em;
+  letter-spacing: normal;
+  text-align: center;
+  margin: 10px 0 30px;
+}
+
 /* @Links ***/
 a:link,
 a:visited {
@@ -741,7 +748,7 @@ button::-moz-focus-inner {
 .banner-list h2 {
   font-size: 1.25em;
   text-align: center;
-  margin: 0 0 30px; 
+  margin: 0 0 30px;
 }
 
 .current-banner {
@@ -881,4 +888,66 @@ button::-moz-focus-inner {
   margin: 30px -20px 0;
   padding: 30px 30px 20px;
   text-align: right;
+}
+
+/* @Leaderboard */
+.select-country {
+  text-align: center;
+  margin: 30px auto;
+}
+
+table.board {
+  width: 100%;
+  margin: 0 0 30px;
+  border-collapse: collapse;
+}
+
+table.board th,
+table.board td {
+  font-weight: normal;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ccc;
+}
+
+table.board thead th {
+  font-size: .75em;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding: 6px 2px;
+}
+
+table.board .leaders tr:last-child td,
+table.board .leaders tr:last-child th {
+  border-bottom: 0;
+}
+
+table.board .you th,
+table.board .you td {
+  padding: 20px 12px;
+  background: #f3f7f8;
+  border-bottom: 1px solid #ccc;
+}
+
+table.board .leaders tr:first-child td,
+table.board .leaders tr:first-child th {
+  padding-top: 40px;
+}
+
+table.board .clicks {
+  text-align: right;
+}
+
+table.board .user {
+  width: 60%;
+}
+
+table.board .you .avatar {
+  margin: -10px 12px -10px -10px;
+  box-shadow: 1px 1px 1px rgba(0,135,183,.5);
+}
+
+table.board .leaders .avatar {
+  margin: -6px 16px -6px -5px;
+  box-shadow: 1px 1px 1px rgba(0,135,183,.5);
 }
