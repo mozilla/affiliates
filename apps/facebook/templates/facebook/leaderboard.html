@@ -29,8 +29,12 @@
     </thead>
     <tbody class="you">
       <tr>
-        <th class="rank" scope="row">{{ request.user.leaderboard_position }}</th>
-        <td class="user"><img class="avatar" src="[[ profile picture ]]" alt="" width="35" height="35"> {{ request.user.id }}</td>
+        <th class="rank" scope="row">
+          {% if request.user.leaderboard_position != -1 %}
+            {{ request.user.leaderboard_position }}
+          {% endif %}
+        </th>
+        <td class="user"><img class="avatar" src="{{ request.user.picture_url }}" alt="" width="35" height="35"> {{ request.user.full_name }}</td>
         <td class="clicks">{{ request.user.total_clicks }}</td>
       </tr>
     </tbody>
@@ -38,7 +42,7 @@
     {% for user in top_users %}
       <tr>
         <th class="rank" scope="row">{{ user.leaderboard_position }}</th>
-        <td class="user"><img class="avatar" src="[[ profile picture ]]" alt="" width="27" height="27"> {{ user.id }}</td>
+        <td class="user"><img class="avatar" src="{{ user.picture_url }}" alt="" width="27" height="27"> {{ user.first_name }} {{ user.last_name|first }}.</td>
         <td class="clicks">{{ user.total_clicks }}</td>
       </tr>
     {% endfor %}

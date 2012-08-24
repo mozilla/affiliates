@@ -16,14 +16,16 @@ def update_facebook_leaderboard():
     cursor.execute("""
         UPDATE facebook_facebookuser AS user
         INNER JOIN (
-            SELECT user.id AS user_id,
-                   @curRank := @curRank + 1 AS rank,
-                   COALESCE(SUM(instance.total_clicks), 0) AS clicks
-            FROM facebook_facebookuser AS user
-            LEFT JOIN facebook_facebookbannerinstance AS instance
-                 ON instance.user_id = user.id
-            GROUP BY user.id
-            ORDER BY clicks DESC
+            SELECT @curRank := @curRank + 1 AS rank, t2.user_id, t2.clicks
+            FROM (
+                SELECT user.id AS user_id,
+                       COALESCE(SUM(instance.total_clicks), 0) AS clicks
+                FROM facebook_facebookuser AS user
+                LEFT JOIN facebook_facebookbannerinstance AS instance
+                     ON instance.user_id = user.id
+                GROUP BY user.id
+                ORDER BY clicks DESC
+            ) AS t2
         ) AS t
         SET user.leaderboard_position = t.rank, user.total_clicks = t.clicks
         WHERE t.user_id = user.id;
