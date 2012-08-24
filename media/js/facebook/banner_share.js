@@ -13,4 +13,4 @@
     });
 
     window.top.location = FEED_URL + '?' + params;
-})($);
+})(jQuery);

@@ -45,9 +45,11 @@ class GenerateBannerInstanceImageTests(TestCase):
     def instance(self, **kwargs):
         return FacebookBannerInstanceFactory.create(**kwargs)
 
-    def test_invalid_id(self):
+    @patch.object(requests, 'get')
+    def test_invalid_id(self, get):
         """If an invalid id is given, do nothing."""
         self.generate(999)  # No exceptions!
+        eq_(get.called, False)
 
     @patch.object(requests, 'get')
     def test_download_user_image_error(self, get):

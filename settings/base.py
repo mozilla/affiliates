@@ -120,7 +120,7 @@ CSP_IMG_SRC = (
     'https://statse.webtrendslive.com',
     'https://secure.gravatar.com',
     'https://graph.facebook.com',
-    'https://*.fbcdn.net'
+    'https://*.fbcdn.net',
 )
 CSP_FONT_SRC = (
     '\'self\'',

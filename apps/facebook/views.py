@@ -77,7 +77,7 @@ def banner_create(request):
         # and it is safe to continue.
         if request.POST['next_action'] == 'share':
             next = absolutify(reverse('facebook.banners.share',
-                              args=[banner_instance.id]))
+                                      args=[banner_instance.id]))
         else:
             next = absolutify(reverse('facebook.banner_list'))
 

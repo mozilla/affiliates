@@ -2,7 +2,7 @@
     $(document).ready(function() {
         // Set initial preview state if any form options are pre-checked
         var $radio = $(':radio[name="banner"]:checked');
-        if ($radio.length > 0) {
+        if ($radio.length) {
             updatePreviewImage($radio);
         }
 
@@ -99,4 +99,4 @@
         // Set the hidden input's value to the clicked button's value.
         $(':input[name="next_action"]').val($(this).val());
     });
-})($);
+})(jQuery);
