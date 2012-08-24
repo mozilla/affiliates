@@ -1,12 +1,15 @@
 from django import forms
+from django.conf import settings
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.models import User
 from django.forms.util import flatatt
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 
-from tower import ugettext_lazy as _lazy
+from product_details import product_details
+from tower import ugettext as _, ugettext_lazy as _lazy
 
-from facebook.models import FacebookBanner, FacebookBannerInstance
+from facebook.models import FacebookBanner, FacebookBannerInstance, FacebookUser
 from shared.forms import AdminModelForm
 from shared.models import ENGLISH_LANGUAGE_CHOICES
 from shared.utils import absolutify
@@ -141,3 +144,32 @@ class FacebookAccountLinkForm(forms.Form):
             # English is okay here since this error is never shown to the user.
             raise forms.ValidationError('Affiliates account not found.')
         return email
+
+
+class LeaderboardFilterForm(forms.Form):
+    country = forms.ChoiceField(choices=settings.COUNTRIES.items())
+
+    def __init__(self, *args, **kwargs):
+        super(LeaderboardFilterForm, self).__init__(*args, **kwargs)
+
+        # Update choices to use the current locale.
+        lang = get_language()
+        choices = sorted(product_details.get_regions(lang).items(),
+                         key=lambda n: n[1])
+        # L10n: Used in a dropdown that lets users filter the Leaderboard by
+        # L10n: country. Refers to the default filter, which shows all countries
+        choices.insert(0, ('', _('All')))
+
+        self.fields['country'].choices = choices
+
+    def get_top_users(self, limit=25):
+        """
+        Return the top users ranked by banner clicks and filtered by country
+        based on the country field value on this form.
+        """
+        queryset = (FacebookUser.objects.exclude(leaderboard_position=-1)
+                    .order_by('leaderboard_position'))
+        if self.is_valid() and self.cleaned_data['country'] != '':
+            queryset = queryset.filter(country=self.cleaned_data['country'])
+
+        return queryset[:limit]

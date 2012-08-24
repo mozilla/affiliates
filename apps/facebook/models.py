@@ -27,6 +27,8 @@ class FacebookUser(CachingMixin, ModelBase):
     first_name = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256, blank=True)
     locale = models.CharField(max_length=32, blank=True)
+    country = models.CharField(max_length=16, blank=True,
+                               choices=settings.COUNTRIES.items())
 
     objects = FacebookUserManager()
 

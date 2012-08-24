@@ -891,8 +891,8 @@ button::-moz-focus-inner {
 }
 
 /* @Leaderboard */
-.select-country {
-  text-align: center;
+#id_country {
+  display: block;
   margin: 30px auto;
 }
 

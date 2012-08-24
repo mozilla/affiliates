@@ -26,6 +26,13 @@ def lazy_langs():
 
 LANGUAGES = lazy(lazy_langs, dict)()
 
+
+# List of valid country codes.
+def lazy_countries():
+    from product_details import product_details
+    return product_details.get_regions('en-US')
+COUNTRIES = lazy(lazy_countries, dict)()
+
 # Tells the product_details module where to find our local JSON files.
 # This ultimately controls how LANGUAGES are constructed.
 PROD_DETAILS_DIR = path('lib/product_details_json')
@@ -189,6 +196,10 @@ MINIFY_BUNDLES = {
         'fb_invite': (
             'js/libs/jquery-1.7.1.js',
             'js/facebook/invite.js',
+        ),
+        'fb_leaderboard': (
+            'js/libs/jquery-1.7.1.js',
+            'js/facebook/leaderboard.js',
         ),
         'fb_banner_create': (
             'js/facebook/banner_create.js',

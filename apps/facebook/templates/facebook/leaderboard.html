@@ -1,18 +1,16 @@
 {% extends 'facebook/base.html' %}
 
+{% block site_js %}
+  {{ super() }}
+  {{ js('fb_leaderboard') }}
+{% endblock %}
+
 {% block content %}
   <h2 class="page-title">{{ _('Affiliates with the most clicks') }}</h2>
 
-  <form class="select-country" method="post">
+  <form class="select-country" method="get">
     <p>
-      <select name="country">
-        {# L10n: Used in a dropdown that lets users filter the Leaderboard by country. Refers to the default filter, which shows all countries. #}
-        <option value="all" selected>{{ _('All') }}</option>
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-        <option value="ch">Switzerland</option>
-        <option value="etc">And so on</option>
-      </select>
+      {{ form.country }}
     </p>
   </form>
 
