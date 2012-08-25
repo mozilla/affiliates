@@ -1,12 +1,17 @@
 Heya! A banner has just met the click goal on Facebook Affiliates!
 
+PLEASE NOTE: Once this banner has been processed, please delete this email to
+avoid storing sensitive user data in our email. :D
+
 For reference, the click goal is at {{ FACEBOOK_CLICK_GOAL }} clicks currently.
 
-User Name: {{ banner_instance.user.full_name }}
-User ID: {{ banner_instance.user.id }}
-User's Locale: {{ banner_instance.user.locale }}
+---
+         User Name: {{ banner_instance.user.full_name }}
+           User ID: {{ banner_instance.user.id }}
+     User's Locale: {{ banner_instance.user.locale }}
 Banner Instance ID: {{ banner_instance.id }}
-Time Goal Reached: {{ now }}
+ Time Goal Reached: {{ now }}
+---
 
 This link _should_ work to get you into the admin interface once you've logged
 in via vpn.mozilla.com and the Affiliates admin:
@@ -16,5 +21,4 @@ https://vpn.mozilla.com/admin/facebook/facebook/{{ banner_instance.id }}/,DanaIn
 Alternatively, if the link above doesn't work, just enter in the Banner ID to
 the search box in the admin interface and it should work like a charm.
 
-Cheers!
--SubLieutenant Officer #47 of The Most Glorious and Excellent Affiliate Army
+{{ admin_email_signature() }}
