@@ -323,7 +323,9 @@ BANNERS_HASH = []
 
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
+
 FACEBOOK_CLICK_GOAL = 50
+FACEBOOK_CLICK_GOAL_EMAIL = 'affiliates@mozilla.org'
 
 FACEBOOK_BANNER_IMAGE_PATH = 'uploads/facebook/banners/'
 FACEBOOK_BANNER_INSTANCE_IMAGE_PATH = 'uploads/facebook/banner_instances/'
