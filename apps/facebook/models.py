@@ -16,6 +16,14 @@ from shared.storage import OverwritingStorage
 from shared.utils import absolutify
 
 
+# English-only is fine for the admin interface.
+REVIEW_CHOICES = (
+    (0, 'Unreviewed'),
+    (1, 'Passed'),
+    (2, 'Failed'),
+)
+
+
 class FacebookUser(CachingMixin, ModelBase):
     """Represent a user of the Facebook app."""
     id = models.CharField(max_length=128, primary_key=True)
@@ -56,6 +64,9 @@ class FacebookUser(CachingMixin, ModelBase):
     @property
     def picture_url(self):
         return 'https://graph.facebook.com/%s/picture?type=square' % self.id
+
+    def __unicode__(self):
+        return self.full_name
 
     # The next few methods and properties are useful for pretending to be a real
     # Django user object.
@@ -130,6 +141,9 @@ class FacebookBanner(ModelBase):
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)
 
+    def __unicode__(self):
+        return self.name
+
 
 class FacebookBannerLocale(ModelBase):
     banner = models.ForeignKey(FacebookBanner, related_name='locale_set')
@@ -158,7 +172,10 @@ class FacebookBannerInstance(ModelBase):
 
     created = models.DateTimeField(default=datetime.now)
     total_clicks = models.IntegerField(default=0)
+    total_clicks.total_clicks_goal = True
+
     processed = models.BooleanField(default=False)
+    review_status = models.SmallIntegerField(choices=REVIEW_CHOICES, default=0)
 
     @property
     def link(self):
@@ -170,6 +187,9 @@ class FacebookBannerInstance(ModelBase):
             return self.custom_image
         else:
             return self.banner.image
+
+    def __unicode__(self):
+        return u'%s: %s' % (self.banner, self.text)
 
 
 class FacebookClickStats(ModelBase):
