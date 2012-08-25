@@ -101,13 +101,14 @@ class FacebookBannerInstanceForm(forms.ModelForm):
         model = FacebookBannerInstance
         fields = ('banner', 'text', 'can_be_an_ad')
         widgets = {
-            'banner': BannerRadioSelect(),
+            'banner': BannerRadioSelect(attrs={'required': 'required'}),
             'text': forms.Textarea(attrs={
                 # L10n: &hellip; is an ellipses, the three dots like
                 # L10n: "I love Firefox because..."
                 'placeholder': mark_safe(_text_placeholder),
                 'maxlength': 90,
-                'rows': 2
+                'rows': 2,
+                'required': 'required'
             })
         }
 
@@ -131,7 +132,8 @@ class FacebookBannerAdminForm(AdminModelForm):
 
 
 class FacebookAccountLinkForm(forms.Form):
-    affiliates_email = forms.EmailField(widget=EmailInput())
+    affiliates_email = forms.EmailField(
+        widget=EmailInput(attrs={'required': 'required'}))
 
     def clean_affiliates_email(self):
         """
