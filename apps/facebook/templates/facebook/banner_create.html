@@ -34,7 +34,8 @@
 
     <div id="banner-msg">
       <h2>{{ form.text.label_tag(_('Next, tell the world why you love Firefox in 90 characters or less.')) }}</h2>
-      <p>
+      <p class="error">
+        <em class="note">{{ _('Sorry. Your message is too long. Please tell the world why you love Firefox in 90 characters or less.') }}</em>
         {{ form.text }}
       </p>
     </div>
