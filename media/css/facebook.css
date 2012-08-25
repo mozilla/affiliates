@@ -94,6 +94,28 @@ body {
   box-shadow: 1px 2px 2px rgba(0,0,0,.1);
 }
 
+.messages {
+  background: #f6fbff;
+  margin: -10px -10px 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  font-size: .857em;
+}
+
+.messages li {
+  padding-left: 30px;
+  margin: 0 0 .5em;
+}
+
+.messages .success {
+  background: url(../img/facebook/status-good.png) 0 1px no-repeat;
+}
+
+.messages .error {
+  background: url(../img/facebook/status-bad.png) 0 1px no-repeat;
+}
+
+
 /* @Headings ***/
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 .25em;
@@ -391,6 +413,16 @@ a:active {
   margin: -20px -20px 30px;
 }
 
+#banner-preview .errors {
+  background: #fdd9d9 url(../img/facebook/error.png) 25px 6px no-repeat;
+  color: #c33;
+  font-size: .75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: -30px -20px -10px;
+  padding: 10px 20px 10px 65px;
+}
+
 #banner-preview figure {
   position: relative;
   width: 300px;
@@ -430,6 +462,18 @@ a:active {
   margin: .5em auto 1em;
   font-size: .875em;
   border: 1px solid #ccc;
+}
+
+.error input,
+.error #id_text {
+  border-color: #c33;
+  box-shadow: 0 0 3px 1px rgba(200,50,50,.5);
+}
+
+.error .note {
+  display: block;
+  color: #c33;
+  font-size: .75em;
 }
 
 #banner-opts label {
