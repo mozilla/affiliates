@@ -4,6 +4,7 @@ src/django-cache-machine
 src/django-cronjobs
 src/django-csp
 src/django-extensions
+src/django-form-utils
 src/django-qsstats-magic
 src/django-smuggler
 src/django-statsd

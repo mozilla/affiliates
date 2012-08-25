@@ -12,6 +12,7 @@ requests>=0.9.1
 south==0.7.4
 statsd
 django-statsd-mozilla
+django-form-utils>=0.2.0
 
 # oremj's commander
 -e git://github.com/oremj/commander.git

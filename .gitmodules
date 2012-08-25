@@ -37,3 +37,6 @@
 [submodule "vendor-local/src/django-qsstats-magic"]
 	path = vendor-local/src/django-qsstats-magic
 	url = git://github.com/kmike/django-qsstats-magic.git
+[submodule "vendor-local/src/django-form-utils"]
+	path = vendor-local/src/django-form-utils
+	url = git://github.com/carljm/django-form-utils.git
