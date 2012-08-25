@@ -71,6 +71,26 @@
                     // the next step.
                     $('.fm-submit .loading').show();
                     imageGenerationPing(data.check_url, data.next);
+                },
+                400: function(xhr) {
+                    // 400 Bad Request means form errors!
+                    var errors = $.parseJSON(xhr.responseText);
+
+                    // Display generic form error message.
+                    $('.errors').show();
+
+                    // Display text field errors.
+                    if (errors.text) {
+                        var $banner_msg = $('#banner-msg');
+                        $banner_msg.addClass('error').remove('em.note');
+
+                        var $p = $banner_msg.find('p');
+                        for (var k = 0; k < errors.text.length; k++) {
+                            $p.before('<em class="note">' + errors.text[k] +
+                                      '</em>');
+                        }
+
+                    }
                 }
             }
         });

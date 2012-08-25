@@ -75,9 +75,10 @@ def load_app(request):
 @xframe_allow
 def banner_create(request):
     form = FacebookBannerInstanceForm(request, request.POST or None)
+    if request.method == 'POST':
+        if not form.is_valid():
+            return JSONResponse(form.errors, status=400)
 
-    # TODO: Properly handle form errors with the new AJAX flow.
-    if request.method == 'POST' and form.is_valid():
         banner_instance = form.save(commit=False)
         banner_instance.user = request.user
         banner_instance.save()

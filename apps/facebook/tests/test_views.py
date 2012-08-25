@@ -163,6 +163,18 @@ class CreateBannerTests(TestCase):
                 absolutify(reverse('facebook.banners.share',
                            args=[instance.id])))
 
+    def test_error(self):
+        """
+        If the form is not valid, return a 400 Bad Request with the error dict
+        in JSON.
+        """
+        response = self.banner_create(next_action='')
+        eq_(response.status_code, 400)
+
+        response_data = json.loads(response.content)
+        ok_('text' in response_data)
+        ok_('banner' in response_data)
+
 
 class BannerCreateImageCheckTests(TestCase):
     def setUp(self):

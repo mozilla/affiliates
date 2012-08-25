@@ -423,11 +423,12 @@ a:active {
 #banner-preview .errors {
   background: #fdd9d9 url(../img/facebook/error.png) 25px 6px no-repeat;
   color: #c33;
+  display: none;
   font-size: .75em;
   font-weight: bold;
   text-transform: uppercase;
   margin: -30px -20px -10px;
-  padding: 10px 20px 10px 65px;
+  padding: 10px 20px 30px 65px;
 }
 
 #banner-preview figure {

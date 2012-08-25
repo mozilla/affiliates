@@ -20,8 +20,8 @@
   </section>
 
   <section id="configure">
-    <p class="errors">{{ _('Please correct the errors in the form below.') }}</p>
     <div id="banner-preview">
+      <p class="errors">{{ _('Please correct the errors in the form below.') }}</p>
       {# L10n: Used above a box showing what a banner will look like once it is created. #}
       <h3>{{ _('Your banner preview') }}</h3>
       <figure>
@@ -34,10 +34,7 @@
 
     <div id="banner-msg">
       <h2>{{ form.text.label_tag(_('Next, tell the world why you love Firefox in 90 characters or less.')) }}</h2>
-      <p class="error">
-        <em class="note">{{ _('Sorry. Your message is too long. Please tell the world why you love Firefox in 90 characters or less.') }}</em>
-        {{ form.text }}
-      </p>
+      <p>{{ form.text }}</p>
     </div>
 
     <fieldset id="banner-opts">

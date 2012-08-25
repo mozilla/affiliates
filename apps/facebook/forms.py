@@ -81,6 +81,18 @@ class BannerRadioSelect(forms.RadioSelect):
 
 class FacebookBannerInstanceForm(forms.ModelForm):
     use_profile_image = forms.BooleanField(required=False)
+    text = forms.CharField(max_length=90, widget=forms.Textarea(attrs={
+        # L10n: &hellip; is an ellipses, the three dots like
+        # L10n: "I love Firefox because..."
+        'placeholder': mark_safe(_text_placeholder),
+        'maxlength': 90,
+        'rows': 2,
+        'required': 'required'
+    }), error_messages={
+        'max_length': _lazy('Sorry. Your message is too long. Please tell the '
+                            'world why you love Firefox in 90 characters or '
+                            'less.')
+    })
 
     def __init__(self, request, *args, **kwargs):
         super(FacebookBannerInstanceForm, self).__init__(*args, **kwargs)
@@ -102,14 +114,6 @@ class FacebookBannerInstanceForm(forms.ModelForm):
         fields = ('banner', 'text', 'can_be_an_ad')
         widgets = {
             'banner': BannerRadioSelect(attrs={'required': 'required'}),
-            'text': forms.Textarea(attrs={
-                # L10n: &hellip; is an ellipses, the three dots like
-                # L10n: "I love Firefox because..."
-                'placeholder': mark_safe(_text_placeholder),
-                'maxlength': 90,
-                'rows': 2,
-                'required': 'required'
-            })
         }
 
 

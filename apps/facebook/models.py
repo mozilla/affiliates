@@ -148,7 +148,7 @@ class FacebookBannerInstance(ModelBase):
     """Specific instance of a customized banner."""
     user = models.ForeignKey(FacebookUser, related_name='banner_instance_set')
     banner = models.ForeignKey(FacebookBanner, default=None)
-    text = models.CharField(max_length=256)
+    text = models.CharField(max_length=90)
     can_be_an_ad = models.BooleanField(default=False)
     custom_image = models.ImageField(blank=True,
                                      default='',

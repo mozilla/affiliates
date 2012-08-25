@@ -34,4 +34,4 @@
     $("#news-email").focus(function(){
         $("#newsletter .options").slideDown('fast');
     });
-})($);
+})(jQuery);
