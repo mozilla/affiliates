@@ -77,6 +77,20 @@ class LoadAppTests(TestCase):
         response = self.load_app(payload)
         self.assertTemplateUsed(response, 'facebook/first_run.html')
 
+    @patch('facebook.views.login')
+    def test_country_saved(self, login, update_user_info):
+        """
+        When a user enters the app, their country should be set and
+        login should be called with the updated user object so that it will be
+        saved to the database.
+        """
+        user = FacebookUserFactory.create(country='us')
+        payload = create_payload(user_id=user.id, country='fr')
+        self.load_app(payload)
+
+        eq_(login.called, True)
+        eq_(login.call_args[0][1].country, 'fr')
+
 
 class CreateBannerTests(TestCase):
     def setUp(self):

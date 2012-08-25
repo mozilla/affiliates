@@ -91,8 +91,8 @@ def activate_locale(request, locale):
     if lang not in settings.FACEBOOK_LOCALES:
         lang = lang.split('-')[0]
         if lang not in settings.FACEBOOK_LOCALES:
-            locale = 'en-us'
-            tower.activate(locale)
+            lang = 'en-us'
+            tower.activate(lang)
 
     # Don't set the locale on the request during tests to mimic the fact that
     # middleware doesn't run during tests and wouldn't normally set it then

@@ -103,7 +103,7 @@ class ActivateLocaleTests(TestCase):
         """If only a locale's language code is in the whitelist, use it."""
         request = self.factory.get('/')
         activate_locale(request, 'de-de')
-        eq_(request.locale, 'de-de')
+        eq_(request.locale, 'de')
 
     @patch.object(settings, 'TEST', False)
     @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))

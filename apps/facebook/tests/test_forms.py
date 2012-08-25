@@ -2,8 +2,10 @@ from django.test.client import RequestFactory
 
 from nose.tools import eq_, ok_
 
-from facebook.forms import FacebookAccountLinkForm, FacebookBannerInstanceForm
-from facebook.tests import FacebookBannerFactory, FacebookBannerLocaleFactory
+from facebook.forms import (FacebookAccountLinkForm, FacebookBannerInstanceForm,
+                            LeaderboardFilterForm)
+from facebook.tests import (FacebookBannerFactory, FacebookBannerLocaleFactory,
+                            FacebookUserFactory)
 from shared.tests import TestCase
 from users.tests import UserFactory
 
@@ -63,3 +65,40 @@ class FacebookAccountLinkFormTests(TestCase):
         user = UserFactory.create()
         form = FacebookAccountLinkForm({'affiliates_email': user.email})
         eq_(form.is_valid(), True)
+
+
+class LeaderboardFilterFormTests(TestCase):
+    def test_get_top_users(self):
+        """
+        Test that get_top_users, er, gets the top users ranked by
+        leaderboard_position.
+        """
+        user1 = FacebookUserFactory.create(leaderboard_position=1)
+        user2 = FacebookUserFactory.create(leaderboard_position=2)
+        user3 = FacebookUserFactory.create(leaderboard_position=3)
+
+        form = LeaderboardFilterForm()
+        eq_([user1, user2, user3], list(form.get_top_users()))
+
+    def test_exclude_unranked_users(self):
+        """
+        If a user has a leaderboard position of -1, do not include them in the
+        top users list.
+        """
+        user1 = FacebookUserFactory.create(leaderboard_position=1)
+        FacebookUserFactory.create(leaderboard_position=-1)
+        user3 = FacebookUserFactory.create(leaderboard_position=2)
+
+        form = LeaderboardFilterForm()
+        eq_([user1, user3], list(form.get_top_users()))
+
+    def test_filter_country(self):
+        """
+        If the country field is set, only return users within that country.
+        """
+        user1 = FacebookUserFactory.create(leaderboard_position=1, country='us')
+        FacebookUserFactory.create(leaderboard_position=2, country='fr')
+        user3 = FacebookUserFactory.create(leaderboard_position=3, country='us')
+
+        form = LeaderboardFilterForm({'country': 'us'})
+        eq_([user1, user3], list(form.get_top_users()))
