@@ -205,7 +205,10 @@ def follow_banner_link(request, banner_instance_id):
     except FacebookBannerInstance.DoesNotExist:
         return django_redirect(settings.FACEBOOK_DOWNLOAD_URL)
 
-    add_click.delay(banner_instance_id)
+    # Do not add clicks on HEAD requests.
+    if request.method != 'HEAD':
+        add_click.delay(banner_instance_id)
+
     return django_redirect(banner_instance.banner.link)
 
 
