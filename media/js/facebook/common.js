@@ -28,6 +28,7 @@
     $(document).ready(function() {
         // Hide newsletter options
         $("#newsletter .options").hide();
+        FAQ.init();
     });
 
     // Show newsletter options
@@ -60,3 +61,43 @@
         $('#total-clicks').text(data.clicks);
     });
 })(jQuery);
+
+/**
+ * FAQ Page Class
+ */
+var FAQ = {
+    init: function(){
+        FAQ.addEventListeners();
+    },
+
+    addEventListeners: function(){
+        $(".js_accordion").each(function(index, elem){
+            FAQ.initAccordion(elem);
+        });
+    },
+
+    initAccordion : function(elem){
+        var ulAccordion = $(elem);
+        var lnkAction = $("h4 a", ulAccordion);
+        var liElement;
+        var answerElement;
+
+        ulAccordion.children().removeClass().addClass('collapsed');
+        lnkAction.click(function(e){
+            e.preventDefault();
+
+            liElement = $(this).parents('li');
+            answerElement = $('.answer', liElement);
+            if (liElement.hasClass('collapsed')) {
+                answerElement.slideDown('fast', function() {
+                    liElement.removeClass().addClass('expanded');
+                });
+            } else {
+                answerElement.slideUp('fast', function() {
+                    liElement.removeClass().addClass('collapsed');
+                });
+            }
+        });
+    }
+
+};
