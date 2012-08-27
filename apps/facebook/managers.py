@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.db.models import Sum
 
 import commonware.log
 import jingo
@@ -123,3 +124,20 @@ class FacebookAccountLinkManager(CachingManager):
         link.is_active = True
         link.save()
         return link
+
+
+class FacebookClickStatsManager(CachingManager):
+    def total_for_month(self, user, year, month):
+        """
+        Get the total amount of clicks a user achieved in a specific month.
+        """
+        click_stats = self.filter(banner_instance__user=user,
+                                  hour__month=month, hour__year=year)
+        clicks = click_stats.aggregate(Sum('clicks'))['clicks__sum']
+        return clicks or 0  # `or 0` in case of None
+
+    def total_for_user(self, user):
+        """Get the total amount of clicks a user has achieved."""
+        click_stats = self.filter(banner_instance__user=user)
+        clicks = click_stats.aggregate(Sum('clicks'))['clicks__sum']
+        return clicks or 0

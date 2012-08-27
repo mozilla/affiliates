@@ -1,7 +1,6 @@
 from django import http
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect as django_redirect
 from django.views.decorators.cache import cache_control, never_cache
 from django.views.decorators.csrf import csrf_exempt
@@ -254,9 +253,6 @@ def stats(request, year, month):
     """
     Returns statistics for the sidebar statistics display. Called via AJAX.
     """
-    # Use `or 0` in case of None result.
-    clicks = (FacebookClickStats.objects
-              .filter(banner_instance__user=request.user)
-              .filter(hour__month=month, hour__year=year)
-              .aggregate(Sum('clicks'))['clicks__sum']) or 0
+    clicks = FacebookClickStats.objects.get_total_for_month(request.user, year,
+                                                            month)
     return JSONResponse({'clicks': clicks})

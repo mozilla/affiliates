@@ -15,7 +15,9 @@ from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
 from badges.models import BadgeInstance
+from facebook.models import FacebookUser
 from shared.models import ModelBase
+from shared.utils import get_object_or_none
 from users.utils import hash_password
 
 
@@ -34,6 +36,16 @@ def has_created_badges(self):
     badge_count = BadgeInstance.objects.no_cache().filter(user=self).count()
     return badge_count > 0
 User.add_to_class('has_created_badges', has_created_badges)
+
+
+def get_linked_account(self):
+    """
+    Return the FacebookUser linked with this account, or None if no account has
+    been linked.
+    """
+    return get_object_or_none(FacebookUser, _account_link__affiliates_user=self,
+                              _account_link__is_active=True)
+User.add_to_class('get_linked_account', get_linked_account)
 
 
 class UserProfile(ModelBase):

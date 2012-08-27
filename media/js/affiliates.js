@@ -10,8 +10,12 @@ $(
             errorMsgSelector: '.statistics-warning'
         });
         monthYearPicker.onRefresh(function(data) {
-            $('#your-downloads').text(data['user_total']);
-            $('#average-downloads').text(data['site_avg']);
+            $('#your-downloads').text(data.user_total);
+            $('#average-downloads').text(data.site_avg);
+            if (data.fb_total) {
+                $('#facebook-stats').show();
+                $('#facebook-total-clicks').text(data.fb_total);
+            }
         });
 
         // Enable placeholders in non-HTML5 browsers

@@ -10,7 +10,7 @@ from caching.base import CachingMixin
 from funfactory.urlresolvers import reverse
 from tower import ugettext_lazy as _lazy
 
-from facebook.managers import FacebookAccountLinkManager, FacebookUserManager
+from facebook import managers
 from facebook.utils import current_hour
 from shared.models import LocaleField, ModelBase
 from shared.storage import OverwritingStorage
@@ -39,7 +39,7 @@ class FacebookUser(CachingMixin, ModelBase):
     country = models.CharField(max_length=16, blank=True,
                                choices=settings.COUNTRIES.items())
 
-    objects = FacebookUserManager()
+    objects = managers.FacebookUserManager()
 
     @property
     def is_new(self):
@@ -112,7 +112,7 @@ class FacebookAccountLink(CachingMixin, ModelBase):
     activation_code = models.CharField(max_length=128, blank=True)
     is_active = models.BooleanField(default=False)
 
-    objects = FacebookAccountLinkManager()
+    objects = managers.FacebookAccountLinkManager()
 
     @property
     def activation_link(self):
@@ -202,3 +202,5 @@ class FacebookClickStats(ModelBase):
     banner_instance = models.ForeignKey(FacebookBannerInstance)
     hour = models.DateTimeField(default=current_hour)
     clicks = models.IntegerField(default=0)
+
+    objects = managers.FacebookClickStatsManager()

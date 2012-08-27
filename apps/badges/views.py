@@ -10,6 +10,7 @@ from babel.numbers import format_number
 
 from badges.models import (Badge, BadgeInstance, Category, ClickStats,
                            Leaderboard, Subcategory)
+from facebook.models import FacebookClickStats
 from news.models import NewsItem
 from shared.decorators import login_required
 from shared.utils import current_locale, redirect
@@ -62,6 +63,12 @@ def dashboard(request, template, context=None):
 
     if context['user_has_created_badges']:
         clicks_total = ClickStats.objects.total_for_user(request.user)
+
+        # Add Facebook clicks to total
+        fb_user = request.user.get_linked_account()
+        if fb_user is not None:
+            clicks_total += FacebookClickStats.objects.total_for_user(fb_user)
+
         context['user_clicks_total'] = format_number(clicks_total,
                                                      locale=locale)
 
@@ -88,4 +95,12 @@ def month_stats_ajax(request, month, year):
     locale = current_locale()
     results = {'user_total': format_number(user_total, locale=locale),
                'site_avg': format_number(site_avg, locale=locale)}
+
+    # Get linked Facebook click count if available.
+    facebook_user = request.user.get_linked_account()
+    if facebook_user is not None:
+        fb_total = FacebookClickStats.objects.total_for_month(facebook_user,
+                                                              year, month)
+        results['fb_total'] = format_number(fb_total, locale=locale)
+
     return HttpResponse(json.dumps(results), mimetype='application/json')

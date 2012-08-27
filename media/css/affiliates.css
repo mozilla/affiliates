@@ -1091,6 +1091,10 @@ div.total-downloads-section ul li span.download-count{
     color:#4f9800;
 }
 
+#facebook-stats {
+    display: none;
+}
+
 div.total-downloads-section button.back{
     margin:15px auto 4px 60px;
     font-family:Georgia,serif;
