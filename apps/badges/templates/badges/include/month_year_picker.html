@@ -1,6 +1,6 @@
 <div class="month-year-picker"
-     data-short-month-names="{{ months_short_list_json }}"
-     data-full-month-names="{{ months_full_list_json }}"
+     data-short-month-names="{{ mypicker_months_short.values()|jsonencode }}"
+     data-full-month-names="{{ mypicker_months_long.values()|jsonencode }}"
      data-csrf="{{ csrf_token }}"
      data-url="{{ url('badges.ajax.stats') }}">
   <div class="picker-header">
@@ -18,7 +18,7 @@
       <a class="next-year" href="">&raquo;</a>
     </div>
     <ul>
-      {% for number, month_name in months_short %}
+      {% for number, month_name in mypicker_months_short.items() %}
         <li>
           <a data-number="{{ number }}" href="">{{ month_name }}</a>
         </li>

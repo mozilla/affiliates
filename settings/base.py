@@ -170,6 +170,7 @@ MINIFY_BUNDLES = {
             'global/js/nav-main.js',
             'js/libs/jquery.placeholder.min.js',
             'js/libs/jquery.uniform.min.js',
+            'js/month_year_picker.js',
             'js/affiliates.js',
             'js/libs/webtrends.js',
         ),
@@ -246,6 +247,7 @@ MIDDLEWARE_CLASSES.insert(auth_index + 1, 'facebook.middleware.FacebookAuthentic
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'shared.context_processors.l10n',
+    'shared.context_processors.month_year_picker',
     'facebook.context_processors.app_context',
 ]
 
