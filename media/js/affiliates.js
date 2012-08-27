@@ -3,8 +3,16 @@
  */
 $(
     function(event){
-        MonthPicker.init();
         HomePage.init();
+
+        // Init MonthYearPicker
+        var monthYearPicker = new MonthYearPicker('.month-year-picker', {
+            errorMsgSelector: '.statistics-warning'
+        });
+        monthYearPicker.onRefresh(function(data) {
+            $('#your-downloads').text(data['user_total']);
+            $('#average-downloads').text(data['site_avg']);
+        });
 
         // Enable placeholders in non-HTML5 browsers
         $('input[placeholder],textarea[placeholder]').placeholder();

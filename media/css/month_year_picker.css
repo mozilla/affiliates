@@ -1,0 +1,173 @@
+/* Month Picker Widget */
+/* general */
+.month-picker-button{
+    border:1px solid #B3C8D7;
+    cursor: pointer;
+    -webkit-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
+    -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
+    box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
+    background: #FFFFFF;
+}
+
+.prev-month{
+    border-radius:6px 0 0 6px;
+    font-size:20px;
+    line-height:32px;
+}
+
+.next-month{
+    border-radius:0 6px 6px 0;
+    font-size:20px;
+    line-height:32px;
+}
+
+.month-year-picker div.picker-header a{
+    color:#5e5e5e;
+}
+
+.month-year-picker div.picker-header a:hover{
+    color:#5e5e5e;
+    text-decoration:none;
+}
+
+/* specific */
+.month-year-picker{
+    width:242px;
+    font-family: MuseoSans500, Open Sans, sans-serif;
+}
+
+.month-year-picker div.picker-header{
+    height:34px;
+    width:100%;
+    text-align:center;
+    line-height:34px;
+}
+
+.month-year-picker div.picker-header .prev-month{
+    width:29px;
+    height:34px;
+    float:left;
+}
+
+.month-year-picker div.picker-header .current-month-year{
+    float:left;
+    height:34px;
+    width:180px;
+    border:1px solid #B3C8D7;
+    cursor: pointer;
+    -webkit-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(196,214,232,0.9) inset;
+    -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(196,214,232,0.9) inset;
+    box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(196,214,232,0.9) inset;
+    background: #FFF;
+    border-right:none;
+    border-left:none;
+}
+
+.month-year-picker.opened .current-month-year {
+    background: #e8f2ff;
+}
+
+.month-year-picker div.picker-header .current-month-year span{
+    line-height:35px;
+}
+
+.month-year-picker div.picker-header .current-month-year .month-icon{
+    display:inline-block;
+    width:21px;
+    height:21px;
+    border:1px solid #B3C8D7;
+    border-radius:4px;
+    line-height:24px;
+    margin-left:2px;
+    background:transparent url(../img/template/sprites.png) no-repeat -482px 4px;
+}
+
+.month-year-picker div.picker-header .next-month{
+    width:29px;
+    height:34px;
+    float:right;
+}
+
+.month-year-picker div.month-picker{
+    background-color:#FFF;
+    border:1px solid #B3C8D7;
+    width:180px;
+    margin:0 30px;
+    position:absolute;
+    border-radius:0 0 3px 3px;
+    z-index:10000;
+    display:none;
+}
+
+.month-year-picker div.month-picker .year-picker{
+    height:32px;
+    text-align:center;
+    line-height:32px;
+
+    background: #5073b6;
+    background: -moz-linear-gradient(center top, #4869a8 0%, #5b81c7 100%) repeat 0 0;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4869a8), color-stop(1, #5b81c7) );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5b81c7', endColorstr='#4869a8',GradientType=0 );
+    border-bottom:1px solid #B3C8D7;
+    cursor: pointer;
+    -webkit-box-shadow:0 -2px rgba(72,105,168,0.9) inset;
+    -moz-box-shadow:0 -2px rgba(72,105,168,0.9) inset;
+    box-shadow:0 -2px rgba(72,105,168,0.9) inset;
+    color:#FFF;
+}
+
+.month-year-picker div.month-picker .year-picker a.prev-year{
+    float:left;
+    width:30px;
+    height:32px;
+    color:inherit;
+    font-size:20px;
+    line-height:29px;
+}
+
+.month-year-picker div.month-picker .year-picker a.next-year{
+    float:right;
+    width:30px;
+    height:32px;
+    color:inherit;
+    font-size:20px;
+    line-height:29px;
+}
+
+.month-year-picker div.month-picker .year-picker a.next-year:hover,
+.month-year-picker div.month-picker .year-picker a.prev-year:hover{
+    text-decoration:none;
+}
+
+.month-year-picker div.month-picker ul{
+    list-style-type:none;
+    margin:0;
+}
+
+.month-year-picker div.month-picker ul li{
+    display:inline-block;
+    width:30px;
+    height:30px;
+    text-align:center;
+    padding:3px;
+    margin:3px;
+    border-radius:5px;
+    color:#5e5e5e;
+}
+
+.month-year-picker div.month-picker ul li.current-month{
+    -webkit-box-shadow:0px 0px 8px rgba(196,209,223,0.9) inset;
+    -moz-box-shadow:0px 0px 8px rgba(196,209,223,0.9) inset;
+    box-shadow:0px 0px 8px rgba(196,209,223,0.9) inset;
+    color:#447bc4;
+}
+
+.month-year-picker div.month-picker ul li a{
+    line-height:30px;
+    color:inherit;
+}
+
+.month-year-picker div.month-picker ul li a:hover{
+    color:#447bc4;
+    text-decoration:none;
+}

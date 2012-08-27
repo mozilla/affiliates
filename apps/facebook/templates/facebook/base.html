@@ -85,7 +85,7 @@
 
           <h3>{{ _('Your Statistics Summary') }}</h3>
           <div class="calendar">
-            [[calendar widget goes here]]
+            {% include 'badges/include/month_year_picker.html' %}
           </div>
           <p class="note">{{ _('You can filter results by selecting a specific month using the calendar above.') }}</p>
           <p class="total">{{ _('Total clicks') }} <strong>234</strong></p>

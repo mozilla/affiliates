@@ -143,6 +143,7 @@ MINIFY_BUNDLES = {
             'css/styles.css',
             'css/uniform.default.css',
             'css/affiliates.css',
+            'css/month_year_picker.css',
             'css/my_banners.css',
         ),
         'home': (
@@ -161,6 +162,7 @@ MINIFY_BUNDLES = {
         # Facebook app
         'fb_base': (
             'css/facebook.css',
+            'css/month_year_picker.css',
         ),
     },
     'js': {
@@ -185,7 +187,8 @@ MINIFY_BUNDLES = {
         # Facebook app
         'fb_common': (
             'js/libs/jquery-1.7.1.js',
-            'js/facebook/common.js'
+            'js/month_year_picker.js',
+            'js/facebook/common.js',
         ),
         'fb_oauth_redirect': (
             'js/facebook/oauth_redirect.js',

@@ -1,8 +1,9 @@
+{% macro month_year_picker(src_url) -%}
 <div class="month-year-picker"
      data-short-month-names="{{ mypicker_months_short.values()|jsonencode }}"
-     data-full-month-names="{{ mypicker_months_long.values()|jsonencode }}"
+     data-long-month-names="{{ mypicker_months_long.values()|jsonencode }}"
      data-csrf="{{ csrf_token }}"
-     data-url="{{ url('badges.ajax.stats') }}">
+     data-url="{{ src_url }}">
   <div class="picker-header">
     <a class="prev-month month-picker-button" href="">&laquo;</a>
     <a class="current-month-year" href="">
@@ -19,10 +20,11 @@
     </div>
     <ul>
       {% for number, month_name in mypicker_months_short.items() %}
-        <li>
+        <li class="month-number month-{{ number }}">
           <a data-number="{{ number }}" href="">{{ month_name }}</a>
         </li>
       {% endfor %}
     </ul>
   </div>
 </div>
+{%- endmacro %}

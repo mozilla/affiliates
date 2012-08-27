@@ -1,162 +1,144 @@
-/**
- * Month Picker Class
- */
-var MonthPicker = {
+(function($) {
+    'use strict';
 
-    currentMonth: 1,
-    currentYear: 2011,
-    monthNames:[],
-    fullMonthNames: [],
-    csrf: '',
-    api_url: '',
-    opened:false,
-    monthList:null,
-    warningMsg: null,
-    yourDownloads: null,
-    avgDownloads: null,
-    /**
-     * Month Picker Initialization
-     */
-    init: function(){
-        // Load month names
-        var picker = $('.month-year-picker');
-        if (picker.length > 0) {
-            MonthPicker.monthNames = picker.data('short-month-names');
-            MonthPicker.fullMonthNames = picker.data('full-month-names');
-            MonthPicker.csrf = picker.data('csrf'),
-            MonthPicker.api_url = picker.data('url');
+    function MonthYearPicker(selector, options){
+        var self = this;
+        if (options === undefined) {
+            options = {};
+        }
 
-            // Cache Elements
-            MonthPicker.monthList = $('.month-picker');
+        var $picker = $(selector);
+        this.$picker = $picker;
 
-            // Set month and year
+        if ($picker.length > 0) {
+            this.shortMonthNames = $picker.data('short-month-names');
+            this.longMonthNames = $picker.data('long-month-names');
+            this.csrf = $picker.data('csrf');
+            this.url = options.url || $picker.data('url');
+
             var date = new Date();
-            MonthPicker.currentMonth = date.getMonth() + 1;
-            MonthPicker.currentYear = date.getFullYear();
+            this.month = options.month || date.getMonth() + 1;
+            this.year = options.year || date.getFullYear();
 
-            MonthPicker.warningMsg = $('.statistics-warning').hide();
-            MonthPicker.yourDownloads = $('#your-downloads');
-            MonthPicker.avgDownloads = $('#average-downloads');
+            // Auto-hide so error message stays for non-JS users.
+            this.$errorMsg = $(options.errorMsgSelector).hide();
 
-            MonthPicker.refresh();
-            MonthPicker.addEventListeners();
-        }
-    },
+            this.callbacks = [];
 
-    addEventListeners: function(){
-        var monthPicker = $('.month-year-picker');
-        if (monthPicker.length === 0){ return; }
-
-        $('.picker-header .prev-month').click(function(e){
-            e.preventDefault();
-            MonthPicker.prevMonth();
-        });
-
-        $('.picker-header .current-month-year').click(function(e){
-            e.preventDefault();
-            if (MonthPicker.opened){
-                MonthPicker.close();
-            } else {
-                MonthPicker.open();
+            // Bind click events to various elements of the widget.
+            var clickEvents = {
+                '.picker-header .prev-month': 'evtPrevMonth',
+                '.picker-header .current-month-year': 'evtToggleCalendar',
+                '.picker-header .next-month': 'evtNextMonth',
+                '.year-picker .prev-year': 'evtPrevYear',
+                '.year-picker .next-year': 'evtNextYear',
+                '.month-picker ul li a': 'evtSelectMonth'
+            };
+            for (var sel in clickEvents) {
+                if (clickEvents.hasOwnProperty(sel)) {
+                    // Construct an event handler that will call the event
+                    // specified by the property.
+                    $(sel).click(this._buildEventHandler(clickEvents[sel]));
+                }
             }
-        });
 
-        $('.picker-header .next-month').click(function(e){
-            e.preventDefault();
-            MonthPicker.nextMonth();
-        });
+            // Special case event: Hide month list on outside click.
+            var evtHideMonthList = function evtHideMonthList(e) {
+                if (self.$picker.find(e.target).length === 0) {
+                    self.$picker.removeClass('opened')
+                        .find('.month-picker').hide();
+                }
+            };
+            $(document).on('click', evtHideMonthList);
 
-        $('.year-picker .prev-year').click(function(e){
-            e.preventDefault();
-            MonthPicker.currentYear--;
-            MonthPicker.refresh();
-        });
-
-        $('.year-picker .next-year').click(function(e){
-            e.preventDefault();
-            MonthPicker.currentYear++;
-            MonthPicker.refresh();
-        });
-
-        $('.month-picker ul li a').click(function(e){
-            e.preventDefault();
-            MonthPicker.currentMonth = $(this).data('number');
-            MonthPicker.refresh();
-        });
-
-        $('.month-year-picker').mouseleave(function(){
-            setTimeout(function(){
-                MonthPicker.close();
-            },200);
-        });
-
-    },
-    refresh:function(){
-        // set month-year
-        $('.month-year-picker .month-year').html(
-            MonthPicker.fullMonthNames[MonthPicker.currentMonth - 1] + ' ' +
-                MonthPicker.currentYear
-        );
-
-        // set year
-        $('.month-picker .current-year').html(MonthPicker.currentYear);
-
-        // set month
-        $('.month-year-picker ul li').removeClass('current-month');
-        $.each($('.month-picker ul li'),function(i,val){
-            if ( (i+1) == MonthPicker.currentMonth){
-                $(this).addClass('current-month');
-            }
-        });
-        MonthPicker.getData();
-    },
-    open:function(){
-        MonthPicker.monthList.show();
-        MonthPicker.opened = true;
-        $('.current-month-year').css('background-color','#e8f2ff');
-    },
-    close:function(){
-        MonthPicker.monthList.hide();
-        MonthPicker.opened = false;
-        $('.current-month-year').css('background-color','#FFF');
-    },
-    nextMonth:function(){
-        if (MonthPicker.currentMonth < 12){
-            MonthPicker.currentMonth++;
-        }else{
-            MonthPicker.currentMonth = 1;
-            MonthPicker.currentYear++;
+            this.refresh();
         }
-        MonthPicker.refresh();
-    },
-    prevMonth:function(){
-        if (MonthPicker.currentMonth > 1){
-            MonthPicker.currentMonth--;
-        }else{
-            MonthPicker.currentMonth = 12;
-            MonthPicker.currentYear--;
-        }
-        MonthPicker.refresh();
-    },
-    getData:function(){
-        // MonthPicker.currentMonth [int 1-12]
-        // MonthPicker.currentYear [int]
-        $.ajax({
-            url: MonthPicker.api_url,
-            data: {
-                year: MonthPicker.currentYear,
-                month: MonthPicker.currentMonth,
-                csrfmiddlewaretoken: MonthPicker.csrf
-            },
-            type: 'POST',
-            success: function(data) {
-                MonthPicker.warningMsg.hide();
-                MonthPicker.yourDownloads.text(data['user_total']);
-                MonthPicker.avgDownloads.text(data['site_avg']);
-            },
-            error: function() {
-                MonthPicker.warningMsg.show();
-            }
-        });
     }
-};
+
+    MonthYearPicker.prototype = {
+        _buildEventHandler: function _buildEventHandler(handlerName) {
+            var self = this;
+            return function(e) {
+                e.preventDefault();
+                self[handlerName](e);
+            };
+        },
+
+        evtPrevMonth: function evtPrevMonth() {
+            this.month--;
+            if (this.month < 1) {
+                this.month = 12;
+                this.year--;
+            }
+            this.refresh();
+        },
+        evtNextMonth: function evtNextMonth() {
+            this.month++;
+            if (this.month > 12) {
+                this.month = 1;
+                this.year++;
+            }
+            this.refresh();
+        },
+        evtToggleCalendar: function evtToggleCalendar() {
+            this.$picker.toggleClass('opened').
+                 find('.month-picker').toggle();
+        },
+        evtPrevYear: function evtPrevYear() {
+            this.year--;
+            this.refresh();
+        },
+        evtNextYear: function evtNextYear() {
+            this.year++;
+            this.refresh();
+        },
+        evtSelectMonth: function evtSelectMonth(e) {
+            this.month = $(e.target).data('number');
+            this.refresh();
+        },
+
+        // Update the widget display, retrieve new data from the server, and
+        // trigger all registered callbacks with the new data.
+        refresh: function refresh() {
+            var self = this;
+
+            this.updateDisplay();
+            $.ajax({
+                url: this.url,
+                type: 'POST',
+                data: {
+                    year: this.year,
+                    month: this.month,
+                    csrfmiddlewaretoken: this.csrf
+                }
+            }).done(function(data) {
+                self.$errorMsg.hide();
+                for (var k = 0; k < self.callbacks.length; k++) {
+                    self.callbacks[k](data);
+                }
+            }).fail(function() {
+                self.$errorMsg.show();
+            });
+        },
+        updateDisplay: function updateDisplay() {
+            var $picker = this.$picker;
+
+            // Month-year text
+            $picker.find('.month-year').text(
+                this.longMonthNames[this.month - 1] + ' ' + this.year);
+
+            // Calendar Year
+            $picker.find('.current-year').text(this.year);
+
+            // Highlighted month.
+            $picker.find('.month-number').removeClass('current-month');
+            $picker.find('.month-' + this.month).addClass('current-month');
+        },
+
+        onRefresh: function onRefresh(callback) {
+            this.callbacks.push(callback);
+        }
+    };
+
+    window.MonthYearPicker = MonthYearPicker;
+})(jQuery);
