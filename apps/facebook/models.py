@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from caching.base import CachingMixin
+from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
 from tower import ugettext_lazy as _lazy
 
@@ -134,7 +134,7 @@ def fb_banner_rename(instance, filename):
     return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
 
 
-class FacebookBanner(ModelBase):
+class FacebookBanner(CachingMixin, ModelBase):
     """A banner that users can customize and share on Facebook."""
     name = models.CharField(max_length=255, default='Banner', unique=True,
                             verbose_name='Banner name')
@@ -142,6 +142,8 @@ class FacebookBanner(ModelBase):
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)
     _alt_text = models.CharField(max_length=256, blank=True, default='')
+
+    objects = CachingManager()
 
     @property
     def alt_text(self):
@@ -151,7 +153,7 @@ class FacebookBanner(ModelBase):
         return self.name
 
 
-class FacebookBannerLocale(ModelBase):
+class FacebookBannerLocale(CachingMixin, ModelBase):
     banner = models.ForeignKey(FacebookBanner, related_name='locale_set')
     locale = LocaleField()
 
@@ -164,7 +166,7 @@ def fb_instance_image_rename(instance, filename):
                         new_filename)
 
 
-class FacebookBannerInstance(ModelBase):
+class FacebookBannerInstance(CachingMixin, ModelBase):
     """Specific instance of a customized banner."""
     user = models.ForeignKey(FacebookUser, related_name='banner_instance_set')
     banner = models.ForeignKey(FacebookBanner, default=None)
@@ -183,6 +185,8 @@ class FacebookBannerInstance(ModelBase):
     processed = models.BooleanField(default=False)
     review_status = models.SmallIntegerField(choices=REVIEW_CHOICES, default=0)
 
+    objects = CachingManager()
+
     @property
     def link(self):
         return absolutify(reverse('facebook.banners.link', args=[self.id]))
@@ -198,7 +202,7 @@ class FacebookBannerInstance(ModelBase):
         return u'%s: %s' % (self.banner, self.text)
 
 
-class FacebookClickStats(ModelBase):
+class FacebookClickStats(CachingMixin, ModelBase):
     banner_instance = models.ForeignKey(FacebookBannerInstance)
     hour = models.DateTimeField(default=current_hour)
     clicks = models.IntegerField(default=0)

@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.core import mail
 from django.test.client import RequestFactory
@@ -7,8 +8,10 @@ import requests
 from mock import Mock, patch
 from nose.tools import eq_, ok_
 
-from facebook.models import FacebookAccountLink, FacebookUser
-from facebook.tests import FacebookAccountLinkFactory, FacebookUserFactory
+from facebook.models import (FacebookAccountLink, FacebookClickStats,
+                             FacebookUser)
+from facebook.tests import (FacebookAccountLinkFactory,
+                            FacebookClickStatsFactory, FacebookUserFactory)
 from shared.tests import TestCase
 from users.tests import UserFactory
 
@@ -151,3 +154,38 @@ class FacebookAccountLinkManagerTests(TestCase):
         result = self.manager.activate_link(link.activation_code)
         eq_(result, link)
         eq_(result.is_active, True)
+
+
+class FacebookClickStatsManagerTests(TestCase):
+    manager = FacebookClickStats.objects
+
+    def _mkstats(self, user, year, month, clicks):
+        now = datetime.now()
+        hour = datetime(year, month, now.day, now.hour)
+        return FacebookClickStatsFactory.create(banner_instance__user=user,
+                                                hour=hour, clicks=clicks)
+
+    def test_total_for_month(self):
+        """Test that the click sum logic is correct."""
+        user = FacebookUserFactory.create()
+        self._mkstats(user, 2012, 5, 5)
+        self._mkstats(user, 2012, 3, 7)
+        self._mkstats(user, 2012, 5, 2)
+        eq_(self.manager.total_for_month(user, 2012, 5), 7)
+
+    def test_total_for_month_none(self):
+        """If there are no clicks for the given month, return 0."""
+        user = FacebookUserFactory.create()
+        eq_(self.manager.total_for_month(user, 2012, 5), 0)
+
+    def test_total_for_year(self):
+        user = FacebookUserFactory.create()
+        self._mkstats(user, 2012, 3, 1)
+        self._mkstats(user, 2012, 4, 2)
+        self._mkstats(user, 2012, 5, 3)
+        eq_(self.manager.total_for_user(user), 6)
+
+    def test_total_for_year_none(self):
+        """If there are no clicks for the given user, return 0."""
+        user = FacebookUserFactory.create()
+        eq_(self.manager.total_for_user(user), 0)

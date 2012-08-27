@@ -253,6 +253,6 @@ def stats(request, year, month):
     """
     Returns statistics for the sidebar statistics display. Called via AJAX.
     """
-    clicks = FacebookClickStats.objects.get_total_for_month(request.user, year,
-                                                            month)
+    clicks = FacebookClickStats.objects.total_for_month(request.user, year,
+                                                        month)
     return JSONResponse({'clicks': clicks})

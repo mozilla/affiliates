@@ -6,6 +6,7 @@ from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.models import BadgeInstance
+from facebook.tests import FacebookAccountLinkFactory
 from users.models import RegisterProfile
 
 
@@ -54,3 +55,18 @@ class UserTests(TestCase):
 
         BadgeInstance.objects.create(user=user, badge_id=1)
         ok_(user.has_created_badges())
+
+    def test_get_linked_account(self):
+        user = User.objects.get(pk=2)
+        link = FacebookAccountLinkFactory.create(affiliates_user=user,
+                                                 is_active=True)
+        eq_(user.get_linked_account(), link.facebook_user)
+
+    def test_get_linked_account_none(self):
+        user = User.objects.get(pk=2)
+        eq_(user.get_linked_account(), None)
+
+    def test_get_linked_account_inactive(self):
+        user = User.objects.get(pk=2)
+        FacebookAccountLinkFactory.create(affiliates_user=user, is_active=False)
+        eq_(user.get_linked_account(), None)

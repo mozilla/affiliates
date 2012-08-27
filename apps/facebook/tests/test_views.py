@@ -282,28 +282,3 @@ class NewsletterSubscribeTests(TestCase):
         eq_(response.status_code, 200)
         ok_(log.error.called)
 
-
-class StatsTests(TestCase):
-    def setUp(self):
-        self.user = FacebookUserFactory.create()
-        self.client.fb_login(self.user)
-
-    def stats(self, year, month):
-        with self.activate('en-US'):
-            return self.client.get(reverse('facebook.stats',
-                                           args=[year, month]))
-
-    def _mkstats(self, year, month, clicks):
-        now = datetime.now()
-        hour = datetime(year, month, now.day, now.hour)
-        return FacebookClickStatsFactory.create(banner_instance__user=self.user,
-                                                hour=hour, clicks=clicks)
-
-    def test_clicks(self):
-        """Test that the click sum logic is correct."""
-        self._mkstats(2012, 8, 5)
-        self._mkstats(2012, 8, 7)
-        self._mkstats(2012, 7, 2)
-        response = self.stats(2012, 8)
-        response_data = json.loads(response.content)
-        eq_(response_data['clicks'], 12)
