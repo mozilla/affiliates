@@ -49,7 +49,7 @@ class FacebookUserManager(CachingManager):
 
         try:
             graph_data = json.loads(response.content)
-        except ValueError, e:
+        except ValueError:
             log.error('Malformed response from Facebook graph for user %s: %s'
                       % (user.id, response.content))
             return

@@ -5,7 +5,7 @@ from time import time
 
 from django.test.client import Client
 
-from factory import Factory, LazyAttribute, SubFactory, Sequence
+from factory import Factory, SubFactory, Sequence
 from mock import patch
 
 from facebook import models
