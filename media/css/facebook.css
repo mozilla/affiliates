@@ -694,7 +694,7 @@ button::-moz-focus-inner {
   margin: 0 0 1em;
 }
 
-#news-email {
+#newsletter_email {
   border: 1px solid #ccc;
   border-radius: .5em;
   color: #484848;
@@ -712,6 +712,10 @@ button::-moz-focus-inner {
 
 #newsletter .options {
   font-size: .75em;
+}
+
+#newsletter .options li {
+  display: inline;
 }
 
 #newsletter .options label {
@@ -743,6 +747,19 @@ button::-moz-focus-inner {
 .go:after {
   content: "\00A0\00BB"; /* nbsp raquo */
   font-size: 1.2em;
+}
+
+#newsletter-success {
+  background: #f6fbff;
+  display: none;
+  padding: 15px;
+  border: 1px solid #eee;
+  font-size: .857em;
+}
+
+#newsletter-success .msg {
+  background: url(../img/facebook/status-good.png) 0 1px no-repeat;
+  padding-left: 25px;
 }
 
 /* @Current banners */

@@ -6,6 +6,8 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+import basket
+import commonware
 import jingo
 from commonware.response.decorators import xframe_allow
 from funfactory.urlresolvers import reverse
@@ -14,13 +16,16 @@ from tower import ugettext as _
 from facebook.auth import login
 from facebook.decorators import fb_login_required
 from facebook.forms import (FacebookAccountLinkForm, FacebookBannerInstanceForm,
-                            LeaderboardFilterForm)
+                            LeaderboardFilterForm, NewsletterSubscriptionForm)
 from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
 from facebook.utils import activate_locale, decode_signed_request, is_logged_in
 from shared.http import JSONResponse
 from shared.utils import absolutify, redirect
+
+
+log = commonware.log.getLogger('a.facebook')
 
 
 @require_POST
@@ -223,3 +228,21 @@ def post_invite(request):
     messages.success(request, _('You have successfully sent a message to one '
                                 'of your friends!'))
     return django_redirect(settings.FACEBOOK_APP_URL)
+
+
+@require_POST
+def newsletter_subscribe(request):
+    form = NewsletterSubscriptionForm(request.POST)
+    if form.is_valid():
+        data = form.cleaned_data
+        try:
+            basket.subscribe(data['email'], settings.FACEBOOK_MAILING_LIST, {
+                'format': data['format'],
+                'country': data['country']
+            })
+        except basket.BasketException, e:
+            log.error('Error subscribing email %s to mailing list: %s' %
+                      (data['email'], e))
+
+    # TODO: Send an error code if there was an error.
+    return JSONResponse({'success': 'success'})

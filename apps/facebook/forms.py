@@ -180,3 +180,33 @@ class LeaderboardFilterForm(forms.Form):
             queryset = queryset.filter(country=self.cleaned_data['country'])
 
         return queryset[:limit]
+
+
+class NewsletterSubscriptionForm(forms.Form):
+    # L10n: Used in a choice field where users can choose between receiving
+    # L10n: HTML-based or Text-only newsletter emails.
+    NEWSLETTER_FORMATS = (('html', 'HTML'), ('text', _lazy('Text')))
+
+    email = forms.CharField(widget=EmailInput(attrs={
+        'placeholder': _lazy('Your email address'), 'required': 'required'
+    }))
+    country = forms.ChoiceField(choices=settings.COUNTRIES.items())
+    format = forms.ChoiceField(choices=NEWSLETTER_FORMATS, initial='html',
+                               widget=forms.RadioSelect())
+    privacy_policy_agree = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={'required': 'required'}))
+
+    def __init__(self, user, *args, **kwargs):
+        super(NewsletterSubscriptionForm, self).__init__(*args, **kwargs)
+
+        # TODO: Figure out how to not duplciate code from the
+        # LeaderboardFilterForm. The main issue right now is that ChoiceFields
+        # have nothing that runs when a form using it is initiated.
+
+        # Update choices to use the current locale.
+        lang = get_language()
+        choices = sorted(product_details.get_regions(lang).items(),
+                         key=lambda n: n[1])
+        self.fields['country'].choices = choices
+
+        self.fields['country'].initial = user.country

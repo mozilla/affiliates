@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from facebook.forms import FacebookAccountLinkForm
+from facebook.forms import FacebookAccountLinkForm, NewsletterSubscriptionForm
 from facebook.utils import in_facebook_app
 
 
@@ -19,5 +19,9 @@ def app_context(request):
     # Add account link form.
     if not request.user.is_linked:
         ctx['account_link_form'] = FacebookAccountLinkForm()
+
+    # Add newsletter form
+    ctx['newsletter_form'] = NewsletterSubscriptionForm(request.user,
+                                                        auto_id='newsletter_%s')
 
     return ctx

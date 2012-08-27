@@ -37,5 +37,8 @@ urlpatterns = patterns('facebook.views',
 
     url(r'^invite/?$', views.invite, name='facebook.invite'),
 
-    url(r'^invite/done?$', views.post_invite, name='facebook.post_invite'),
+    url(r'^invite/done/?$', views.post_invite, name='facebook.post_invite'),
+
+    url(r'^newsletter/subscribe/?$', views.newsletter_subscribe,
+        name='facebook.newsletter.subscribe'),
 )

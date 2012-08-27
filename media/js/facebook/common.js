@@ -1,6 +1,6 @@
 (function($) {
     // Handle submission of the account linking form.
-    $(document).on('submit', '#link-account', function(e) {
+    $('#link-account').submit(function(e) {
         e.preventDefault();
 
         var $form = $(this);
@@ -31,7 +31,24 @@
     });
 
     // Show newsletter options
-    $("#news-email").focus(function(){
+    $("#newsletter_email").focus(function(){
         $("#newsletter .options").slideDown('fast');
+    });
+
+    // Handle submission of the newsletter form.
+    // TODO: Handle errors!
+    $('#newsletter-form').submit(function(e) {
+        e.preventDefault();
+
+        var $form = $(this);
+        $.ajax({
+            type: $form.attr('method'),
+            url: $form.attr('action'),
+            data: $form.serialize()
+        }).done(function() {
+            $form.slideUp('fast', function() {
+                $('#newsletter-success').slideDown('fast');
+            });
+        });
     });
 })(jQuery);

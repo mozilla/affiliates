@@ -103,23 +103,23 @@
 
         <div id="newsletter" class="module">
           <h2>{{ _('Get Firefox News') }}</h2>
-          <form method="post" action="/path/to/handler">
+          <form id="newsletter-form" method="post" action="{{ url('facebook.newsletter.subscribe') }}">
+            {{ csrf() }}
             <p>
-              <label for="news-email">{{ _('Your email address') }}</label>
-              <input type="email" id="news-email" name="email" placeholder="{{ _('Your email address') }}" required>
+              {{ newsletter_form.email.label_tag(_('Your email address')) }}
+              {{ newsletter_form.email }}
             </p>
             <div class="options">
               <p>
-                [[ country dropdown goes here ]]
+                {{ newsletter_form.country }}
               </p>
               <p>
-                <label for="news-format-html"><input type="radio" id="news-format-html" name="format" value="html" checked> HTML</label>
-                {# L10n: Used in a choice field where users can choose between receiving HTML-based or Text-only newsletter emails. #}
-                <label for="news-format-text"><input type="radio" id="news-format-text" name="format" value="text"> {{ _('Text') }}</label>
+                {{ newsletter_form.format }}
               </p>
               <p>
-                <label for="news-agree">
-                  <input type="checkbox" id="news-agree" name="news-agree" required>
+                {# Using our own manual label because you can't store the content of a trans block in a variable for the label_tag function. #}
+                <label for="id_privacy_policy_agree">
+                  {{ newsletter_form.privacy_policy_agree }}
                   {% trans link='privacy_policy' %}
                   I agree to the <a href="{{ link }}">Privacy Policy</a>
                   {% endtrans %}
@@ -132,6 +132,9 @@
               <button type="submit" class="button-blue">{{ _('Sign me up!') }}</button>
             </p>
           </form>
+          <div id="newsletter-success">
+            <span class="msg">{{ _('Thanks!') }}</span>
+          </div>
         </div>
 
       </aside><!-- /.sub -->
