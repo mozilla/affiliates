@@ -116,7 +116,6 @@ body {
   background: url(../img/facebook/status-bad.png) 0 1px no-repeat;
 }
 
-
 /* @Headings ***/
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 .25em;
@@ -566,7 +565,8 @@ a:active {
   margin-left: 10px;
 }
 
-.fm-submit .button-blue i {
+.fm-submit .button-blue i,
+.firstrun .button-blue i {
   display: block;
   font-style: normal;
   margin-right: -12px;
