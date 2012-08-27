@@ -8,7 +8,7 @@
       {{ css('fb_base') }}
     {% endblock %}
   </head>
-  <body>
+  <body class="{% block body_class %}{% endblock %}">
     <div class="container">
       <header class="head">
         <hgroup>
@@ -44,6 +44,7 @@
       {% endblock %}
       </div><!-- /.main -->
 
+      {% block sidebar %}
       <aside class="sub">
 
         <div id="user-tools" class="module">
@@ -144,6 +145,8 @@
         {% endif %}
 
       </aside><!-- /.sub -->
+      {% endblock %}
+    
     </div><!-- /.container -->
     {% block site_js %}
       {{ js('fb_common') }}

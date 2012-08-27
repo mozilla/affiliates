@@ -240,6 +240,7 @@ a:active {
 .button-blue:hover,
 .button-blue:focus,
 .button-blue:active {
+  color: #fff;
   -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1), inset 0 -2px 0 0 rgba(0, 0, 0, 0.2), inset 0 12px 24px 2px #3089d8;
   -moz-box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1), inset 0 -2px 0 0 rgba(0, 0, 0, 0.2), inset 0 12px 24px 2px #3089d8;
   box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1), inset 0 -2px 0 0 rgba(0, 0, 0, 0.2), inset 0 12px 24px 2px #3089d8;
@@ -355,7 +356,7 @@ a:active {
 /* @First run */
 .firstrun .main {
   min-height: 150px;
-  width: 370px;
+  width: 390px;
   padding: 60px 45px 300px;
   text-align: center;
   text-shadow: 1px 1px 0 #fff;
