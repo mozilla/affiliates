@@ -1,5 +1,8 @@
 import json
 
+from django.conf import settings
+
+import basket
 from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_, ok_
@@ -237,3 +240,42 @@ class LinkAccountsTests(TestCase):
         eq_(response.status_code, 200)
         ok_(send_activation_email.called)
         eq_(send_activation_email.call_args[0][1], link)
+
+
+@patch.object(basket, 'subscribe')
+@patch.object(settings, 'FACEBOOK_MAILING_LIST', 'test-list')
+class NewsletterSubscribeTests(TestCase):
+    def setUp(self):
+        self.user = FacebookUserFactory.create()
+        self.client.fb_login(self.user)
+
+    def subscribe(self, **kwargs):
+        with self.activate('en-US'):
+            return self.client.post(reverse('facebook.newsletter.subscribe'),
+                                    kwargs)
+
+    def test_invalid_form_returns_success(self, subscribe):
+        """
+        Test that even if the form is invalid, return a 200 OK. This will go
+        away once we have strings translated for an error message.
+        """
+        response = self.subscribe(country='does.not.exist')
+        eq_(response.status_code, 200)
+        ok_(not subscribe.called)
+
+    def test_valid_form_call_basket(self, subscribe):
+        """If the form is valid, call basket with the proper arguments."""
+        response = self.subscribe(email='test@example.com', country='us',
+                                  format='text', privacy_policy_agree=True)
+        eq_(response.status_code, 200)
+        subscribe.assert_called_with('test@example.com', 'test-list',
+                                     format='text', country='us')
+
+    @patch('facebook.views.log')
+    def test_basket_error_log(self, log, subscribe):
+        """If basket throws an exception, log it and return a 200 OK."""
+        subscribe.side_effect = basket.BasketException
+        response = self.subscribe(email='test@example.com', country='us',
+                                  format='text', privacy_policy_agree=True)
+        eq_(response.status_code, 200)
+        ok_(log.error.called)

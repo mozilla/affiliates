@@ -230,16 +230,15 @@ def post_invite(request):
     return django_redirect(settings.FACEBOOK_APP_URL)
 
 
+@fb_login_required
 @require_POST
 def newsletter_subscribe(request):
-    form = NewsletterSubscriptionForm(request.POST)
+    form = NewsletterSubscriptionForm(request.user, request.POST)
     if form.is_valid():
         data = form.cleaned_data
         try:
-            basket.subscribe(data['email'], settings.FACEBOOK_MAILING_LIST, {
-                'format': data['format'],
-                'country': data['country']
-            })
+            basket.subscribe(data['email'], settings.FACEBOOK_MAILING_LIST,
+                             format=data['format'], country=data['country'])
         except basket.BasketException, e:
             log.error('Error subscribing email %s to mailing list: %s' %
                       (data['email'], e))

@@ -101,6 +101,7 @@
           </ol>
         </div>
 
+        {% if newsletter_form %}
         <div id="newsletter" class="module">
           <h2>{{ _('Get Firefox News') }}</h2>
           <form id="newsletter-form" method="post" action="{{ url('facebook.newsletter.subscribe') }}">
@@ -136,6 +137,7 @@
             <span class="msg">{{ _('Thanks!') }}</span>
           </div>
         </div>
+        {% endif %}
 
       </aside><!-- /.sub -->
     </div><!-- /.container -->
