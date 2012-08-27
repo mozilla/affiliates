@@ -86,7 +86,7 @@ def current_locale():
     """
     try:
         return Locale.parse(get_language(), sep='-')
-    except UnknownLocaleError:
+    except (UnknownLocaleError, ValueError):
         # Default to en-US
         return Locale('en', 'US')
 
