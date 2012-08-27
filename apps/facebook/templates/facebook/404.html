@@ -1,0 +1,26 @@
+{% extends 'facebook/base.html' %}
+
+{% block body_class %}notfound{% endblock %}
+
+{% block content %}
+
+  <hgroup>
+    <h2 class="page-title">{{ _('Whoops!') }}</h2>
+    <h3>{{ _('What are you doing here?') }}</h3>
+  </hgroup>
+  <p>{{ _('Did you make a left at that last URL instead of a right? No problem. Here are some tips to get you back on your way:') }}</p>
+  <ul>
+    <li>{{ _('If you typed in the address, check your spelling. Could just be a typo.') }}</li>
+    <li>
+    {% trans email='affiliates@mozilla.com' %}
+      If you followed a link, it’s probably broken. Please <a href="mailto:{{ email }}">contact us</a> and we’ll fix it.
+    {% endtrans %}
+    </li>
+    <li>
+    {% trans link='#' %}
+      If you're not sure what you're looking for, start at <a href="{{ link }}">mozilla.org</a>.
+    {% endtrans %}
+    </li>
+  </ul>
+
+{% endblock %}

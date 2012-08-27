@@ -94,6 +94,7 @@ body {
   box-shadow: 1px 2px 2px rgba(0,0,0,.1);
 }
 
+/* @Messages */
 .messages {
   background: #f6fbff;
   margin: -10px -10px 20px;
@@ -351,6 +352,29 @@ a:active {
   box-shadow: inset 0 2px 2px rgba(0,0,0,.25);
 }
 
+/* @First run */
+.firstrun .main {
+  min-height: 150px;
+  width: 370px;
+  padding: 60px 45px 300px;
+  text-align: center;
+  text-shadow: 1px 1px 0 #fff;
+  background: #fff url(../img/facebook/bg-firstrun.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun.png) center bottom no-repeat, #fff -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun.png) center bottom no-repeat, #fff -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun.png) center bottom no-repeat, #fff -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun.png) center bottom no-repeat, #fff -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun.png) center bottom no-repeat, #fff linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
+}
+
+.firstrun .page-title {
+  font-size: 3em;
+}
+
+.firstrun .intro {
+  font: .875em/1.6 "Open Sans Light", "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
+}
+
 /*@Select */
 #select h2 {
   font-size: 1.25em;
@@ -580,7 +604,6 @@ a:active {
 #link-account {
   display: none;
   font-size: .6875em;
-  width: 180px;
   margin: 0 -20px 20px;
   padding: 15px 20px;
   color: #fff;
@@ -987,4 +1010,32 @@ table.board .you .avatar {
 table.board .leaders .avatar {
   margin: -6px 16px -6px -5px;
   box-shadow: 1px 1px 1px rgba(0,135,183,.5);
+}
+
+/* @404 page */
+.notfound .main {
+  width: 435px;
+  padding: 60px 45px 60px 260px;
+  margin-top: 40px;
+  font-size: .875em;
+  background: #fff url(../img/facebook/fx-logo-big.png) -85px 50% no-repeat;
+}
+
+.notfound .page-title {
+  font-size: 3.428em;
+  margin: 0 0 .15em -2px;
+}
+
+.notfound h3 {
+  margin: 0 0 1em;
+}
+
+.notfound ul {
+  font-size: .857em;
+  margin: 0 0 1.5em 40px;
+  list-style: disc;
+}
+
+.notfound li {
+  margin: 0 0 1em;
 }
