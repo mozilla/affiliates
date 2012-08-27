@@ -8,6 +8,7 @@ from django.template.defaultfilters import slugify
 
 from caching.base import CachingMixin
 from funfactory.urlresolvers import reverse
+from tower import ugettext_lazy as _lazy
 
 from facebook.managers import FacebookAccountLinkManager, FacebookUserManager
 from facebook.utils import current_hour
@@ -140,6 +141,11 @@ class FacebookBanner(ModelBase):
     image = models.ImageField(upload_to=fb_banner_rename,
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)
+    _alt_text = models.CharField(max_length=256, blank=True, default='')
+
+    @property
+    def alt_text(self):
+        return _lazy(self._alt_text) if self._alt_text != '' else ''
 
     def __unicode__(self):
         return self.name

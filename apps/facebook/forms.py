@@ -51,7 +51,8 @@ class BannerFieldRenderer(forms.widgets.RadioFieldRenderer):
                 'class': 'banner-choice',
                 'src': absolutify(banner.image.url),
                 'width': 100,
-                'height': 72
+                'height': 72,
+                'alt': banner.alt_text
             })
 
             # Add attributes to the input tag.

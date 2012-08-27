@@ -12,7 +12,7 @@
     <h3 class="number">{{ loop.index }}</h3>
     <figure>
       {# ToDo: Alt text should match the displayed banner style. #}
-      <img class="banner" src="{{ absolutify(banner_instance.image.url) }}" alt="[[appropriate alt text here]]">
+      <img class="banner" src="{{ absolutify(banner_instance.image.url) }}" alt="{{ banner_instance.banner.alt_text }}">
       <figcaption>
         <dl class="meta">
           {# L10n: Heading referring to when a banner was created. #}
