@@ -199,8 +199,14 @@ def follow_banner_link(request, banner_instance_id):
     Add a click to a banner instance and redirect the user to the Firefox
     download page.
     """
+    try:
+        banner_instance = (FacebookBannerInstance.objects
+                           .select_related('banner').get(id=banner_instance_id))
+    except FacebookBannerInstance.DoesNotExist:
+        return django_redirect(settings.FACEBOOK_DOWNLOAD_URL)
+
     add_click.delay(banner_instance_id)
-    return django_redirect(settings.FACEBOOK_DOWNLOAD_URL)
+    return django_redirect(banner_instance.banner.link)
 
 
 @fb_login_required

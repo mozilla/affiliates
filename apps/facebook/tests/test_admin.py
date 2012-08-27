@@ -26,8 +26,12 @@ class FacebookBannerAdminTests(TestCase):
         """
         url = reverse('admin:facebook_facebookbanner_add')
         image = open(path('images', 'firefox-small.png'), 'r')
-        self.client.post(url, {'name': 'NewBannerTest',
-                         'locales': ['en-us', 'fr'], 'image': image})
+        self.client.post(url, {
+            'name': 'NewBannerTest',
+            'locales': ['en-us', 'fr'],
+            'image': image,
+            'link': 'http://mozilla.org'
+        })
 
         locales = (FacebookBannerLocale.objects
                    .filter(banner__name='NewBannerTest'))
@@ -46,8 +50,11 @@ class FacebookBannerAdminTests(TestCase):
         eq_([l.locale for l in locales], ['en-us', 'fr'])
 
         url = reverse('admin:facebook_facebookbanner_change', args=(banner.id,))
-        self.client.post(url, {'name': 'EditBannerTest',
-                         'locales': ['fr']})
+        self.client.post(url, {
+            'name': 'EditBannerTest',
+            'locales': ['fr'],
+            'link': 'http://mozilla.org'
+        })
 
         locales = FacebookBannerLocale.objects.filter(banner__id=banner.id)
         eq_([l.locale for l in locales], ['fr'])

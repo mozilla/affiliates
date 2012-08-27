@@ -12,7 +12,7 @@ from django.utils.translation import get_language
 import test_utils
 from funfactory.urlresolvers import (get_url_prefix, Prefixer, reverse,
                                      set_url_prefix)
-from nose.tools import ok_
+from nose.tools import eq_, ok_
 from tower import activate
 
 from browserid.tests import mock_browserid
@@ -73,6 +73,11 @@ class TestCase(test_utils.TestCase):
 
         return ok_(url.endswith(view_url),
                    'URL Match failed: %s != %s' % (url, view_url))
+
+    def assert_redirects(self, response, url, status=302):
+        """Assert that the given response redirects to the given url."""
+        eq_(response.status_code, status)
+        eq_(response['Location'], url)
 
 
 class ModelsTestCase(TestCase):

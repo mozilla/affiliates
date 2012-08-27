@@ -282,3 +282,30 @@ class NewsletterSubscribeTests(TestCase):
         eq_(response.status_code, 200)
         ok_(log.error.called)
 
+
+@patch.object(settings, 'FACEBOOK_DOWNLOAD_URL', 'http://mozilla.org')
+class FollowBannerLinkTests(TestCase):
+    def follow_link(self, instance_id):
+        with self.activate('en-US'):
+            return self.client.get(reverse('facebook.banners.link',
+                                   args=[instance_id]))
+
+    def test_instance_does_not_exist(self):
+        """
+        If the requested banner instance does not exist, return the default
+        redirect.
+        """
+        response = self.follow_link(999)
+        self.assert_redirects(response, 'http://mozilla.org')
+
+    @patch('facebook.views.add_click')
+    def test_banner_redirect(self, add_click):
+        """
+        If the requested banner instance exists, return a redirect to the
+        parent banner's link.
+        """
+        instance = FacebookBannerInstanceFactory.create(
+            banner__link='http://allizom.org')
+        response = self.follow_link(instance.id)
+        self.assert_redirects(response, 'http://allizom.org')
+        add_click.delay.assert_called_with(unicode(instance.id))

@@ -142,6 +142,7 @@ class FacebookBanner(CachingMixin, ModelBase):
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)
     _alt_text = models.CharField(max_length=256, blank=True, default='')
+    link = models.URLField(default=settings.FACEBOOK_DOWNLOAD_URL)
 
     objects = CachingManager()
 
