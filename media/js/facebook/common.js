@@ -51,4 +51,12 @@
             });
         });
     });
+
+    // Initialize MonthYearPicker
+    var monthYearPicker = new MonthYearPicker('.month-year-picker', {
+        errorMsgSelector: '.stats-warning'
+    });
+    monthYearPicker.onRefresh(function(data) {
+        $('#total-clicks').text(data.clicks);
+    });
 })(jQuery);

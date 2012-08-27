@@ -642,7 +642,26 @@ button::-moz-focus-inner {
 }
 
 #user-tools .calendar {
+  font-size: 0.75em;
   margin: 1em 0;
+}
+
+#user-tools .month-icon {
+  line-height: 22px;
+}
+
+#user-tools .stats-warning {
+  background: #f6fbff;
+  padding: 15px;
+  border: 1px solid #eee;
+  font-size: .857em;
+  margin: 20px 0 0;
+}
+
+#user-tools .stats-warning span {
+    background: url(../img/facebook/status-bad.png) 0 1px no-repeat;
+    display: block;
+    padding-left: 25px;
 }
 
 .module .note {

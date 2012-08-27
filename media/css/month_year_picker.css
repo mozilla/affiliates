@@ -32,7 +32,6 @@
 
 /* specific */
 .month-year-picker{
-    width:242px;
     font-family: MuseoSans500, Open Sans, sans-serif;
 }
 
@@ -50,10 +49,9 @@
 }
 
 .month-year-picker div.picker-header .current-month-year{
-    float:left;
     height:34px;
-    width:180px;
     border:1px solid #B3C8D7;
+    display: block;
     cursor: pointer;
     -webkit-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(196,214,232,0.9) inset;
     -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(196,214,232,0.9) inset;
@@ -61,6 +59,7 @@
     background: #FFF;
     border-right:none;
     border-left:none;
+    margin: 0 29px;
 }
 
 .month-year-picker.opened .current-month-year {

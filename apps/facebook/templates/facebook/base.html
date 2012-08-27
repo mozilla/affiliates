@@ -1,3 +1,5 @@
+{% from 'shared/macros.html' import month_year_picker with context %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -85,10 +87,13 @@
 
           <h3>{{ _('Your Statistics Summary') }}</h3>
           <div class="calendar">
-            {% include 'badges/include/month_year_picker.html' %}
+            {# Because url can't take placeholders, we use 0 in the months spot
+               and 1 in the year spot. #}
+            {{ month_year_picker(url('facebook.stats', 0, 1)) }}
           </div>
           <p class="note">{{ _('You can filter results by selecting a specific month using the calendar above.') }}</p>
-          <p class="total">{{ _('Total clicks') }} <strong>234</strong></p>
+          <p class="total">{{ _('Total clicks') }} <strong id="total-clicks">0</strong></p>
+          <p class="stats-warning"><span>{{ _('Statistics are currently unavailable.') }}</span></p>
         </div>
 
         <div id="help" class="module">

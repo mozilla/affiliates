@@ -2,26 +2,25 @@
 <div class="month-year-picker"
      data-short-month-names="{{ mypicker_months_short.values()|jsonencode }}"
      data-long-month-names="{{ mypicker_months_long.values()|jsonencode }}"
-     data-csrf="{{ csrf_token }}"
      data-url="{{ src_url }}">
   <div class="picker-header">
-    <a class="prev-month month-picker-button" href="">&laquo;</a>
-    <a class="current-month-year" href="">
+    <a class="prev-month month-picker-button" href="#">&laquo;</a>
+    <a class="next-month month-picker-button" href="">&raquo;</a>
+    <a class="current-month-year" href="#">
       <span class="month-year"></span>
       <span class="month-icon">&nbsp;</span>
     </a>
-    <a class="next-month month-picker-button" href="">&raquo;</a>
   </div>
   <div class="month-picker">
     <div class="year-picker">
-      <a class="prev-year" href="">&laquo;</a>
+      <a class="prev-year" href="#">&laquo;</a>
       <span class="current-year"></span>
-      <a class="next-year" href="">&raquo;</a>
+      <a class="next-year" href="#">&raquo;</a>
     </div>
     <ul>
       {% for number, month_name in mypicker_months_short.items() %}
         <li class="month-number month-{{ number }}">
-          <a data-number="{{ number }}" href="">{{ month_name }}</a>
+          <a data-number="{{ number }}" href="#">{{ month_name }}</a>
         </li>
       {% endfor %}
     </ul>

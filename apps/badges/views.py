@@ -3,11 +3,9 @@ import json
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
-from django.views.decorators.http import require_POST
 from django.views.decorators.cache import cache_control
 
 import jingo
-from babel.dates import get_month_names
 from babel.numbers import format_number
 
 from badges.models import (Badge, BadgeInstance, Category, ClickStats,
@@ -80,14 +78,12 @@ def dashboard(request, template, context=None):
     return jingo.render(request, template, context)
 
 
-@require_POST
 @login_required
 @cache_control(must_revalidate=True, max_age=3600)
-def month_stats_ajax(request):
-    user_total = ClickStats.objects.total_for_user_period(
-        request.user, request.POST['month'], request.POST['year'])
-    site_avg = ClickStats.objects.average_for_period(
-        request.POST['month'], request.POST['year'])
+def month_stats_ajax(request, month, year):
+    user_total = ClickStats.objects.total_for_user_period(request.user, month,
+                                                          year)
+    site_avg = ClickStats.objects.average_for_period(month, year)
 
     locale = current_locale()
     results = {'user_total': format_number(user_total, locale=locale),

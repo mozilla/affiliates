@@ -41,4 +41,6 @@ urlpatterns = patterns('facebook.views',
 
     url(r'^newsletter/subscribe/?$', views.newsletter_subscribe,
         name='facebook.newsletter.subscribe'),
+
+    url(r'^stats/(\d+)/(\d+)/?$', views.stats, name='facebook.stats'),
 )

@@ -1,8 +1,9 @@
 from django import http
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect as django_redirect
-from django.views.decorators.cache import never_cache
+from django.views.decorators.cache import cache_control, never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -19,7 +20,7 @@ from facebook.forms import (FacebookAccountLinkForm, FacebookBannerInstanceForm,
                             LeaderboardFilterForm, NewsletterSubscriptionForm)
 from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
-                             FacebookUser)
+                             FacebookClickStats, FacebookUser)
 from facebook.utils import activate_locale, decode_signed_request, is_logged_in
 from shared.http import JSONResponse
 from shared.utils import absolutify, redirect
@@ -245,3 +246,14 @@ def newsletter_subscribe(request):
 
     # TODO: Send an error code if there was an error.
     return JSONResponse({'success': 'success'})
+
+
+@fb_login_required
+@cache_control(must_revalidate=True, max_age=3600)
+def stats(request, month, year):
+    # Use `or 0` in case of None result.
+    clicks = (FacebookClickStats.objects
+              .filter(banner_instance__user=request.user)
+              .filter(hour__month=month, hour__year=year)
+              .aggregate(Sum('clicks'))['clicks__sum']) or 0
+    return JSONResponse({'clicks': clicks})
