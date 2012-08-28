@@ -13,7 +13,7 @@ from tower import ugettext as _
 from shared.tokens import TokenGenerator
 from shared.utils import get_object_or_none
 
-
+__import__('commonware.log')
 log = commonware.log.getLogger('a.facebook')
 
 
