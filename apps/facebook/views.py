@@ -20,7 +20,8 @@ from facebook.forms import (FacebookAccountLinkForm, FacebookBannerInstanceForm,
 from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookClickStats, FacebookUser)
-from facebook.utils import activate_locale, decode_signed_request, is_logged_in
+from facebook.utils import (activate_locale, decode_signed_request,
+                            is_facebook_bot, is_logged_in)
 from shared.http import JSONResponse
 from shared.utils import absolutify, redirect
 
@@ -205,8 +206,8 @@ def follow_banner_link(request, banner_instance_id):
     except FacebookBannerInstance.DoesNotExist:
         return django_redirect(settings.FACEBOOK_DOWNLOAD_URL)
 
-    # Do not add clicks on HEAD requests.
-    if request.method != 'HEAD':
+    # Do not add a click if the request is from the Facebook bot.
+    if not is_facebook_bot(request):
         add_click.delay(banner_instance_id)
 
     return django_redirect(banner_instance.banner.link)

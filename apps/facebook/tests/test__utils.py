@@ -9,9 +9,9 @@ from django.test.client import RequestFactory
 from mock import patch
 from nose.tools import eq_
 
-from facebook.tests import create_payload
+from facebook.tests import FACEBOOK_USER_AGENT, create_payload
 from facebook.utils import (activate_locale, decode_signed_request,
-                            modified_url_b64decode)
+                            is_facebook_bot, modified_url_b64decode)
 from shared.tests import TestCase
 
 
@@ -122,3 +122,16 @@ class ActivateLocaleTests(TestCase):
         request = self.factory.get('/')
         activate_locale(request, 'en-us')
         eq_(getattr(request, 'locale', None), None)
+
+
+class IsFacebookBotTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_is_bot(self):
+        request = self.factory.get('/', HTTP_USER_AGENT=FACEBOOK_USER_AGENT)
+        eq_(is_facebook_bot(request), True)
+
+    def test_is_not_a_bot(self):
+        request = self.factory.get('/', HTTP_USER_AGENT='not.facebook')
+        eq_(is_facebook_bot(request), False)

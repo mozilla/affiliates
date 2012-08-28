@@ -70,6 +70,14 @@ def is_logged_in(request):
             isinstance(request.user, FacebookUser))
 
 
+def is_facebook_bot(request):
+    """Check the request's User-Agent against the Facebook bot's User-Agent."""
+    if 'HTTP_USER_AGENT' in request.META:
+        return request.META['HTTP_USER_AGENT'].startswith('facebookexternalhit')
+    else:
+        return False
+
+
 def current_hour():
     """Return a datetime representing the current hour."""
     now = datetime.now()

@@ -9,8 +9,8 @@ from nose.tools import eq_, ok_
 
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
-from facebook.tests import (create_payload, FacebookAccountLinkFactory,
-                            FacebookBannerFactory,
+from facebook.tests import (FACEBOOK_USER_AGENT, create_payload,
+                            FacebookAccountLinkFactory, FacebookBannerFactory,
                             FacebookBannerInstanceFactory, FacebookUserFactory)
 from shared.tests import TestCase
 from shared.utils import absolutify
@@ -290,10 +290,11 @@ class NewsletterSubscribeTests(TestCase):
 
 @patch.object(settings, 'FACEBOOK_DOWNLOAD_URL', 'http://mozilla.org')
 class FollowBannerLinkTests(TestCase):
-    def follow_link(self, instance_id):
+    def follow_link(self, instance_id, **extra):
         with self.activate('en-US'):
             return self.client.get(reverse('facebook.banners.link',
-                                   args=[instance_id]))
+                                           args=[instance_id]),
+                                   **extra)
 
     def test_instance_does_not_exist(self):
         """
@@ -314,6 +315,16 @@ class FollowBannerLinkTests(TestCase):
         response = self.follow_link(instance.id)
         self.assert_redirects(response, 'http://allizom.org')
         add_click.delay.assert_called_with(unicode(instance.id))
+
+    @patch('facebook.views.add_click')
+    def test_facebook_bot_no_click(self, add_click):
+        """If the request is coming from a facebook bot, do not add a click."""
+        instance = FacebookBannerInstanceFactory.create(
+            banner__link='http://allizom.org')
+        response = self.follow_link(instance.id,
+                                    HTTP_USER_AGENT=FACEBOOK_USER_AGENT)
+        self.assert_redirects(response, 'http://allizom.org')
+        ok_(not add_click.delay.called)
 
 
 class BannerListTests(TestCase):
