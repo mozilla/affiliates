@@ -23,11 +23,13 @@
 
       <nav class="nav-tabs">
         <ul>
-          <li class="selected"><a href="{{ url('facebook.banner_list') }}">{{ _('My banners') }}</a></li>
+          <li {{ 'banners'|class_selected(nav_section) }}><a href="{{ url('facebook.banner_list') }}">{{ _('My banners') }}</a></li>
+
           {# L10n: Refers to Frequently Asked Questions, a page that shows answers to common questions about the app. #}
-          <li><a href="#">{{ _('FAQs') }}</a></li>
+          <li {{ 'faq'|class_selected(nav_section) }}><a href="{{ url('facebook.faq') }}">{{ _('FAQs') }}</a></li>
+
           {# L10n: Refers to a page that shows the top 25 users with the most clicks on their banners. #}
-          <li><a href="{{ url('facebook.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
+          <li {{ 'leaderboard'|class_selected(nav_section) }}><a href="{{ url('facebook.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
         </ul>
       </nav>
 
@@ -146,7 +148,7 @@
 
       </aside><!-- /.sub -->
       {% endblock %}
-    
+
     </div><!-- /.container -->
     {% block site_js %}
       {{ js('fb_common') }}

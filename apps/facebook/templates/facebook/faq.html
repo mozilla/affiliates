@@ -1,6 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'facebook/base.html' %}
 
 {% block body_class %}faq{% endblock %}
+
+{% set nav_section = 'faq' %}
 
 {% block content %}
 
@@ -27,7 +29,7 @@
         <h4><a href="#">{{ _('How do I add a banner to my Facebook profile?') }}</a></h4>
         <div class="answer">
           <p>
-          {% trans link='#' %}
+          {% trans link=url('facebook.banner_create') %}
           Select a banner design that you like using the <a href="{{ link }}">banner builder</a>, add a personal message about why you love Firefox and then click "share." This will post the banner to your Facebook timeline and into your friends' newsfeed. When you get activity on your banner, you'll get an update on your timeline.
           {% endtrans %}
           </p>
@@ -45,7 +47,7 @@
         <h4><a href="#">{{ _('Can my banner become a paid Facebook ad?') }}</a></h4>
         <div class="answer">
           <p>
-            {% trans link='mailto:affiliates@mozilla.org', click_count=50 %}
+            {% trans link='mailto:affiliates@mozilla.org', click_count=FACEBOOK_CLICK_GOAL %}
             If you checked the box to allow your banner to be featured in a paid Facebook ad, once you've reached {{ click_count }} clicks on a Facebook banner, your banner will become eligable to be a paid Facebook ad. This means that Mozilla will pay to have an ad placed on the Facebook ad network sharing (remove the t in sharing) your message of why you love Firefox. We will notify you if your banner is chosen to be a paid ad in your region. If you do not want to participate in this, don't click the opt-in when you build your banner. If you've opted in by accident, please contact us at <a href="{{ link }}">affiliates@mozilla.org</a> and we'll make sure you aren't included in the ad selection.
             {% endtrans %}
           </p>
@@ -78,7 +80,7 @@
             {% endtrans %}
           </p>
         </div>
-      </li>      
+      </li>
     </ul>
 
     {# L10n: Title of a category of questions on the help page #}

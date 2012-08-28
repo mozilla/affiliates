@@ -1,5 +1,7 @@
 {% extends 'facebook/base.html' %}
 
+{% set nav_section = 'leaderboard' %}
+
 {% block site_js %}
   {{ super() }}
   {{ js('fb_leaderboard') }}
