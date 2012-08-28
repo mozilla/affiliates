@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, url
 
 from facebook import views
-from shared.views import view_404
+from shared.views import view_404, view_500
 
 
 urlpatterns = patterns('facebook.views',
@@ -48,4 +48,6 @@ urlpatterns = patterns('facebook.views',
     url(r'^stats/(\d+)/(\d+)/?$', views.stats, name='facebook.stats'),
 
     url(r'^404/?$', view_404, name='facebook.404'),
+
+    url(r'^500/?$', view_500, name='facebook.500'),
 )

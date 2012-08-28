@@ -69,10 +69,6 @@ def load_app(request):
     # manually.
     activate_locale(request, user.locale)
 
-    if user.is_new:
-        return jingo.render(request, 'facebook/first_run.html')
-
-    # TODO: Replace with actual app landing page.
     return banner_list(request)
 
 
@@ -130,7 +126,7 @@ def banner_create_image_check(request, instance_id):
 def banner_list(request):
     # New users can't see this page.
     if request.user.is_new:
-        return banner_create(request)
+        return jingo.render(request, 'facebook/first_run.html')
 
     banner_instances = request.user.banner_instance_set.filter(processed=True)
     return jingo.render(request, 'facebook/banner_list.html',

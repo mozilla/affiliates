@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from django.conf import settings
 
@@ -12,8 +11,7 @@ from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
 from facebook.tests import (create_payload, FacebookAccountLinkFactory,
                             FacebookBannerFactory,
-                            FacebookBannerInstanceFactory,
-                            FacebookClickStatsFactory, FacebookUserFactory)
+                            FacebookBannerInstanceFactory, FacebookUserFactory)
 from shared.tests import TestCase
 from shared.utils import absolutify
 from users.tests import UserFactory
@@ -74,13 +72,6 @@ class LoadAppTests(TestCase):
         payload = create_payload(user_id=1)
         response = self.load_app(payload)
         self.assertTemplateUsed(response, 'facebook/banner_list.html')
-
-    @patch.object(FacebookUser, 'is_new', True)
-    def test_firstrun_page(self, update_user_info):
-        """If the user is new, show the firstrun page."""
-        payload = create_payload(user_id=1)
-        response = self.load_app(payload)
-        self.assertTemplateUsed(response, 'facebook/first_run.html')
 
     @patch('facebook.views.login')
     def test_country_saved(self, login, update_user_info):
@@ -309,3 +300,27 @@ class FollowBannerLinkTests(TestCase):
         response = self.follow_link(instance.id)
         self.assert_redirects(response, 'http://allizom.org')
         add_click.delay.assert_called_with(unicode(instance.id))
+
+
+class BannerListTests(TestCase):
+    def banner_list(self):
+        with self.activate('en-US'):
+            return self.client.get(reverse('facebook.banner_list'))
+
+    @patch.object(FacebookUser, 'is_new', True)
+    def test_new_user_first_run(self):
+        """If the logged in user is new, redirect them to the first run page."""
+        user = FacebookUserFactory.create()
+        self.client.fb_login(user)
+
+        response = self.banner_list()
+        self.assertTemplateUsed(response, 'facebook/first_run.html')
+
+    @patch.object(FacebookUser, 'is_new', False)
+    def test_old_user_banner_list(self):
+        """If the logged in user is not new, render the banner list page."""
+        user = FacebookUserFactory.create()
+        self.client.fb_login(user)
+
+        response = self.banner_list()
+        self.assertTemplateUsed(response, 'facebook/banner_list.html')
