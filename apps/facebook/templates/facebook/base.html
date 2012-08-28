@@ -1,14 +1,14 @@
 {% from 'shared/macros.html' import month_year_picker with context %}
 
 <!DOCTYPE html>
-<html>
+<html lang="{{ LANG }}" dir="{{ DIR }}">
   <head>
     <title>Affiliates Facebook</title>
     {% block site_css %}
       {{ css('fb_base') }}
     {% endblock %}
   </head>
-  <body class="{% block body_class %}{% endblock %}">
+  <body class="{{ LOCALE }} {% block body_class %}{% endblock %}">
     <div class="container">
       <header class="head">
         <hgroup>

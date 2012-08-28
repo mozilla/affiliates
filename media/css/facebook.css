@@ -367,6 +367,52 @@ a:active {
   background: url(../img/facebook/bg-firstrun.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
+.firstrun.de-de .main {
+  background: #fefefe url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+}
+
+.firstrun.es-es .main,
+.firstrun.es-la .main {
+  background: #fefefe url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+}
+
+.firstrun.fr-fr .main {
+  background: #fefefe url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+}
+
+.firstrun.pl-pl .main {
+  background: #fefefe url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+}
+
+.firstrun.pt-br .main {
+  background: #fefefe url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+}
+
 .firstrun .page-title {
   font-size: 3em;
 }
@@ -745,7 +791,7 @@ button::-moz-focus-inner {
   font-size: .75em;
   padding: 4px 6px;
   box-shadow: inset 0 0 8px rgba(0,0,0,.01), inset 0 2px 2px rgba(0,0,0,.1);
-  width: 165px;
+  width: 185px;
 }
 
 #newsletter label {
