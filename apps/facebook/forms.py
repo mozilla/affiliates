@@ -162,6 +162,7 @@ class LeaderboardFilterForm(forms.Form):
 
         self.fields['country'].choices = choices
 
+    # TODO: Change this into a queryset method.
     def get_top_users(self, limit=25):
         """
         Return the top users ranked by banner clicks and filtered by country

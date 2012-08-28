@@ -19,7 +19,7 @@ from shared.utils import absolutify
 class FacebookUser(CachingMixin, ModelBase):
     """Represent a user of the Facebook app."""
     id = models.CharField(max_length=128, primary_key=True)
-    leaderboard_position = models.IntegerField(default=-1)  # Max Int
+    leaderboard_position = models.IntegerField(default=-1)
     total_clicks = models.IntegerField(default=0)
 
     # Personal info from Facebook
