@@ -14,7 +14,7 @@ from shared.forms import AdminModelForm
 from shared.models import ENGLISH_LANGUAGE_CHOICES
 from shared.utils import absolutify
 
-
+# L10n: &hellip; is an ellipses, the three dots like "I love Firefox because..."
 _text_placeholder = _lazy('I love Firefox because&hellip;')
 
 
