@@ -11,8 +11,10 @@ from stats.monkeypatches import patch
 
 # Patch admin site for stats application
 patch(admin.site)
-
 autodiscover()
+
+handler404 = 'shared.views.view_404'
+handler500 = 'shared.views.view_500'
 
 urlpatterns = patterns('',
     (r'', include('shared.urls')),

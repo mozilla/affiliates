@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, url
 
 from facebook import views
+from shared.views import view_404
 
 
 urlpatterns = patterns('facebook.views',
@@ -35,6 +36,8 @@ urlpatterns = patterns('facebook.views',
 
     url(r'^leaderboard/?$', views.leaderboard, name='facebook.leaderboard'),
 
+    url(r'^faq/?$', views.faq, name='facebook.faq'),
+
     url(r'^invite/?$', views.invite, name='facebook.invite'),
 
     url(r'^invite/done/?$', views.post_invite, name='facebook.post_invite'),
@@ -43,4 +46,6 @@ urlpatterns = patterns('facebook.views',
         name='facebook.newsletter.subscribe'),
 
     url(r'^stats/(\d+)/(\d+)/?$', views.stats, name='facebook.stats'),
+
+    url(r'^404/?$', view_404, name='facebook.404'),
 )

@@ -1025,6 +1025,7 @@ table.board .leaders .avatar {
 .notfound .page-title {
   font-size: 3.428em;
   margin: 0 0 .15em -2px;
+  text-align: left;
 }
 
 .notfound h3 {

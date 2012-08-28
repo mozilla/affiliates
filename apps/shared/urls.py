@@ -6,5 +6,6 @@ urlpatterns = patterns('shared.views',
     url(r'^about$', 'about', name='about'),
     url(r'^faq$', 'faq', name='faq'),
     url(r'^tos$', direct_to_template, {'template': 'shared/tos.html'},
-        name='tos')
+        name='tos'),
+    url(r'^404$', 'view_404', name='404'),
 )

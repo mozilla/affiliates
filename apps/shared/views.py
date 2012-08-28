@@ -2,6 +2,7 @@ from django.conf import settings
 from django.shortcuts import render
 from django.utils.http import urlquote_plus
 from django.utils.translation import get_language
+from django.views.defaults import page_not_found, server_error
 
 from funfactory.urlresolvers import reverse
 from session_csrf import anonymous_csrf
@@ -10,6 +11,7 @@ from tower import ugettext_lazy as _lazy
 from badges.views import dashboard
 from browserid.forms import RegisterForm as BrowserIDRegisterForm
 from browserid.views import register as browserid_register
+from facebook.utils import in_facebook_app
 from shared.decorators import login_required
 from shared.utils import absolutify, redirect
 from users.forms import RegisterForm, LoginForm
@@ -73,3 +75,17 @@ def about(request):
 @login_required
 def faq(request):
     return dashboard(request, 'shared/faq.html')
+
+
+def view_404(request):
+    if in_facebook_app(request):
+        return render(request, 'facebook/error.html')
+    else:
+        return page_not_found(request)
+
+
+def view_500(request):
+    if in_facebook_app(request):
+        return render(request, 'facebook/error.html')
+    else:
+        return server_error(request)

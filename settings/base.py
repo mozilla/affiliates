@@ -328,7 +328,7 @@ BANNERS_HASH = []
 
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
-FACEBOOK_LOCALES = ('en-us', 'de', 'zh-tw', 'nl', 'pl', 'pt-br')
+FACEBOOK_LOCALES = ('en-us', 'de', 'nl', 'pl', 'pt-br', 'zh-tw')
 FACEBOOK_DOWNLOAD_URL = 'https://www.mozilla.org/firefox'
 FACEBOOK_MAILING_LIST = 'mozilla-and-you'
 

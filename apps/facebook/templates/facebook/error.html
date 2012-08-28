@@ -2,6 +2,8 @@
 
 {% block body_class %}notfound{% endblock %}
 
+{% block navigation_tabs %}{% endblock %}
+
 {% block content %}
 
   <hgroup>
@@ -17,7 +19,7 @@
     {% endtrans %}
     </li>
     <li>
-    {% trans link='#' %}
+    {% trans link='https://www.mozilla.org' %}
       If you're not sure what you're looking for, start at <a href="{{ link }}">mozilla.org</a>.
     {% endtrans %}
     </li>

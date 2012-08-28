@@ -128,6 +128,10 @@ def banner_create_image_check(request, instance_id):
 @fb_login_required
 @xframe_allow
 def banner_list(request):
+    # New users can't see this page.
+    if request.user.is_new:
+        return banner_create(request)
+
     banner_instances = request.user.banner_instance_set.filter(processed=True)
     return jingo.render(request, 'facebook/banner_list.html',
                         {'banner_instances': banner_instances})
@@ -216,6 +220,12 @@ def leaderboard(request):
     top_users = form.get_top_users()
     return jingo.render(request, 'facebook/leaderboard.html',
                         {'top_users': top_users, 'form': form})
+
+
+@fb_login_required
+@xframe_allow
+def faq(request):
+    return jingo.render(request, 'facebook/faq.html')
 
 
 @fb_login_required
