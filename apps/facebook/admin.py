@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.contrib.admin.filterspecs import FilterSpec
 
@@ -5,8 +7,10 @@ from funfactory.admin import site
 
 from facebook.forms import FacebookBannerAdminForm
 from facebook.models import (FacebookBanner, FacebookBannerInstance,
-                             FacebookBannerLocale, FacebookUser)
+                             FacebookBannerLocale, FacebookClickStats,
+                             FacebookUser)
 from shared.admin import BaseModelAdmin
+from stats.options import ModelStats
 
 
 class TotalClicksGoalFilterSpec(FilterSpec):
@@ -132,3 +136,32 @@ class FacebookUserAdmin(BaseModelAdmin):
         ('Leaderboard', {'fields': ('leaderboard_position', 'total_clicks')}),
     )
 site.register(FacebookUser, FacebookUserAdmin)
+
+
+class FacebookBannerInstanceStats(ModelStats):
+    display_name = 'FacebookBannerInstances created'
+    datetime_field = 'created'
+    filters = ['banner', 'user__country']
+site.register_stats(FacebookBannerInstance, FacebookBannerInstanceStats)
+
+
+class FacebookClickStatsDisplay(ModelStats):
+    display_name = 'FacebookBanner clicks'
+    datetime_field = 'hour'
+    filters = ['banner_instance__banner', 'banner_instance__user__country']
+    default_interval = 'hours'
+
+    def default_start(self):
+        return datetime.now() - timedelta(days=100)
+site.register_stats(FacebookClickStats, FacebookClickStatsDisplay)
+
+
+class FacebookUserStats(ModelStats):
+    display_name = "App authorizations"
+    datetime_field = 'created'
+    filters = ['country']
+    default_interval = 'days'
+
+    def default_start(self):
+        return datetime.now() - timedelta(days=7)
+site.register_stats(FacebookUser, FacebookUserStats)

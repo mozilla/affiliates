@@ -32,6 +32,8 @@ class FacebookUser(CachingMixin, ModelBase):
     country = models.CharField(max_length=16, blank=True,
                                choices=settings.COUNTRIES.items())
 
+    created = models.DateTimeField(default=datetime.now)
+
     objects = managers.FacebookUserManager()
 
     @property

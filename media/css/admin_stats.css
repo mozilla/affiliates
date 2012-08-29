@@ -72,6 +72,7 @@
     background: #EFEFEF;
     border-left: 1px solid #DDD;
     height: 100%;
+    overflow: auto;
     position: absolute;
     right: 0px;
     top: 0px;
