@@ -60,7 +60,7 @@ def load_app(request):
 
     # Attach country data to the user object. This can only be retrieved from
     # the decoded request, so we add it here and login saves it.
-    user.country = decoded_request['user']['country']
+    user.country = decoded_request['user'].get('country', user.country)
 
     # User has been authed, let's log them in.
     login(request, user)

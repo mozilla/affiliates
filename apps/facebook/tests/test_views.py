@@ -87,6 +87,20 @@ class LoadAppTests(TestCase):
         eq_(login.called, True)
         eq_(login.call_args[0][1].country, 'fr')
 
+    @patch('facebook.views.login')
+    def test_country_missing(self, login, update_user_info):
+        """
+        If the user's country is not included in the signed_request, keep their
+        old country value intact.
+        """
+        user = FacebookUserFactory.create(country='us')
+        payload = create_payload(user_id=user.id)
+        del payload['user']['country']
+        self.load_app(payload)
+
+        eq_(login.called, True)
+        eq_(login.call_args[0][1].country, 'us')
+
 
 class DeauthorizeTest(TestCase):
     def deauthorize(self, payload):
