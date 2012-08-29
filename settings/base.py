@@ -337,7 +337,7 @@ FACEBOOK_BANNER_INSTANCE_IMAGE_PATH = 'uploads/facebook/banner_instances/'
 # Coordinates for the Facebook profile image when pasted onto a banner image.
 # Format is (left, upper)
 FACEBOOK_CUSTOM_IMG_COORDS = (235, 151)
-FACEBOOK_CUSTOM_IMG_BORDER = {'width': 3, 'color': '#CCC'}
+FACEBOOK_CUSTOM_IMG_BORDER = {'width': 3, 'color': '#ccc'}
 
 # Period of time that an account link activation link is valid, in seconds.
 FACEBOOK_LINK_DELAY = 60 * 60 * 24 * 2  # 2 Days
