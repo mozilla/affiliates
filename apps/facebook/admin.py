@@ -152,7 +152,7 @@ class FacebookClickStatsDisplay(ModelStats):
     default_interval = 'hours'
 
     def default_start(self):
-        return datetime.now() - timedelta(days=100)
+        return datetime.now() - timedelta(days=7)
 site.register_stats(FacebookClickStats, FacebookClickStatsDisplay)
 
 
