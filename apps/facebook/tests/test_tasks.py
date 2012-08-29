@@ -41,7 +41,8 @@ class AddClickTests(TestCase):
         add_click(instance.id)
 
         eq_(len(mail.outbox), 1)
-        eq_(mail.outbox[0].subject, '[fb-affiliates-banner]Click Goal Reached!')
+        eq_(mail.outbox[0].subject, ('[fb-affiliates-banner] Click Goal '
+                                     'Reached!'))
         ok_(unicode(instance.id) in mail.outbox[0].body)
         ok_('admin@example.com' in mail.outbox[0].to)
 

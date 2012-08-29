@@ -60,6 +60,8 @@ class TotalClicksGoalFilterSpec(FilterSpec):
                                                 [self.lookup_kwarg_gte]),
             'display': 'No'
         }
+
+
 # Insert manually at the front of the list to be tested prior to the
 # AllValuesFilterSpec catchall filter.
 FilterSpec.filter_specs.insert(0, (
