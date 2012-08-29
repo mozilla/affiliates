@@ -32,6 +32,7 @@ class BannerImageAdmin(BaseModelAdmin):
     list_display = ('banner', 'color', 'size', 'locale', 'image')
     list_editable = ('color', 'image')
     list_filter = ('banner', 'color', 'locale')
+    formfield_overrides = {}
 site.register(BannerImage, BannerImageAdmin)
 
 

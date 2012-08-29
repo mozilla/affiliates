@@ -1,13 +1,11 @@
 from django.conf import settings
 from django.contrib.admin.filterspecs import FilterSpec
-from django.db import models
 
-from form_utils.widgets import ImageWidget
 from funfactory.admin import site
 
 from facebook.forms import FacebookBannerAdminForm
 from facebook.models import (FacebookBanner, FacebookBannerInstance,
-                             FacebookBannerLocale)
+                             FacebookBannerLocale, FacebookUser)
 from shared.admin import BaseModelAdmin
 
 
@@ -71,8 +69,13 @@ FilterSpec.filter_specs.insert(0, (
 
 
 class FacebookBannerAdmin(BaseModelAdmin):
-    list_display = ('name', 'image')
-    search_fields = ('name',)
+    list_display = ('name', 'link', '_alt_text')
+    search_fields = ('name', 'link', '_alt_text')
+    fieldsets = (
+        (None, {'fields': ('name', 'link', '_alt_text', 'locales')}),
+        ('Images', {'fields': ('image', 'thumbnail')}),
+    )
+
     form = FacebookBannerAdminForm
 
     def save_model(self, request, obj, form, change):
@@ -94,7 +97,6 @@ class FacebookBannerInstanceAdmin(BaseModelAdmin):
     list_filter = ('banner', 'created', 'processed', 'review_status',
                    'total_clicks')
     readonly_fields = ('created', 'total_clicks')
-    formfield_overrides = {models.ImageField: {'widget': ImageWidget}}
     fieldsets = (
         (None, {
             'fields': ('user', 'banner', 'text', 'created',
@@ -113,3 +115,20 @@ class FacebookBannerInstanceAdmin(BaseModelAdmin):
         return bool(instance.custom_image)
     use_profile_image.boolean = True
 site.register(FacebookBannerInstance, FacebookBannerInstanceAdmin)
+
+
+class FacebookUserAdmin(BaseModelAdmin):
+    list_display = ('full_name', 'locale', 'country', 'leaderboard_position',
+                    'total_clicks', 'id')
+    search_fields = ('full_name', 'id')
+    list_filter = ('locale', 'country')
+    readonly_fields = ('full_name', 'first_name', 'last_name', 'locale',
+                       'country', 'leaderboard_position', 'id', 'total_clicks')
+    fieldsets = (
+        (None, {
+            'fields': ('full_name', 'id', 'first_name', 'last_name', 'locale',
+                       'country')
+        }),
+        ('Leaderboard', {'fields': ('leaderboard_position', 'total_clicks')}),
+    )
+site.register(FacebookUser, FacebookUserAdmin)

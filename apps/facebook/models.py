@@ -19,8 +19,9 @@ from shared.utils import absolutify
 
 class FacebookUser(CachingMixin, ModelBase):
     """Represent a user of the Facebook app."""
-    id = models.CharField(max_length=128, primary_key=True)
-    leaderboard_position = models.IntegerField(default=-1)
+    id = models.CharField(max_length=128, primary_key=True,
+                          verbose_name='Facebook User ID')
+    leaderboard_position = models.IntegerField(default=-1)  # Max Int
     total_clicks = models.IntegerField(default=0)
 
     # Personal info from Facebook
@@ -139,7 +140,8 @@ class FacebookBanner(CachingMixin, ModelBase):
     """A banner that users can customize and share on Facebook."""
     name = models.CharField(max_length=255, default='Banner', unique=True,
                             verbose_name='Banner name')
-    _alt_text = models.CharField(max_length=256, blank=True, default='')
+    _alt_text = models.CharField(max_length=256, blank=True, default='',
+                                 verbose_name='Image Alt Text')
     link = models.URLField(default=settings.FACEBOOK_DOWNLOAD_URL)
     image = models.ImageField(upload_to=fb_banner_rename,
                               storage=OverwritingStorage(),
