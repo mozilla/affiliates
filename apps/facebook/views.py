@@ -251,6 +251,9 @@ def newsletter_subscribe(request):
 @fb_login_required
 @cache_control(must_revalidate=True, max_age=3600)
 def stats(request, year, month):
+    """
+    Returns statistics for the sidebar statistics display. Called via AJAX.
+    """
     # Use `or 0` in case of None result.
     clicks = (FacebookClickStats.objects
               .filter(banner_instance__user=request.user)
