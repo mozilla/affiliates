@@ -10,17 +10,28 @@
     <h2 class="page-title">{{ _('Whoops!') }}</h2>
     <h3>{{ _('What are you doing here?') }}</h3>
   </hgroup>
-  <p>{{ _('Did you make a left at that last URL instead of a right? No problem. Here are some tips to get you back on your way:') }}</p>
+  <p>
+    {% trans %}
+      Did you make a left at that last URL instead of a right? No problem. Here
+      are some tips to get you back on your way:
+    {% endtrans %}
+  </p>
   <ul>
-    <li>{{ _('If you typed in the address, check your spelling. Could just be a typo.') }}</li>
+    <li>
+      {% trans %}
+        If you typed in the address, check your spelling. Could just be a typo.
+      {% endtrans %}
+    </li>
     <li>
     {% trans email='affiliates@mozilla.com' %}
-      If you followed a link, it’s probably broken. Please <a href="mailto:{{ email }}">contact us</a> and we’ll fix it.
+      If you followed a link, it’s probably broken. Please
+      <a href="mailto:{{ email }}">contact us</a> and we’ll fix it.
     {% endtrans %}
     </li>
     <li>
     {% trans link='https://www.mozilla.org' %}
-      If you're not sure what you're looking for, start at <a href="{{ link }}">mozilla.org</a>.
+      If you're not sure what you're looking for, start at
+      <a href="{{ link }}">mozilla.org</a>.
     {% endtrans %}
     </li>
   </ul>

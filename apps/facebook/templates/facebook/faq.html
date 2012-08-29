@@ -21,43 +21,99 @@
         <h4><a href="#">{{ _('What is Firefox Affiliates?') }}</a></h4>
         <div class="answer">
           <p>
-            {{ _('Firefox Affiliates allows you to build banners and place them on your Facebook profile to encourage visitors to download Firefox. When a visitor to your page or status update clicks on a banner and visits the Firefox download page, you get credit for that click. Affiliates who get a lot of clicks through their profile will be featured on our leaderboard and be eligible for fun stuff like Firefox T-shirts and, if you opt in, we may feature your banner in a paid-ad on the Facebook ad network. While we do send out prizes and gifts to our Affiliates from time to time, Firefox Affiliates does not offer monetary rewards for hosting Firefox banners.') }}
-          </p>
-        </div>
-      </li>
-      <li class="collapsed">
-        <h4><a href="#">{{ _('How do I add a banner to my Facebook profile?') }}</a></h4>
-        <div class="answer">
-          <p>
-          {% trans link=url('facebook.banner_create') %}
-          Select a banner design that you like using the <a href="{{ link }}">banner builder</a>, add a personal message about why you love Firefox and then click "share." This will post the banner to your Facebook timeline and into your friends' newsfeed. When you get activity on your banner, you'll get an update on your timeline.
-          {% endtrans %}
-          </p>
-        </div>
-      </li>
-      <li class="collapsed">
-        <h4><a href="#">{{ _('How do I invite a friend to use Firefox?') }}</a></h4>
-        <div class="answer">
-          <p>
-            {{ _('If you\'d like to personally invite someone to use Firefox, just select "Share ad with friends" from the side menu and you will be able to send a Facebook message with a custom Firefox download link. If your friend clicks on the link, you\'ll also get credit for the click.') }}
-          </p>
-        </div>
-      </li>
-      <li class="collapsed">
-        <h4><a href="#">{{ _('Can my banner become a paid Facebook ad?') }}</a></h4>
-        <div class="answer">
-          <p>
-            {% trans link='mailto:affiliates@mozilla.org', click_count=FACEBOOK_CLICK_GOAL %}
-            If you checked the box to allow your banner to be featured in a paid Facebook ad, once you've reached {{ click_count }} clicks on a Facebook banner, your banner will become eligable to be a paid Facebook ad. This means that Mozilla will pay to have an ad placed on the Facebook ad network sharing (remove the t in sharing) your message of why you love Firefox. We will notify you if your banner is chosen to be a paid ad in your region. If you do not want to participate in this, don't click the opt-in when you build your banner. If you've opted in by accident, please contact us at <a href="{{ link }}">affiliates@mozilla.org</a> and we'll make sure you aren't included in the ad selection.
+            {% trans %}
+              Firefox Affiliates allows you to build banners and place them on
+              your Facebook profile to encourage visitors to download Firefox.
+              When a visitor to your page or status update clicks on a banner
+              and visits the Firefox download page, you get credit for that
+              click. Affiliates who get a lot of clicks through their profile
+              will be featured on our leaderboard and be eligible for fun stuff
+              like Firefox T-shirts and, if you opt in, we may feature your
+              banner in a paid-ad on the Facebook ad network. While we do send
+              out prizes and gifts to our Affiliates from time to time,
+              Firefox Affiliates does not offer monetary rewards for hosting
+              Firefox banners.
             {% endtrans %}
           </p>
         </div>
       </li>
       <li class="collapsed">
-        <h4><a href="#">{{ _('If I opted in to having my banner become a paid Facebook ad, what exactly am I giving you permission to do?') }}</a></h4>
+        <h4>
+          <a href="#">
+            {{ _('How do I add a banner to my Facebook profile?') }}
+          </a>
+        </h4>
         <div class="answer">
           <p>
-            {{ _('You are giving us permission to use, reproduce, distribute, edit, and display your photo, if it is included in your banner, and your message about why you love Firefox, for commercial purposes, specifically in a paid ad on Facebook. You are also acknowledging that you will not be paid for the use of your banner.') }}
+          {% trans link=url('facebook.banner_create') %}
+            Select a banner design that you like using the
+            <a href="{{ link }}">banner builder</a>, add a personal message
+            about why you love Firefox and then click "share." This will post
+            the banner to your Facebook timeline and into your friends'
+            newsfeed. When you get activity on your banner, you'll get an
+            update on your timeline.
+          {% endtrans %}
+          </p>
+        </div>
+      </li>
+      <li class="collapsed">
+        <h4>
+          <a href="#">{{ _('How do I invite a friend to use Firefox?') }}</a>
+        </h4>
+        <div class="answer">
+          <p>
+            {% trans %}
+              If you'd like to personally invite someone to use Firefox, just
+              select "Share ad with friends" from the side menu and you will be
+              able to send a Facebook message with a custom Firefox download
+              link. If your friend clicks on the link, you'll also get credit
+              for the click.
+            {% endtrans %}
+          </p>
+        </div>
+      </li>
+      <li class="collapsed">
+        <h4>
+          <a href="#">{{ _('Can my banner become a paid Facebook ad?') }}</a>
+        </h4>
+        <div class="answer">
+          <p>
+            {% trans link='mailto:affiliates@mozilla.org',
+                     click_count=FACEBOOK_CLICK_GOAL %}
+              If you checked the box to allow your banner to be featured in a
+              paid Facebook ad, once you've reached {{ click_count }} clicks on
+              a Facebook banner, your banner will become eligable to be a paid
+              Facebook ad. This means that Mozilla will pay to have an ad
+              placed on the Facebook ad network sharing (remove the t in
+              sharing) your message of why you love Firefox. We will notify
+              you if your banner is chosen to be a paid ad in your region. If
+              you do not want to participate in this, don't click the opt-in
+              when you build your banner. If you've opted in by accident,
+              please contact us at
+              <a href="{{ link }}">affiliates@mozilla.org</a> and we'll make
+              sure you aren't included in the ad selection.
+            {% endtrans %}
+          </p>
+        </div>
+      </li>
+      <li class="collapsed">
+        <h4>
+          <a href="#">
+            {% trans %}
+              If I opted in to having my banner become a paid Facebook ad, what
+              exactly am I giving you permission to do?
+            {% endtrans %}
+          </a>
+        </h4>
+        <div class="answer">
+          <p>
+            {% trans %}
+              You are giving us permission to use, reproduce, distribute, edit,
+              and display your photo, if it is included in your banner, and
+              your message about why you love Firefox, for commercial purposes,
+              specifically in a paid ad on Facebook. You are also acknowledging
+              that you will not be paid for the use of your banner.
+            {% endtrans %}
           </p>
         </div>
       </li>
@@ -66,17 +122,35 @@
         <div class="answer">
           <p>
             {% trans link='mailto:affiliates@mozilla.org' %}
-            To remove the application, access your applications in the Facebook settings menu. Delete the application from your list of authorized apps and we'll delete your Affiliates profile on Facebook and the information associated with it. Note: Deleting the application on Facebook will not delete your affiliates.mozilla.org profile if you had one prior to installing the application. To delete that profile, please contact us at <a href="{{ link }}">affiliates@mozilla.org</a>.
+              To remove the application, access your applications in the
+              Facebook settings menu. Delete the application from your list of
+              authorized apps and we'll delete your Affiliates profile on
+              Facebook and the information associated with it. Note: Deleting
+              the application on Facebook will not delete your
+              affiliates.mozilla.org profile if you had one prior to installing
+              the application. To delete that profile, please contact us at
+              <a href="{{ link }}">affiliates@mozilla.org</a>.
             {% endtrans %}
           </p>
         </div>
       </li>
       <li class="collapsed">
-        <h4><a href="#">{{ _('How do I connect to my Firefox Affiliates account on affiliates.mozilla.org?') }}</a></h4>
+        <h4>
+          <a href="#">
+            {% trans %}
+              How do I connect to my Firefox Affiliates account on
+              affiliates.mozilla.org?
+            {% endtrans %}
+          </a>
+        </h4>
         <div class="answer">
           <p>
             {% trans link='https://affiliates.mozilla.org' %}
-            To connect your affiliates.mozilla.org account to this application, please use the connection wizard on the My Banners page. We'll send you an email to confirm that we've connected the accounts. If you'd like to sign up for an account, just visit <a href="{{ link }}">affiliates.mozilla.org</a>.
+              To connect your affiliates.mozilla.org account to this
+              application, please use the connection wizard on the My Banners
+              page. We'll send you an email to confirm that we've connected the
+              accounts. If you'd like to sign up for an account, just visit
+              <a href="{{ link }}">affiliates.mozilla.org</a>.
             {% endtrans %}
           </p>
         </div>
@@ -87,27 +161,50 @@
     <h3>{{ _('Leaderboard and User Statistics') }}</h3>
     <ul class="accordion js_accordion">
       <li class="collapsed">
-        <h4><a href="#">{{ _('How often does the leaderboard get updated?') }}</a></h4>
+        <h4>
+          <a href="#">{{ _('How often does the leaderboard get updated?') }}</a>
+        </h4>
         <div class="answer">
           <p>
-            {{ _('The leaderboard updates every day at midnight Pacific Time, so be sure to check in to see where you stand.') }}
+            {% trans %}
+              The leaderboard updates every day at midnight Pacific Time, so be
+              sure to check in to see where you stand.
+            {% endtrans %}
           </p>
         </div>
       </li>
       <li class="collapsed">
-        <h4><a href="#">{{ _('Is there a prize for getting the most Firefox clicks?') }}</a></h4>
+        <h4>
+          <a href="#">
+            {{ _('Is there a prize for getting the most Firefox clicks?') }}
+          </a>
+        </h4>
         <div class="answer">
           <p>
-            {{ _('No, though From time to time we may run contests to see who can get the most clicks for different Firefox products and campaigns. The winners will get Firefox T-shirts, hoodies and other awesome things we have at Mozilla HQ.') }}
+            {% trans %}
+              No, though From time to time we may run contests to see who can
+              get the most clicks for different Firefox products and campaigns.
+              The winners will get Firefox T-shirts, hoodies and other awesome
+              things we have at Mozilla HQ.
+            {% endtrans %}
           </p>
         </div>
       </li>
       <li class="collapsed">
-        <h4><a href="#">{{ _('I think my click statistics are wrong. Is there any way to fix them?') }}</a></h4>
+        <h4>
+          <a href="#">
+            {% trans %}
+              I think my click statistics are wrong. Is there any way to fix
+              them?
+            {% endtrans %}
+          </a>
+        </h4>
         <div class="answer">
           <p>
             {% trans link='mailto:affiliates@mozilla.org' %}
-            Let us know. Send us a note at <a href="{{ link }}">affiliates@mozilla.org</a> and tell us what the problem is.
+              Let us know. Send us a note at
+              <a href="{{ link }}">affiliates@mozilla.org</a> and tell us what
+              the problem is.
             {% endtrans %}
           </p>
         </div>

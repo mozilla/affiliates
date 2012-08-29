@@ -24,13 +24,27 @@
       {% block navigation_tabs %}
       <nav class="nav-tabs">
         <ul>
-          <li {{ 'banners'|class_selected(nav_section) }}><a href="{{ url('facebook.banner_list') }}">{{ _('My banners') }}</a></li>
+          <li {{ 'banners'|class_selected(nav_section) }}>
+            <a href="{{ url('facebook.banner_list') }}">
+              {{ _('My banners') }}
+            </a>
+          </li>
 
-          {# L10n: Refers to Frequently Asked Questions, a page that shows answers to common questions about the app. #}
-          <li {{ 'faq'|class_selected(nav_section) }}><a href="{{ url('facebook.faq') }}">{{ _('FAQs') }}</a></li>
+          {# L10n: Refers to Frequently Asked Questions, a page that shows #}
+          {# L10n: answers to common questions about the app. #}
+          <li {{ 'faq'|class_selected(nav_section) }}>
+            <a href="{{ url('facebook.faq') }}">
+              {{ _('FAQs') }}
+            </a>
+          </li>
 
-          {# L10n: Refers to a page that shows the top 25 users with the most clicks on their banners. #}
-          <li {{ 'leaderboard'|class_selected(nav_section) }}><a href="{{ url('facebook.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
+          {# L10n: Refers to a page that shows the top 25 users with the most #}
+          {# L10n: clicks on their banners. #}
+          <li {{ 'leaderboard'|class_selected(nav_section) }}>
+            <a href="{{ url('facebook.leaderboard') }}">
+              {{ _('Leaderboard') }}
+            </a>
+          </li>
         </ul>
       </nav>
       {% endblock %}
