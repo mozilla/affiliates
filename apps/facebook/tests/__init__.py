@@ -72,6 +72,7 @@ class FacebookBannerFactory(Factory):
     FACTORY_FOR = models.FacebookBanner
     name = Sequence(lambda n: 'test%s' % n)
     image = Sequence(lambda n: 'non-existant-path')
+    thumbnail = Sequence(lambda n: 'non-existant-path')
 
 
 class FacebookBannerLocaleFactory(Factory):

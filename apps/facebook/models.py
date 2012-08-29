@@ -119,10 +119,19 @@ class FacebookAccountLink(CachingMixin, ModelBase):
         return unicode(self.id) + 'active' if self.is_active else 'inactive'
 
 
+def _generate_banner_filename(instance, filename):
+    extension = os.path.splitext(filename)[1]
+    return '{0}{1}'.format(slugify(instance.name), extension)
+
+
 def fb_banner_rename(instance, filename):
     """Determine the filename for FacebookBanner images."""
-    extension = os.path.splitext(filename)[1]
-    new_filename = '{0}{1}'.format(slugify(instance.name), extension)
+    new_filename = _generate_banner_filename(instance, filename)
+    return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
+
+
+def fb_banner_thumbnail_rename(instance, filename):
+    new_filename = 'thumb_%s' % _generate_banner_filename(instance, filename)
     return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
 
 
@@ -130,11 +139,14 @@ class FacebookBanner(CachingMixin, ModelBase):
     """A banner that users can customize and share on Facebook."""
     name = models.CharField(max_length=255, default='Banner', unique=True,
                             verbose_name='Banner name')
+    _alt_text = models.CharField(max_length=256, blank=True, default='')
+    link = models.URLField(default=settings.FACEBOOK_DOWNLOAD_URL)
     image = models.ImageField(upload_to=fb_banner_rename,
                               storage=OverwritingStorage(),
                               max_length=settings.MAX_FILEPATH_LENGTH)
-    _alt_text = models.CharField(max_length=256, blank=True, default='')
-    link = models.URLField(default=settings.FACEBOOK_DOWNLOAD_URL)
+    thumbnail = models.ImageField(upload_to=fb_banner_thumbnail_rename,
+                                  storage=OverwritingStorage(),
+                                  max_length=settings.MAX_FILEPATH_LENGTH)
 
     objects = CachingManager()
 

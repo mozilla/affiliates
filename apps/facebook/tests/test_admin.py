@@ -26,10 +26,12 @@ class FacebookBannerAdminTests(TestCase):
         """
         url = reverse('admin:facebook_facebookbanner_add')
         image = open(path('images', 'firefox-small.png'), 'r')
+        thumbnail = open(path('images', 'firefox-small.png'), 'r')
         self.client.post(url, {
             'name': 'NewBannerTest',
             'locales': ['en-us', 'fr'],
             'image': image,
+            'thumbnail': thumbnail,
             'link': 'http://mozilla.org'
         })
 

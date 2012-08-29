@@ -49,7 +49,7 @@ class BannerFieldRenderer(forms.widgets.RadioFieldRenderer):
             # Construct image tag.
             img = '<img%s>' % flatatt({
                 'class': 'banner-choice',
-                'src': absolutify(banner.image.url),
+                'src': absolutify(banner.thumbnail.url),
                 'width': 100,
                 'height': 72,
                 'alt': banner.alt_text
