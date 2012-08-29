@@ -72,10 +72,8 @@ def is_logged_in(request):
 
 def is_facebook_bot(request):
     """Check the request's User-Agent against the Facebook bot's User-Agent."""
-    if 'HTTP_USER_AGENT' in request.META:
-        return request.META['HTTP_USER_AGENT'].startswith('facebookexternalhit')
-    else:
-        return False
+    ua = request.META.get('HTTP_USER_AGENT', '')
+    return ua.startswith('facebookexternalhit')
 
 
 def current_hour():
