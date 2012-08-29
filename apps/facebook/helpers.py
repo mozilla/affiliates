@@ -13,6 +13,7 @@ def admin_email_signature():
                    'Attendant', 'Luthier', 'Codesmith', 'Affiliate', 'Pilot'])
     num = randint(0, 1024)
     division = choice(['', ', Civilian Corps.', ', Eastern Operations',
-                       'Red Squadron', ', Order of the Northern Sky (Hokuten)'])
+                       ', Red Squadron',
+                       ', Order of the Northern Sky (Hokuten)'])
     return ('%s\n-%s %s #%s of The Most Glorious and Excellent Affiliate Army%s'
             % (salute, rank, role, num, division))

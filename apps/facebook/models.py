@@ -17,14 +17,6 @@ from shared.storage import OverwritingStorage
 from shared.utils import absolutify
 
 
-# English-only is fine for the admin interface.
-REVIEW_CHOICES = (
-    (0, 'Unreviewed'),
-    (1, 'Passed'),
-    (2, 'Failed'),
-)
-
-
 class FacebookUser(CachingMixin, ModelBase):
     """Represent a user of the Facebook app."""
     id = models.CharField(max_length=128, primary_key=True)
@@ -184,6 +176,12 @@ class FacebookBannerInstance(CachingMixin, ModelBase):
     total_clicks.total_clicks_goal = True
 
     processed = models.BooleanField(default=False)
+
+    UNREVIEWED = 0
+    PASSED = 1
+    FAILED = 2
+    REVIEW_CHOICES = ((UNREVIEWED, 'Unreviewed'), (PASSED, 'Passed'),
+                      (FAILED, 'Failed'),)
     review_status = models.SmallIntegerField(choices=REVIEW_CHOICES, default=0)
 
     objects = CachingManager()

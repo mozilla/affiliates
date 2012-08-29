@@ -47,6 +47,8 @@ urlpatterns = patterns('facebook.views',
 
     url(r'^stats/(\d+)/(\d+)/?$', views.stats, name='facebook.stats'),
 
+    url(r'^deauthorize/?$', views.deauthorize, name='facebook.deauthorize'),
+
     url(r'^404/?$', view_404, name='facebook.404'),
 
     url(r'^500/?$', view_500, name='facebook.500'),

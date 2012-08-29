@@ -1,0 +1,22 @@
+The user {{ user.full_name }} deauthorized the Affiliates Facebook app at {{ now }}. :(
+
+---
+    User Name: {{ user.full_name }}
+      User ID: {{ user.id }}
+User's Locale: {{ user.locale }}
+---
+
+The ads for the following banners need to be removed:
+
+---
+{% for instance in ads %}
+  Banner Instance ID: {{ instance.id }}
+         Banner Text: {{ instance.text }}
+Banner creation date: {{ instance.created }}
+---
+{% endfor %}
+
+Once these ads have been removed, please delete this email to avoid storing sensitive
+user data in our email system.
+
+{{ admin_email_signature () }}

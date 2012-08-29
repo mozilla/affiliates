@@ -22,7 +22,7 @@ from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookClickStats, FacebookUser)
 from facebook.utils import (activate_locale, decode_signed_request,
                             is_facebook_bot, is_logged_in)
-from shared.http import JSONResponse
+from shared.http import JSONResponse, JSONResponseBadRequest
 from shared.utils import absolutify, redirect
 
 
@@ -71,6 +71,31 @@ def load_app(request):
     activate_locale(request, user.locale)
 
     return banner_list(request)
+
+
+@require_POST
+@csrf_exempt
+def deauthorize(request):
+    """
+    Callback that is pinged by Facebook when a user de-authorizes the app.
+
+    Deletes the associated user and all their data. Returns a 400 if the signed
+    request is missing or malformed, a 404 if the specified user could not be
+    found, and a 200 if the removal was successful.
+    """
+    signed_request = request.POST.get('signed_request', None)
+    if signed_request is None:
+        return JSONResponseBadRequest({'error': 'No signed_request '
+                                                     'parameter found.'})
+
+    decoded_request = decode_signed_request(signed_request,
+                                            settings.FACEBOOK_APP_SECRET)
+    if decoded_request is None or 'user_id' not in decoded_request:
+        return JSONResponseBadRequest({'error': 'signed_request invalid.'})
+
+    user = get_object_or_404(FacebookUser, id=decoded_request['user_id'])
+    FacebookUser.objects.purge_user_data(user)
+    return JSONResponse({'success': 'User data purged successfully.'})
 
 
 @fb_login_required

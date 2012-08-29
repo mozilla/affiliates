@@ -1,9 +1,11 @@
 import json
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Sum
+from django.template.loader import render_to_string
 
 import commonware.log
 import jingo
@@ -62,6 +64,35 @@ class FacebookUserManager(CachingManager):
         user.save()
 
         return user
+
+    def purge_user_data(self, user):
+        """
+        Purges all data associated with the given user, including the user entry
+        itself.
+        """
+        from facebook.models import FacebookBannerInstance
+
+        # If this user has any banners that have been made into ads, notify the
+        # admin that they're being deleted.
+        ads = user.banner_instance_set.filter(
+            review_status=FacebookBannerInstance.PASSED)
+        if len(ads) > 0:
+            subject = '[fb-affiliates-banner]User has de-authorized app'
+            message = render_to_string('facebook/deauthorized_email.html', {
+                'user': user, 'ads': ads,
+                'now': datetime.now()
+            })
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+                      [settings.FACEBOOK_CLICK_GOAL_EMAIL])
+
+        # Delete all associated images.
+        for instance in user.banner_instance_set.all():
+            if instance.custom_image:
+                instance.custom_image.delete()
+
+        # Delete the user. Django will go through and delete all DB entries with
+        # foreign keys pointing to this user.
+        user.delete()
 
 
 class FacebookAccountLinkManager(CachingManager):
