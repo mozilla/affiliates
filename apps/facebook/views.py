@@ -175,8 +175,9 @@ def post_banner_share(request):
     """
     Redirect user back to the app after they've posted a banner to their feed.
     """
-    messages.success(request, _('You have successfully posted a banner to your '
-                                'wall !'))
+    if 'post_id' in request.GET:
+        messages.success(request, _('You have successfully posted a banner to '
+                                    'your wall !'))
     return django_redirect(settings.FACEBOOK_APP_URL)
 
 

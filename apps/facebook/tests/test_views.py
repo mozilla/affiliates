@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.contrib import messages
 
 import basket
 from funfactory.urlresolvers import reverse
@@ -397,3 +398,24 @@ class BannerListTests(TestCase):
 
         response = self.banner_list()
         self.assertTemplateUsed(response, 'facebook/banner_list.html')
+
+
+@patch.object(settings, 'FACEBOOK_APP_URL', 'http://mozilla.org')
+@patch('facebook.views.messages.success')
+class PostBannerShareTest(TestCase):
+    def post_banner_share(self, **params):
+        with self.activate('en-US'):
+            return self.client.get(reverse('facebook.post_banner_share'),
+                                   params)
+
+    def test_no_post_id(self, success):
+        """If no post_id parameter is provided, don't add a success message."""
+        response = self.post_banner_share()
+        self.assert_redirects(response, 'http://mozilla.org')
+        ok_(not success.called)
+
+    def test_post_id(self, success):
+        """If no post_id parameter is provided, don't add a success message."""
+        response = self.post_banner_share(post_id=999)
+        self.assert_redirects(response, 'http://mozilla.org')
+        ok_(success.called)
