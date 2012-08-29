@@ -85,8 +85,8 @@ def deauthorize(request):
     """
     signed_request = request.POST.get('signed_request', None)
     if signed_request is None:
-        return JSONResponseBadRequest({'error': 'No signed_request '
-                                                     'parameter found.'})
+        return JSONResponseBadRequest({'error': 'No signed_request parameter '
+                                                'found.'})
 
     decoded_request = decode_signed_request(signed_request,
                                             settings.FACEBOOK_APP_SECRET)

@@ -88,6 +88,54 @@ class LoadAppTests(TestCase):
         eq_(login.call_args[0][1].country, 'fr')
 
 
+class DeauthorizeTest(TestCase):
+    def deauthorize(self, payload):
+        """
+        Runs the deauthorize view. If payload is None, it will not be
+        passed to the view. If it is False, it will fail to be decoded.
+        Otherwise, it will be used as the payload.
+        """
+        post_data = {}
+        if payload is not None:
+            post_data['signed_request'] = 'signed_request'
+
+        with patch('facebook.views.decode_signed_request') as decode:
+            if payload:
+                decode.return_value = payload
+            else:
+                decode.return_value = None
+
+            return self.client.post(reverse('facebook.deauthorize'), post_data)
+
+    def test_no_signed_request(self):
+        """If no signed request is provided, return a 400 Bad Request."""
+        response = self.deauthorize(None)
+        eq_(response.status_code, 400)
+
+    def test_invalid_signed_request(self):
+        """If the signed request is invalid, return a 400 Bad Request."""
+        response = self.deauthorize(False)
+        eq_(response.status_code, 400)
+
+    def test_user_does_not_exist(self):
+        """
+        If the supplied user id doesn't match an existing user, return a 404 Not
+        Found.
+        """
+        response = self.deauthorize({'user_id': 999})
+        eq_(response.status_code, 404)
+
+    @patch.object(FacebookUser.objects, 'purge_user_data')
+    def test_valid_user(self, purge_user_data):
+        """
+        If the supplied user id is valid, call purge_user_data with the user.
+        """
+        user = FacebookUserFactory.create()
+        response = self.deauthorize({'user_id': user.id})
+        eq_(response.status_code, 200)
+        purge_user_data.assert_called_with(user)
+
+
 class CreateBannerTests(TestCase):
     def setUp(self):
         self.user = FacebookUserFactory.create()

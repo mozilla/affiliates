@@ -79,7 +79,8 @@ class FacebookUserManager(CachingManager):
         if len(ads) > 0:
             subject = '[fb-affiliates-banner]User has de-authorized app'
             message = render_to_string('facebook/deauthorized_email.html', {
-                'user': user, 'ads': ads,
+                'user': user,
+                'ads': ads,
                 'now': datetime.now()
             })
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,

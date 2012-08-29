@@ -79,13 +79,13 @@ def faq(request):
 
 def view_404(request):
     if in_facebook_app(request):
-        return render(request, 'facebook/error.html')
+        return render(request, 'facebook/error.html', status=404)
     else:
         return page_not_found(request)
 
 
 def view_500(request):
     if in_facebook_app(request):
-        return render(request, 'facebook/error.html')
+        return render(request, 'facebook/error.html', status=500)
     else:
         return server_error(request)
