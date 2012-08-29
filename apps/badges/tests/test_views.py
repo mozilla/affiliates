@@ -63,7 +63,9 @@ class TestDisplayedBadges(TestCase):
         self.client.login(username='testuser43@asdf.asdf', password='asdfasdf')
 
     def test_step_1(self):
-        """Test that step1 doesn't display categories with no displayed badges"""
+        """
+        Test that step1 doesn't display categories with no displayed badges.
+        """
         with self.activate('en-US'):
             path = reverse('badges.new.step1')
         response = self.client.get(path)
@@ -74,7 +76,9 @@ class TestDisplayedBadges(TestCase):
         eq_(list(categories), list(category))
 
     def test_step_2(self):
-        """Test that views for subcategories with no displayed badges return a 404"""
+        """
+        Test that views for subcategories with no displayed badges return a 404.
+        """
         with self.activate('en-US'):
             path = reverse('badges.new.step2', kwargs={'subcategory_pk': 14})
         response = self.client.get(path)

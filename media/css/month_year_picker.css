@@ -1,6 +1,6 @@
 /* Month Picker Widget */
 /* general */
-.month-picker-button{
+.month-picker-button {
     border:1px solid #B3C8D7;
     cursor: pointer;
     -webkit-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
@@ -9,46 +9,46 @@
     background: #FFFFFF;
 }
 
-.prev-month{
+.prev-month {
     border-radius:6px 0 0 6px;
     font-size:20px;
     line-height:32px;
 }
 
-.next-month{
+.next-month {
     border-radius:0 6px 6px 0;
     font-size:20px;
     line-height:32px;
 }
 
-.month-year-picker div.picker-header a{
+.month-year-picker div.picker-header a {
     color:#5e5e5e;
 }
 
-.month-year-picker div.picker-header a:hover{
+.month-year-picker div.picker-header a:hover {
     color:#5e5e5e;
     text-decoration:none;
 }
 
 /* specific */
-.month-year-picker{
+.month-year-picker {
     font-family: MuseoSans500, Open Sans, sans-serif;
 }
 
-.month-year-picker div.picker-header{
+.month-year-picker div.picker-header {
     height:34px;
     width:100%;
     text-align:center;
     line-height:34px;
 }
 
-.month-year-picker div.picker-header .prev-month{
+.month-year-picker div.picker-header .prev-month {
     width:29px;
     height:34px;
     float:left;
 }
 
-.month-year-picker div.picker-header .current-month-year{
+.month-year-picker div.picker-header .current-month-year {
     height:34px;
     border:1px solid #B3C8D7;
     display: block;
@@ -66,11 +66,11 @@
     background: #e8f2ff;
 }
 
-.month-year-picker div.picker-header .current-month-year span{
+.month-year-picker div.picker-header .current-month-year span {
     line-height:35px;
 }
 
-.month-year-picker div.picker-header .current-month-year .month-icon{
+.month-year-picker div.picker-header .current-month-year .month-icon {
     display:inline-block;
     width:21px;
     height:21px;
@@ -81,13 +81,13 @@
     background:transparent url(../img/template/sprites.png) no-repeat -482px 4px;
 }
 
-.month-year-picker div.picker-header .next-month{
+.month-year-picker div.picker-header .next-month {
     width:29px;
     height:34px;
     float:right;
 }
 
-.month-year-picker div.month-picker{
+.month-year-picker div.month-picker {
     background-color:#FFF;
     border:1px solid #B3C8D7;
     width:180px;
@@ -98,7 +98,7 @@
     display:none;
 }
 
-.month-year-picker div.month-picker .year-picker{
+.month-year-picker div.month-picker .year-picker {
     height:32px;
     text-align:center;
     line-height:32px;
@@ -115,7 +115,7 @@
     color:#FFF;
 }
 
-.month-year-picker div.month-picker .year-picker a.prev-year{
+.month-year-picker div.month-picker .year-picker a.prev-year {
     float:left;
     width:30px;
     height:32px;
@@ -124,7 +124,7 @@
     line-height:29px;
 }
 
-.month-year-picker div.month-picker .year-picker a.next-year{
+.month-year-picker div.month-picker .year-picker a.next-year {
     float:right;
     width:30px;
     height:32px;
@@ -134,16 +134,16 @@
 }
 
 .month-year-picker div.month-picker .year-picker a.next-year:hover,
-.month-year-picker div.month-picker .year-picker a.prev-year:hover{
+.month-year-picker div.month-picker .year-picker a.prev-year:hover {
     text-decoration:none;
 }
 
-.month-year-picker div.month-picker ul{
+.month-year-picker div.month-picker ul {
     list-style-type:none;
     margin:0;
 }
 
-.month-year-picker div.month-picker ul li{
+.month-year-picker div.month-picker ul li {
     display:inline-block;
     width:30px;
     height:30px;
@@ -154,19 +154,19 @@
     color:#5e5e5e;
 }
 
-.month-year-picker div.month-picker ul li.current-month{
+.month-year-picker div.month-picker ul li.current-month {
     -webkit-box-shadow:0px 0px 8px rgba(196,209,223,0.9) inset;
     -moz-box-shadow:0px 0px 8px rgba(196,209,223,0.9) inset;
     box-shadow:0px 0px 8px rgba(196,209,223,0.9) inset;
     color:#447bc4;
 }
 
-.month-year-picker div.month-picker ul li a{
+.month-year-picker div.month-picker ul li a {
     line-height:30px;
     color:inherit;
 }
 
-.month-year-picker div.month-picker ul li a:hover{
+.month-year-picker div.month-picker ul li a:hover {
     color:#447bc4;
     text-decoration:none;
 }

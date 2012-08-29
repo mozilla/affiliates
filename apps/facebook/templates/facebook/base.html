@@ -87,8 +87,7 @@
 
           <h3>{{ _('Your Statistics Summary') }}</h3>
           <div class="calendar">
-            {# Because url can't take placeholders, we use 0 in the months spot
-               and 1 in the year spot. #}
+            {# Because url can't take placeholders, we use 0 in the months spot and 1 in the year spot. #}
             {{ month_year_picker(url('facebook.stats', 1, 0)) }}
           </div>
           <p class="note">{{ _('You can filter results by selecting a specific month using the calendar above.') }}</p>
