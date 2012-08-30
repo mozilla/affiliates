@@ -187,6 +187,7 @@ MINIFY_BUNDLES = {
         # Facebook app
         'fb_common': (
             'js/libs/jquery-1.7.1.js',
+            'js/libs/spin.js',
             'js/month_year_picker.js',
             'js/facebook/common.js',
         ),

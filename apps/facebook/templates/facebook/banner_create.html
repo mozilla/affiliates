@@ -64,8 +64,7 @@
     </fieldset>
 
     <div class="fm-submit">
-      {# Placeholder spinner until we get a better looking one. #}
-      <img src="{{ MEDIA_URL }}img/template/loading.gif" class="loading">
+      <i class="spinner loading"></i>
       <button type="submit" name="_next_action" value="save" class="button-blue"><i>{{ _('Save') }}</i></button>
       <button type="submit" name="_next_action" value="share" class="button-blue"><i>{{ _('Save and Share') }}</i></button>
       <input type="hidden" name="next_action" value="save">

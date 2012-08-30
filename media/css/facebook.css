@@ -373,7 +373,7 @@ a:active {
   background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
-  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+  background: url(../img/facebook/bg-firstrun-de.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
 .firstrun.es-es .main,
@@ -383,7 +383,7 @@ a:active {
   background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
-  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+  background: url(../img/facebook/bg-firstrun-es.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
 .firstrun.fr-fr .main {
@@ -392,7 +392,7 @@ a:active {
   background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
-  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+  background: url(../img/facebook/bg-firstrun-fr.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
 .firstrun.pl-pl .main {
@@ -401,7 +401,7 @@ a:active {
   background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
-  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+  background: url(../img/facebook/bg-firstrun-pl.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
 .firstrun.pt-br .main {
@@ -410,7 +410,7 @@ a:active {
   background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
   background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
-  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));  
+  background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
 .firstrun .page-title {
@@ -622,6 +622,8 @@ a:active {
 
 .fm-submit .loading {
   display: none;
+  height: 7px;
+  width: 30px;
 }
 
 /* @User tools */

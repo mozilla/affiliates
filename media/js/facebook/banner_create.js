@@ -53,6 +53,9 @@
     $form.submit(function(e) {
         e.preventDefault();
 
+        // Display loading animation.
+        $('.fm-submit .loading').css('display', 'inline-block');
+
         var url = $form.attr('action');
         $.ajax({
             type: 'POST',
@@ -69,7 +72,6 @@
                     // generating a custom image for the banner. We should ping
                     // the server until the banner is done, then redirect to
                     // the next step.
-                    $('.fm-submit .loading').show();
                     imageGenerationPing(data.check_url, data.next);
                 },
                 400: function(xhr) {

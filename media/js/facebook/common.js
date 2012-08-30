@@ -28,7 +28,12 @@
     $(document).ready(function() {
         // Hide newsletter options
         $("#newsletter .options").hide();
+
+        // Activate FAQ sliders.
         FAQ.init();
+
+        // Activate spinners.
+        $('.spinner').spin();
     });
 
     // Show newsletter options
