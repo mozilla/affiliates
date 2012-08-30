@@ -73,8 +73,6 @@
 
           {% if account_link_form %}
           <div class="account-link">
-            {# ToDo: Build the linked version of this, with the option to unlink the account. #}
-
             {# L10n: Account linking lets a user associate an Affiliates account with their Facebook app account. Description is in another string. :D #}
             <p class="not-linked"><a href="#link-account">{{ _('Link your Firefox Affiliates account') }}</a></p>
 
@@ -101,6 +99,31 @@
                 <p>{{ _('If the email address you entered has an account, you will receive a confirmation email.') }}</p>
               </div>
             </form>
+
+<!-- If the account is linked...
+
+            <p class="linked">
+            {% trans link='https://affiliates.mozilla.org' %}
+            Linked to <a href="{{ link }}">affiliates.mozilla.org</a>
+            {% endtrans %}
+            </p>
+            
+            <form method="post" id="link-account">
+              <div class="form">
+              <p>{{ _('This account is linked to affiliates.mozilla.org. You are credited for clicks from Facebook. You can unlink accounts by clicking below.') }}</p>
+              
+              <p class="unlink">
+              {# L10n: Text on a button that lets a user unlink their Facebook and Affiliates accounts. #}
+                <button type="submit">
+                {% trans email_address='email@address.com' %}
+                Remove {{ email_address }}
+                {% endtrans %}
+                </button>
+              </p>
+              </div>
+            </form>
+-->
+            
           </div>
           {% endif %}
 
@@ -137,12 +160,10 @@
               <p>
                 {{ newsletter_form.country }}
               </p>
-              <p>
-                {{ newsletter_form.format }}
-              </p>
+              {{ newsletter_form.format }}
               <p>
                 {# Using our own manual label because you can't store the content of a trans block in a variable for the label_tag function. #}
-                <label for="id_privacy_policy_agree">
+                <label for="newsletter_privacy_policy_agree">
                   {{ newsletter_form.privacy_policy_agree }}
                   {% trans link='privacy_policy' %}
                   I agree to the <a href="{{ link }}">Privacy Policy</a>

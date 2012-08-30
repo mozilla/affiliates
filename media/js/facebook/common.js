@@ -18,7 +18,7 @@
     });
 
     // Show/hide the account linking form
-    $(".not-linked a").click(function(e){
+    $(".not-linked a, .linked a").click(function(e){
         e.preventDefault();
         $("#link-account").slideToggle('fast');
         $(this).blur();

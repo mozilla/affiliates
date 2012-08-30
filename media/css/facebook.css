@@ -691,7 +691,8 @@ button::-moz-focus-inner {
 }
 
 #link-account .email input,
-#link-account .email button {
+#link-account .email button,
+#link-account .unlink button {
   border: 1px solid #777;
   border-radius: .5em;
   color: #484848;
@@ -711,6 +712,19 @@ button::-moz-focus-inner {
   width: 28px;
   text-indent: -999em;
   background: #fff url(../img/facebook/status-good.png) center center no-repeat;
+}
+
+#link-account .unlink button {
+  cursor: pointer;
+  display: block;
+  padding: 6px 6px 6px 0;
+  max-width: 98%;
+  text-align: left;
+  text-indent: 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background: #fff url(../img/facebook/remove.png) 6px center no-repeat;
 }
 
 #user-tools .calendar {
