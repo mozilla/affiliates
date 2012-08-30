@@ -170,7 +170,7 @@ class FacebookBannerLocale(CachingMixin, ModelBase):
 def fb_instance_image_rename(instance, filename):
     """Determine the filename for a custom FacebookBannerInstance image."""
     extension = os.path.splitext(filename)[1]
-    new_filename = '%s_%s%s' % (instance.user.id, instance.banner.id, extension)
+    new_filename = '%s_%s%s' % (instance.user.id, instance.id, extension)
     return os.path.join(settings.FACEBOOK_BANNER_INSTANCE_IMAGE_PATH,
                         new_filename)
 
