@@ -224,8 +224,7 @@ class FacebookClickStatsManagerTests(TestCase):
     manager = FacebookClickStats.objects
 
     def _mkstats(self, user, year, month, clicks):
-        now = datetime.now()
-        hour = datetime(year, month, now.day, now.hour)
+        hour = datetime(year, month, 1, 0)
         return FacebookClickStatsFactory.create(banner_instance__user=user,
                                                 hour=hour, clicks=clicks)
 

@@ -106,7 +106,7 @@ class FacebookBannerInstanceForm(forms.ModelForm):
         # the locale is guarenteed to be set by LocaleURLMiddleware.
         request_locale = getattr(request, 'locale', None)
         if request_locale:
-            queryset = (FacebookBanner.objects
+            queryset = (FacebookBanner.objects.distinct()
                         .filter(locale_set__locale__contains=request_locale))
             self.fields['banner'].queryset = queryset
 

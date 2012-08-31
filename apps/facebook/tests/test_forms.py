@@ -52,6 +52,21 @@ class FacebookBannerInstanceFormTests(TestCase):
         form = self.form('fr', {'text': 'asdf', 'banner': en_banner.id})
         ok_(not form.is_valid())
 
+    def test_similar_locales(self):
+        """
+        Regression test for a bug where a user in the de locale would get a
+        banner choice for each de locale (de, de-at, de-ch, de-de), causing
+        duplicate choices and form processing errors.
+        """
+        banner = FacebookBannerFactory.create()
+        FacebookBannerLocaleFactory.create(banner=banner, locale='de')
+        FacebookBannerLocaleFactory.create(banner=banner, locale='de-at')
+        FacebookBannerLocaleFactory.create(banner=banner, locale='de-ch')
+        FacebookBannerLocaleFactory.create(banner=banner, locale='de-de')
+
+        form = self.form('de')
+        eq_(len(form.fields['banner'].choices), 1)
+
 
 class FacebookAccountLinkFormTests(TestCase):
     def test_affiliates_email_validation(self):
