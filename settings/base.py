@@ -105,7 +105,7 @@ SERIALIZATION_MODULES = {
 SMUGGLER_FORMAT = 'json_files'
 
 # Email subscription config
-BASKET_URL = 'https://basket.mozilla.com'
+BASKET_URL = 'http://basket.mozilla.com'
 BASKET_NEWSLETTER = 'mozilla-and-you'
 
 # CSP Config
