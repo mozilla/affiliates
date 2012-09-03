@@ -85,7 +85,7 @@ class FacebookBannerInstanceForm(forms.ModelForm):
     text = forms.CharField(max_length=90, widget=forms.Textarea(attrs={
         # L10n: &hellip; is an ellipses, the three dots like
         # L10n: "I love Firefox because..."
-        'placeholder': mark_safe(_text_placeholder),
+        'placeholder': _text_placeholder,
         'maxlength': 90,
         'rows': 2,
         'required': 'required'
