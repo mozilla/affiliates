@@ -128,6 +128,7 @@ CSP_IMG_SRC = (
     'https://secure.gravatar.com',
     'https://graph.facebook.com',
     'https://*.fbcdn.net',
+    'https://*.akamaihd.net',
 )
 CSP_FONT_SRC = (
     '\'self\'',
