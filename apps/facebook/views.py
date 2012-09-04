@@ -37,6 +37,12 @@ def load_app(request):
     Create or authenticate the Facebook user and direct them to the correct
     area of the app upon their entry.
     """
+    # Temporary measure to handle when Facebook does a GET to the main URL when
+    # a logged-out user views the app. In the future we should show a promo
+    # page instead.
+    if request.method != 'POST':
+        return request_authorization(request)
+
     signed_request = request.POST.get('signed_request', None)
     if signed_request is None:
         # App wasn't loaded within a canvas, redirect to the home page.
@@ -59,12 +65,7 @@ def load_app(request):
             get_or_create_user_from_decoded_request(decoded_request))
     if user is None:
         # User has yet to authorize the app, offer authorization.
-        context = {
-            'app_id': settings.FACEBOOK_APP_ID,
-            'app_namespace': settings.FACEBOOK_APP_NAMESPACE,
-            'app_permissions': settings.FACEBOOK_PERMISSIONS
-        }
-        return jingo.render(request, 'facebook/oauth_redirect.html', context)
+        return request_authorization(request)
 
     # Attach country data to the user object. This can only be retrieved from
     # the decoded request, so we add it here and login saves it.
@@ -79,6 +80,17 @@ def load_app(request):
     activate_locale(request, user.locale)
 
     return banner_list(request)
+
+
+@xframe_allow
+def request_authorization(request):
+    """Request app authorization from the user."""
+    context = {
+        'app_id': settings.FACEBOOK_APP_ID,
+        'app_namespace': settings.FACEBOOK_APP_NAMESPACE,
+        'app_permissions': settings.FACEBOOK_PERMISSIONS
+    }
+    return jingo.render(request, 'facebook/oauth_redirect.html', context)
 
 
 @require_POST
