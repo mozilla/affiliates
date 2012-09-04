@@ -1,5 +1,3 @@
-from django.contrib.auth.signals import user_logged_in
-
 from facebook.models import FacebookUser
 
 
@@ -21,7 +19,6 @@ def login(request, user):
         request.session.cycle_key()
     request.session[SESSION_KEY] = user.id
     request.user = user
-    user_logged_in.send(sender=user.__class__, request=request, user=user)
 
     # Once the user has logged in, we should update their info from the
     # Facebook Graph.
