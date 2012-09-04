@@ -14,6 +14,7 @@ from shared.forms import AdminModelForm
 from shared.models import ENGLISH_LANGUAGE_CHOICES
 from shared.utils import absolutify
 
+
 # L10n: &hellip; is an ellipses, the three dots like "I love Firefox because..."
 _text_placeholder = _lazy('I love Firefox because&hellip;')
 
@@ -83,9 +84,6 @@ class BannerRadioSelect(forms.RadioSelect):
 class FacebookBannerInstanceForm(forms.ModelForm):
     use_profile_image = forms.BooleanField(required=False)
     text = forms.CharField(max_length=90, widget=forms.Textarea(attrs={
-        # L10n: &hellip; is an ellipses, the three dots like
-        # L10n: "I love Firefox because..."
-        'placeholder': _text_placeholder,
         'maxlength': 90,
         'rows': 2,
         'required': 'required'
@@ -98,8 +96,10 @@ class FacebookBannerInstanceForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(FacebookBannerInstanceForm, self).__init__(*args, **kwargs)
 
-        # Remove cols attribute from text widget.
-        del self.fields['text'].widget.attrs['cols']
+        # Customize text widget.
+        widget = self.fields['text'].widget
+        del widget.attrs['cols']
+        widget.attrs['placeholder'] = mark_safe(_text_placeholder)
 
         # Limit the banner field to banners available in the current locale.
         # Allows for a missing request locale to allow testing. On a real server
