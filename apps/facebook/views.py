@@ -154,7 +154,8 @@ def banner_list(request):
     if request.user.is_new:
         return jingo.render(request, 'facebook/first_run.html')
 
-    banner_instances = request.user.banner_instance_set.filter(processed=True)
+    banner_instances = (request.user.banner_instance_set.filter(processed=True)
+                        .select_related('banner'))
     return jingo.render(request, 'facebook/banner_list.html',
                         {'banner_instances': banner_instances})
 

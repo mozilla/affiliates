@@ -39,7 +39,7 @@ class FacebookUser(CachingMixin, ModelBase):
     @property
     def is_new(self):
         """A user is new if they have yet to create a Facebook banner."""
-        return not self.banner_instance_set.exists()
+        return not self.banner_instance_set.filter(processed=True).exists()
 
     @property
     def account_link(self):
