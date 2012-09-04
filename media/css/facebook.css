@@ -413,6 +413,15 @@ a:active {
   background: url(../img/facebook/bg-firstrun-pt-br.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
 }
 
+.firstrun.zh-tw .main {
+  background: #fefefe url(../img/facebook/bg-firstrun-zh-tw.png) center bottom no-repeat;
+  background: url(../img/facebook/bg-firstrun-zh-tw.png) center bottom no-repeat, #fefefe -moz-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-zh-tw.png) center bottom no-repeat, #fefefe -webkit-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-zh-tw.png) center bottom no-repeat, #fefefe -o-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-zh-tw.png) center bottom no-repeat, #fefefe -ms-linear-gradient(bottom, #e9eef4 400px, rgba(233,238,244,0));
+  background: url(../img/facebook/bg-firstrun-zh-tw.png) center bottom no-repeat, #fefefe linear-gradient(to top, #e9eef4 400px, rgba(233,238,244,0));
+}
+
 .firstrun .page-title {
   font-size: 3em;
 }
