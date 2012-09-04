@@ -210,6 +210,9 @@ MINIFY_BUNDLES = {
         'fb_banner_create': (
             'js/facebook/banner_create.js',
         ),
+        'fb_redirect': (
+            'js/facebook/redirect.js',
+        ),
     }
 }
 
@@ -265,6 +268,7 @@ JINGO_EXCLUDE_APPS = [
     'admin',
     'smuggler',
     'stats',
+    'fb',
 ]
 
 # Set up logging to send emails on 500 errors

@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 
 from django.conf import settings
+from django.shortcuts import render
 from django.utils.translation import get_language
 
 import commonware.log
@@ -105,3 +106,11 @@ def activate_locale(request, locale):
     # either.
     if not settings.TEST:
         request.locale = lang
+
+
+def fb_redirect(request, url):
+    """
+    Return a response that will redirect a user within the Facebook app to the
+    given URL.
+    """
+    return render(request, 'facebook/redirect.html', {'url': url})

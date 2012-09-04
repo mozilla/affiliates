@@ -21,7 +21,7 @@ from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookClickStats, FacebookUser)
 from facebook.utils import (activate_locale, decode_signed_request,
-                            is_facebook_bot, is_logged_in)
+                            fb_redirect, is_facebook_bot, is_logged_in)
 from shared.http import JSONResponse, JSONResponseBadRequest
 from shared.utils import absolutify, redirect
 
@@ -46,6 +46,14 @@ def load_app(request):
                                             settings.FACEBOOK_APP_SECRET)
     if decoded_request is None:
         return redirect('home')
+
+    # If user is using Safari, we need to apply the cookie workaround.
+    using_safari = ('Safari' in request.META['HTTP_USER_AGENT'] and not 'Chrome'
+                    in request.META['HTTP_USER_AGENT'])
+    workaround_applied = 'safari_workaround' in request.COOKIES
+    if using_safari and not workaround_applied:
+        return fb_redirect(request,
+                           absolutify(reverse('facebook.safari_workaround')))
 
     user, created = (FacebookUser.objects.
             get_or_create_user_from_decoded_request(decoded_request))
@@ -299,3 +307,19 @@ def stats(request, year, month):
     clicks = FacebookClickStats.objects.total_for_month(request.user, year,
                                                         month)
     return JSONResponse({'clicks': clicks})
+
+
+def safari_workaround(request):
+    """
+    Safari does not allow third-party requests to set cookies, but we need to
+    set session and other cookies when users view the app through the Facebook
+    iframe.
+
+    To work around this, we send Safari users to this view, which sends a test
+    cookie to the user. Because Safari allows third-party requests to set
+    cookies if a cookie was sent with that request, the test cookie will allow
+    us to set the session cookie normally.
+    """
+    response = django_redirect(settings.FACEBOOK_APP_URL)
+    response.set_cookie('safari_workaround', '1')
+    return response

@@ -52,4 +52,7 @@ urlpatterns = patterns('facebook.views',
     url(r'^404/?$', view_404, name='facebook.404'),
 
     url(r'^500/?$', view_500, name='facebook.500'),
+
+    url(r'^safari_workaround/?$', views.safari_workaround,
+        name='facebook.safari_workaround'),
 )
