@@ -26,10 +26,12 @@ from shared.http import JSONResponse, JSONResponseBadRequest
 from shared.utils import absolutify, redirect
 
 
+SAFARI_WORKAROUND_KEY = 'safari_workaround'
+
+
 log = commonware.log.getLogger('a.facebook')
 
 
-@require_POST
 @csrf_exempt
 @xframe_allow
 def load_app(request):
@@ -54,9 +56,9 @@ def load_app(request):
         return redirect('home')
 
     # If user is using Safari, we need to apply the cookie workaround.
-    using_safari = ('Safari' in request.META['HTTP_USER_AGENT'] and not 'Chrome'
-                    in request.META['HTTP_USER_AGENT'])
-    workaround_applied = 'safari_workaround' in request.COOKIES
+    useragent = request.META.get('HTTP_USER_AGENT', '')
+    using_safari = 'Safari' in useragent and not 'Chrome' in useragent
+    workaround_applied = SAFARI_WORKAROUND_KEY in request.COOKIES
     if using_safari and not workaround_applied:
         return fb_redirect(request,
                            absolutify(reverse('facebook.safari_workaround')))
@@ -333,5 +335,5 @@ def safari_workaround(request):
     us to set the session cookie normally.
     """
     response = django_redirect(settings.FACEBOOK_APP_URL)
-    response.set_cookie('safari_workaround', '1')
+    response.set_cookie(SAFARI_WORKAROUND_KEY, '1')
     return response

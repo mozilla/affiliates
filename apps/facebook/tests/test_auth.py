@@ -1,8 +1,7 @@
-from django.contrib.auth.signals import user_logged_in
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 
-from mock import Mock, patch
+from mock import patch
 from nose.tools import eq_, ok_
 
 from facebook.auth import login
@@ -62,19 +61,6 @@ class LoginTests(TestCase):
         user = FacebookUserFactory()
         login(request, user)
         eq_(request.user, user)
-
-    def test_user_logged_in_signal(self, update_user_info):
-        mock_signal = Mock(spec=lambda x: x)
-        user_logged_in.connect(mock_signal)
-
-        request = self.request()
-        user = FacebookUserFactory()
-        login(request, user)
-
-        mock_signal.assert_called_once_with(signal=user_logged_in,
-                                            sender=FacebookUser,
-                                            request=request, user=user)
-        user_logged_in.disconnect(mock_signal)
 
     def test_update_user_info_called(self, update_user_info):
         """Ensure that update_user_info is called on a successful login."""

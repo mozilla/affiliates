@@ -1,7 +1,7 @@
 import json
 
 from django.conf import settings
-from django.contrib import messages
+from django.http import HttpResponse
 
 import basket
 from funfactory.urlresolvers import reverse
@@ -13,6 +13,7 @@ from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
 from facebook.tests import (create_payload, FACEBOOK_USER_AGENT,
                             FacebookAccountLinkFactory, FacebookBannerFactory,
                             FacebookBannerInstanceFactory, FacebookUserFactory)
+from facebook.views import SAFARI_WORKAROUND_KEY
 from shared.tests import TestCase
 from shared.utils import absolutify
 from users.tests import UserFactory
@@ -20,7 +21,7 @@ from users.tests import UserFactory
 
 @patch.object(FacebookUser.objects, 'update_user_info')
 class LoadAppTests(TestCase):
-    def load_app(self, payload):
+    def load_app(self, payload, **extra):
         """
         Runs the load_app view. If payload is None, it will not be
         passed to the view. If it is False, it will fail to be decoded.
@@ -36,7 +37,8 @@ class LoadAppTests(TestCase):
             else:
                 decode.return_value = None
 
-            return self.client.post(reverse('facebook.load_app'), post_data)
+            return self.client.post(reverse('facebook.load_app'), post_data,
+                                    **extra)
 
     def test_no_signed_request(self, update_user_info):
         """
@@ -54,6 +56,40 @@ class LoadAppTests(TestCase):
             response = self.load_app(False)
             eq_(response.status_code, 302)
             self.assert_viewname_url(response['Location'], 'home')
+
+    @patch('facebook.views.fb_redirect')
+    def test_safari_workaround(self, fb_redirect, update_user_info):
+        """
+        If the user is using Safari and hasn't gone through the workaround yet,
+        send them to the workaround page.
+        """
+        fb_redirect.return_value = HttpResponse()
+        payload = create_payload(user_id=1)
+        self.load_app(payload, HTTP_USER_AGENT='Safari/5.04')
+        ok_(fb_redirect.called)
+        self.assert_viewname_url(fb_redirect.call_args[0][1],
+                                 'facebook.safari_workaround')
+
+    @patch('facebook.views.fb_redirect')
+    def test_no_safari_workaround(self, fb_redirect, update_user_info):
+        """
+        If the user is not using Safari, do not redirect to the workaround.
+        """
+        payload = create_payload(user_id=1)
+        self.load_app(payload, HTTP_USER_AGENT='Safari/5.04 Chrome/7.5')
+        ok_(not fb_redirect.called)
+
+    @patch('facebook.views.fb_redirect')
+    def test_safari_workaround_done(self, fb_redirect, update_user_info):
+        """
+        If the user is using Safari and hasthe workaround cookie, do not send
+        them to the workaround page.
+        """
+        payload = create_payload(user_id=1)
+        self.client.cookies[SAFARI_WORKAROUND_KEY] = '1'
+        self.load_app(payload, HTTP_USER_AGENT='Safari/5.04')
+        del self.client.cookies[SAFARI_WORKAROUND_KEY]
+        ok_(not fb_redirect.called)
 
     def test_no_authorization(self, update_user_info):
         """
