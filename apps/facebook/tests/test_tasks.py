@@ -107,7 +107,7 @@ class GenerateBannerInstanceImageTests(TestCase):
 
         # effbot delivers! http://effbot.org/zone/pil-comparing-images.html
         bbox = ImageChops.difference(custom_im, reference_im).getbbox()
-        ok_(bbox is None, 'bbox is %s' % bbox)
+        ok_(bbox is None, 'bbox is %s' % (bbox,))
 
         # Cleanup
         instance.banner.image.delete()
