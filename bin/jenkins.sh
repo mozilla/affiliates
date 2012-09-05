@@ -59,6 +59,14 @@ BANNERS_HASH = (
     '299839978f965e3b17d926572f91b4fbc340896c',
     '5f5e8cc58fac3f658fca66be259590ea42963aa8',
 )
+
+SECRET_KEY = 'v9h9h09hg04gb984bgbfb4f09f'
+SESSION_COOKIE_SECURE = True
+
+FACEBOOK_APP_ID = '00000000000'
+FACEBOOK_APP_SECRET = '9906bc9a6bf96b9f0abaefe97f97e'
+FACEBOOK_APP_NAMESPACE = 'jenkinstest'
+
 SETTINGS
 
 echo "Creating database if we need it..."
