@@ -1,13 +1,9 @@
-import unittest
-
 from django.conf import settings
 from django.core import mail
-from django.core.files import File
 
 import requests
 from nose.tools import eq_, ok_
 from mock import patch
-from PIL import Image, ImageChops
 
 from facebook.models import FacebookBannerInstance, FacebookClickStats
 from facebook.tasks import add_click, generate_banner_instance_image
@@ -92,30 +88,3 @@ class GenerateBannerInstanceImageTests(TestCase):
         instance = FacebookBannerInstance.objects.get(id=instance.id)
         eq_(bool(instance.custom_image), False)
         eq_(instance.processed, False)
-
-    # Images may differ slightly between machines, so we're skipping this
-    # test for now until a better image comparison function can be found.
-    @unittest.skip('Skipping test until better image comparison is added.')
-    @patch.object(requests, 'get', image_response('images', 'fb_picture.jpg'))
-    def test_banner_generation(self):
-        """Test that the image generation creates the expected image."""
-        instance = self.instance()
-        with open(path('images', 'banner.png')) as banner_image:
-            instance.banner.image.save('test.png', File(banner_image))
-
-        self.generate(instance.id)
-        instance = FacebookBannerInstance.objects.get(id=instance.id)
-        eq_(instance.processed, True)
-
-        custom_im = Image.open(instance.custom_image)
-        reference_im = Image.open(path('images', 'expected_banner.png'))
-
-        # effbot delivers! http://effbot.org/zone/pil-comparing-images.html
-        diff = ImageChops.difference(custom_im, reference_im)
-        diff.save(path('images', 'test_banner_generation_diff.png'))
-        bbox = diff.getbbox()
-        ok_(bbox is None, 'bbox is %s' % (bbox,))
-
-        # Cleanup
-        instance.banner.image.delete()
-        instance.custom_image.delete()
