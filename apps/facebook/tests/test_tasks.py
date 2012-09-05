@@ -106,7 +106,9 @@ class GenerateBannerInstanceImageTests(TestCase):
         reference_im = Image.open(path('images', 'expected_banner.png'))
 
         # effbot delivers! http://effbot.org/zone/pil-comparing-images.html
-        bbox = ImageChops.difference(custom_im, reference_im).getbbox()
+        diff = ImageChops.difference(custom_im, reference_im)
+        diff.save(path('images', 'test_banner_generation_diff.png'))
+        bbox = diff.getbbox()
         ok_(bbox is None, 'bbox is %s' % (bbox,))
 
         # Cleanup
