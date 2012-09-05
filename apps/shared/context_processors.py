@@ -9,10 +9,10 @@ from shared.utils import current_locale
 def l10n(request):
     """Adds language information to template contexts."""
     locale = get_language()
+    ctx = {'LOCALE': locale}
     if locale and locale in settings.LANGUAGES:
-        return {'LOCALE': locale, 'LANGUAGE': settings.LANGUAGES[locale]}
-    else:
-        return {}
+        ctx['LANGUAGE'] = settings.LANGUAGES[locale]
+    return ctx
 
 
 def month_year_picker(request):
