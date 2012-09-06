@@ -9,6 +9,7 @@
 
         var $picker = $(selector);
         this.$picker = $picker;
+        this.callbacks = [];
 
         if ($picker.length > 0) {
             this.shortMonthNames = $picker.data('short-month-names');
@@ -25,8 +26,6 @@
 
             // Auto-hide so error message stays for non-JS users.
             this.$errorMsg = $(options.errorMsgSelector).hide();
-
-            this.callbacks = [];
 
             // Bind click events to various elements of the widget.
             var clickEvents = {
