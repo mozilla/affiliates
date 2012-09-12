@@ -106,7 +106,7 @@ SMUGGLER_FORMAT = 'json_files'
 
 # Email subscription config
 BASKET_URL = 'http://basket.mozilla.com'
-BASKET_NEWSLETTER = 'mozilla-and-you'
+BASKET_NEWSLETTER = 'affiliates'
 
 # CSP Config
 CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
