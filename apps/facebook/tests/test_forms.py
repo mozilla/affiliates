@@ -2,10 +2,11 @@ from django.test.client import RequestFactory
 
 from nose.tools import eq_, ok_
 
-from facebook.forms import (FacebookAccountLinkForm, FacebookBannerInstanceForm,
-                            LeaderboardFilterForm)
-from facebook.tests import (FacebookBannerFactory, FacebookBannerLocaleFactory,
-                            FacebookUserFactory)
+from facebook.forms import (BannerInstanceDeleteForm, FacebookAccountLinkForm,
+                            FacebookBannerInstanceForm, LeaderboardFilterForm)
+from facebook.tests import (FacebookBannerFactory,
+                            FacebookBannerInstanceFactory,
+                            FacebookBannerLocaleFactory, FacebookUserFactory)
 from shared.tests import TestCase
 from users.tests import UserFactory
 
@@ -117,3 +118,20 @@ class LeaderboardFilterFormTests(TestCase):
 
         form = LeaderboardFilterForm({'country': 'us'})
         eq_([user1, user3], list(form.get_top_users()))
+
+
+class BannerInstanceDeleteFormTests(TestCase):
+    def test_validate_user_owns_banner(self):
+        """
+        The delete form must validate that the user passed in the constructor
+        owns the banner instance.
+        """
+        user = FacebookUserFactory.create()
+        instance1 = FacebookBannerInstanceFactory.create(user=user)
+        instance2 = FacebookBannerInstanceFactory.create()
+
+        form = BannerInstanceDeleteForm(user, {'banner_instance': instance1.id})
+        ok_(form.is_valid())
+
+        form = BannerInstanceDeleteForm(user, {'banner_instance': instance2.id})
+        ok_(not form.is_valid())

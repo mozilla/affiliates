@@ -455,3 +455,24 @@ class PostBannerShareTest(TestCase):
         response = self.post_banner_share(post_id=999)
         self.assert_redirects(response, 'http://mozilla.org')
         ok_(success.called)
+
+
+class BannerDeleteTests(TestCase):
+    def setUp(self):
+        self.user = FacebookUserFactory.create()
+        self.client.fb_login(self.user)
+        FacebookBannerInstanceFactory.create(user=self.user)
+
+    def _delete(self, **kwargs):
+        with self.activate('en-US'):
+            return self.client.post(reverse('facebook.banners.delete'), kwargs)
+
+    def test_dont_delete_if_user_doesnt_own_banner(self):
+        instance = FacebookBannerInstanceFactory.create()
+        self._delete(banner_instance=instance.id)
+        ok_(FacebookBannerInstance.objects.filter(id=instance.id).exists())
+
+    def test_delete_if_user_owns_banner(self):
+        instance = FacebookBannerInstanceFactory.create(user=self.user)
+        self._delete(banner_instance=instance.id)
+        ok_(not FacebookBannerInstance.objects.filter(id=instance.id).exists())
