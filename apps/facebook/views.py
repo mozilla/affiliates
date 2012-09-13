@@ -15,8 +15,9 @@ from tower import ugettext as _
 
 from facebook.auth import login
 from facebook.decorators import fb_login_required
-from facebook.forms import (FacebookAccountLinkForm, FacebookBannerInstanceForm,
-                            LeaderboardFilterForm, NewsletterSubscriptionForm)
+from facebook.forms import (BannerInstanceDeleteForm, FacebookAccountLinkForm,
+                            FacebookBannerInstanceForm, LeaderboardFilterForm,
+                            NewsletterSubscriptionForm)
 from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookClickStats, FacebookUser)
@@ -167,6 +168,18 @@ def banner_create_image_check(request, instance_id):
     """Check the status of generating a custom image for a banner instance."""
     banner_instance = get_object_or_404(FacebookBannerInstance, id=instance_id)
     return JSONResponse({'is_processed': banner_instance.processed})
+
+
+@fb_login_required
+@require_POST
+@xframe_allow
+def banner_delete(request):
+    form = BannerInstanceDeleteForm(request.user, request.POST)
+    if form.is_valid():
+        banner_instance = form.cleaned_data['banner_instance']
+        banner_instance.delete()
+        messages.success(request, _('Your banner has been deleted.'))
+    return banner_list(request)
 
 
 @fb_login_required

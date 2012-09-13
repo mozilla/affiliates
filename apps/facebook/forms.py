@@ -211,3 +211,12 @@ class NewsletterSubscriptionForm(forms.Form):
         self.fields['country'].choices = choices
 
         self.fields['country'].initial = user.country
+
+
+class BannerInstanceDeleteForm(forms.Form):
+    banner_instance = forms.ModelChoiceField(
+        queryset=FacebookBannerInstance.objects.all())
+
+    def __init__(self, user, *args, **kwargs):
+        super(BannerInstanceDeleteForm, self).__init__(*args, **kwargs)
+        self.fields['banner_instance'].queryset = user.banner_instance_set

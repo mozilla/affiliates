@@ -2,11 +2,16 @@
 
 {% set nav_section = 'banners' %}
 
+{% block site_js %}
+  {{ super() }}
+  {{ js('fb_banner_list') }}
+{% endblock %}
+
 {% block content %}
 {% set sub_nav_section = 'banner_list' %}
 {% include 'facebook/include/sub-nav.html' %}
 
-<div class="banner-list">
+<div class="banner-list" data-delete-confirm="{{ _('Are you sure?') }}">
   <h2>{{ _('These are the banners you\'ve created so far:') }}</h2>
 
   {% for banner_instance in banner_instances %}
@@ -26,8 +31,20 @@
           <dd>{{ banner_instance.total_clicks }}</dd>
         </dl>
         <ul class="util">
-          {# L10n: Link that, when clicked, shows a dialog for posting a banner to a user's Facebook feed. #}
-          <li><a class="share-banner" href="{{ url('facebook.banners.share', banner_instance.id) }}">{{ _('Post to Feed') }}</a>
+          <li>
+            <a class="share-banner" href="{{ url('facebook.banners.share', banner_instance.id) }}">
+              {# L10n: Link that, when clicked, shows a dialog for posting a banner to a user's Facebook feed. #}
+              {{ _('Post to Feed') }}
+            </a>
+          </li>
+          <li>
+            <form method="post" action="{{ url('facebook.banners.delete') }}">
+              {{ csrf() }}
+              <input type="hidden" name="banner_instance" value="{{ banner_instance.id }}">
+              <a class="delete-banner" href="#">
+                {{ _('Delete') }}
+              </a>
+            </form>
           </li>
         </ul>
       </figcaption>

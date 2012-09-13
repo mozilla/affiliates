@@ -213,6 +213,9 @@ MINIFY_BUNDLES = {
         'fb_redirect': (
             'js/facebook/redirect.js',
         ),
+        'fb_banner_list': (
+            'js/facebook/banner_delete.js',
+        ),
     }
 }
 
