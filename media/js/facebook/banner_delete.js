@@ -1,12 +1,12 @@
 (function($) {
     'use strict';
 
-    var confirmMsg = $('.banner-list').data('deleteConfirm');
+    var $banner_list = $('.banner-list');
+    var confirmMsg = $banner_list.data('deleteConfirm');
 
-    $(document).on('click', '.delete-banner', function(e) {
-        e.preventDefault();
-        if (window.confirm(confirmMsg)) {
-            $(e.target).parent('form').submit();
+    $banner_list.on('submit', '.delete-banner', function(e) {
+        if (!window.confirm(confirmMsg)) {
+            e.preventDefault();
         }
     });
 })(jQuery);

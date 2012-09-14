@@ -38,12 +38,12 @@
             </a>
           </li>
           <li>
-            <form method="post" action="{{ url('facebook.banners.delete') }}">
+            <form class="delete-banner" method="post" action="{{ url('facebook.banners.delete') }}">
               {{ csrf() }}
               <input type="hidden" name="banner_instance" value="{{ banner_instance.id }}">
-              <a class="delete-banner" href="#">
+              <button class="link" type="submit">
                 {{ _('Delete') }}
-              </a>
+              </button>
             </form>
           </li>
         </ul>

@@ -159,15 +159,25 @@ h6,
 
 /* @Links ***/
 a:link,
-a:visited {
+a:visited,
+.link {
   color: #2983c8;
   text-decoration: none;
 }
 a:hover,
 a:focus,
-a:active {
+a:active,
+.link:hover {
   color: #20679e;
   text-decoration: underline;
+}
+
+.link {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
 }
 
 /* @Header */
