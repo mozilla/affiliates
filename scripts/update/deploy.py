@@ -47,6 +47,7 @@ def south(ctx):
 @task
 def banners_htaccess(ctx):
     with ctx.lcd(settings.SRC_DIR):
+        ctx.local("python2.6 ./manage.py update_product_details")
         ctx.local("python2.6 ./manage.py banners_htaccess")
 
 
