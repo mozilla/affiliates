@@ -333,7 +333,10 @@ FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affau
 
 # Bug 719522
 # List of hashes of banner images for upgrade campaign
-BANNERS_HASH = []
+BANNERS_HASH = ['1fe924573d36f18d1430311ecc892977ad0bd6a1',
+                '5f5e8cc58fac3f658fca66be259590ea42963aa8',
+                'ab1148a01251db077970056468c9b19c5f9e01f7',
+                'c6469f07bb0a40cd1d7b906d6a345ccd322ff953']
 
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
