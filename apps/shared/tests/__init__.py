@@ -1,4 +1,5 @@
-from contextlib import contextmanager
+from contextlib import contextmanager, nested
+from functools import wraps
 from smtplib import SMTPException
 
 from django.conf import settings
@@ -12,6 +13,7 @@ from django.utils.translation import get_language
 import test_utils
 from funfactory.urlresolvers import (get_url_prefix, Prefixer, reverse,
                                      set_url_prefix)
+from mock import patch
 from nose.tools import eq_, ok_
 from tower import activate
 
@@ -114,3 +116,20 @@ class ModelsTestCase(TestCase):
 def refresh_model(instance):
     """Retrieves the latest version of a model instance from the DB."""
     return instance.__class__.objects.get(pk=instance.pk)
+
+
+def patch_settings(**new_settings):
+    """
+    Syntactic sugar for patching many settings at once.
+
+    TODO: Replace with override_settings in Django 1.4.
+    """
+    def decorator(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            patches = []
+            for name, value in new_settings.items():
+                patches.append(patch.object(settings, name, value))
+            with nested(*patches):
+                return f(*args, **kwargs)
+    return decorator

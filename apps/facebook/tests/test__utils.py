@@ -3,7 +3,6 @@ import hashlib
 import hmac
 import json
 
-from django.conf import settings
 from django.test.client import RequestFactory
 
 from mock import patch
@@ -12,7 +11,7 @@ from nose.tools import eq_
 from facebook.tests import FACEBOOK_USER_AGENT, create_payload
 from facebook.utils import (activate_locale, decode_signed_request,
                             is_facebook_bot, modified_url_b64decode)
-from shared.tests import TestCase
+from shared.tests import patch_settings, TestCase
 
 
 def modified_url_b64encode(data):
@@ -86,8 +85,7 @@ class ActivateLocaleTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-    @patch.object(settings, 'TEST', False)
-    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))
+    @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
     def test_not_in_whitelist(self):
         """
         If the given locale is not in the whitelist, default back to en-us.
@@ -96,8 +94,7 @@ class ActivateLocaleTests(TestCase):
         activate_locale(request, 'de')
         eq_(request.locale, 'en-us')
 
-    @patch.object(settings, 'TEST', False)
-    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'de'))
+    @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'de'))
     @patch('facebook.utils.get_language', lambda: 'de-de')
     def test_language_code_in_whitelist(self):
         """If only a locale's language code is in the whitelist, use it."""
@@ -105,8 +102,7 @@ class ActivateLocaleTests(TestCase):
         activate_locale(request, 'de-de')
         eq_(request.locale, 'de')
 
-    @patch.object(settings, 'TEST', False)
-    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))
+    @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
     @patch('facebook.utils.get_language', lambda: 'en-us')
     def test_locale_in_whitelist(self):
         """If a locale is in the whitelist, use it."""
@@ -114,14 +110,23 @@ class ActivateLocaleTests(TestCase):
         activate_locale(request, 'en-us')
         eq_(request.locale, 'en-us')
 
-    @patch.object(settings, 'TEST', True)
-    @patch.object(settings, 'FACEBOOK_LOCALES', ('en-us', 'fr'))
+    @patch_settings(DEV=False, TEST=True, FACEBOOK_LOCALES=('en-us', 'fr'))
     @patch('facebook.utils.get_language', lambda: 'en-us')
     def test_testing_dont_set_request_locale(self):
         """If settings.TEST is True, do not set the locale on the request."""
         request = self.factory.get('/')
         activate_locale(request, 'en-us')
         eq_(getattr(request, 'locale', None), None)
+
+    @patch_settings(DEV=True, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
+    def test_dev_dont_limit_locales(self):
+        """
+        If settings.DEV is True, do not verify that a locale is in the
+        FACEBOOK_LOCALES list.
+        """
+        request = self.factory.get('/')
+        activate_locale(request, 'es')
+        eq_(request.locale, 'es')
 
 
 class IsFacebookBotTests(TestCase):
