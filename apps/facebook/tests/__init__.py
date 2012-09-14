@@ -1,11 +1,12 @@
 import os
 from contextlib import nested
+from datetime import datetime
 from os.path import abspath, dirname
 from time import time
 
 from django.test.client import Client
 
-from factory import Factory, SubFactory, Sequence
+from factory import Factory, LazyAttribute, SubFactory, Sequence
 from mock import patch
 
 from facebook import models
@@ -60,6 +61,7 @@ class FacebookAuthClient(Client):
 class FacebookUserFactory(Factory):
     FACTORY_FOR = models.FacebookUser
     id = Sequence(lambda n: 'test%s' % n)
+    last_login = LazyAttribute(lambda o: datetime.now())
 
 
 class FacebookAccountLinkFactory(Factory):

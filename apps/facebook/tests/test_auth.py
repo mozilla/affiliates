@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 
@@ -62,9 +64,35 @@ class LoginTests(TestCase):
         login(request, user)
         eq_(request.user, user)
 
-    def test_update_user_info_called(self, update_user_info):
+    def test_new_user_update_user_info_called(self, update_user_info):
         """Ensure that update_user_info is called on a successful login."""
+        request = self.request()
+        user = FacebookUserFactory(last_login=None)
+        login(request, user)
+        update_user_info.assert_called_once_with(user)
+
+    @patch('facebook.auth.update_user_info')
+    def test_old_user_task_scheduled(self, update_task, update_method):
+        """
+        If the user logging in isn't new, use the asynchronous task to update
+        their info instead of the normal method.
+        """
         request = self.request()
         user = FacebookUserFactory()
         login(request, user)
-        update_user_info.assert_called_once_with(user)
+        update_task.delay.assert_called_once_with(user.id)
+        ok_(not update_method.called)
+
+    @patch('facebook.auth.datetime')
+    def test_last_login_attribute(self, mock_datetime, update_user_info):
+        """
+        During the login process, the last_login attribute on the user must be
+        set to the current datetime.
+        """
+        mock_datetime.now.return_value = datetime(2012, 1, 1)
+        request = self.request()
+        user = FacebookUserFactory.create(last_login=datetime(2000, 1, 1))
+        login(request, user)
+
+        user = FacebookUser.objects.get(id=user.id)
+        eq_(user.last_login, datetime(2012, 1, 1))

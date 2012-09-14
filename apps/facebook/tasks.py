@@ -11,7 +11,8 @@ import requests
 from celery.decorators import task
 from PIL import Image, ImageDraw
 
-from facebook.models import FacebookBannerInstance, FacebookClickStats
+from facebook.models import (FacebookBannerInstance, FacebookClickStats,
+                             FacebookUser)
 from facebook.utils import current_hour
 from shared.utils import get_object_or_none
 
@@ -97,3 +98,10 @@ def generate_banner_instance_image(banner_instance_id):
         banner_instance.custom_image.save('custom_image.png', custom_image_file)
         banner_instance.processed = True
         banner_instance.save()
+
+
+@task
+def update_user_info(user_id):
+    user = get_object_or_none(FacebookUser, id=user_id)
+    if user is not None:
+        FacebookUser.objects.update_user_info(user)

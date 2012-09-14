@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from facebook.models import FacebookUser
+from facebook.tasks import update_user_info
 
 
 SESSION_KEY = '_fb_auth_user_id'
@@ -21,5 +24,11 @@ def login(request, user):
     request.user = user
 
     # Once the user has logged in, we should update their info from the
-    # Facebook Graph.
-    FacebookUser.objects.update_user_info(user)
+    # Facebook Graph. If this is not their first time logging in, we'll do it
+    # asynchronously.
+    if user.last_login is None:
+        FacebookUser.objects.update_user_info(user)
+    else:
+        update_user_info.delay(user.id)
+    user.last_login = datetime.now()
+    user.save()
