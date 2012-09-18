@@ -2,6 +2,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.forms.util import flatatt
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
@@ -39,6 +40,7 @@ class BannerFieldRenderer(forms.widgets.RadioFieldRenderer):
                        FacebookBanner.objects.filter(id__in=banner_ids))
 
         inputs = []
+        locale = get_language()
         for radio_input in self:
             # Ignore empty choice.
             # TODO: Could probably use a better workaround.
@@ -50,14 +52,15 @@ class BannerFieldRenderer(forms.widgets.RadioFieldRenderer):
             # Construct image tag.
             img = '<img%s>' % flatatt({
                 'class': 'banner-choice',
-                'src': absolutify(banner.thumbnail.url),
+                'src': absolutify(banner.thumbnail_for_locale(locale).url),
                 'width': 100,
                 'height': 72,
                 'alt': banner.alt_text
             })
 
             # Add attributes to the input tag.
-            radio_input.attrs['data-image'] = absolutify(banner.image.url)
+            url = banner.image_for_locale(locale).url
+            radio_input.attrs['data-image'] = absolutify(url)
 
             if 'id' in self.attrs:
                 label_for = ' for="%s_%s"' % (radio_input.attrs['id'],
@@ -106,8 +109,10 @@ class FacebookBannerInstanceForm(forms.ModelForm):
         # the locale is guarenteed to be set by LocaleURLMiddleware.
         request_locale = getattr(request, 'locale', None)
         if request_locale:
-            queryset = (FacebookBanner.objects.distinct()
-                        .filter(locale_set__locale__contains=request_locale))
+            request_lang = request_locale.split('-')[0]
+            locale_filter = (Q(locale_set__locale__contains=request_locale) |
+                             Q(locale_set__locale__contains=request_lang))
+            queryset = FacebookBanner.objects.distinct().filter(locale_filter)
             self.fields['banner'].queryset = queryset
 
     class Meta:
@@ -116,6 +121,13 @@ class FacebookBannerInstanceForm(forms.ModelForm):
         widgets = {
             'banner': BannerRadioSelect(attrs={'required': 'required'}),
         }
+
+    def save(self, commit=True):
+        instance = super(FacebookBannerInstanceForm, self).save(commit=False)
+        instance.locale = get_language()
+        if commit:
+            instance.save()
+        return instance
 
 
 class FacebookBannerAdminForm(AdminModelForm):

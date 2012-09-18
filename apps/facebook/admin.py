@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
 
 from django.conf import settings
+from django.contrib import admin
 from django.contrib.admin.filterspecs import FilterSpec
+from django.db import models
 
+from form_utils.widgets import ImageWidget
 from funfactory.admin import site
 
 from facebook.forms import FacebookBannerAdminForm
@@ -72,24 +75,21 @@ FilterSpec.filter_specs.insert(0, (
 )
 
 
+class FacebookBannerLocaleInline(admin.TabularInline):
+    model = FacebookBannerLocale
+    extra = 0
+    fields = ('locale', 'image', 'thumbnail')
+    formfield_overrides = {models.ImageField: {'widget': ImageWidget}}
+
+
 class FacebookBannerAdmin(BaseModelAdmin):
     list_display = ('name', 'link', '_alt_text')
     search_fields = ('name', 'link', '_alt_text')
     fieldsets = (
-        (None, {'fields': ('name', 'link', '_alt_text', 'locales')}),
+        (None, {'fields': ('name', 'link', '_alt_text')}),
         ('Images', {'fields': ('image', 'thumbnail')}),
     )
-
-    form = FacebookBannerAdminForm
-
-    def save_model(self, request, obj, form, change):
-        """Save locale changes as well as the banner itself."""
-        super(FacebookBannerAdmin, self).save_model(request, obj, form, change)
-
-        locales = form.cleaned_data['locales']
-        obj.locale_set.all().delete()
-        for locale in locales:
-            FacebookBannerLocale.objects.create(banner=obj, locale=locale)
+    inlines = [FacebookBannerLocaleInline]
 site.register(FacebookBanner, FacebookBannerAdmin)
 
 

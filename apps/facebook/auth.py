@@ -26,9 +26,11 @@ def login(request, user):
     # Once the user has logged in, we should update their info from the
     # Facebook Graph. If this is not their first time logging in, we'll do it
     # asynchronously.
-    if user.last_login is None:
+    last_login = user.last_login
+    user.last_login = datetime.now()
+    user.save()
+
+    if last_login is None:
         FacebookUser.objects.update_user_info(user)
     else:
         update_user_info.delay(user.id)
-    user.last_login = datetime.now()
-    user.save()

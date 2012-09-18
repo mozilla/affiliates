@@ -14,7 +14,7 @@ from facebook import managers
 from facebook.utils import current_hour
 from shared.models import LocaleField, ModelBase
 from shared.storage import OverwritingStorage
-from shared.utils import absolutify
+from shared.utils import absolutify, get_object_or_none
 
 
 class FacebookUser(CachingMixin, ModelBase):
@@ -159,6 +159,39 @@ class FacebookBanner(CachingMixin, ModelBase):
     def alt_text(self):
         return _lazy(self._alt_text) if self._alt_text != '' else ''
 
+    def _attr_for_locale(self, attr, locale):
+        """
+        Return an attribute's value on a locale associated with this banner. If
+        the attribute is empty or no locale is found, return the attribute on
+        this banner instead.
+        """
+        banner_locale = get_object_or_none(FacebookBannerLocale, banner=self,
+                                           locale=locale)
+        if banner_locale is None:
+            # Try just the language code.
+            lang = locale.split('-')[0]
+            banner_locale = get_object_or_none(FacebookBannerLocale,
+                                               banner=self, locale=lang)
+
+        if banner_locale is None or not getattr(banner_locale, attr, None):
+            return getattr(self, attr)
+        else:
+            return getattr(banner_locale, attr)
+
+    def image_for_locale(self, locale):
+        """
+        Return the image field for the request locale. Defaults to the banner's
+        image if the locale isn't found.
+        """
+        return self._attr_for_locale('image', locale)
+
+    def thumbnail_for_locale(self, locale):
+        """
+        Return the thumbnail field for the request locale. Defaults to the
+        banner's thumbnail if the locale isn't found.
+        """
+        return self._attr_for_locale('thumbnail', locale)
+
     def __unicode__(self):
         return self.name
 
@@ -166,6 +199,27 @@ class FacebookBanner(CachingMixin, ModelBase):
 class FacebookBannerLocale(CachingMixin, ModelBase):
     banner = models.ForeignKey(FacebookBanner, related_name='locale_set')
     locale = LocaleField()
+
+    def _file_rename(instance, filename):
+        extension = os.path.splitext(filename)[1]
+        return '{0}.{1}{2}'.format(slugify(instance.banner.name),
+                                   instance.locale, extension)
+
+    def _image_rename(instance, filename):
+        new_filename = instance._file_rename(filename)
+        return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
+
+    def _thumbnail_rename(instance, filename):
+        new_filename = 'thumb_{0}'.format(instance._file_rename(filename))
+        return os.path.join(settings.FACEBOOK_BANNER_IMAGE_PATH, new_filename)
+
+    image = models.ImageField(default='', blank=True, upload_to=_image_rename,
+                              storage=OverwritingStorage(),
+                              max_length=settings.MAX_FILEPATH_LENGTH)
+    thumbnail = models.ImageField(default='', blank=True,
+                                  upload_to=_thumbnail_rename,
+                                  storage=OverwritingStorage(),
+                                  max_length=settings.MAX_FILEPATH_LENGTH)
 
 
 def fb_instance_image_rename(instance, filename):
@@ -180,6 +234,7 @@ class FacebookBannerInstance(CachingMixin, ModelBase):
     """Specific instance of a customized banner."""
     user = models.ForeignKey(FacebookUser, related_name='banner_instance_set')
     banner = models.ForeignKey(FacebookBanner, default=None)
+    locale = LocaleField(default='en-us')
     text = models.CharField(max_length=90)
     can_be_an_ad = models.BooleanField(default=False)
     custom_image = models.ImageField(blank=True,
@@ -212,7 +267,7 @@ class FacebookBannerInstance(CachingMixin, ModelBase):
         if self.custom_image:
             return self.custom_image
         else:
-            return self.banner.image
+            return self.banner.image_for_locale(self.locale)
 
     def __unicode__(self):
         return u'%s: %s' % (self.banner, self.text)
