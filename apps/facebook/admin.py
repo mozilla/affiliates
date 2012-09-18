@@ -94,7 +94,7 @@ site.register(FacebookBanner, FacebookBannerAdmin)
 
 
 class FacebookBannerInstanceAdmin(BaseModelAdmin):
-    list_display = ('text', 'banner', 'user', 'can_be_an_ad',
+    list_display = ('text', 'banner', 'user', 'locale', 'can_be_an_ad',
                     'use_profile_image', 'created', 'total_clicks',
                     'review_status')
     search_fields = ('text', 'banner__name', 'user__full_name', 'id')
@@ -103,7 +103,7 @@ class FacebookBannerInstanceAdmin(BaseModelAdmin):
     readonly_fields = ('created', 'total_clicks')
     fieldsets = (
         (None, {
-            'fields': ('user', 'banner', 'text', 'created',
+            'fields': ('user', 'banner', 'locale', 'text', 'created',
                        'total_clicks')
         }),
         ('Ad Review', {

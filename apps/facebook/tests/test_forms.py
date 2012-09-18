@@ -15,11 +15,13 @@ class FacebookBannerInstanceFormTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-    def form(self, locale, *form_args, **form_kwargs):
+    def form(self, locale, form_data=None, user=None):
         request = self.factory.get('/')
         if locale is not None:
             request.locale = locale
-        return FacebookBannerInstanceForm(request, *form_args, **form_kwargs)
+        if user is not None:
+            request.user = user
+        return FacebookBannerInstanceForm(request, form_data)
 
     def test_no_locale(self):
         """
@@ -67,6 +69,25 @@ class FacebookBannerInstanceFormTests(TestCase):
 
         form = self.form('de')
         eq_(len(form.fields['banner'].choices), 1)
+
+    def test_fallback_locales(self):
+        """
+        If a banner is available across a language and the user is using a
+        specific subset of that locale (e.g. banner is in de and user is using
+        de-at), the user should be presented with that banner as an option.
+        """
+        FacebookBannerLocaleFactory.create(locale='de')
+        form = self.form('de-at')
+        eq_(len(form.fields['banner'].choices), 1)
+
+    def test_save_locale(self):
+        """The form should save the current locale on the instance."""
+        locale = FacebookBannerLocaleFactory.create(locale='es')
+        with self.activate('es'):
+            form = self.form('es', {'text': 'asdf', 'banner': locale.banner.id},
+                             user=FacebookUserFactory.create())
+            instance = form.save()
+            eq_(instance.locale, 'es')
 
 
 class FacebookAccountLinkFormTests(TestCase):

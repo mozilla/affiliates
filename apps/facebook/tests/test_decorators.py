@@ -39,9 +39,10 @@ class FBLoginRequiredTests(TestCase):
         If the user has not been authed, return a redirect to the home page.
         """
         request = self.request()
-        response = view(request)
-        eq_(response.status_code, 302)
-        self.assert_viewname_url(response['Location'], 'home')
+        with self.activate('en-US'):
+            response = view(request)
+            eq_(response.status_code, 302)
+            self.assert_viewname_url(response['Location'], 'home')
 
     def test_django_auth(self):
         """

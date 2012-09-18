@@ -98,6 +98,7 @@ class FacebookBannerInstanceForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(FacebookBannerInstanceForm, self).__init__(*args, **kwargs)
+        self.request = request
 
         # Customize text widget.
         widget = self.fields['text'].widget
@@ -125,6 +126,7 @@ class FacebookBannerInstanceForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super(FacebookBannerInstanceForm, self).save(commit=False)
         instance.locale = get_language()
+        instance.user = self.request.user
         if commit:
             instance.save()
         return instance

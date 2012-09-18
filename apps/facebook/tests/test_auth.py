@@ -9,7 +9,7 @@ from nose.tools import eq_, ok_
 from facebook.auth import login
 from facebook.models import FacebookUser
 from facebook.tests import FacebookUserFactory
-from shared.tests import TestCase
+from shared.tests import TestCase, patch_settings, refresh_model
 
 
 session_middleware = SessionMiddleware()
@@ -94,5 +94,24 @@ class LoginTests(TestCase):
         user = FacebookUserFactory.create(last_login=datetime(2000, 1, 1))
         login(request, user)
 
-        user = FacebookUser.objects.get(id=user.id)
+        user = refresh_model(user)
         eq_(user.last_login, datetime(2012, 1, 1))
+
+    @patch_settings(DEV=True)
+    def test_delayed_task_overwritten(self, update_user_info):
+        """
+        Regression test: If DEV is true, the delayed task will execute
+        immediately. But because the task does not alter the user object, if the
+        old user object is saved these changes will be overwritten.
+        """
+        request = self.request()
+        user = FacebookUserFactory.create(first_name='Unchanged')
+
+        def alter_user(self, user):
+            user.first_name = 'Changed'
+            user.save()
+        update_user_info.side_effect = alter_user
+
+        login(request, user)
+        user = refresh_model(user)
+        eq_(user.first_name, 'Changed')

@@ -129,9 +129,7 @@ def banner_create(request):
         if not form.is_valid():
             return JSONResponse(form.errors, status=400)
 
-        banner_instance = form.save(commit=False)
-        banner_instance.user = request.user
-        banner_instance.save()
+        banner_instance = form.save()
 
         # The create form is submitted via an AJAX call. If the user wants to
         # include their profile picture on a banner, we return a 202 Accepted to
