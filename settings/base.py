@@ -333,6 +333,8 @@ FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affau
 
 # Bug 719522
 # List of hashes of banner images for upgrade campaign
+# NOTE: This list should only contain banners ready to go on production. If you
+# want to add more banners locally, you can override this setting in local.py.
 BANNERS_HASH = ['1fe924573d36f18d1430311ecc892977ad0bd6a1',
                 '5f5e8cc58fac3f658fca66be259590ea42963aa8',
                 'ab1148a01251db077970056468c9b19c5f9e01f7',
