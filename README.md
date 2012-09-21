@@ -1,25 +1,22 @@
 Affiliates
 ==========
 
-This is the new home for the Mozilla affiliates program.
+Firefox Affiliates allows users to generate and share banners that promote
+Firefox and other Mozilla properties and programs. Referrals through these
+banners are tracked by the app.
 
-Developer Setup
----------------
+Affiliates consists of two main sites:
 
-0. (Recommended) Set up a virtualenv for the project.
-1. `git clone --recursive git://github.com/mozilla/affiliates.git`
-2. `pip install -r requirements/dev.txt`
-3. `pip install -r requirements/compiled.txt`
-4. Set up a MySQL Database
-5. Copy `settings/local.py-dist` to `settings/local.py` and edit it.
-   * Enter the connection info for the database you set up.
-   * Set `DEBUG` and `DEV` both to `True`.
-6. Create the tables and add the necessary data
-   * `python manage.py syncdb`
-   * `python manage.py migrate`
-   * `python manage.py syncdata fixtures/sites.json`
-7. `python manage.py runserver`
-   * Run `python manage.py createsuperuser` if you want to create an admin account.
+* The Affiliates **mothership** refers to the main Affiliates site, available
+  at https://affiliates.mozilla.org.
+* **Affiliates Facebook** refers to the Facebook app, available at
+  https://apps.facebook.com/fxaffiliates.
+
+Documentation
+-------------
+
+Development setup and other documentation can be found at
+https://affiliates.readthedocs.org/.
 
 Contributing
 ------------
