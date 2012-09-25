@@ -107,7 +107,7 @@ class LoginTests(TestCase):
         request = self.request()
         user = FacebookUserFactory.create(first_name='Unchanged')
 
-        def alter_user(self, user):
+        def alter_user(user):
             user.first_name = 'Changed'
             user.save()
         update_user_info.side_effect = alter_user

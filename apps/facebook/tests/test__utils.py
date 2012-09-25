@@ -4,6 +4,7 @@ import hmac
 import json
 
 from django.test.client import RequestFactory
+from django.utils.translation import get_language
 
 from mock import patch
 from nose.tools import eq_
@@ -95,15 +96,14 @@ class ActivateLocaleTests(TestCase):
         eq_(request.locale, 'en-us')
 
     @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'de'))
-    @patch('facebook.utils.get_language', lambda: 'de-de')
     def test_language_code_in_whitelist(self):
         """If only a locale's language code is in the whitelist, use it."""
         request = self.factory.get('/')
         activate_locale(request, 'de-de')
+        eq_(get_language(), 'de')
         eq_(request.locale, 'de')
 
     @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
-    @patch('facebook.utils.get_language', lambda: 'en-us')
     def test_locale_in_whitelist(self):
         """If a locale is in the whitelist, use it."""
         request = self.factory.get('/')
@@ -111,7 +111,6 @@ class ActivateLocaleTests(TestCase):
         eq_(request.locale, 'en-us')
 
     @patch_settings(DEV=False, TEST=True, FACEBOOK_LOCALES=('en-us', 'fr'))
-    @patch('facebook.utils.get_language', lambda: 'en-us')
     def test_testing_dont_set_request_locale(self):
         """If settings.TEST is True, do not set the locale on the request."""
         request = self.factory.get('/')

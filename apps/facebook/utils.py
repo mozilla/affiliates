@@ -97,6 +97,8 @@ def activate_locale(request, locale):
     lang = get_language()
     if not settings.DEV and lang not in settings.FACEBOOK_LOCALES:
         lang = lang.split('-')[0]
+        tower.activate(lang)
+        lang = get_language()
         if lang not in settings.FACEBOOK_LOCALES:
             lang = 'en-us'
             tower.activate(lang)

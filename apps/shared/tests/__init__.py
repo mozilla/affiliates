@@ -132,4 +132,5 @@ def patch_settings(**new_settings):
                 patches.append(patch.object(settings, name, value))
             with nested(*patches):
                 return f(*args, **kwargs)
+        return wrapped
     return decorator
