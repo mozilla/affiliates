@@ -56,7 +56,7 @@ def generate_banner_instance_image(banner_instance_id):
     banner_instance = get_object_or_none(FacebookBannerInstance,
                                          id=banner_instance_id)
     if banner_instance is not None:
-        banner_image_file = banner_instance.banner.image
+        banner_image_file = banner_instance.image
 
         # Grab the user's photo from Facebook
         try:
