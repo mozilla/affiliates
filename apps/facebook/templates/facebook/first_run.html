@@ -5,9 +5,17 @@
 {% set nav_section = 'banners' %}
 
 {% block content %}
-  <h2 class="page-title">{{ _('Welcome to Firefox Affiliates.') }}</h2>
+  <h2 class="page-title">{{ _('Welcome to Firefox Affiliates') }}</h2>
 
-  <p class="intro">{{ _('Your one stop shop for telling the world about the only browser that puts you first: Firefox! Start now by building a banner to post on your Facebook profile. Get a ton of clicks and we may feature you in a Firefox ad (with your permission of course) or send you some great Firefox gear.') }}</p>
+  <p class="intro">
+    {% trans %}
+      This is your one stop shop for telling the world about the only browser
+      that puts you first: Firefox! Start now by building a banner to post on
+      your Facebook profile. Get a ton of clicks and we may feature you in a
+      Firefox ad (with your permission, of course) or send you some great
+      Firefox gear.
+    {% endtrans %}
+  </p>
 
   <p><a href="{{ url('facebook.banner_create') }}" class="button-blue"><i>{{ _('Let\'s go!') }}</i></a></p>
 {% endblock %}
