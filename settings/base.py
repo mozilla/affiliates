@@ -335,10 +335,14 @@ FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affau
 # List of hashes of banner images for upgrade campaign
 # NOTE: This list should only contain banners ready to go on production. If you
 # want to add more banners locally, you can override this setting in local.py.
-BANNERS_HASH = ['1fe924573d36f18d1430311ecc892977ad0bd6a1',
-                '5f5e8cc58fac3f658fca66be259590ea42963aa8',
-                'ab1148a01251db077970056468c9b19c5f9e01f7',
-                'c6469f07bb0a40cd1d7b906d6a345ccd322ff953']
+BANNERS_HASH = [
+    '1fe924573d36f18d1430311ecc892977ad0bd6a1',  # en-US Tall
+    'ab1148a01251db077970056468c9b19c5f9e01f7',  # en-US Box
+    '15413d5031733cefed719c624c30c6a20d337505',  # cs Tall
+    'cd817e1604c5319499c2a226e13487d74efd713d',  # cs Box
+    'a4de4d7b527b5b13eba9c9616d6f7d07db22ae2f',  # es-ES Tall
+    '7cefdb2af229483dc68798e404457f563930a31c',  # es-ES Box
+]
 
 # Settings for Affiliates Facebook app
 FACEBOOK_PERMISSIONS = ''
