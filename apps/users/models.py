@@ -87,7 +87,7 @@ class UserProfile(ModelBase):
     country = models.CharField(max_length=2, choices=COUNTRIES, blank=True,
                                verbose_name=_lazy(u'Country'))
 
-    website = models.URLField(null=True)
+    website = models.URLField(blank=True)
 
     def __unicode__(self):
         return unicode(self.display_name)

@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User
 from django.core import mail
 
-import tower
 from nose.tools import eq_, ok_
 from test_utils import TestCase
 
 from badges.models import BadgeInstance
 from facebook.tests import FacebookAccountLinkFactory
+from shared.tests import refresh_model
 from users.models import RegisterProfile
+from users.tests import PermissionFactory, UserFactory
 
 
 class RegisterProfileTests(TestCase):
@@ -70,3 +71,32 @@ class UserTests(TestCase):
         user = User.objects.get(pk=2)
         FacebookAccountLinkFactory.create(affiliates_user=user, is_active=False)
         eq_(user.get_linked_account(), None)
+
+    def test_add_default_permissions(self):
+        """
+        Test that the default set of permissions are assigned when a new user is
+        created.
+        """
+        user = UserFactory()
+        ok_(user.has_perm('users.can_share_website'))
+
+        # Ensure permissions aren't overwritten for existing users.
+        user.user_permissions = []
+        user.save()
+        user = refresh_model(user)
+        eq_(list(user.user_permissions.all()), [])
+
+    def test_add_default_permissions_does_not_overwrite(self):
+        """
+        If a newly created user has some permissions already specified, do not
+        overwrite them when adding the default permissions.
+        """
+        permission = PermissionFactory.create()
+        user = UserFactory()
+        user.user_permissions = [permission]
+        user.save()
+        user = refresh_model(user)
+
+        app_label = permission.content_type.app_label
+        codename = permission.codename
+        ok_(user.has_perm('%s.%s' % (app_label, codename)))
