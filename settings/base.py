@@ -257,6 +257,7 @@ auth_index = MIDDLEWARE_CLASSES.index('django.contrib.auth.middleware.Authentica
 MIDDLEWARE_CLASSES.insert(auth_index + 1, 'facebook.middleware.FacebookAuthenticationMiddleware')
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
+    'shared.context_processors.common',
     'shared.context_processors.l10n',
     'shared.context_processors.month_year_picker',
     'facebook.context_processors.app_context',

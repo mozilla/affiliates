@@ -13,7 +13,6 @@ def app_context(request):
 
     ctx = {'FACEBOOK_DOWNLOAD_URL': settings.FACEBOOK_DOWNLOAD_URL,
             'FACEBOOK_APP_ID': settings.FACEBOOK_APP_ID,
-            'FACEBOOK_APP_URL': settings.FACEBOOK_APP_URL,
             'FACEBOOK_CLICK_GOAL': settings.FACEBOOK_CLICK_GOAL}
 
     # Add account link form.

@@ -22,6 +22,7 @@
   {% include 'layout/sidebar_nav.html' %}
   {% include 'badges/include/sidebar_profile.html' %}
   {% include 'badges/include/leaderboard.html' %}
+  {% include 'shared/include/sidebar/fb_promo.html' %}
   {% if newsitem is not none %}
     {% import 'news/macros.html' as news %}
     {{ news.news_box(newsitem) }}

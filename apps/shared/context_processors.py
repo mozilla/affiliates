@@ -6,6 +6,11 @@ from babel.dates import get_month_names
 from shared.utils import current_locale
 
 
+def common(request):
+    """Adds commonly-needed settings across the site."""
+    return {'FACEBOOK_APP_URL': settings.FACEBOOK_APP_URL}
+
+
 def l10n(request):
     """Adds language information to template contexts."""
     locale = get_language()
