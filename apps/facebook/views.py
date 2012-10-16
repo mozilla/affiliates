@@ -21,8 +21,8 @@ from facebook.forms import (BannerInstanceDeleteForm, FacebookAccountLinkForm,
 from facebook.tasks import add_click, generate_banner_instance_image
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookClickStats, FacebookUser)
-from facebook.utils import (activate_locale, decode_signed_request,
-                            fb_redirect, is_facebook_bot, is_logged_in)
+from facebook.utils import (decode_signed_request, fb_redirect, is_facebook_bot,
+                            is_logged_in)
 from shared.http import JSONResponse, JSONResponseBadRequest
 from shared.utils import absolutify, redirect
 
@@ -62,7 +62,8 @@ def load_app(request):
     workaround_applied = SAFARI_WORKAROUND_KEY in request.COOKIES
     if using_safari and not workaround_applied:
         return fb_redirect(request,
-                           absolutify(reverse('facebook.safari_workaround')))
+                           absolutify(reverse('facebook.safari_workaround')),
+                           top_window=True)
 
     user, created = (FacebookUser.objects.
             get_or_create_user_from_decoded_request(decoded_request))
@@ -77,12 +78,7 @@ def load_app(request):
     # User has been authed, let's log them in.
     login(request, user)
 
-    # Normally the FacebookAuthenticationMiddleware activates the locale for
-    # the user, but since it does not run for this view, we need to activate it
-    # manually.
-    activate_locale(request, user.locale)
-
-    return banner_list(request)
+    return fb_redirect(request, absolutify(reverse('facebook.banner_list')))
 
 
 @xframe_allow

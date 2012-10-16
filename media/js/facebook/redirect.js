@@ -1,3 +1,8 @@
 (function() {
-    window.top.location = document.body.dataset.url;
+    var target = window;
+    if (document.body.dataset.topWindow) {
+        target = window.top;
+    }
+
+    target.location = document.body.dataset.url;
 })();

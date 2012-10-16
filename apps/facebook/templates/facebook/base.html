@@ -50,10 +50,19 @@
       {% endblock %}
 
       <div class="main">
-        {% if messages %}
+        {% if messages or app_notifications %}
         <ul class="messages">
           {% for message in messages %}
           <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+
+          {% for notification in app_notifications %}
+            <li class="success">{{ notification.formatted_message }}</li>
+
+            {# So it kinda sucks that we're calling a database-touching function
+               in template code, but it's a nice way to guarentee that
+               notifications are only cleared when they are displayed on the site. #}
+            {% do notification.mark_as_read() %}
           {% endfor %}
         </ul>
         {% endif %}

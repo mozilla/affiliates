@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-  <body data-url="{{ url }}">
+  <body data-url="{{ url }}" {% if top_window %}data-top-window="true"{% endif %}>
     {{ js('fb_redirect') }}
   </body>
 </html>

@@ -11,13 +11,24 @@ import requests
 from celery.decorators import task
 from PIL import Image, ImageDraw
 
-from facebook.models import (FacebookBannerInstance, FacebookClickStats,
-                             FacebookUser)
+from facebook.models import (AppNotification, FacebookBannerInstance,
+                             FacebookClickStats, FacebookUser)
 from facebook.utils import current_hour
 from shared.utils import get_object_or_none
 
 
 log = commonware.log.getLogger('a.facebook')
+
+
+# These strings are stored in apps/facebook/templates/facebook/strings.html
+# for localization extraction.
+CLICK_MILESTONES = {
+    10: "Way to go! You've had {0} clicks on your Firefox banner.",
+    25: ("Amazing! You've had {0} clicks on your Firefox banner. Thanks for "
+         "spreading the word."),
+    settings.FACEBOOK_CLICK_GOAL: ("Wow! Your banner has {0} clicks! It's "
+                                   "ready to grow up and become a Firefox ad.")
+}
 
 
 @task
@@ -35,8 +46,10 @@ def add_click(banner_instance_id):
         stats.clicks += 1
         stats.save()
 
+        total_clicks = banner_instance.total_clicks
+
         # Notify admin of a banner meeting the click goal.
-        if banner_instance.total_clicks == settings.FACEBOOK_CLICK_GOAL:
+        if total_clicks == settings.FACEBOOK_CLICK_GOAL:
             subject = '[fb-affiliates-banner] Click Goal Reached!'
             message = render_to_string('facebook/click_goal_email.html', {
                 'goal': settings.FACEBOOK_CLICK_GOAL,
@@ -45,6 +58,13 @@ def add_click(banner_instance_id):
             })
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                       [settings.FACEBOOK_CLICK_GOAL_EMAIL])
+
+        # Notify user of click milestones.
+        if total_clicks in CLICK_MILESTONES:
+            message = CLICK_MILESTONES[total_clicks]
+            AppNotification.objects.create(user=banner_instance.user,
+                                           message=message,
+                                           format_argument=total_clicks)
 
 
 @task

@@ -110,9 +110,10 @@ def activate_locale(request, locale):
         request.locale = lang
 
 
-def fb_redirect(request, url):
+def fb_redirect(request, url, top_window=False):
     """
     Return a response that will redirect a user within the Facebook app to the
     given URL.
     """
-    return render(request, 'facebook/redirect.html', {'url': url})
+    return render(request, 'facebook/redirect.html',
+                  {'url': url, 'top_window': top_window})

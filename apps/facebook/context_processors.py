@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from facebook.forms import FacebookAccountLinkForm, NewsletterSubscriptionForm
+from facebook.models import AppNotification
 from facebook.utils import in_facebook_app, is_logged_in
 
 
@@ -19,9 +20,13 @@ def app_context(request):
     if not request.user.is_linked:
         ctx['account_link_form'] = FacebookAccountLinkForm()
 
-    # Add newsletter form
     if is_logged_in(request):
+        # Add newsletter form
         ctx['newsletter_form'] = NewsletterSubscriptionForm(
             request.user, auto_id='newsletter_%s')
+
+        # Add notifications
+        ctx['app_notifications'] = (AppNotification.objects
+                                    .filter(user=request.user))
 
     return ctx

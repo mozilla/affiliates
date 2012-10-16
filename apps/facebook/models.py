@@ -4,6 +4,7 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
 from caching.base import CachingManager, CachingMixin
@@ -273,9 +274,57 @@ class FacebookBannerInstance(CachingMixin, ModelBase):
         return u'%s: %s' % (self.banner, self.text)
 
 
+@receiver(models.signals.pre_save, sender=FacebookBannerInstance)
+def notify_ad_approval(sender, instance, **kwargs):
+    """Notify the user when their banner instance passes review."""
+    # Don't bother if the banner hasn't passed review yet.
+    if instance.review_status != FacebookBannerInstance.PASSED:
+        return
+
+    # Don't bother if this instance is new.
+    old_instance = get_object_or_none(FacebookBannerInstance, id=instance.id)
+    if old_instance is None:
+        return
+
+    # Bother if the review status is changing.
+    if old_instance.review_status != instance.review_status:
+        # String is stored in apps/facebook/templates/facebook/strings.html
+        # for localization.
+        AppNotification.objects.create(user=instance.user,
+            message=('Congratulations! Your Firefox banner has now become '
+                     'a Facebook ad!'))
+
+
 class FacebookClickStats(CachingMixin, ModelBase):
     banner_instance = models.ForeignKey(FacebookBannerInstance)
     hour = models.DateTimeField(default=current_hour)
     clicks = models.IntegerField(default=0)
 
     objects = managers.FacebookClickStatsManager()
+
+
+class AppNotification(CachingMixin, ModelBase):
+    """
+    Small message shown to users when they next log in.
+
+    Messages are stored in en-US and localized on output. A formatting argument
+    can be specified to insert into the string after localization via
+    string.format.
+    """
+    user = models.ForeignKey(FacebookUser)
+    message = models.CharField(max_length=255)
+    format_argument = models.CharField(max_length=255, blank=True)
+
+    objects = CachingManager()
+
+    @property
+    def formatted_message(self):
+        """Return the message with the format_argument applied."""
+        return _lazy(self.message).format(self.format_argument)
+
+    def mark_as_read(self):
+        """Remove this notification after it is displayed."""
+        self.delete()
+
+    def __unicode__(self):
+        return u'<{0}>: {1}'.format(self.user, self.formatted_message)
