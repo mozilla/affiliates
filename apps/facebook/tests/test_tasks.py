@@ -44,6 +44,19 @@ class AddClickTests(TestCase):
         ok_(unicode(instance.id) in mail.outbox[0].body)
         ok_('admin@example.com' in mail.outbox[0].to)
 
+    @patch('facebook.tasks.CLICK_MILESTONES', {5: 'test'})
+    def test_click_milestones(self):
+        """If the new click count is a click milestone, send a notification."""
+        instance = FacebookBannerInstanceFactory.create(total_clicks=3)
+        add_click(instance.id)
+        eq_(len(instance.user.appnotification_set.all()), 0)
+
+        add_click(instance.id)
+        eq_(len(instance.user.appnotification_set.all()), 1)
+        notification = instance.user.appnotification_set.all()[0]
+        eq_(notification.message, 'test')
+        eq_(notification.format_argument, '5')
+
 
 def image_response(*image_path):
     """Return a mock Requests response with an image as the content."""

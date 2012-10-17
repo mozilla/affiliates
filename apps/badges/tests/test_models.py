@@ -57,7 +57,6 @@ class BadgeTests(TestCase):
         # Test for default when no previews are found
         eq_(self._preview(4, 'es'), 'default')
 
-
     def test_preview_img_url_locale(self):
         """Test that ``preview_img_url`` returns the correct locale preview."""
         preview = self._preview(2, 'de')

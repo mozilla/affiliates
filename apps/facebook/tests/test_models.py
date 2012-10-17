@@ -3,8 +3,11 @@ from django.conf import settings
 from mock import patch
 from nose.tools import eq_, ok_
 
-from facebook.models import fb_banner_rename, fb_banner_thumbnail_rename
-from facebook.tests import FacebookBannerFactory, FacebookBannerLocaleFactory
+from facebook.models import (FacebookBannerInstance, fb_banner_rename,
+                             fb_banner_thumbnail_rename)
+from facebook.tests import (FacebookBannerFactory,
+                            FacebookBannerInstanceFactory,
+                            FacebookBannerLocaleFactory, FacebookUserFactory)
 from shared.tests import TestCase
 
 
@@ -21,7 +24,7 @@ class FacebookBannerRenameTest(TestCase):
         eq_(filename, 'simple/path/thumb_test-banner.png')
 
 
-class FacebookBannertests(TestCase):
+class FacebookBannerTests(TestCase):
     def test_image_for_locale_no_locale(self):
         """
         If a banner is not available in the requested locale, return the default
@@ -60,3 +63,41 @@ class FacebookBannertests(TestCase):
         FacebookBannerLocaleFactory.create(banner=banner, locale='es',
                                            image='')
         ok_(banner.image_for_locale('es').name.endswith('banner'))
+
+
+class FacebookBannerInstanceTests(TestCase):
+    def test_notify_not_passed(self):
+        """
+        If an instance is saved that hasn't passed review, no notification
+        should be created.
+        """
+        instance = FacebookBannerInstanceFactory.create()
+        instance.review_status = instance.UNREVIEWED
+        instance.save()
+        eq_(instance.user.appnotification_set.exists(), False)
+
+    def test_notify_new_instance(self):
+        """
+        If the instance being saved is new, no notification should be created.
+        """
+        user = FacebookUserFactory.create()
+        banner = FacebookBannerFactory.create()
+        instance = FacebookBannerInstanceFactory(user=user, banner=banner)
+        instance.save()
+        eq_(user.appnotification_set.exists(), False)
+
+    def test_notify_status_changed(self):
+        """
+        If the instance's review status changes to PASSED, create a
+        notification.
+        """
+        instance = FacebookBannerInstanceFactory.create(
+            review_status=FacebookBannerInstance.UNREVIEWED)
+        instance.review_status = instance.PASSED
+        instance.save()
+        eq_(len(instance.user.appnotification_set.all()), 1)
+
+        # Save again; now that the status is already PASSED, it shouldn't
+        # generate a new notification.
+        instance.save()
+        eq_(len(instance.user.appnotification_set.all()), 1)

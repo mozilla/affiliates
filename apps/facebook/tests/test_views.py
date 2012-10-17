@@ -75,9 +75,16 @@ class LoadAppTests(TestCase):
         """
         If the user is not using Safari, do not redirect to the workaround.
         """
+        with self.activate('en-US'):
+            workaround_url = absolutify(reverse('facebook.safari_workaround'))
+
+        fb_redirect.return_value = HttpResponse('blah')
         payload = create_payload(user_id=1)
-        self.load_app(payload, HTTP_USER_AGENT='Safari/5.04 Chrome/7.5')
-        ok_(not fb_redirect.called)
+        response = self.load_app(payload,
+                                 HTTP_USER_AGENT='Safari/5.04 Chrome/7.5')
+
+        eq_(response, fb_redirect.return_value)
+        ok_(fb_redirect.call_args[0][1] != workaround_url)
 
     @patch('facebook.views.fb_redirect')
     def test_safari_workaround_done(self, fb_redirect, update_user_info):
@@ -85,11 +92,18 @@ class LoadAppTests(TestCase):
         If the user is using Safari and hasthe workaround cookie, do not send
         them to the workaround page.
         """
+        with self.activate('en-US'):
+            workaround_url = absolutify(reverse('facebook.safari_workaround'))
+
+        fb_redirect.return_value = HttpResponse('blah')
         payload = create_payload(user_id=1)
         self.client.cookies[SAFARI_WORKAROUND_KEY] = '1'
-        self.load_app(payload, HTTP_USER_AGENT='Safari/5.04')
+        response = self.load_app(payload, HTTP_USER_AGENT='Safari/5.04')
         del self.client.cookies[SAFARI_WORKAROUND_KEY]
-        ok_(not fb_redirect.called)
+
+        # Ensure that the redirect URL is NOT the safari workaround url
+        eq_(response, fb_redirect.return_value)
+        ok_(fb_redirect.call_args[0][1] != workaround_url)
 
     def test_no_authorization(self, update_user_info):
         """
@@ -101,14 +115,22 @@ class LoadAppTests(TestCase):
         self.assertTemplateUsed(response, 'facebook/oauth_redirect.html')
 
     @patch.object(FacebookUser, 'is_new', False)
-    def test_has_authorization(self, update_user_info):
+    @patch('facebook.views.fb_redirect')
+    def test_has_authorization(self, fb_redirect, update_user_info):
         """
-        If the user has authorized the app and isn't new, show the main
+        If the user has authorized the app and isn't new, redirect to the main
         banner view.
         """
+        fb_redirect.return_value = HttpResponse('blah')
         payload = create_payload(user_id=1)
         response = self.load_app(payload)
-        self.assertTemplateUsed(response, 'facebook/banner_list.html')
+
+        # Assert that the return value of fb_redirect was returned, and that
+        # fb_redirect was given a url that ends with the banner_list url.
+        eq_(response, fb_redirect.return_value)
+        with self.activate('en-US'):
+            ok_(fb_redirect.call_args[0][1]
+                .endswith(reverse('facebook.banner_list')))
 
     @patch('facebook.views.login')
     def test_country_saved(self, login, update_user_info):

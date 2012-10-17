@@ -6,7 +6,6 @@ import json
 from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
-from mock import patch
 from nose.tools import eq_
 
 from facebook.tests import FACEBOOK_USER_AGENT, create_payload

@@ -107,3 +107,9 @@ class FacebookAccountLinkFactory(Factory):
 class FacebookClickStatsFactory(Factory):
     FACTORY_FOR = models.FacebookClickStats
     banner_instance = SubFactory(FacebookBannerInstanceFactory)
+
+
+class AppNotificationFactory(Factory):
+    FACTORY_FOR = models.AppNotification
+    user = SubFactory(FacebookUserFactory)
+    message = Sequence(lambda n: 'test_{0}'.format(n))
