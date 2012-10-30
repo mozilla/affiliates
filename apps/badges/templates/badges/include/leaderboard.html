@@ -33,7 +33,7 @@
       <li>
         <span class="download-number">{{ standing.ranking|babel_number }}</span>
         <span class="display-name">
-          {% if standing.user.userprofile.website is not none
+          {% if standing.user.userprofile.website
                 and standing.user.has_perm('users.can_share_website') %}
             <a href="{{ standing.user.userprofile.website }}">
               {{ display_name(standing.user) }}
