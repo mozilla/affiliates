@@ -4,7 +4,8 @@ from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django.db.models import Sum
+from django.db.models import Q, Sum
+from django.db.models.query import QuerySet
 from django.template.loader import render_to_string
 
 import commonware.log
@@ -173,3 +174,20 @@ class FacebookClickStatsManager(CachingManager):
         click_stats = self.filter(banner_instance__user=user)
         clicks = click_stats.aggregate(Sum('clicks'))['clicks__sum']
         return clicks or 0
+
+
+class FacebookBannerManager(CachingManager):
+    def get_query_set(self):
+        return FacebookBannerQuerySet(self.model)
+
+    def filter_by_locale(self, locale):
+        return self.get_query_set().filter_by_locale(locale)
+
+
+class FacebookBannerQuerySet(QuerySet):
+    def filter_by_locale(self, locale):
+        """Filter banners by the specified locale."""
+        lang = locale.split('-')[0]
+        locale_filter = (Q(locale_set__locale__contains=locale) |
+                         Q(locale_set__locale__contains=lang))
+        return self.filter(locale_filter)

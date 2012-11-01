@@ -155,7 +155,7 @@ class FacebookBanner(CachingMixin, ModelBase):
                                   storage=OverwritingStorage(),
                                   max_length=settings.MAX_FILEPATH_LENGTH)
 
-    objects = CachingManager()
+    objects = managers.FacebookBannerManager()
 
     @property
     def alt_text(self):

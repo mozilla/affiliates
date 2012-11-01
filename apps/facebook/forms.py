@@ -2,7 +2,6 @@ from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.models import User
-from django.db.models import Q
 from django.forms.util import flatatt
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
@@ -110,10 +109,8 @@ class FacebookBannerInstanceForm(forms.ModelForm):
         # the locale is guarenteed to be set by LocaleURLMiddleware.
         request_locale = getattr(request, 'locale', None)
         if request_locale:
-            request_lang = request_locale.split('-')[0]
-            locale_filter = (Q(locale_set__locale__contains=request_locale) |
-                             Q(locale_set__locale__contains=request_lang))
-            queryset = FacebookBanner.objects.distinct().filter(locale_filter)
+            queryset = (FacebookBanner.objects.distinct()
+                        .filter_by_locale(request_locale))
             self.fields['banner'].queryset = queryset
 
     class Meta:
