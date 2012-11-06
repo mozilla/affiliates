@@ -6,3 +6,8 @@ CACHES = {
 }
 
 SITE_URL = 'http://badge.mo.com'
+
+# Speed up tests.
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)
