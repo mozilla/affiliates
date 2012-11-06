@@ -1,7 +1,4 @@
-import json
-
 from django.conf import settings
-from django.http import HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.views.decorators.cache import cache_control
 
@@ -13,6 +10,7 @@ from badges.models import (Badge, BadgeInstance, Category, ClickStats,
 from facebook.models import FacebookClickStats
 from news.models import NewsItem
 from shared.decorators import login_required
+from shared.http import JSONResponse, JSONResponseBadRequest
 from shared.utils import current_locale, redirect
 
 
@@ -88,6 +86,10 @@ def dashboard(request, template, context=None):
 @login_required
 @cache_control(must_revalidate=True, max_age=3600)
 def month_stats_ajax(request, month, year):
+    # Check for placeholder values and return a 400 if they are present.
+    if month == ':month:' or year == ':year:':
+        return JSONResponseBadRequest({'error': 'Invalid year/month value.'})
+
     user_total = ClickStats.objects.total_for_user_period(request.user, month,
                                                           year)
     site_avg = ClickStats.objects.average_for_period(month, year)
@@ -103,4 +105,4 @@ def month_stats_ajax(request, month, year):
                                                               year, month)
         results['fb_total'] = format_number(fb_total, locale=locale)
 
-    return HttpResponse(json.dumps(results), mimetype='application/json')
+    return JSONResponse(results)

@@ -476,3 +476,23 @@ class BannerDeleteTests(TestCase):
         instance = FacebookBannerInstanceFactory.create(user=self.user)
         self._delete(banner_instance=instance.id)
         ok_(not FacebookBannerInstance.objects.filter(id=instance.id).exists())
+
+
+class StatsTests(TestCase):
+    def setUp(self):
+        self.user = FacebookUserFactory.create()
+        self.client.fb_login(self.user)
+
+    def _stats(self, year, month):
+        with self.activate('en-US'):
+            return self.client.get(reverse('facebook.stats',
+                                           args=[year, month]))
+
+    def test_placeholder_400(self):
+        """
+        If a placeholder value is used for the year or month, return a 400 Bad
+        Request.
+        """
+        eq_(self._stats(':year:', 2).status_code, 400)
+        eq_(self._stats(2012, ':month:').status_code, 400)
+        eq_(self._stats(':year:', ':month:').status_code, 400)

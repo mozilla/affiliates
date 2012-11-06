@@ -48,7 +48,7 @@ urlpatterns = patterns('facebook.views',
     url(r'^newsletter/subscribe/?$', views.newsletter_subscribe,
         name='facebook.newsletter.subscribe'),
 
-    url(r'^stats/(\d+)/(\d+)/?$', views.stats, name='facebook.stats'),
+    url(r'^stats/(\d+|:year:)/(\d+|:month:)/?$', views.stats, name='facebook.stats'),
 
     url(r'^deauthorize/?$', views.deauthorize, name='facebook.deauthorize'),
 

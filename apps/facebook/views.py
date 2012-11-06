@@ -329,6 +329,10 @@ def stats(request, year, month):
     """
     Returns statistics for the sidebar statistics display. Called via AJAX.
     """
+    # Check for placeholder values and return a 400 if they are present.
+    if month == ':month:' or year == ':year:':
+        return JSONResponseBadRequest({'error': 'Invalid year/month value.'})
+
     clicks = FacebookClickStats.objects.total_for_month(request.user, year,
                                                         month)
     return JSONResponse({'clicks': clicks})

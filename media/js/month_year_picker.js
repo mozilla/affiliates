@@ -15,9 +15,6 @@
             this.shortMonthNames = $picker.data('short-month-names');
             this.longMonthNames = $picker.data('long-month-names');
 
-            // Because Django's reverse doesn't allow you to use placeholder
-            // values, we're assuming here that the given url has a value of
-            // 0 in place for the months and 1 for the year. :\
             this.url = options.url || $picker.data('url');
 
             var date = new Date();
@@ -106,7 +103,8 @@
 
             this.updateDisplay();
             $.ajax({
-                url: this.url.replace('0', this.month).replace('1', this.year),
+                url: this.url.replace(':month:', this.month).replace(':year:',
+                                                                     this.year),
                 type: 'get'
             }).done(function(data) {
                 self.$errorMsg.hide();

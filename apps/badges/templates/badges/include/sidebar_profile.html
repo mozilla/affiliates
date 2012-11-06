@@ -9,9 +9,7 @@
   {% if user_has_created_badges %}
     <div class="statistics-summary">
       <h3>{{ _('Your Statistics Summary') }}</h3>
-      {# Because url can't take placeholders, we use 0 in the months spot
-         and 1 in the year spot. #}
-      {{ month_year_picker(url('badges.ajax.stats', 0, 1)) }}
+      {{ month_year_picker(url('badges.ajax.stats', ':month:', ':year:')) }}
       <div class="instructions">
         {{ _('You can filter results by selecting a specific month using the calendar above.') }}
       </div>

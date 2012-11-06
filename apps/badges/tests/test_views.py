@@ -14,18 +14,31 @@ from shared.tests import TestCase
 class TestMonthStatsAjax(TestCase):
     fixtures = ['badge_instance']
 
+    def setUp(self):
+        self.client.login(username='testuser43@asdf.asdf', password='asdfasdf')
+
     def _mkstats(self, user, year, month, clicks):
         now = datetime.now()
         hour = datetime(year, month, now.day, now.hour)
         return FacebookClickStatsFactory.create(banner_instance__user=user,
                                                 hour=hour, clicks=clicks)
 
-    def test_basic(self):
-        self.client.login(username='testuser43@asdf.asdf', password='asdfasdf')
-
+    def _stats(self, month, year):
         with self.activate('en-US'):
-            response = self.client.get(reverse('badges.ajax.stats',
-                                                args=[7, 2011]))
+            return self.client.get(reverse('badges.ajax.stats',
+                                           args=[month, year]))
+
+    def test_placeholder_400(self):
+        """
+        If a placeholder value is used for the year or month, return a 400 Bad
+        Request.
+        """
+        eq_(self._stats(2, ':year:').status_code, 400)
+        eq_(self._stats(':month:', 2012).status_code, 400)
+        eq_(self._stats(':month:', ':year:').status_code, 400)
+
+    def test_basic(self):
+        response = self._stats(7, 2011)
         eq_(200, response.status_code)
         eq_('application/json', response['Content-Type'])
 
@@ -39,8 +52,6 @@ class TestMonthStatsAjax(TestCase):
         If the current user is linked to a Facebook account, include their
         Facebook total clicks in the response.
         """
-        self.client.login(username='testuser43@asdf.asdf', password='asdfasdf')
-
         # Create link and a few clickstats objects.
         user = User.objects.get(username='testuser43')
         link = FacebookAccountLinkFactory.create(affiliates_user=user,
@@ -48,9 +59,7 @@ class TestMonthStatsAjax(TestCase):
         self._mkstats(link.facebook_user, 2011, 7, 5)
         self._mkstats(link.facebook_user, 2011, 7, 6)
 
-        with self.activate('en-US'):
-            response = self.client.get(reverse('badges.ajax.stats',
-                                                args=[7, 2011]))
+        response = self._stats(7, 2011)
         data = json.loads(response.content)
         eq_(data['user_total'], '12')
         eq_(data['fb_total'], '11')
