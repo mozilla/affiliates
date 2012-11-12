@@ -20,14 +20,10 @@ from shared.utils import get_object_or_none
 log = commonware.log.getLogger('a.facebook')
 
 
-# These strings are stored in apps/facebook/templates/facebook/strings.html
-# for localization extraction.
 CLICK_MILESTONES = {
-    10: "Way to go! You've had {0} clicks on your Firefox banner.",
-    25: ("Amazing! You've had {0} clicks on your Firefox banner. Thanks for "
-         "spreading the word."),
-    settings.FACEBOOK_CLICK_GOAL: ("Wow! Your banner has {0} clicks! It's "
-                                   "ready to grow up and become a Firefox ad.")
+    10: 'banner_clicks_1',
+    25: 'banner_clicks_2',
+    settings.FACEBOOK_CLICK_GOAL: 'banner_clicks_ad'
 }
 
 

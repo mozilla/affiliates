@@ -1,4 +1,5 @@
 import os
+import random
 from contextlib import nested
 from datetime import datetime
 from os.path import abspath, dirname
@@ -16,6 +17,7 @@ from shared.tokens import TokenGenerator
 from users.tests import UserFactory
 
 
+MESSAGES = models.AppNotification.MESSAGES
 FACEBOOK_USER_AGENT = ('facebookexternalhit/1.1 (+http://www.facebook.com/'
                        'externalhit_uatext.php)')
 
@@ -112,4 +114,4 @@ class FacebookClickStatsFactory(Factory):
 class AppNotificationFactory(Factory):
     FACTORY_FOR = models.AppNotification
     user = SubFactory(FacebookUserFactory)
-    message = Sequence(lambda n: 'test_{0}'.format(n))
+    message = Sequence(lambda n: random.choice(MESSAGES.keys()))

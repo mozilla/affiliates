@@ -7,6 +7,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
+import jinja2
 from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
 from tower import ugettext_lazy as _lazy
@@ -291,8 +292,7 @@ def notify_ad_approval(sender, instance, **kwargs):
         # String is stored in apps/facebook/templates/facebook/strings.html
         # for localization.
         AppNotification.objects.create(user=instance.user,
-            message=('Congratulations! Your Firefox banner has now become '
-                     'a Facebook ad!'))
+                                       message='banner_approved')
 
 
 class FacebookClickStats(CachingMixin, ModelBase):
@@ -307,12 +307,23 @@ class AppNotification(CachingMixin, ModelBase):
     """
     Small message shown to users when they next log in.
 
-    Messages are stored in en-US and localized on output. A formatting argument
-    can be specified to insert into the string after localization via
-    string.format.
+    A formatting argument can be specified to insert into the string after
+    localization via string.format.
     """
+    MESSAGES = {
+        'banner_clicks_1': _lazy("Way to go! You've had {0} clicks on your "
+                                 "Firefox banner."),
+        'banner_clicks_2': _lazy("Amazing! You've had {0} clicks on your "
+                                 "Firefox banner. Thanks for spreading the "
+                                 "word."),
+        'banner_clicks_ad': _lazy("Wow! Your banner has {0} clicks! It's ready "
+                                  "to grow up and become a Firefox ad."),
+        'banner_approved': _lazy('Congratulations! Your Firefox banner has now '
+                                 'become a Facebook ad!')
+    }
+
     user = models.ForeignKey(FacebookUser)
-    message = models.CharField(max_length=255)
+    message = models.CharField(max_length=255, choices=MESSAGES.items())
     format_argument = models.CharField(max_length=255, blank=True)
 
     objects = CachingManager()
@@ -320,7 +331,7 @@ class AppNotification(CachingMixin, ModelBase):
     @property
     def formatted_message(self):
         """Return the message with the format_argument applied."""
-        return _lazy(self.message).format(self.format_argument)
+        return self.get_message_display().format(self.format_argument)
 
     def mark_as_read(self):
         """Remove this notification after it is displayed."""

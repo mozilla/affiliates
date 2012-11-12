@@ -101,3 +101,5 @@ class FacebookBannerInstanceTests(TestCase):
         # generate a new notification.
         instance.save()
         eq_(len(instance.user.appnotification_set.all()), 1)
+        eq_(instance.user.appnotification_set.all()[0].message,
+            'banner_approved')
