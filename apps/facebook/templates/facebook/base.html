@@ -8,7 +8,7 @@
       {{ css('fb_base') }}
     {% endblock %}
   </head>
-  <body class="{{ LOCALE }} {% block body_class %}{% endblock %}">
+  <body class="{{ LOCALE }} {% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
     <div class="container">
       <header class="head">
         <hgroup>

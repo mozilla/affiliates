@@ -7,6 +7,8 @@ from shared.views import view_404, view_500
 urlpatterns = patterns('facebook.views',
     url(r'^/?$', views.load_app, name='facebook.load_app'),
 
+    url(r'^pre_auth/?$', views.pre_auth_promo, name='facebook.pre_auth_promo'),
+
     url(r'^banners/new/?$', views.banner_create,
         name='facebook.banner_create'),
 

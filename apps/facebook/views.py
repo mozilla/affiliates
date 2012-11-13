@@ -19,8 +19,9 @@ from facebook.forms import (BannerInstanceDeleteForm, FacebookAccountLinkForm,
                             FacebookBannerInstanceForm, LeaderboardFilterForm,
                             NewsletterSubscriptionForm)
 from facebook.tasks import add_click, generate_banner_instance_image
-from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
-                             FacebookClickStats, FacebookUser)
+from facebook.models import (FacebookAccountLink, FacebookBanner,
+                             FacebookBannerInstance, FacebookClickStats,
+                             FacebookUser)
 from facebook.utils import (decode_signed_request, fb_redirect, is_facebook_bot,
                             is_logged_in)
 from shared.http import JSONResponse, JSONResponseBadRequest
@@ -40,12 +41,6 @@ def load_app(request):
     Create or authenticate the Facebook user and direct them to the correct
     area of the app upon their entry.
     """
-    # Temporary measure to handle when Facebook does a GET to the main URL when
-    # a logged-out user views the app. In the future we should show a promo
-    # page instead.
-    if request.method != 'POST':
-        return request_authorization(request)
-
     signed_request = request.POST.get('signed_request', None)
     if signed_request is None:
         # App wasn't loaded within a canvas, redirect to the home page.
@@ -68,8 +63,9 @@ def load_app(request):
     user, created = (FacebookUser.objects.
             get_or_create_user_from_decoded_request(decoded_request))
     if user is None:
-        # User has yet to authorize the app, offer authorization.
-        return request_authorization(request)
+        # User has yet to authorize the app, redirect to the pre-auth promo.
+        return fb_redirect(request,
+                           absolutify(reverse('facebook.pre_auth_promo')))
 
     # Attach country data to the user object. This can only be retrieved from
     # the decoded request, so we add it here and login saves it.
@@ -82,14 +78,21 @@ def load_app(request):
 
 
 @xframe_allow
-def request_authorization(request):
-    """Request app authorization from the user."""
+def pre_auth_promo(request):
+    """Display an promotional message to users prompting them to authorize."""
+    # Use the default locale if no banners are found in the requested locale.
+    banners = FacebookBanner.objects.filter_by_locale(request.locale)[:6]
+    if len(banners) == 0:
+        banners = (FacebookBanner.objects
+                   .filter_by_locale(settings.LANGUAGE_CODE))
+
     context = {
         'app_id': settings.FACEBOOK_APP_ID,
         'app_namespace': settings.FACEBOOK_APP_NAMESPACE,
-        'app_permissions': settings.FACEBOOK_PERMISSIONS
+        'app_permissions': settings.FACEBOOK_PERMISSIONS,
+        'banners': banners
     }
-    return jingo.render(request, 'facebook/oauth_redirect.html', context)
+    return jingo.render(request, 'facebook/pre_auth_promo.html', context)
 
 
 @require_POST

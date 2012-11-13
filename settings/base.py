@@ -192,8 +192,8 @@ MINIFY_BUNDLES = {
             'js/month_year_picker.js',
             'js/facebook/common.js',
         ),
-        'fb_oauth_redirect': (
-            'js/facebook/oauth_redirect.js',
+        'fb_pre_auth_promo': (
+            'js/facebook/pre_auth_promo.js',
         ),
         'fb_banner_share': (
             'js/libs/jquery-1.7.1.js',

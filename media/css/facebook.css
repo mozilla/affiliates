@@ -1103,12 +1103,17 @@ table.board .leaders .avatar {
   box-shadow: 1px 1px 1px rgba(0,135,183,.5);
 }
 
-/* @404 page */
-.notfound .main {
+/* @No-sidebar Pages */
+.nosidebar .main {
   width: 435px;
-  padding: 60px 45px 60px 260px;
+  padding: 60px 45px;
   margin-top: 40px;
   font-size: .875em;
+}
+
+/* @404 page */
+.notfound .main {
+  padding-left: 260px;
   background: #fff url(../img/facebook/fx-logo-big.png) -85px 50% no-repeat;
 }
 
