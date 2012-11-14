@@ -640,7 +640,8 @@ a:active,
 }
 
 .fm-submit .button-blue i,
-.firstrun .button-blue i {
+.firstrun .button-blue i,
+.pre-auth .button-blue i {
   display: block;
   font-style: normal;
   margin-right: -12px;
@@ -1105,14 +1106,142 @@ table.board .leaders .avatar {
 
 /* @No-sidebar Pages */
 .nosidebar .main {
-  width: 435px;
   padding: 60px 45px;
   margin-top: 40px;
   font-size: .875em;
+  height: 400px;
+  width: 650px;
+}
+
+/* @Pre-auth Page */
+.pre-auth {
+  text-align: center;
+}
+
+.pre-auth .main {
+  background: #ecf0f9;
+  background-image: url(../img/facebook/grain.png);
+  background-image: url(../img/facebook/grain.png), -moz-linear-gradient(#ffffff, #ecf0f9);
+  background-image: url(../img/facebook/grain.png), -ms-linear-gradient(#ffffff, #ecf0f9);
+  background-image: url(../img/facebook/grain.png), -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #ecf0f9));
+  background-image: url(../img/facebook/grain.png), -webkit-linear-gradient(#ffffff, #ecf0f9);
+  background-image: url(../img/facebook/grain.png), -o-linear-gradient(#ffffff, #ecf0f9);
+  background-image: url(../img/facebook/grain.png), linear-gradient(#ffffff, #ecf0f9);
+  border: 1px solid #edf1f7;
+  overflow: hidden;
+  position: relative;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.pre-auth .page-title {
+  font-size: 3.2em;
+}
+
+.pre-auth .intro {
+  display: block;
+  margin: 0 auto 20px;
+  width: 520px;
+}
+
+#request-authorization {
+  font-size: 1.2em;
+  font-style: normal;
+  padding: 14px 42px;
+}
+
+.pre-auth .banner {
+  background: #fff;
+  box-shadow: 1px 2px 2px rgba(0,0,0,.1);
+  position: absolute;
+}
+
+.pre-auth .banner-1 img,
+.pre-auth .banner-4 img {
+  opacity: 0.7;
+  filter: alpha(opacity=0.7)
+}
+
+.pre-auth .banner-0 img,
+.pre-auth .banner-5 img {
+  opacity: 0.5;
+  filter: alpha(opacity=0.4)
+}
+
+.pre-auth .banner-0 {
+  top: 210px;
+  left: -60px;
+  width: 180px;
+  z-index: 10;
+  -moz-transform:rotate(25deg);
+  -webkit-transform:rotate(25deg);
+  -o-transform:rotate(25deg);
+  -ms-transform:rotate(25deg);
+  transform: rotate(25deg);
+}
+
+.pre-auth .banner-1 {
+  top: 290px;
+  left: -50px;
+  height: 172px;
+  width: 240px;
+  z-index: 20;
+  -moz-transform:rotate(10deg);
+  -webkit-transform:rotate(10deg);
+  -o-transform:rotate(10deg);
+  -ms-transform:rotate(10deg);
+  transform: rotate(10deg);
+}
+
+.pre-auth .banner-2 {
+  top: 370px;
+  left: 60px;
+  z-index: 40;
+  -moz-transform:rotate(-17deg);
+  -webkit-transform:rotate(-17deg);
+  -o-transform:rotate(-17deg);
+  -ms-transform:rotate(-17deg);
+  transform: rotate(-17deg);
+}
+
+.pre-auth .banner-3 {
+  top: 370px;
+  right: 60px;
+  z-index: 30;
+  -moz-transform:rotate(17deg);
+  -webkit-transform:rotate(17deg);
+  -o-transform:rotate(17deg);
+  -ms-transform:rotate(17deg);
+  transform: rotate(17deg);
+}
+
+.pre-auth .banner-4 {
+  top: 290px;
+  right: -50px;
+  height: 172px;
+  width: 240px;
+  z-index: 20;
+  -moz-transform:rotate(-10deg);
+  -webkit-transform:rotate(-10deg);
+  -o-transform:rotate(-10deg);
+  -ms-transform:rotate(-10deg);
+  transform: rotate(-10deg);
+}
+
+.pre-auth .banner-5 {
+  top: 210px;
+  right: -60px;
+  width: 180px;
+  z-index: 10;
+  -moz-transform:rotate(-25deg);
+  -webkit-transform:rotate(-25deg);
+  -o-transform:rotate(-25deg);
+  -ms-transform:rotate(-25deg);
+  transform: rotate(-25deg);
 }
 
 /* @404 page */
 .notfound .main {
+  width: 435px;
   padding-left: 260px;
   background: #fff url(../img/facebook/fx-logo-big.png) -85px 50% no-repeat;
 }

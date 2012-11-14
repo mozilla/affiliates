@@ -190,4 +190,4 @@ class FacebookBannerQuerySet(QuerySet):
         lang = locale.split('-')[0]
         locale_filter = (Q(locale_set__locale__contains=locale) |
                          Q(locale_set__locale__contains=lang))
-        return self.filter(locale_filter)
+        return self.distinct().filter(locale_filter)

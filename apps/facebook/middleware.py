@@ -3,6 +3,7 @@ import base64
 from django.conf import settings
 
 import jingo
+from funfactory.urlresolvers import Prefixer
 from mock import patch
 
 from facebook.auth import SESSION_KEY
@@ -32,6 +33,10 @@ class FacebookAuthenticationMiddleware(object):
 
             # Activate locale now that we know who the user is.
             activate_locale(request, user.locale)
+        else:
+            # Use the prefixer from funfactory to determine the user's locale.
+            prefixer = Prefixer(request)
+            activate_locale(request, prefixer.get_language())
 
 
 class FacebookDebugMiddleware(object):
