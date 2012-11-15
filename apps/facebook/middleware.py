@@ -24,19 +24,21 @@ class FacebookAuthenticationMiddleware(object):
 
         # Default to an anonymous user.
         request.user = AnonymousFacebookUser()
-        if SESSION_KEY in request.session:
-            try:
-                user = FacebookUser.objects.get(id=request.session[SESSION_KEY])
-            except FacebookUser.DoesNotExist:
-                return None
+        locale = None
+        try:
+            user = FacebookUser.objects.get(id=request.session[SESSION_KEY])
             request.user = user
+            locale = user.locale
+        except (FacebookUser.DoesNotExist, KeyError):
+            pass
 
-            # Activate locale now that we know who the user is.
-            activate_locale(request, user.locale)
-        else:
-            # Use the prefixer from funfactory to determine the user's locale.
+        if locale is None:
+            # Since we can't get their locale from their user data, we'll use
+            # funfactory's prefixer instead.
             prefixer = Prefixer(request)
-            activate_locale(request, prefixer.get_language())
+            locale = prefixer.get_language()
+
+        activate_locale(request, locale)
 
 
 class FacebookDebugMiddleware(object):

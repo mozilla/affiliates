@@ -12,7 +12,8 @@ from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
 from facebook.tests import (create_payload, FACEBOOK_USER_AGENT,
                             FacebookAccountLinkFactory, FacebookBannerFactory,
-                            FacebookBannerInstanceFactory, FacebookUserFactory)
+                            FacebookBannerInstanceFactory,
+                            FacebookBannerLocaleFactory, FacebookUserFactory)
 from facebook.views import SAFARI_WORKAROUND_KEY
 from shared.tests import TestCase
 from shared.utils import absolutify
@@ -105,14 +106,20 @@ class LoadAppTests(TestCase):
         eq_(response, fb_redirect.return_value)
         ok_(fb_redirect.call_args[0][1] != workaround_url)
 
-    def test_no_authorization(self, update_user_info):
+    @patch('facebook.views.fb_redirect')
+    def test_no_authorization(self, fb_redirect, update_user_info):
         """
-        If the user has yet to authorize the app, ask the user for
-        authorization via the oauth_redirect.html template.
+        If the user has yet to authorize the app, redirect them to the pre-auth
+        promo page.
         """
+        fb_redirect.return_value = HttpResponse('blah')
         payload = create_payload(user_id=None)
         response = self.load_app(payload)
-        self.assertTemplateUsed(response, 'facebook/oauth_redirect.html')
+
+        eq_(response, fb_redirect.return_value)
+        with self.activate('en-US'):
+            ok_(fb_redirect.call_args[0][1]
+                .endswith(reverse('facebook.pre_auth_promo')))
 
     @patch.object(FacebookUser, 'is_new', False)
     @patch('facebook.views.fb_redirect')
@@ -159,6 +166,42 @@ class LoadAppTests(TestCase):
 
         eq_(login.called, True)
         eq_(login.call_args[0][1].country, 'us')
+
+
+class PreAuthPromoTests(TestCase):
+    def _pre_auth_promo(self, locale='en-US'):
+        with self.activate(locale):
+            return self.client.get(reverse('facebook.pre_auth_promo'),
+                                   HTTP_ACCEPT_LANGUAGE=locale)
+
+    def test_locale_banners(self):
+        """Ensure that the banners used by the page match the user's locale."""
+        banner1 = FacebookBannerLocaleFactory.create(locale='fr').banner
+        banner2 = FacebookBannerLocaleFactory.create(locale='fr').banner
+        FacebookBannerLocaleFactory.create(locale='en-US')
+        response = self._pre_auth_promo('fr')
+
+        eq_(list(response.context['banners']), [banner1, banner2])
+
+    def test_6_banners(self):
+        """Only 6 banners should be included in the banner set."""
+        for k in range(10):
+            FacebookBannerLocaleFactory.create(locale='en-US')
+        response = self._pre_auth_promo('en-US')
+
+        eq_(len(response.context['banners']), 6)
+
+    @patch.object(settings, 'LANGUAGE_CODE', 'fr')
+    def test_default_locale(self):
+        """
+        If no banners are available in the requested locale, default to the
+        site's default language code.
+        """
+        banner1 = FacebookBannerLocaleFactory.create(locale='fr').banner
+        banner2 = FacebookBannerLocaleFactory.create(locale='fr').banner
+        response = self._pre_auth_promo('pt-BR')
+
+        eq_(list(response.context['banners']), [banner1, banner2])
 
 
 class DeauthorizeTest(TestCase):

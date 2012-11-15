@@ -103,11 +103,7 @@ def activate_locale(request, locale):
             lang = 'en-us'
             tower.activate(lang)
 
-    # Don't set the locale on the request during tests to mimic the fact that
-    # middleware doesn't run during tests and wouldn't normally set it then
-    # either.
-    if not settings.TEST:
-        request.locale = lang
+    request.locale = lang
 
 
 def fb_redirect(request, url, top_window=False):

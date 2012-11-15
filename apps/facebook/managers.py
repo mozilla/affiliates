@@ -186,7 +186,6 @@ class FacebookBannerManager(CachingManager):
 
 class FacebookBannerQuerySet(QuerySet):
     def filter_by_locale(self, locale):
-        """Filter banners by the specified locale."""
         lang = locale.split('-')[0]
         locale_filter = (Q(locale_set__locale__contains=locale) |
                          Q(locale_set__locale__contains=lang))

@@ -1128,7 +1128,9 @@ table.board .leaders .avatar {
   background-image: url(../img/facebook/grain.png), -o-linear-gradient(#ffffff, #ecf0f9);
   background-image: url(../img/facebook/grain.png), linear-gradient(#ffffff, #ecf0f9);
   border: 1px solid #edf1f7;
+  height: 430px;
   overflow: hidden;
+  padding-top: 30px;
   position: relative;
   text-shadow: 1px 1px 0 #fff;
 }
@@ -1140,7 +1142,7 @@ table.board .leaders .avatar {
 .pre-auth .intro {
   display: block;
   margin: 0 auto 20px;
-  width: 520px;
+  width: 440px;
 }
 
 #request-authorization {

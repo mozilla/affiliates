@@ -11,10 +11,12 @@ import requests
 from mock import Mock, patch
 from nose.tools import eq_, ok_
 
-from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
-                             FacebookClickStats, FacebookUser)
+from facebook.models import (FacebookAccountLink, FacebookBanner,
+                             FacebookBannerInstance, FacebookClickStats,
+                             FacebookUser)
 from facebook.tests import (FacebookAccountLinkFactory,
                             FacebookBannerInstanceFactory,
+                            FacebookBannerLocaleFactory,
                             FacebookClickStatsFactory, FacebookUserFactory,
                             path)
 from shared.tests import TestCase
@@ -252,3 +254,26 @@ class FacebookClickStatsManagerTests(TestCase):
         """If there are no clicks for the given user, return 0."""
         user = FacebookUserFactory.create()
         eq_(self.manager.total_for_user(user), 0)
+
+
+class FacebookBannerQuerySetTests(TestCase):
+    def test_filter_by_locale_basic(self):
+        banner1 = FacebookBannerLocaleFactory.create(locale='en-US').banner
+        banner2 = FacebookBannerLocaleFactory.create(locale='en-US').banner
+        FacebookBannerLocaleFactory.create(locale='fr').banner
+        FacebookBannerLocaleFactory.create(locale='pt-BR').banner
+        results = FacebookBanner.objects.all().filter_by_locale('en-US')
+
+        eq_(list(results), [banner1, banner2])
+
+    def test_filter_by_locale_lang(self):
+        banner1 = FacebookBannerLocaleFactory.create(locale='en-US').banner
+        banner2 = FacebookBannerLocaleFactory.create(locale='en-US').banner
+        FacebookBannerLocaleFactory.create(locale='fr').banner
+        FacebookBannerLocaleFactory.create(locale='pt-BR').banner
+
+        results = FacebookBanner.objects.all().filter_by_locale('en-AU')
+        eq_(list(results), [banner1, banner2])
+
+        results = FacebookBanner.objects.all().filter_by_locale('en')
+        eq_(list(results), [banner1, banner2])

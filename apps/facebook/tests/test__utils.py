@@ -109,13 +109,6 @@ class ActivateLocaleTests(TestCase):
         activate_locale(request, 'en-us')
         eq_(request.locale, 'en-us')
 
-    @patch_settings(DEV=False, TEST=True, FACEBOOK_LOCALES=('en-us', 'fr'))
-    def test_testing_dont_set_request_locale(self):
-        """If settings.TEST is True, do not set the locale on the request."""
-        request = self.factory.get('/')
-        activate_locale(request, 'en-us')
-        eq_(getattr(request, 'locale', None), None)
-
     @patch_settings(DEV=True, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
     def test_dev_dont_limit_locales(self):
         """
