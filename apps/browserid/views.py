@@ -73,7 +73,8 @@ def register(request, form):
             if form.cleaned_data['email_subscribe']:
                 try:
                     subscribe(email, settings.BASKET_NEWSLETTER,
-                              lang=get_language())
+                              lang=get_language(),
+                              source_url=request.build_absolute_uri())
                 except Exception, err:
                     log.warning(err)
 

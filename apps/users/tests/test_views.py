@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 
 from funfactory.urlresolvers import reverse
-from mock import patch
+from mock import ANY, patch
 from nose.tools import eq_, ok_
 
 from shared.tests import TestCase
@@ -47,7 +47,8 @@ class RegisterTests(TestCase):
         eq_(200, response.status_code)
 
         subscribe.assert_called_once_with('newbie@example.com',
-                                          'test-newsletter', lang='en-us')
+                                          'test-newsletter', lang='en-us',
+                                          source_url=ANY)
 
     def test_activation(self):
         """Test basic account activation."""

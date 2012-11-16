@@ -313,7 +313,8 @@ def newsletter_subscribe(request):
         data = form.cleaned_data
         try:
             basket.subscribe(data['email'], settings.FACEBOOK_MAILING_LIST,
-                             format=data['format'], country=data['country'])
+                             format=data['format'], country=data['country'],
+                             source_url=request.build_absolute_uri())
         except basket.BasketException, e:
             log.error('Error subscribing email %s to mailing list: %s' %
                       (data['email'], e))

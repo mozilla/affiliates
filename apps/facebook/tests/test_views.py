@@ -5,13 +5,13 @@ from django.http import HttpResponse
 
 import basket
 from funfactory.urlresolvers import reverse
-from mock import patch
+from mock import ANY, patch
 from nose.tools import eq_, ok_
 
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
 from facebook.tests import (create_payload, FACEBOOK_USER_AGENT,
-                            FacebookAccountLinkFactory, FacebookBannerFactory,
+                            FacebookAccountLinkFactory,
                             FacebookBannerInstanceFactory,
                             FacebookBannerLocaleFactory, FacebookUserFactory)
 from facebook.views import SAFARI_WORKAROUND_KEY
@@ -426,7 +426,8 @@ class NewsletterSubscribeTests(TestCase):
                                   format='text', privacy_policy_agree=True)
         eq_(response.status_code, 200)
         subscribe.assert_called_with('test@example.com', 'test-list',
-                                     format='text', country='us')
+                                     format='text', country='us',
+                                     source_url=ANY)
 
     @patch('facebook.views.log')
     def test_basket_error_log(self, log, subscribe):

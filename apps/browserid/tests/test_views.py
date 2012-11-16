@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from funfactory.urlresolvers import reverse
-from mock import patch
+from mock import ANY, patch
 from nose.tools import eq_, ok_
 
 from browserid.forms import RegisterForm
@@ -95,7 +95,7 @@ class RegisterTests(TestCase):
         """
         Return redirect and do not register if the user is already registered.
         """
-        result = self._register(email='mkelly@mozilla.com');
+        result = self._register(email='mkelly@mozilla.com')
         eq_(result['response'].status_code, 302)
         eq_(User.objects.filter(email='mkelly@mozilla.com').count(), 1)
 
@@ -116,4 +116,4 @@ class RegisterTests(TestCase):
                                 email='user@test.com')
         eq_(result['response'].status_code, 302)
         subscribe.assert_called_once_with('user@test.com', 'test-newsletter',
-                                          lang='en-us')
+                                          lang='en-us', source_url=ANY)
