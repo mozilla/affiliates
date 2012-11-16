@@ -7,6 +7,11 @@
   {{ js('browserid') }}
 {% endblock %}
 
+{% block site_css %}
+  {{ super() }}
+  {{ css('persona-buttons') }}
+{% endblock %}
+
 {% block highlight_box %}
 <div id="home-registration-forms"
      class="highlight-box"
@@ -19,30 +24,10 @@
   {% else %}
     <div id="browserid-login">
       <h3>
-        <span class="label">{{ _('New') }}</span>
-        {{ _('BrowserID is here!') }}
+        {{ _('Sign in with Persona') }}
       </h3>
-      <p>
-        {% trans browserid_url='https://browserid.org' %}
-        Firefox Affiliates has switched to <a href="{{ browserid_url }}">BrowserID</a>.
-        If you previously had an account, use the login button below and
-        sign up for BrowserID with the same email address you used for
-        signing up with Firefox Affiliates.
-        {% endtrans %}
-      </p>
-      <div class="browserid-button">
-        <a href="#"><span>{{ _('Log In &raquo;') }}</span></a>
-      </div>
-      <hr class="medium">
-      <h3>{{ _("Don't have an account?") }}</h3>
-      <p>
-        {% trans %}
-        Want to be a Firefox Affiliate? Sign up using BrowserID by
-        clicking the registration button below.
-        {% endtrans %}
-      </p>
-      <div class="browserid-button">
-        <a href="#"><span>{{ _('Register &raquo;') }}</span></a>
+      <div class="persona-button-container">
+        <a class="persona-button" href="#"><span>{{ _('Sign in') }}</span></a>
       </div>
     </div>
     <div id="browserid-registration">

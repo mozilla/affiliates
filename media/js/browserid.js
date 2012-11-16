@@ -16,10 +16,10 @@ function showBrowserIDError(msg) {
     };
 }
 
-$('.browserid-button a').click(function(e) {
+$('.persona-button').click(function(e) {
     e.preventDefault();
 
-    var button = $(this).parent('.browserid-button');
+    var button = $(this).parent('.persona-button-container');
     button.addClass('loading');
 
     navigator.id.getVerifiedEmail(function(assertion) {

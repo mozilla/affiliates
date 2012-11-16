@@ -123,6 +123,7 @@ CSP_FRAME_SRC = (
 )
 CSP_IMG_SRC = (
     '\'self\'',
+    'data:',
     'https://affiliates-cdn.mozilla.org',
     'https://statse.webtrendslive.com',
     'https://secure.gravatar.com',
@@ -158,6 +159,9 @@ MINIFY_BUNDLES = {
         ),
         'banners': (
             'css/banners.css',
+        ),
+        'persona-buttons': (
+            'css/persona-buttons.css',
         ),
 
         # Facebook app
