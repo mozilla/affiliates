@@ -269,7 +269,7 @@ class CreateBannerTests(TestCase):
         If the user checked `use_profile_image`, create a banner instance,
         trigger the celery task and return a 202 Accepted.
         """
-        banner = FacebookBannerFactory.create()
+        banner = FacebookBannerLocaleFactory.create(locale='en-us').banner
         response = self.banner_create(banner=banner.id, text='asdf',
                                       next_action='', use_profile_image=True)
 
@@ -293,7 +293,7 @@ class CreateBannerTests(TestCase):
         If the user did not check `use_profile_image`, create the banner
         instance and return a 201 Created.
         """
-        banner = FacebookBannerFactory.create()
+        banner = FacebookBannerLocaleFactory.create(locale='en-us').banner
         response = self.banner_create(banner=banner.id, text='asdf',
                                       next_action='', use_profile_image=False)
         ok_(FacebookBannerInstance.objects.filter(banner=banner, user=self.user)
@@ -310,7 +310,7 @@ class CreateBannerTests(TestCase):
         If the user clicks the `Save and Share` button, the `next` link should
         point to the share page for the new banner instance.
         """
-        banner = FacebookBannerFactory.create()
+        banner = FacebookBannerLocaleFactory.create(locale='en-us').banner
         response = self.banner_create(banner=banner.id, text='asdf',
                                       next_action='share',
                                       use_profile_image=False)
