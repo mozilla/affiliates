@@ -1,8 +1,9 @@
 (function() {
     var target = window;
-    if (document.body.dataset.topWindow) {
+    var $body = $(document.body);
+    if ($body.data('topWindow')) {
         target = window.top;
     }
 
-    target.location = document.body.dataset.url;
+    target.location = $body.data('url');
 })();

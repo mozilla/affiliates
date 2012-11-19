@@ -211,6 +211,7 @@ MINIFY_BUNDLES = {
             'js/facebook/banner_create.js',
         ),
         'fb_redirect': (
+            'js/libs/jquery-1.7.1.js',
             'js/facebook/redirect.js',
         ),
         'fb_banner_list': (
@@ -249,6 +250,7 @@ MIDDLEWARE_CLASSES = [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
+    'shared.middleware.PrivacyMiddleware',
 ]
 
 # Facebook auth middleware needs to come after AuthMiddleware but before
