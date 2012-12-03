@@ -25,6 +25,17 @@ $(
         $('textarea.embed-code').focus(function() {
             this.select();
         });
+
+        // Activate spinners.
+        $('.spinner.small.white').spin({
+            length: 3,
+            width: 2,
+            radius: 4,
+            color: '#FFF',
+            top: 0,
+            left: 0,
+            className: ''
+        });
     }
 );
 
@@ -91,7 +102,7 @@ var HomePage = {
         lnkAction.each(function(){
             $(this).click(function(e){
                 e.preventDefault();
-                liElement = $(this).parents('li');
+                liElement = $(this).closest('li');
                 answerElement = $('.answer', liElement);
                 if (liElement.hasClass('collapsed')) {
                     answerElement.slideDown('fast', function() {

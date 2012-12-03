@@ -365,6 +365,14 @@ div.left-arrow span {
     clear: both;
 }
 
+.spinner {
+    display: none;
+}
+
+.spinner.visible {
+    display: inline-block;
+}
+
 #message {
     background: #F6F9FD;
     border: 1px solid #B0C1D2;

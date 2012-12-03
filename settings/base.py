@@ -177,6 +177,7 @@ MINIFY_BUNDLES = {
             'global/js/nav-main.js',
             'js/libs/jquery.placeholder.min.js',
             'js/libs/jquery.uniform.min.js',
+            'js/libs/spin.js',
             'js/month_year_picker.js',
             'js/affiliates.js',
             'js/libs/webtrends.js',

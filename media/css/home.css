@@ -1,9 +1,13 @@
 #home-registration-forms {
     float: right;
     margin: 120px 8px 0;
-    padding: 25px 25px 45px;
     position: relative;
     width: 345px;
+}
+
+#home-registration-forms .highlight-box {
+    padding: 25px;
+    margin-bottom: 25px;
 }
 
 #home-registration-forms h3 {
@@ -134,13 +138,18 @@ a.button {
     -moz-box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
     box-shadow:0 2px rgba(0,0,0,0.05), 0 -2px rgba(224,239,249,0.9) inset;
 }
-a.share_twitter {
-    background: #FFF url(../img/template/sprites.png) no-repeat 12px -43px;
+
+a.share {
+    display: block;
     padding-left: 55px;
 }
-a.share_facebook {
+
+a.share.twitter {
+    background: #FFF url(../img/template/sprites.png) no-repeat 12px -43px;
+}
+
+a.share.facebook {
     background: #FFF url(../img/template/sprites.png) no-repeat 12px -86px;
-    padding-left: 55px;
 }
 
 /* Thank you */
@@ -399,4 +408,8 @@ div.total-downloads-section button.back{
     font-family:Georgia,serif;
     font-size:16px;
     font-style:italic;
+}
+
+#browserid-login .msg_warning {
+    display: none;
 }

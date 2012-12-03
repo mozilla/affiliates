@@ -1,18 +1,16 @@
 (function() {
 
-var form = $('#home-registration-forms'),
-    url = form.data('browserid-verify'),
-    csrf = form.data('csrf'),
-    msg_no_assertion = form.data('browserid-no-assertion'),
-    msg_verify_fail = form.data('browserid-verify-fail');
+var form = $('#home-registration-forms');
+var url = form.data('browserid-verify');
+var csrf = form.data('csrf');
+var msg_warning = $('#browserid-login .msg_warning');
+var msg_no_assertion = form.data('browserid-no-assertion');
+var msg_verify_fail = form.data('browserid-verify-fail');
 
 function showBrowserIDError(msg) {
     return function() {
-        form.find('p.msg_warning').empty();
-        $('<p class="msg_warning">' + msg + '</p>')
-            .hide()
-            .prependTo(form)
-            .fadeIn(400);
+        msg_warning.text(msg);
+        msg_warning.fadeIn(400);
     };
 }
 
@@ -20,7 +18,8 @@ $('.persona-button').click(function(e) {
     e.preventDefault();
 
     var button = $(this).parent('.persona-button-container');
-    button.addClass('loading');
+    var spinner = button.find('.spinner');
+    spinner.addClass('visible');
 
     navigator.id.getVerifiedEmail(function(assertion) {
         if (assertion) {
@@ -43,7 +42,7 @@ $('.persona-button').click(function(e) {
                 },
                 error: showBrowserIDError(msg_no_assertion),
                 complete: function() {
-                    button.removeClass('loading');
+                    spinner.removeClass('visible');
                 }
             });
         }
