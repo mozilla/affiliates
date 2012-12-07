@@ -11,5 +11,6 @@ class ExceptionLoggingMiddleware(object):
 class PrivacyMiddleware(object):
     """Adds P3P policy headers to responses."""
     def process_response(self, request, response):
-        response['P3P'] = 'CP="This is not a P3P policy!"'
+        response['P3P'] = ('CP="Mozilla\'s privacy practices are described at '
+                           'https://mozilla.org/privacy"')
         return response
