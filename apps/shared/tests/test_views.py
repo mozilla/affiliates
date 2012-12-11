@@ -1,11 +1,13 @@
 from django.conf import settings
 from django.http import HttpResponse
 
+import basket
 from funfactory.urlresolvers import reverse
-from mock import patch
+from mock import ANY, patch
 from nose.tools import eq_, ok_
 
 from shared.tests import TestCase
+from users.tests import UserFactory
 
 
 class TestHome(TestCase):
@@ -68,3 +70,40 @@ class ErrorPageTests(TestCase):
         response = self._get('facebook.500')
         eq_(response.status_code, 500)
         self.assertTemplateUsed(response, 'facebook/error.html')
+
+
+@patch.object(basket, 'subscribe')
+@patch.object(settings, 'BASKET_NEWSLETTER', 'test-list')
+class NewsletterSubscribeTests(TestCase):
+    def setUp(self):
+        self.user = UserFactory.create()
+        self.browserid_login(self.user.email)
+
+    def subscribe(self, **kwargs):
+        with self.activate('en-US'):
+            return self.client.post(reverse('shared.newsletter.subscribe'),
+                                    kwargs)
+
+    def test_invalid_form_returns_success(self, subscribe):
+        """
+        Test that even if the form is invalid, return a 200 OK. This will go
+        away once we have strings translated for an error message.
+        """
+        response = self.subscribe(email='')
+        eq_(response.status_code, 200)
+        ok_(not subscribe.called)
+
+    def test_valid_form_call_basket(self, subscribe):
+        """If the form is valid, call basket with the proper arguments."""
+        response = self.subscribe(email='test@example.com')
+        eq_(response.status_code, 200)
+        subscribe.assert_called_with('test@example.com', 'test-list',
+                                     source_url=ANY)
+
+    @patch('shared.views.log')
+    def test_basket_error_log(self, log, subscribe):
+        """If basket throws an exception, log it and return a 200 OK."""
+        subscribe.side_effect = basket.BasketException
+        response = self.subscribe(email='test@example.com')
+        eq_(response.status_code, 200)
+        ok_(log.error.called)

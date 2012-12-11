@@ -11,13 +11,13 @@ from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
 import test_utils
+from django_browserid.tests import mock_browserid
 from funfactory.urlresolvers import (get_url_prefix, Prefixer, reverse,
                                      set_url_prefix)
 from mock import patch
 from nose.tools import eq_, ok_
 from tower import activate
 
-from browserid.tests import mock_browserid
 from facebook.tests import FacebookAuthClient
 
 

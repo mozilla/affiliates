@@ -3,12 +3,12 @@ import json
 from django.conf import settings
 from django.contrib.auth.models import User
 
+from django_browserid.tests import mock_browserid
 from funfactory.urlresolvers import reverse
 from mock import ANY, patch
 from nose.tools import eq_, ok_
 
 from browserid.forms import RegisterForm
-from browserid.tests import mock_browserid
 from browserid.views import register
 from shared.tests import SessionRequestFactory, TestCase
 
@@ -109,7 +109,7 @@ class RegisterTests(TestCase):
 
     @mock_browserid('user@test.com')
     @patch('browserid.views.subscribe')
-    @patch.object(settings, 'BASKET_NEWSLETTER', 'test-newsletter', create=True)
+    @patch.object(settings, 'BASKET_NEWSLETTER', 'test-newsletter')
     def test_email_subscription(self, subscribe):
         """Subscribe user to mailing list if requested."""
         result = self._register({'email_subscribe': True},

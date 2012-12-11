@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 
+from django_browserid.tests import mock_browserid
 from funfactory.urlresolvers import reverse
 from nose.tools import eq_, ok_
 
 from browserid.backends import BrowserIDSessionBackend
-from browserid.tests import mock_browserid
 from shared.tests import SessionRequestFactory, TestCase
 
 
