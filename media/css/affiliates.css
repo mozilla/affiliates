@@ -373,17 +373,20 @@ div.left-arrow span {
     display: inline-block;
 }
 
-#message {
+.message {
     background: #F6F9FD;
     border: 1px solid #B0C1D2;
     border-radius: 4px;
     box-shadow: 0 2px rgba(0, 0, 0, 0.05), 0 -2px rgba(0, 0, 0, 0.05) inset;
-    float: left;
     font-family: 'MuseoSans500';
     font-size: 14px;
-    margin: 0 20px;
     padding: 5px 10px;
     text-align: center;
+}
+
+#message {
+    float: left;
+    margin: 0 20px;
     width: 630px;
 }
 
@@ -663,7 +666,9 @@ hr.large {
     border-top: 1px solid #B0C1D2;
 }
 
-#footer-content .save_changes {
+#footer-content .save_changes,
+.blue-button,
+button.blue-button[type="submit"] {
     background-color: #669BE1;
     background: -moz-linear-gradient(center top, #669BE1 0%, #5784BF 100%) repeat 0 0;
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5784BF), color-stop(1, #669BE1) );
@@ -676,10 +681,12 @@ hr.large {
     font-size: 16px;
     font-style: italic;
     font-weight: normal;
-    padding-bottom: 10px;
+    padding: 8px 18px 10px;
 }
 
-#footer-content .save_changes:hover {
+#footer-content .save_changes:hover,
+.blue-button:hover,
+button.blue-button[type="submit"]:hover {
     cursor: pointer;
     text-decoration: none;
 }
@@ -812,6 +819,36 @@ div.head-box .date{
     font-size: 12px;
     color: #5e5e5e;
     line-height: 1.2;
+}
+
+/* Sidebar Mailing List Promo */
+.newsletter-form {
+    min-height: 40px;
+}
+
+.newsletter-form.loading {
+    background: url('../img/template/loading.gif') no-repeat center;
+}
+
+.newsletter-form input {
+    display: block;
+    margin-bottom: 5px;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.newsletter-form button {
+    float: right;
+}
+
+.newsletter-form label {
+    display: none;
+}
+
+.newsletter-form .success {
+    display: none;
 }
 
 /* Sidebar Navigation */

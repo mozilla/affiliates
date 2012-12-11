@@ -9,4 +9,6 @@ urlpatterns = patterns('shared.views',
         name='tos'),
     url(r'^404$', 'view_404', name='404'),
     url(r'^500$', 'view_500', name='500'),
+    url(r'^newsletter/subscribe/?$', 'newsletter_subscribe',
+        name='shared.newsletter.subscribe'),
 )

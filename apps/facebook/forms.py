@@ -10,23 +10,13 @@ from product_details import product_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from facebook.models import FacebookBanner, FacebookBannerInstance, FacebookUser
-from shared.forms import AdminModelForm
+from shared.forms import AdminModelForm, EmailInput
 from shared.models import ENGLISH_LANGUAGE_CHOICES
 from shared.utils import absolutify
 
 
 # L10n: &hellip; is an ellipses, the three dots like "I love Firefox because..."
 _text_placeholder = _lazy('I love Firefox because&hellip;')
-
-
-class EmailInput(forms.TextInput):
-    """Input specifically for email addresses."""
-    input_type = 'email'
-
-    def __init__(self, *args, **kwargs):
-        super(EmailInput, self).__init__(*args, **kwargs)
-        if not 'placeholder' in self.attrs.keys():
-            self.attrs['placeholder'] = _lazy('Enter e-mail')
 
 
 class BannerFieldRenderer(forms.widgets.RadioFieldRenderer):

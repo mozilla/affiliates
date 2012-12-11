@@ -1,10 +1,29 @@
-/**
- * Page Initialization
- */
-$(
-    function(event){
-        HomePage.init();
+;(function($, MonthYearPicker) {
+    'use strict';
 
+    $.fn.affiliatesAccordion = function() {
+        var lnkAction = $("h5 a", this);
+
+        this.children().removeClass().addClass('collapsed');
+        lnkAction.each(function(){
+            $(this).click(function(e){
+                e.preventDefault();
+                var liElement = $(this).parents('li');
+                var answerElement = $('.answer', liElement);
+                if (liElement.hasClass('collapsed')) {
+                    answerElement.slideDown('fast', function() {
+                        liElement.removeClass().addClass('expanded');
+                    });
+                } else {
+                    answerElement.slideUp('fast', function() {
+                        liElement.removeClass().addClass('collapsed');
+                    });
+                }
+            });
+        });
+    };
+
+    $(function(event){
         // Init MonthYearPicker
         var monthYearPicker = new MonthYearPicker('.month-year-picker', {
             errorMsgSelector: '.statistics-warning'
@@ -26,6 +45,52 @@ $(
             this.select();
         });
 
+        // Activate accordion plugin.
+        $(".js_accordion").each(function(index, elem){
+            $(elem).affiliatesAccordion();
+        });
+
+        // Tooltips can't be clicked.
+        $(".show_tooltip").click(function(e){
+            e.preventDefault();
+        });
+
+        // Show and hide the target on hover.
+        $(".show_tooltip").hover(
+            function(e){
+                $($(this).attr('target')).show();
+            },
+            function(e){
+                $($(this).attr('target')).hide();
+            }
+        );
+
+        // Placeholder shim.
+        if ($.browser.msie) {
+            $('input[placeholder], textarea[placeholder]').placeholder();
+        }
+
+        // Activate uniform UI.
+        $(".js_uniform").uniform();
+
+        // Newsletter signup form.
+        $('.newsletter-form').submit(function(e) {
+            e.preventDefault();
+
+            var $form = $(this);
+            $form.addClass('loading');
+            $form.find('.fields').slideUp('fast', function() {
+                $.ajax({
+                    type: $form.attr('method'),
+                    url: $form.attr('action'),
+                    data: $form.serialize()
+                }).done(function() {
+                    $form.removeClass('loading');
+                    $form.find('.success').slideDown('fast');
+                });
+            });
+        });
+
         // Activate spinners.
         $('.spinner.small.white').spin({
             length: 3,
@@ -36,84 +101,5 @@ $(
             left: 0,
             className: ''
         });
-    }
-);
-
-/**
- * Home Page Class
- */
-var HomePage = {
-
-    /**
-     * Home Page Initialization
-     */
-    init: function(){
-        HomePage.addEventListeners();
-    },
-
-    /**
-     *
-     */
-    addEventListeners: function(){
-        if ($(".js_no_action").length) {
-            $(".js_no_action").click(function(e){
-                e.preventDefault();
-            });
-        }
-        if ($(".js_accordion").length) {
-            $(".js_accordion").each(function(index, elem){
-                HomePage.initAccordion(elem);
-            });
-        }
-        if ($(".show_tooltip").length) {
-            $(".show_tooltip").click(function(e){
-                e.preventDefault();
-            });
-            $(".show_tooltip").hover(
-                function(e){
-                    HomePage.toggleToolTip($(this).attr('target'), e.type);
-                },
-                function(e){
-                    HomePage.toggleToolTip($(this).attr('target'), e.type);
-                });
-        }
-        if($.browser.msie) {
-            $('input[placeholder], textarea[placeholder]').placeholder();
-        }
-        if ($(".js_uniform").length) {
-            $(".js_uniform").uniform();
-        }
-    },
-    toggleToolTip: function(target, e){
-        var tooltip = $('#' + target);
-
-        if (e == "mouseenter") {
-            tooltip.show();
-        } else {
-            tooltip.hide();
-        }
-    },
-    initAccordion : function(elem){
-        var ulAccordion = $(elem),
-            lnkAction = $("h5 a", ulAccordion),
-            liElement, answerElement;
-
-        ulAccordion.children().removeClass().addClass('collapsed');
-        lnkAction.each(function(){
-            $(this).click(function(e){
-                e.preventDefault();
-                liElement = $(this).closest('li');
-                answerElement = $('.answer', liElement);
-                if (liElement.hasClass('collapsed')) {
-                    answerElement.slideDown('fast', function() {
-                        liElement.removeClass().addClass('expanded');
-                    });
-                } else {
-                    answerElement.slideUp('fast', function() {
-                        liElement.removeClass().addClass('collapsed');
-                    });
-                }
-            });
-        });
-    }
-};
+    });
+})(jQuery, MonthYearPicker);

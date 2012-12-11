@@ -22,6 +22,12 @@
   {% include 'layout/sidebar_nav.html' %}
   {% include 'badges/include/sidebar_profile.html' %}
   {% include 'badges/include/leaderboard.html' %}
+
+  {# Newsletter signups are available only to en locales. #}
+  {% if LANG.startswith('en') %}
+    {% include 'shared/include/sidebar/newsletter_subscribe.html' %}
+  {% endif %}
+
   {% include 'shared/include/sidebar/fb_promo.html' %}
   {% if newsitem is not none %}
     {% import 'news/macros.html' as news %}

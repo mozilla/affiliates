@@ -2,8 +2,11 @@ from django.conf import settings
 from django.shortcuts import render
 from django.utils.http import urlquote_plus
 from django.utils.translation import get_language
+from django.views.decorators.http import require_POST
 from django.views.defaults import page_not_found, server_error
 
+import basket
+import commonware
 from funfactory.urlresolvers import reverse
 from session_csrf import anonymous_csrf
 from tower import ugettext_lazy as _lazy
@@ -13,6 +16,8 @@ from browserid.forms import RegisterForm as BrowserIDRegisterForm
 from browserid.views import register as browserid_register
 from facebook.utils import in_facebook_app
 from shared.decorators import login_required
+from shared.forms import NewsletterForm
+from shared.http import JSONResponse
 from shared.utils import absolutify, redirect
 from users.forms import RegisterForm, LoginForm
 
@@ -24,6 +29,9 @@ BROWSERID_NO_ASSERTION = _lazy(u'There was an error during authentication. '
 BROWSERID_VERIFY_FAIL = _lazy(u'BrowserID could not verify your identity. '
                               'Visit <a href="{url}">browserid.org</a> for '
                               'more information.')
+
+
+log = commonware.log.getLogger('a.shared')
 
 
 @anonymous_csrf
@@ -89,3 +97,19 @@ def view_500(request):
         return render(request, 'facebook/error.html', status=500)
     else:
         return server_error(request)
+
+
+@login_required
+@require_POST
+def newsletter_subscribe(request):
+    form = NewsletterForm(request.POST)
+    if form.is_valid():
+        try:
+            basket.subscribe(form.cleaned_data['email'],
+                             settings.BASKET_NEWSLETTER,
+                             source_url=request.build_absolute_uri())
+        except basket.BasketException, e:
+            log.error('Error subscribing email %s to mailing list: %s' %
+                      (form.cleaned_data['email'], e))
+
+    return JSONResponse({'success': 'success'})

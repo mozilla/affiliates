@@ -10,6 +10,7 @@ from badges.models import (Badge, BadgeInstance, Category, ClickStats,
 from facebook.models import FacebookClickStats
 from news.models import NewsItem
 from shared.decorators import login_required
+from shared.forms import NewsletterForm
 from shared.http import JSONResponse, JSONResponseBadRequest
 from shared.utils import current_locale, redirect
 
@@ -58,6 +59,7 @@ def dashboard(request, template, context=None):
     # Set context variables needed by all dashboard pages
     context['newsitem'] = NewsItem.objects.current()
     context['user_has_created_badges'] = request.user.has_created_badges()
+    context['newsletter_form'] = NewsletterForm()
 
     if context['user_has_created_badges']:
         clicks_total = ClickStats.objects.total_for_user(request.user)
