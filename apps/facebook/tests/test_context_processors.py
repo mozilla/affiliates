@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test.client import RequestFactory
 
 from mock import patch
@@ -7,6 +8,7 @@ from facebook.context_processors import app_context
 from facebook.models import AnonymousFacebookUser
 from facebook.tests import (AppNotificationFactory, FacebookUserFactory,
                             FacebookAccountLinkFactory)
+from facebook.utils import activate_locale
 from shared.tests import TestCase
 
 
@@ -15,10 +17,12 @@ class AppContextTests(TestCase):
         self.factory = RequestFactory()
 
     @patch('facebook.context_processors.in_facebook_app')
-    def _app_context(self, in_facebook_app, path='/', user=None, in_app=True):
+    def _app_context(self, in_facebook_app, path='/', user=None, in_app=True,
+                     locale='en-US'):
         in_facebook_app.return_value = in_app
         request = self.factory.get(path)
         request.user = user
+        activate_locale(request, locale)
         if request.user is None:
             request.user = AnonymousFacebookUser()
 
@@ -44,9 +48,18 @@ class AppContextTests(TestCase):
     def test_newsletter_form(self, NewsletterSubscriptionForm):
         """If the user is logged in, include the newsletter_form."""
         user = FacebookUserFactory()
-        ok_('newsletter_form' in self._app_context(user=user))
+        ok_('newsletter_form' in self._app_context(user=user, locale='en-US'))
         NewsletterSubscriptionForm.assert_called_with(user,
                                                       auto_id='newsletter_%s')
+
+    @patch.object(settings, 'FACEBOOK_LOCALES', ['en-US', 'en-AU', 'fr', 'de'])
+    def test_newsletter_en_only(self):
+        """Only show the newsletter to English locales."""
+        user = FacebookUserFactory()
+        ok_('newsletter_form' in self._app_context(user=user, locale='en-US'))
+        ok_('newsletter_form' in self._app_context(user=user, locale='en-AU'))
+        ok_(not 'newsletter_form' in self._app_context(user=user, locale='fr'))
+        ok_(not 'newsletter_form' in self._app_context(user=user, locale='de'))
 
     def test_app_notifications(self):
         """If the user is logged in, include all of their app notifications."""

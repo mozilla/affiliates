@@ -21,9 +21,10 @@ def app_context(request):
         ctx['account_link_form'] = FacebookAccountLinkForm()
 
     if is_logged_in(request):
-        # Add newsletter form
-        ctx['newsletter_form'] = NewsletterSubscriptionForm(
-            request.user, auto_id='newsletter_%s')
+        # Add newsletter form to en-US
+        if request.locale.startswith('en'):
+            ctx['newsletter_form'] = NewsletterSubscriptionForm(
+                request.user, auto_id='newsletter_%s')
 
         # Add notifications
         ctx['app_notifications'] = (AppNotification.objects
