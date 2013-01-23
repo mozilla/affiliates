@@ -114,7 +114,8 @@ CSP_SCRIPT_SRC = (
     '\'self\'',
     'https://browserid.org',
     'https://login.persona.org',
-    'https://statse.webtrendslive.com'
+    'http://*.google-analytics.com',
+    'https://*.google-analytics.com',
 )
 CSP_FRAME_SRC = (
     '\'self\'',
@@ -125,16 +126,19 @@ CSP_IMG_SRC = (
     '\'self\'',
     'data:',
     'https://affiliates-cdn.mozilla.org',
-    'https://statse.webtrendslive.com',
     'https://secure.gravatar.com',
     'https://graph.facebook.com',
     'https://*.fbcdn.net',
     'https://*.akamaihd.net',
+    'http://*.google-analytics.com',
+    'https://*.google-analytics.com',
 )
 CSP_FONT_SRC = (
     '\'self\'',
     'https://www.mozilla.org'
 )
+
+CSP_OPTIONS = ('eval-script', 'inline-script')
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.
@@ -180,7 +184,6 @@ MINIFY_BUNDLES = {
             'js/libs/spin.js',
             'js/month_year_picker.js',
             'js/affiliates.js',
-            'js/libs/webtrends.js',
         ),
         'banners': (
             'js/libs/mustache.js',
@@ -381,3 +384,7 @@ def facebook_app_url_lazy():
     from django.conf import settings
     return '//apps.facebook.com/%s' % settings.FACEBOOK_APP_NAMESPACE
 FACEBOOK_APP_URL = lazy(facebook_app_url_lazy, str)()
+
+
+# Google Analytics
+GA_ACCOUNT_CODE = ''

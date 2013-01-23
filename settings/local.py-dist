@@ -102,3 +102,6 @@ FACEBOOK_DEBUG = False
 # To get the user id for your Facebook account, visit
 # https://developers.facebook.com/tools/explorer.
 #FACEBOOK_DEBUG_USER_ID = ''
+
+# Set to enable Google Analytics
+#GA_ACCOUNT_CODE = ''
