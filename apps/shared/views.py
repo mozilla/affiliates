@@ -86,10 +86,11 @@ def faq(request):
 
 
 def view_404(request):
+    template = '404.html'
     if in_facebook_app(request):
-        return render(request, 'facebook/error.html', status=404)
-    else:
-        return page_not_found(request)
+        template = 'facebook/error.html'
+
+    return render(request, template, status=404)
 
 
 def view_500(request):

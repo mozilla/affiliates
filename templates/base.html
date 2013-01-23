@@ -1,3 +1,9 @@
+{# Substitute in an empty settings object if it is not available (error handlers
+   during tests). #}
+{% if not settings %}
+  {% set settings = {} %}
+{% endif %}
+
 <!DOCTYPE html>
 <html LANG="{{ LANG }}" dir="{{ DIR }}" data-locale="{{ LOCALE }}" data-language="{{ LANGUAGE }}">
   <head>
