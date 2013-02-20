@@ -95,6 +95,16 @@ DEFAULT_GRAVATAR = MEDIA_URL + 'img/template/user-avatar.jpg'
 # Set cookies to use secure flag
 COOKIES_SECURE = True
 
+# Set ALLOWED_HOSTS based on SITE_URL.
+def _allowed_hosts():
+    from django.conf import settings
+    from urlparse import urlparse
+
+    host = urlparse(settings.SITE_URL).netloc  # Remove protocol and path
+    host = host.rsplit(':', 1)[0]  # Remove port
+    return [host]
+ALLOWED_HOSTS = lazy(_allowed_hosts, list)()
+
 # CacheMachine config
 CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
 
