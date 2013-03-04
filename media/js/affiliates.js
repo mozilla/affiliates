@@ -57,11 +57,11 @@
 
         // Show and hide the target on hover.
         $(".show_tooltip").hover(
-            function(e){
-                $($(this).attr('target')).show();
+            function (e){
+                $('#' + $(this).attr('target')).show();
             },
-            function(e){
-                $($(this).attr('target')).hide();
+            function (e){
+                $('#' + $(this).attr('target')).hide();
             }
         );
 
