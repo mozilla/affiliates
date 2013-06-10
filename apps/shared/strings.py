@@ -29,6 +29,7 @@ _('Firefox for Android is here and we\'d like your help in spreading the '
 # Categories
 _('Firefox')
 _('Mozilla')
+_('Firefox OS')
 
 # Subcategories
 _('Mozilla Recruiting')
