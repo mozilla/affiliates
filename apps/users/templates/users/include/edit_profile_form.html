@@ -13,7 +13,7 @@
       <div>
         {% call macros.fields_title(_('Website URL'), 'website-help') %}
           {% trans %}
-            This website will appear along with your username on the Affiliates 
+            This website will appear along with your username on the Affiliates
             leaderboard and on your profile.
           {% endtrans %}
         {% endcall %}
@@ -77,7 +77,7 @@
       {{ form.state }}
       {{ form.state.errors }}
       <div class="fields">
-        <label for="id_{{ form.postal_code.html_name }}" class="accessibly-hidden">{{ _('Zip or Postal Code') }}</label>
+        <label for="id_{{ form.postal_code.html_name }}" class="accessibly-hidden">{{ _('ZIP or Postal Code') }}</label>
         {{ form.postal_code }}
         {{ form.postal_code.errors }}
       </div>
