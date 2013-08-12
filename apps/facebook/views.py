@@ -300,8 +300,9 @@ def post_invite(request):
     Redirect user back to the app after they've invited friends to download
     Firefox.
     """
-    messages.success(request, _('You have successfully sent a message to one '
-                                'of your friends!'))
+    if request.GET.get('success', None):
+        messages.success(request, _('You have successfully sent a message to one of your '
+                                    'friends!'))
     return django_redirect(settings.FACEBOOK_APP_URL)
 
 

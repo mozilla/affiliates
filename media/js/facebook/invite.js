@@ -6,9 +6,6 @@
 
     var params = $.param({
         app_id: $body.data('appId'),
-        picture: $body.data('picture'),
-        name: $body.data('name'),
-        description: $body.data('description'),
         link: $body.data('link'),
         redirect_uri: $body.data('next')
     });

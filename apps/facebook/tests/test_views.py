@@ -2,12 +2,14 @@ import json
 
 from django.conf import settings
 from django.http import HttpResponse
+from django.test.client import RequestFactory
 
 import basket
 from funfactory.urlresolvers import reverse
 from mock import ANY, patch
 from nose.tools import eq_, ok_
 
+from facebook import views
 from facebook.models import (FacebookAccountLink, FacebookBannerInstance,
                              FacebookUser)
 from facebook.tests import (create_payload, FACEBOOK_USER_AGENT,
@@ -562,3 +564,23 @@ class StatsTests(TestCase):
         eq_(self._stats(':year:', 2).status_code, 400)
         eq_(self._stats(2012, ':month:').status_code, 400)
         eq_(self._stats(':year:', ':month:').status_code, 400)
+
+
+class PostInviteTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def _post_invite(self, **kwargs):
+        return views.post_invite(self.factory.get('/', data=kwargs))
+
+    @patch('facebook.views.messages')
+    def test_no_success(self, messages):
+        """If the success parameter isn't passed via GET, do not add a success message."""
+        self._post_invite()
+        ok_(not messages.success.called)
+
+    @patch('facebook.views.messages')
+    def test_success(self, messages):
+        """If the success parameter is passed via GET, add a success message."""
+        self._post_invite(success='1')
+        ok_(messages.success.called)
