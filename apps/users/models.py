@@ -5,7 +5,6 @@ import re
 
 from django.conf import settings
 from django.contrib.auth.models import Permission, User
-from django.contrib.sites.models import Site
 from django.core import mail
 from django.db import models
 from django.dispatch import receiver
@@ -173,10 +172,9 @@ class RegisterManager(models.Manager):
 
     def _send_email(self, template, subject, profile, **kwargs):
         """Sends an activation email to the user"""
-        current_site = Site.objects.get_current()
         url = reverse('users.activate',
                      kwargs={'activation_key': profile.activation_key})
-        email_kwargs = {'domain': current_site.domain,
+        email_kwargs = {'domain': settings.SITE_URL,
                         'activate_url': url}
         email_kwargs.update(kwargs)
         message = render_to_string(template, email_kwargs)

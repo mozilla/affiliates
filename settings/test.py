@@ -6,7 +6,6 @@ CACHES = {
 }
 
 SITE_URL = 'http://badge.mo.com'
-SITE_ID = 1
 
 # Speed up tests.
 PASSWORD_HASHERS = (

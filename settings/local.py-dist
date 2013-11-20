@@ -72,7 +72,6 @@ RESPONSYS_KEY = ''
 RESPONSYS_API_URL = 'https://awesomeness.mozilla.org/pub/rf'
 RESPONSYS_CAMPAIGN = 'MOZILLA_AND_YOU'
 
-SITE_ID = 2
 SITE_URL = 'http://localhost:8000'
 MEDIA_URL = urljoin(SITE_URL, MEDIA_URL)
 

@@ -42,7 +42,6 @@ have ``pip`` installed, you can install it with ``easy_install pip``.
 
     $ python manage.py syncdb
     $ python manage.py migrate
-    $ python manage.py syncdata fixtures/sites.json
 
 Running the Development Server
 ------------------------------
