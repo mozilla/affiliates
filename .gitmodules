@@ -6,7 +6,7 @@
 	url = https://github.com/mozilla/django-moz-header.git
 [submodule "vendor"]
 	path = vendor
-	url = https://github.com/mozilla/affiliates-lib.git
+	url = https://github.com/mozilla/playdoh-lib.git
 [submodule "vendor-local/src/django-cache-machine"]
 	path = vendor-local/src/django-cache-machine
 	url = git://github.com/jbalogh/django-cache-machine.git
