@@ -1,4 +1,4 @@
-settings/local.py
+affiliates/settings/local.py
 *.py[co]
 *.sw[po]
 .coverage

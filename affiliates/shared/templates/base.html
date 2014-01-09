@@ -1,0 +1,97 @@
+{# Substitute in an empty settings object if it is not available (error handlers
+   during tests).  #}
+{% if not settings %}
+  {% set settings = {} %}
+{% endif %}
+
+<!DOCTYPE html>
+<html LANG="{{ LANG }}" dir="{{ DIR }}" data-locale="{{ LOCALE }}" data-language="{{ LANGUAGE }}">
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>{% block page_title %}{{ _('Firefox Affiliates') }}{% endblock %}</title>
+
+    {# OpenGraph Metadata #}
+    <meta property="og:title" content="{{ _('Firefox Affiliates') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://mozcom-cdn.mozilla.net/img/firefox-100.jpg">
+    <meta property="og:url" content="https://affiliates.mozilla.org">
+    <meta property="og:site_name" content="{{ _('Firefox Affiliates') }}">
+    <meta property="og:description" content="{% trans %}
+
+        Firefox Affiliate buttons are a bit of HTML
+        code that you put on your website or blog to encourage
+        visitors to your site to download Firefox. When a visitor
+        to your site clicks on a button on your site and visits the
+        Firefox download page, you get credit for that click.
+
+    {% endtrans %}">
+
+    {% block site_css %}
+      {{ css('common') }}
+    {% endblock %}
+    {% if _('custom-css') and _('custom-css') != 'custom-css' %}
+      <style type="text/css">
+        {# L10n: You can use this string to put custom CSS rules to fix any design issues. Leave empty or untranslated if you do not need it. #}
+          {{ _('custom-css') }}
+       </style>
+    {% endif %}
+    <link rel="shortcut icon" type="image/png" href="{{ MEDIA_URL }}global/img/favicon.png"/>
+    <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ settings.GA_ACCOUNT_CODE }}']);
+      _gaq.push(['_trackPageview']);
+
+      {% if settings.GA_ACCOUNT_CODE %}
+      (function() {
+          var ga = document.createElement('script');
+          ga.type = 'text/javascript';
+          ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(ga, s);
+      })();
+      {% endif %}
+    </script>
+  </head>
+  <body id="{% block body_id %}affiliates{% endblock %}">
+    <div id="wrapper">
+      <div id="doc">
+        {% block site_header %}
+          {% include "global/header.html" %}
+        {% endblock %}
+        {% block highlight_box %}{% endblock %}
+        <div id="main-feature">
+          {% block main_feature %}
+            <a href="{{ url('home') }}">
+              <h2>{{ _('Firefox<span>Affiliates</span>') }}</h2>
+              <p>
+                {{ _('Everything you need to share Firefox with the world.') }}
+              </p>
+            </a>
+          {% endblock %}
+        </div>
+        {% if messages is defined %}
+          {% for message in messages %}
+            <div id="message">{{ message }}</div>
+            <div class="clear"></div>
+          {% endfor %}
+        {% endif %}
+        <div id="content" class="{% block content_class %}{% endblock %}">
+          {% block content %}{% endblock %}
+        </div>
+        {% block sidebar %}
+          <div id="sidebar">
+            {% block sidebar_content %}{% endblock %}
+          </div>
+        {% endblock %}
+      </div>{# /#doc #}
+    </div>{# /#wrapper #}
+    {% block site_footer %}
+      {% include "global/footer.html" %}
+    {% endblock %}
+    {% block site_js %}
+      {{ js('common') }}
+    {% endblock %}
+    {% block js %}{% endblock %}
+  </body>
+</html>
