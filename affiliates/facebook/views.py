@@ -1,14 +1,13 @@
 from django import http
 from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect as django_redirect
+from django.shortcuts import get_object_or_404, redirect as django_redirect, render
 from django.views.decorators.cache import cache_control, never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 import basket
 import commonware
-import jingo
 from commonware.response.decorators import xframe_allow
 from funfactory.urlresolvers import reverse
 from tower import ugettext as _
@@ -92,7 +91,7 @@ def pre_auth_promo(request):
         'app_permissions': settings.FACEBOOK_PERMISSIONS,
         'banners': banners
     }
-    return jingo.render(request, 'facebook/pre_auth_promo.html', context)
+    return render(request, 'facebook/pre_auth_promo.html', context)
 
 
 @require_POST
@@ -156,7 +155,7 @@ def banner_create(request):
             banner_instance.save()
             return JSONResponse({'next': next}, status=201)  # 201 Created
 
-    return jingo.render(request, 'facebook/banner_create.html', {'form': form})
+    return render(request, 'facebook/banner_create.html', {'form': form})
 
 
 @fb_login_required
@@ -184,11 +183,11 @@ def banner_delete(request):
 def banner_list(request):
     # New users can't see this page.
     if request.user.is_new:
-        return jingo.render(request, 'facebook/first_run.html')
+        return render(request, 'facebook/first_run.html')
 
     banner_instances = (request.user.banner_instance_set.filter(processed=True)
                         .select_related('banner'))
-    return jingo.render(request, 'facebook/banner_list.html',
+    return render(request, 'facebook/banner_list.html',
                         {'banner_instances': banner_instances})
 
 
@@ -200,7 +199,7 @@ def banner_share(request, instance_id):
     protocol = 'https' if request.is_secure() else 'http'
     next = absolutify(reverse('facebook.post_banner_share'),
                               protocol=protocol)
-    return jingo.render(request, 'facebook/banner_share.html',
+    return render(request, 'facebook/banner_share.html',
                         {'banner_instance': banner_instance, 'next': next})
 
 
@@ -277,14 +276,14 @@ def follow_banner_link(request, banner_instance_id):
 def leaderboard(request):
     form = LeaderboardFilterForm(request.GET or None)
     top_users = form.get_top_users()
-    return jingo.render(request, 'facebook/leaderboard.html',
+    return render(request, 'facebook/leaderboard.html',
                         {'top_users': top_users, 'form': form})
 
 
 @fb_login_required
 @xframe_allow
 def faq(request):
-    return jingo.render(request, 'facebook/faq.html')
+    return render(request, 'facebook/faq.html')
 
 
 @fb_login_required
@@ -292,7 +291,7 @@ def faq(request):
 def invite(request):
     protocol = 'https' if request.is_secure() else 'http'
     next = absolutify(reverse('facebook.post_invite'), protocol=protocol)
-    return jingo.render(request, 'facebook/invite.html', {'next': next})
+    return render(request, 'facebook/invite.html', {'next': next})
 
 
 def post_invite(request):

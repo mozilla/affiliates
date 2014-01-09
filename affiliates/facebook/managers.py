@@ -9,7 +9,6 @@ from django.db.models.query import QuerySet
 from django.template.loader import render_to_string
 
 import commonware.log
-import jingo
 import requests
 from caching.base import CachingManager
 from tower import ugettext as _
@@ -138,9 +137,7 @@ class FacebookAccountLinkManager(CachingManager):
         linking their account with a Facebook account.
         """
         subject = _('Link your Firefox Affiliates account')
-        message = jingo.render_to_string(request,
-                                         'facebook/link_activation_email.html',
-                                         {'link': link})
+        message = render_to_string(request, 'facebook/link_activation_email.html', {'link': link})
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                   [link.affiliates_user.email])
 
