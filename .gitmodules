@@ -1,9 +1,3 @@
-[submodule "templates/global"]
-	path = templates/global
-	url = https://github.com/mozilla/django-moz-header.git
-[submodule "media/global"]
-	path = media/global
-	url = https://github.com/mozilla/django-moz-header.git
 [submodule "vendor"]
 	path = vendor
 	url = https://github.com/mozilla/playdoh-lib.git
@@ -40,3 +34,9 @@
 [submodule "vendor-local/src/django-form-utils"]
 	path = vendor-local/src/django-form-utils
 	url = git://github.com/carljm/django-form-utils.git
+[submodule "affiliates/shared/templates/global"]
+	path = affiliates/shared/templates/global
+	url = https://github.com/mozilla/django-moz-header.git
+[submodule "static/global"]
+	path = static/global
+	url = https://github.com/mozilla/django-moz-header.git
