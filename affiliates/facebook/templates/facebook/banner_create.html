@@ -25,7 +25,7 @@
       {# L10n: Used above a box showing what a banner will look like once it is created. #}
       <h3>{{ _('Your banner preview') }}</h3>
       <figure>
-        <img id="banner" src="{{ MEDIA_URL }}img/facebook/banners/placeholder.png" alt="" width="300" height="216">
+        <img id="banner" src="{{ static('img/facebook/banners/placeholder.png') }}" alt="" width="300" height="216">
         <img id="userpic" src="{{ request.user.picture_url }}" alt="" width="50" height="50">
       </figure>
     </div>
