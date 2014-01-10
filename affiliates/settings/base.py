@@ -340,6 +340,7 @@ BANNERS_HASH = [
 ]
 
 # Settings for Affiliates Facebook app
+FACEBOOK_APP_NAMESPACE = 'affiliates'
 FACEBOOK_PERMISSIONS = ''
 FACEBOOK_LOCALES = ('en-us', 'de', 'es', 'fr', 'nl', 'pl', 'pt-br', 'sq', 'zh-tw')
 FACEBOOK_DOWNLOAD_URL = 'https://www.mozilla.org/firefox'

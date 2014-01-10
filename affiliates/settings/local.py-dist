@@ -65,8 +65,8 @@ MEDIA_URL = urljoin(SITE_URL, base.MEDIA_URL)
 # Set to enable Google Analytics
 #GA_ACCOUNT_CODE = ''
 
-# CDN for absolutify
-#CDN_DOMAIN = 'affiliates-cdn.mozilla.org'
+# CDN for absolutify. Set to 'localhost:8000' for local development.
+CDN_DOMAIN = 'localhost:8000'
 
 # Uncomment to send email to the console, usually only for local development.
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -91,6 +91,12 @@ MEDIA_URL = urljoin(SITE_URL, base.MEDIA_URL)
 #FACEBOOK_APP_ID = ''
 #FACEBOOK_APP_SECRET = ''
 #FACEBOOK_APP_NAMESPACE = ''
+
+# Uncomment to enable logging of exceptions to the console for local
+# development.
+#MIDDLEWARE_CLASSES = base.MIDDLEWARE_CLASSES + [
+#    'affiliates.shared.middleware.ExceptionLoggingMiddleware'
+#]
 
 # Error Reporting
 ##############################################################################

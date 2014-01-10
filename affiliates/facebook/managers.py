@@ -137,7 +137,7 @@ class FacebookAccountLinkManager(CachingManager):
         linking their account with a Facebook account.
         """
         subject = _('Link your Firefox Affiliates account')
-        message = render_to_string(request, 'facebook/link_activation_email.html', {'link': link})
+        message = render_to_string('facebook/link_activation_email.html', {'link': link})
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                   [link.affiliates_user.email])
 
