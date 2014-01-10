@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     (r'^browserid/', include('affiliates.browserid.urls')),
     (r'^fb/', include('affiliates.facebook.urls')),
 
-
     (r'^admin/', include('smuggler.urls')),
     (r'^admin/', include(admin_site.urls)),
 )

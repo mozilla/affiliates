@@ -1,10 +1,15 @@
-# This is an example settings_local.py file.
-# Copy it and add your local settings here.
+# This is an example settings/local.py file.
+# These settings overrides what's in settings/base.py
 
+# To extend any settings from settings/base.py here's an example:
+# INSTALLED_APPS = base.INSTALLED_APPS + ['debug_toolbar']
 from urlparse import urljoin
 
-from .base import *
+from . import base
 
+
+# Database
+##############################################################################
 
 DATABASES = {
     'default': {
@@ -23,63 +28,57 @@ DATABASES = {
         'TEST_COLLATION': 'utf8_general_ci',
     },
     # 'slave': {
-    #     ...
+    # ...
     # },
 }
 
-# Recipients of traceback emails and other notifications.
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
-MANAGERS = ADMINS
+# Uncomment this and set to all slave DBs in use on the site.
+# SLAVE_DATABASES = ['slave']
+
+
+# Environment-specific Settings
+##############################################################################
 
 # Debugging displays nice error messages, but leaks memory. Set this to False
 # on all server instances and True only for development.
-DEBUG = TEMPLATE_DEBUG = False
+DEBUG = TEMPLATE_DEBUG = True
 
 # Is this a development instance? Set this to True on development/master
 # instances and False on stage/prod.
-DEV = False
+DEV = True
 
-# # Playdoh ships with sha512 password hashing by default. Bcrypt+HMAC is safer,
-# # so it is recommended. Please read <https://github.com/fwenzel/django-sha2#readme>,
-# # then switch this to bcrypt and pick a secret HMAC key for your application.
-# PWD_ALGORITHM = 'bcrypt'
-# HMAC_KEYS = {  # for bcrypt only
-#     '2011-01-01': 'cheesecake',
-# }
+# Time zone for the current installation. Default is America/Chicago. See
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a list of
+# valid timezone values.
+#TIME_ZONE = 'America/New_York'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '1iz#v0m55@h26^m6hxk3a7at*h$qj_2a$juu1#nv50548j(x1v'
+# Uncomment this line if you are running a local development install without
+# HTTPS to disable HTTPS-only cookies.
+#SESSION_COOKIE_SECURE = False
+#CSRF_COOKIE_SECURE = False
 
-# Send email to the console
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# URL users will use to access your site, including the protocol, hostname, and
+# port. For local development, this will typically be `http://localhost:8000'.
+SITE_URL = 'http://localhost:8000'
+MEDIA_URL = urljoin(SITE_URL, base.MEDIA_URL)
 
-# Uncomment these to activate and customize Celery:
-# CELERY_ALWAYS_EAGER = False  # required to activate celeryd
-# BROKER_HOST = 'localhost'
-# BROKER_PORT = 5672
-# BROKER_USER = 'playdoh'
-# BROKER_PASSWORD = 'playdoh'
-# BROKER_VHOST = 'playdoh'
-# CELERY_RESULT_BACKEND = 'amqp'
+# Set to enable Google Analytics
+#GA_ACCOUNT_CODE = ''
 
 # CDN for absolutify
-# CDN_DOMAIN = 'affiliates-cdn.mozilla.org'
+#CDN_DOMAIN = 'affiliates-cdn.mozilla.org'
 
-# Responsys email list
-RESPONSYS_KEY = ''
-RESPONSYS_API_URL = 'https://awesomeness.mozilla.org/pub/rf'
-RESPONSYS_CAMPAIGN = 'MOZILLA_AND_YOU'
+# Uncomment to send email to the console, usually only for local development.
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-SITE_URL = 'http://localhost:8000'
-MEDIA_URL = urljoin(SITE_URL, MEDIA_URL)
-
-# Uncomment to configure statsd
-# STATSD_CLIENT = 'django_statsd.clients.statsd'
-# STATSD_HOST = 'localhost'
-# STATSD_PORT = 8125
-# STATSD_PREFIX = 'affiliates'
+# Uncomment these to activate and customize Celery:
+#CELERY_ALWAYS_EAGER = False  # required to activate celeryd
+#BROKER_HOST = 'localhost'
+#BROKER_PORT = 5672
+#BROKER_USER = 'affiliates'
+#BROKER_PASSWORD = 'affiliates'
+#BROKER_VHOST = 'affiliates'
+#CELERY_RESULT_BACKEND = 'amqp'
 
 # Bug 719522
 # List of hashes of banner images for upgrade campaign
@@ -93,18 +92,44 @@ MEDIA_URL = urljoin(SITE_URL, MEDIA_URL)
 #FACEBOOK_APP_SECRET = ''
 #FACEBOOK_APP_NAMESPACE = ''
 
-# If you're doing local development without a test facebook app, set this to
-# True to wrap the facebook app in an iframe and to mock authentication.
-FACEBOOK_DEBUG = False
+# Error Reporting
+##############################################################################
 
-# User ID to use for mocking Facebook authentication in debug mode.
-# To get the user id for your Facebook account, visit
-# https://developers.facebook.com/tools/explorer.
-#FACEBOOK_DEBUG_USER_ID = ''
+# Recipients of traceback emails and other notifications.
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+)
+MANAGERS = ADMINS
 
-# Set to enable Google Analytics
-#GA_ACCOUNT_CODE = ''
 
-# Uncomment this if you are running a local dev instance without HTTPS.
-#SESSION_COOKIE_SECURE = False
-#CSRF_COOKIE_SECURE = False
+# Security
+##############################################################################
+
+# Playdoh ships with Bcrypt+HMAC by default because it's the most secure.
+# To use bcrypt, fill in a secret HMAC key. It cannot be blank.
+HMAC_KEYS = {
+    #'2012-06-06': 'some secret',
+}
+
+from django_sha2 import get_password_hashers
+PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
+
+# Make this unique, and don't share it with anybody. It cannot be blank.
+SECRET_KEY = ''
+
+
+# Logging
+##############################################################################
+
+# SYSLOG_TAG = "oneanddone_app"
+# LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG}))
+
+# Common Event Format logging parameters
+#CEF_PRODUCT = 'Playdoh'
+#CEF_VENDOR = 'Mozilla'
+
+# Uncomment to configure statsd
+#STATSD_CLIENT = 'django_statsd.clients.statsd'
+#STATSD_HOST = 'localhost'
+#STATSD_PORT = 8125
+#STATSD_PREFIX = 'affiliates'
