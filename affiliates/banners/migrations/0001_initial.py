@@ -7,7 +7,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding model 'Banner'
         db.create_table('banners_banner', (
             ('badge_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['badges.Badge'], unique=True, primary_key=True)),
@@ -20,7 +20,7 @@ class Migration(SchemaMigration):
             ('banner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['banners.Banner'])),
             ('color', self.gf('django.db.models.fields.CharField')(max_length=20)),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=250)),
-            ('locale', self.gf('shared.models.LocaleField')(default='en-US', max_length=32)),
+            ('locale', self.gf('affiliates.shared.models.LocaleField')(default='en-US', max_length=32)),
         ))
         db.send_create_signal('banners', ['BannerImage'])
 
@@ -33,7 +33,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Deleting model 'Banner'
         db.delete_table('banners_banner')
 
@@ -112,7 +112,7 @@ class Migration(SchemaMigration):
             'color': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '250'}),
-            'locale': ('shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
+            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
         },
         'banners.bannerinstance': {
             'Meta': {'object_name': 'BannerInstance', '_ormbases': ['badges.BadgeInstance']},

@@ -7,7 +7,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding model 'Category'
         db.create_table('badges_category', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -37,7 +37,7 @@ class Migration(SchemaMigration):
         db.create_table('badges_badgepreview', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=250)),
-            ('locale', self.gf('shared.models.LocaleField')(default='en-US', max_length=32)),
+            ('locale', self.gf('affiliates.shared.models.LocaleField')(default='en-US', max_length=32)),
             ('badge', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['badges.Badge'])),
         ))
         db.send_create_signal('badges', ['BadgePreview'])
@@ -79,7 +79,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Removing unique constraint on 'ClickStats', fields ['badge_instance', 'month', 'year']
         db.delete_unique('badges_clickstats', ['badge_instance_id', 'month', 'year'])
 
@@ -160,7 +160,7 @@ class Migration(SchemaMigration):
             'badge': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['badges.Badge']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '250'}),
-            'locale': ('shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
+            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
         },
         'badges.category': {
             'Meta': {'object_name': 'Category'},

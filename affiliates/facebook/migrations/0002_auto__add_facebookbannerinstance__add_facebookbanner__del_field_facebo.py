@@ -23,7 +23,7 @@ class Migration(SchemaMigration):
         db.create_table('facebook_facebookbanner', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=250)),
-            ('locale', self.gf('shared.models.LocaleField')(default='en-US', max_length=32)),
+            ('locale', self.gf('affiliates.shared.models.LocaleField')(default='en-US', max_length=32)),
         ))
         db.send_create_signal('facebook', ['FacebookBanner'])
 
@@ -89,7 +89,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'FacebookBanner'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '250'}),
-            'locale': ('shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
+            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
         },
         'facebook.facebookbannerinstance': {
             'Meta': {'object_name': 'FacebookBannerInstance'},

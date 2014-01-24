@@ -99,7 +99,7 @@ class Migration(SchemaMigration):
             'banner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'locale_set'", 'to': "orm['facebook.FacebookBanner']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'default': "''", 'max_length': '250'}),
-            'locale': ('shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
+            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
             'thumbnail': ('django.db.models.fields.files.ImageField', [], {'default': "''", 'max_length': '250'})
         },
         'facebook.facebookclickstats': {
