@@ -19,7 +19,7 @@ class TestHome(TestCase):
             response = self.client.get(reverse('home'))
         eq_(response.status_code, 302)
 
-    @patch('shared.views.browserid_home')
+    @patch('affiliates.shared.views.browserid_home')
     @patch.object(settings, 'BROWSERID_LOCALES', ['en-us', 'es'])
     def test_browserid_locales(self, browserid_home):
         """Test that users in locales listed in BROWSERID_LOCALES see the
@@ -100,7 +100,7 @@ class NewsletterSubscribeTests(TestCase):
         subscribe.assert_called_with('test@example.com', 'test-list',
                                      source_url=ANY)
 
-    @patch('shared.views.log')
+    @patch('affiliates.shared.views.log')
     def test_basket_error_log(self, log, subscribe):
         """If basket throws an exception, log it and return a 200 OK."""
         subscribe.side_effect = basket.BasketException

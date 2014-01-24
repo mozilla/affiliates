@@ -16,7 +16,7 @@ class AppContextTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-    @patch('facebook.context_processors.in_facebook_app')
+    @patch('affiliates.facebook.context_processors.in_facebook_app')
     def _app_context(self, in_facebook_app, path='/', user=None, in_app=True,
                      locale='en-US'):
         in_facebook_app.return_value = in_app
@@ -44,7 +44,7 @@ class AppContextTests(TestCase):
         linked_account = account_link.facebook_user
         ok_('account_link_form' not in self._app_context(user=linked_account))
 
-    @patch('facebook.context_processors.NewsletterSubscriptionForm')
+    @patch('affiliates.facebook.context_processors.NewsletterSubscriptionForm')
     def test_newsletter_form(self, NewsletterSubscriptionForm):
         """If the user is logged in, include the newsletter_form."""
         user = FacebookUserFactory()

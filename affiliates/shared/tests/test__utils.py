@@ -46,7 +46,7 @@ class TestAbsolutify(TestCase):
 
 
 class TestRedirect(TestCase):
-    urls = 'shared.tests.urls'
+    urls = 'affiliates.shared.tests.urls'
 
     def test_basic(self):
         with self.activate('en-US'):
@@ -83,7 +83,7 @@ def mock_ugettext(message, context=None):
         return 'untranslated'
 
 
-@patch('shared.utils.tower.ugettext', mock_ugettext)
+@patch('affiliates.shared.utils.tower.ugettext', mock_ugettext)
 class TestUGetTextLocale(TestCase):
     def test_basic(self):
         """

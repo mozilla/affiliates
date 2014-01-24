@@ -44,7 +44,7 @@ class AddClickTests(TestCase):
         ok_(unicode(instance.id) in mail.outbox[0].body)
         ok_('admin@example.com' in mail.outbox[0].to)
 
-    @patch('facebook.tasks.CLICK_MILESTONES', {5: 'test'})
+    @patch('affiliates.facebook.tasks.CLICK_MILESTONES', {5: 'test'})
     def test_click_milestones(self):
         """If the new click count is a click milestone, send a notification."""
         instance = FacebookBannerInstanceFactory.create(total_clicks=3)
@@ -91,7 +91,7 @@ class GenerateBannerInstanceImageTests(TestCase):
         eq_(instance.processed, False)
 
     @patch.object(requests, 'get', image_response('images', 'fb_picture.jpg'))
-    @patch('facebook.tasks.Image')
+    @patch('affiliates.facebook.tasks.Image')
     def test_invalid_image(self, Image):
         """If PIL throws an exception when opening the images, do nothing."""
         Image.open.side_effect = ValueError

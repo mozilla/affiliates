@@ -12,7 +12,7 @@ def mock_read(fieldfile):
     return 'CONTENT'
 
 
-@patch('shared.serializers.json_files._read_fieldfile', mock_read)
+@patch('affiliates.shared.serializers.json_files._read_fieldfile', mock_read)
 class TestJSONFilesSerializer(TestCase):
     fixtures = ['serialize']
 
@@ -30,7 +30,7 @@ class TestJSONFilesSerializer(TestCase):
         expected_json = json.loads(serialize('json', queryset))
         eq_(results['objects'], expected_json)
 
-    @patch('shared.serializers.json_files._write_file')
+    @patch('affiliates.shared.serializers.json_files._write_file')
     def test_deserialize_basic(self, _write_file):
         """Test that files are written to the filesystem on deserialization."""
         serialized_data = json.dumps({

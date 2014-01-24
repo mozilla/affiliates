@@ -6,7 +6,7 @@ from affiliates.shared.tests import TestCase
 
 
 class BaseTemplateTests(TestCase):
-    urls = 'facebook.tests.urls'
+    urls = 'affiliates.facebook.tests.urls'
 
     def test_notifications_cleared(self):
         """

@@ -25,7 +25,7 @@ class FacebookAuthenticationMiddlewareTests(TestCase):
         request.META['HTTP_ACCEPT_LANGUAGE'] = locale
         return request
 
-    @patch('facebook.middleware.activate_locale')
+    @patch('affiliates.facebook.middleware.activate_locale')
     def test_no_session(self, activate_locale):
         """
         If there is no authenticated session, the user attribute should contain
@@ -38,7 +38,7 @@ class FacebookAuthenticationMiddlewareTests(TestCase):
         # Check that the locale from the request was activated.
         activate_locale.assert_called_once_with(ANY, 'en-US')
 
-    @patch('facebook.middleware.activate_locale')
+    @patch('affiliates.facebook.middleware.activate_locale')
     def test_no_matching_user(self, activate_locale):
         """
         If an invalid user id is given in the session, the user attribute should
@@ -52,7 +52,7 @@ class FacebookAuthenticationMiddlewareTests(TestCase):
         # Check that the locale from the request was activated.
         activate_locale.assert_called_once_with(ANY, 'es')
 
-    @patch('facebook.middleware.activate_locale')
+    @patch('affiliates.facebook.middleware.activate_locale')
     def test_user_found(self, activate_locale):
         """
         If there is an authenticated session with an existing user, the
@@ -67,7 +67,7 @@ class FacebookAuthenticationMiddlewareTests(TestCase):
         # Check that the locale from the user object was activated.
         activate_locale.assert_called_once_with(ANY, 'fr')
 
-    @patch('facebook.middleware.activate_locale')
+    @patch('affiliates.facebook.middleware.activate_locale')
     def test_user_non_fb_app(self, activate_locale):
         """
         If there is an authenticated session with an existing user outside of

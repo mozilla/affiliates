@@ -56,7 +56,7 @@ class FacebookDebugMiddleware(object):
                                         new_csp_frame_src)
 
         # Mock out decode function for authentication.
-        self.decode_patcher = patch('facebook.views.decode_signed_request')
+        self.decode_patcher = patch('affiliates.facebook.views.decode_signed_request')
 
     def process_request(self, request):
         request._fb_debug = (getattr(settings, 'FACEBOOK_DEBUG', False) and

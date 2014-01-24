@@ -71,7 +71,7 @@ class LoginTests(TestCase):
         login(request, user)
         update_user_info.assert_called_once_with(user)
 
-    @patch('facebook.auth.update_user_info')
+    @patch('affiliates.facebook.auth.update_user_info')
     def test_old_user_task_scheduled(self, update_task, update_method):
         """
         If the user logging in isn't new, use the asynchronous task to update
@@ -83,7 +83,7 @@ class LoginTests(TestCase):
         update_task.delay.assert_called_once_with(user.id)
         ok_(not update_method.called)
 
-    @patch('facebook.auth.datetime')
+    @patch('affiliates.facebook.auth.datetime')
     def test_last_login_attribute(self, mock_datetime, update_user_info):
         """
         During the login process, the last_login attribute on the user must be

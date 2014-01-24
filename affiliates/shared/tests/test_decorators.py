@@ -10,7 +10,7 @@ from affiliates.shared.tests import TestCase
 @patch.object(settings, 'LOGIN_VIEW_NAME', 'mock_login_view')
 class TestLoginRequired(TestCase):
     fixtures = ['registered_users']
-    urls = 'shared.tests.urls'
+    urls = 'affiliates.shared.tests.urls'
 
     def test_basic(self):
         with self.activate('en-US'):

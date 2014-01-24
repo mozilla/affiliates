@@ -34,7 +34,7 @@ class LoadAppTests(TestCase):
         if payload is not None:
             post_data['signed_request'] = 'signed_request'
 
-        with patch('facebook.views.decode_signed_request') as decode:
+        with patch('affiliates.facebook.views.decode_signed_request') as decode:
             if payload:
                 decode.return_value = payload
             else:
@@ -60,7 +60,7 @@ class LoadAppTests(TestCase):
             eq_(response.status_code, 302)
             self.assert_viewname_url(response['Location'], 'home')
 
-    @patch('facebook.views.fb_redirect')
+    @patch('affiliates.facebook.views.fb_redirect')
     def test_safari_workaround(self, fb_redirect, update_user_info):
         """
         If the user is using Safari and hasn't gone through the workaround yet,
@@ -73,7 +73,7 @@ class LoadAppTests(TestCase):
         self.assert_viewname_url(fb_redirect.call_args[0][1],
                                  'facebook.safari_workaround')
 
-    @patch('facebook.views.fb_redirect')
+    @patch('affiliates.facebook.views.fb_redirect')
     def test_no_safari_workaround(self, fb_redirect, update_user_info):
         """
         If the user is not using Safari, do not redirect to the workaround.
@@ -89,7 +89,7 @@ class LoadAppTests(TestCase):
         eq_(response, fb_redirect.return_value)
         ok_(fb_redirect.call_args[0][1] != workaround_url)
 
-    @patch('facebook.views.fb_redirect')
+    @patch('affiliates.facebook.views.fb_redirect')
     def test_safari_workaround_done(self, fb_redirect, update_user_info):
         """
         If the user is using Safari and hasthe workaround cookie, do not send
@@ -108,7 +108,7 @@ class LoadAppTests(TestCase):
         eq_(response, fb_redirect.return_value)
         ok_(fb_redirect.call_args[0][1] != workaround_url)
 
-    @patch('facebook.views.fb_redirect')
+    @patch('affiliates.facebook.views.fb_redirect')
     def test_no_authorization(self, fb_redirect, update_user_info):
         """
         If the user has yet to authorize the app, redirect them to the pre-auth
@@ -124,7 +124,7 @@ class LoadAppTests(TestCase):
                 .endswith(reverse('facebook.pre_auth_promo')))
 
     @patch.object(FacebookUser, 'is_new', False)
-    @patch('facebook.views.fb_redirect')
+    @patch('affiliates.facebook.views.fb_redirect')
     def test_has_authorization(self, fb_redirect, update_user_info):
         """
         If the user has authorized the app and isn't new, redirect to the main
@@ -141,7 +141,7 @@ class LoadAppTests(TestCase):
             ok_(fb_redirect.call_args[0][1]
                 .endswith(reverse('facebook.banner_list')))
 
-    @patch('facebook.views.login')
+    @patch('affiliates.facebook.views.login')
     def test_country_saved(self, login, update_user_info):
         """
         When a user enters the app, their country should be set and
@@ -155,7 +155,7 @@ class LoadAppTests(TestCase):
         eq_(login.called, True)
         eq_(login.call_args[0][1].country, 'fr')
 
-    @patch('facebook.views.login')
+    @patch('affiliates.facebook.views.login')
     def test_country_missing(self, login, update_user_info):
         """
         If the user's country is not included in the signed_request, keep their
@@ -217,7 +217,7 @@ class DeauthorizeTest(TestCase):
         if payload is not None:
             post_data['signed_request'] = 'signed_request'
 
-        with patch('facebook.views.decode_signed_request') as decode:
+        with patch('affiliates.facebook.views.decode_signed_request') as decode:
             if payload:
                 decode.return_value = payload
             else:
@@ -265,7 +265,7 @@ class CreateBannerTests(TestCase):
             return self.client.post(reverse('facebook.banner_create'),
                                     post_data)
 
-    @patch('facebook.views.generate_banner_instance_image.delay')
+    @patch('affiliates.facebook.views.generate_banner_instance_image.delay')
     def test_use_profile_image(self, delay):
         """
         If the user checked `use_profile_image`, create a banner instance,
@@ -431,7 +431,7 @@ class NewsletterSubscribeTests(TestCase):
                                      format='text', country='us',
                                      source_url=ANY)
 
-    @patch('facebook.views.log')
+    @patch('affiliates.facebook.views.log')
     def test_basket_error_log(self, log, subscribe):
         """If basket throws an exception, log it and return a 200 OK."""
         subscribe.side_effect = basket.BasketException
@@ -457,7 +457,7 @@ class FollowBannerLinkTests(TestCase):
         response = self.follow_link(999)
         self.assert_redirects(response, 'http://mozilla.org')
 
-    @patch('facebook.views.add_click')
+    @patch('affiliates.facebook.views.add_click')
     def test_banner_redirect(self, add_click):
         """
         If the requested banner instance exists, return a redirect to the
@@ -469,7 +469,7 @@ class FollowBannerLinkTests(TestCase):
         self.assert_redirects(response, 'http://allizom.org')
         add_click.delay.assert_called_with(unicode(instance.id))
 
-    @patch('facebook.views.add_click')
+    @patch('affiliates.facebook.views.add_click')
     def test_facebook_bot_no_click(self, add_click):
         """If the request is coming from a facebook bot, do not add a click."""
         instance = FacebookBannerInstanceFactory.create(
@@ -505,7 +505,7 @@ class BannerListTests(TestCase):
 
 
 @patch.object(settings, 'FACEBOOK_APP_URL', 'http://mozilla.org')
-@patch('facebook.views.messages.success')
+@patch('affiliates.facebook.views.messages.success')
 class PostBannerShareTest(TestCase):
     def post_banner_share(self, **params):
         with self.activate('en-US'):
@@ -573,13 +573,13 @@ class PostInviteTests(TestCase):
     def _post_invite(self, **kwargs):
         return views.post_invite(self.factory.get('/', data=kwargs))
 
-    @patch('facebook.views.messages')
+    @patch('affiliates.facebook.views.messages')
     def test_no_success(self, messages):
         """If the success parameter isn't passed via GET, do not add a success message."""
         self._post_invite()
         ok_(not messages.success.called)
 
-    @patch('facebook.views.messages')
+    @patch('affiliates.facebook.views.messages')
     def test_success(self, messages):
         """If the success parameter is passed via GET, add a success message."""
         self._post_invite(success='1')

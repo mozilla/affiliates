@@ -5,9 +5,9 @@ from affiliates.shared.tests import models, ModelsTestCase
 
 
 class ModelBaseTests(ModelsTestCase):
-    apps = ['shared.tests']
+    apps = ['affiliates.shared.tests']
 
-    @patch('shared.models._')
+    @patch('affiliates.shared.models._')
     def localized_basic_test(self, _):
         # Category inherits from ModelBase
         c = models.ModelBaseChild.objects.create(name='TestString')
@@ -23,7 +23,7 @@ class ModelBaseTests(ModelsTestCase):
 
 
 class MultiTableParentModelTests(ModelsTestCase):
-    apps = ['shared.tests']
+    apps = ['affiliates.shared.tests']
 
     def setUp(self):
         self.child = models.MultiTableChild.objects.create(some_value=10)

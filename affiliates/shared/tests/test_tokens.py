@@ -7,12 +7,12 @@ from affiliates.shared.tokens import TokenGenerator
 
 class TokenGeneratorTests(TestCase):
     def generate_token(self, generator, time):
-        with patch('shared.tokens.time.time') as time_func:
+        with patch('affiliates.shared.tokens.time.time') as time_func:
             time_func.return_value = time
             return generator.generate_token()
 
     def verify_token(self, generator, token, time):
-        with patch('shared.tokens.time.time') as time_func:
+        with patch('affiliates.shared.tokens.time.time') as time_func:
             time_func.return_value = time
             return generator.verify_token(token)
 
