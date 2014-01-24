@@ -1,6 +1,6 @@
 import os
 
-from django.conf.urls.defaults import include, patterns, url
+from django.conf.urls import include, patterns, url
 from django.http import HttpResponse
 from django.template import RequestContext
 

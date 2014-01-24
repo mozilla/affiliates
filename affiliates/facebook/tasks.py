@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 
 import commonware
 import requests
-from celery.decorators import task
+from celery.task import task
 from PIL import Image, ImageDraw
 
 from affiliates.facebook.models import (AppNotification, FacebookBannerInstance,
