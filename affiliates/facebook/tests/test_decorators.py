@@ -42,7 +42,7 @@ class FBLoginRequiredTests(TestCase):
         with self.activate('en-US'):
             response = view(request)
             eq_(response.status_code, 302)
-            self.assert_viewname_url(response['Location'], 'home')
+            self.assert_viewname_url(response['Location'], 'base.landing')
 
     def test_django_auth(self):
         """

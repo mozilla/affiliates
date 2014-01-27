@@ -1,9 +1,9 @@
 from django.conf import settings
 
-from funfactory.urlresolvers import reverse
-from mock import patch
+from mock import Mock, patch
 from nose.tools import eq_
 
+from affiliates.shared.context_processors import l10n
 from affiliates.shared.tests import TestCase
 
 
@@ -11,8 +11,8 @@ from affiliates.shared.tests import TestCase
 class L10nTest(TestCase):
     def test_basic(self):
         """Test that LOCALE and LANGUAGE are correct."""
+        request = Mock()
         with self.activate('fy-NL'):
-            response = self.client.get(reverse('home'))
-
-        eq_(response.context['LOCALE'], 'fy-nl')
-        eq_(response.context['LANGUAGE'], 'Frysk')
+            ctx = l10n(request)
+            eq_(ctx['LOCALE'], 'fy-nl')
+            eq_(ctx['LANGUAGE'], 'Frysk')

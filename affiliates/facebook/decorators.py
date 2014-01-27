@@ -15,5 +15,5 @@ def fb_login_required(func):
         if is_logged_in(request):
             return func(request, *args, **kwargs)
         else:
-            return redirect('home')
+            return redirect('base.landing')
     return inner

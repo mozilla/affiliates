@@ -11,7 +11,6 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'csp',
     'django_extensions',
     'django_statsd',
-    'smuggler',
     'cronjobs',
     'jingo_minify',
     'south',
@@ -128,12 +127,6 @@ SUPPORTED_NONLOCALES += ['link', 'admin', 'fb']
 
 # CacheMachine config
 CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
-
-# Set up custom serializer and django-smuggler
-SERIALIZATION_MODULES = {
-    'json_files': 'affiliates.shared.serializers.json_files',
-}
-SMUGGLER_FORMAT = 'json_files'
 
 # Email subscription config
 BASKET_URL = 'http://basket.mozilla.com'

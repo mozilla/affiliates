@@ -51,14 +51,14 @@ class LoadAppTests(TestCase):
         with self.activate('en-US'):
             response = self.load_app(None)
             eq_(response.status_code, 302)
-            self.assert_viewname_url(response['Location'], 'home')
+            self.assert_viewname_url(response['Location'], 'base.landing')
 
     def test_invalid_signed_request(self, update_user_info):
         """If the signed request is invalid, redirect to the homepage."""
         with self.activate('en-US'):
             response = self.load_app(False)
             eq_(response.status_code, 302)
-            self.assert_viewname_url(response['Location'], 'home')
+            self.assert_viewname_url(response['Location'], 'base.landing')
 
     @patch('affiliates.facebook.views.fb_redirect')
     def test_safari_workaround(self, fb_redirect, update_user_info):

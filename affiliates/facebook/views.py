@@ -43,12 +43,12 @@ def load_app(request):
     signed_request = request.POST.get('signed_request', None)
     if signed_request is None:
         # App wasn't loaded within a canvas, redirect to the home page.
-        return redirect('home')
+        return redirect('base.landing')
 
     decoded_request = decode_signed_request(signed_request,
                                             settings.FACEBOOK_APP_SECRET)
     if decoded_request is None:
-        return redirect('home')
+        return redirect('base.landing')
 
     # If user is using Safari, we need to apply the cookie workaround.
     useragent = request.META.get('HTTP_USER_AGENT', '')

@@ -7,6 +7,7 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.management import call_command
 from django.db.models import loading
+from django.test import TestCase as DjangoTestCase
 from django.test.client import RequestFactory
 from django.utils.translation import get_language
 
@@ -44,7 +45,7 @@ class SessionRequestFactory(RequestFactory):
         return request
 
 
-class TestCase(test_utils.TestCase):
+class TestCase(DjangoTestCase):
     """Base class for Affiliates test cases."""
     client_class = FacebookAuthClient
 
