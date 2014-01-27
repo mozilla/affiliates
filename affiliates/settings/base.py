@@ -4,14 +4,9 @@ from funfactory.settings_base import *
 # Django Settings
 ##############################################################################
 INSTALLED_APPS = list(INSTALLED_APPS) + [
-    'affiliates.stats',
-    'affiliates.badges',
-    'affiliates.banners',
-    'affiliates.browserid',
+    'affiliates.base',
     'affiliates.facebook',
     'affiliates.shared',
-    'affiliates.news',
-    'affiliates.users',
 
     'csp',
     'django_extensions',
@@ -55,9 +50,7 @@ auth_index = MIDDLEWARE_CLASSES.index('django.contrib.auth.middleware.Authentica
 MIDDLEWARE_CLASSES.insert(auth_index + 1, 'affiliates.facebook.middleware.FacebookAuthenticationMiddleware')
 
 # Language settings
-PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'fy-NL', 'hr', 'ko', 'nl',
-                  'pl', 'pt-BR', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr-LATN', 'tr',
-                  'zh-TW')
+PROD_LANGUAGES = ()
 
 # UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
 # manner.
@@ -78,11 +71,8 @@ LANGUAGES = lazy(lazy_langs, dict)()
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 
 # Authentication
-AUTHENTICATION_BACKENDS = (
-    'affiliates.users.backends.EmailBackend',
-    'affiliates.browserid.backends.BrowserIDSessionBackend',
-)
-LOGIN_VIEW_NAME = 'home'
+#AUTHENTICATION_BACKENDS = ()
+LOGIN_VIEW_NAME = 'landing'
 
 # Files
 MAX_FILEPATH_LENGTH = 250
@@ -103,11 +93,6 @@ def _allowed_hosts():
     host = host.rsplit(':', 1)[0]  # Remove port
     return [host]
 ALLOWED_HOSTS = lazy(_allowed_hosts, list)()
-
-# Extra places to look for fixtures
-FIXTURE_DIRS = (
-    path('fixtures'),
-)
 
 # Set up logging to send emails on 500 errors
 LOGGING = {

@@ -5,10 +5,9 @@ from form_utils.widgets import ImageWidget
 from funfactory.admin import SessionCsrfAdminSite
 
 from affiliates.shared.forms import AdminModelForm
-from affiliates.stats.admin import StatsAdminMixin
 
 
-class AffiliatesAdminSite(StatsAdminMixin, SessionCsrfAdminSite):
+class AffiliatesAdminSite(SessionCsrfAdminSite):
     pass
 
 

@@ -9,7 +9,6 @@ from affiliates.facebook.models import (FacebookBanner, FacebookBannerInstance,
                              FacebookBannerLocale, FacebookClickStats,
                              FacebookUser)
 from affiliates.shared.admin import admin_site, BaseModelAdmin
-from affiliates.stats.options import ModelStats
 
 
 class FacebookBannerLocaleInline(admin.TabularInline):
@@ -73,32 +72,3 @@ class FacebookUserAdmin(BaseModelAdmin):
         ('Leaderboard', {'fields': ('leaderboard_position', 'total_clicks')}),
     )
 admin_site.register(FacebookUser, FacebookUserAdmin)
-
-
-class FacebookBannerInstanceStats(ModelStats):
-    display_name = 'FacebookBannerInstances created'
-    datetime_field = 'created'
-    filters = ['banner', 'user__country']
-admin_site.register_stats(FacebookBannerInstance, FacebookBannerInstanceStats)
-
-
-class FacebookClickStatsDisplay(ModelStats):
-    display_name = 'FacebookBanner clicks'
-    datetime_field = 'hour'
-    filters = ['banner_instance__banner', 'banner_instance__user__country']
-    default_interval = 'hours'
-
-    def default_start(self):
-        return datetime.now() - timedelta(days=7)
-admin_site.register_stats(FacebookClickStats, FacebookClickStatsDisplay)
-
-
-class FacebookUserStats(ModelStats):
-    display_name = "App authorizations"
-    datetime_field = 'created'
-    filters = ['country']
-    default_interval = 'days'
-
-    def default_start(self):
-        return datetime.now() - timedelta(days=7)
-admin_site.register_stats(FacebookUser, FacebookUserStats)

@@ -13,16 +13,9 @@ patch()
 
 admin.autodiscover()
 
-handler404 = 'affiliates.shared.views.view_404'
-handler500 = 'affiliates.shared.views.view_500'
-
 
 urlpatterns = patterns('',
-    (r'', include('affiliates.shared.urls')),
-    (r'', include('affiliates.badges.urls')),
-    (r'', include('affiliates.banners.urls')),
-    (r'^accounts/', include('affiliates.users.urls')),
-    (r'^browserid/', include('affiliates.browserid.urls')),
+    (r'', include('affiliates.base.urls')),
     (r'^fb/', include('affiliates.facebook.urls')),
 
     (r'^admin/', include('smuggler.urls')),
@@ -34,8 +27,6 @@ urlpatterns = patterns('',
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += patterns('',
-        (r'^404/$', handler404),
-        (r'^500/$', handler500),
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,
         }),
