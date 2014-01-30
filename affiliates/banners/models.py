@@ -1,40 +1,15 @@
 import hashlib
 import os
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.template.loader import render_to_string
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-from affiliates.badges.models import Badge, BadgeInstance
 from affiliates.banners import COLOR_CHOICES
 from affiliates.links.models import Link
-from affiliates.shared.models import LocaleField, ModelBase
-
-
-class OldBanner(Badge):
-    """Badge consisting of an image link."""
-    customize_view = 'banners.views.customize_banner'
-
-
-class OldBannerImage(ModelBase):
-    """Image that a user can choose for their specific banner."""
-    banner = models.ForeignKey(OldBanner)
-    color = models.CharField(max_length=20, choices=COLOR_CHOICES,
-                             verbose_name=u'image color')
-    image = models.ImageField(upload_to='uploads/banners/',
-                              verbose_name=u'image file',
-                              max_length=settings.MAX_FILEPATH_LENGTH)
-    locale = LocaleField()
-
-    def __unicode__(self):
-        return '%s: %s %s' % (self.banner.name, self.color, self.size)
-
-
-class OldBannerInstance(BadgeInstance):
-    image = models.ForeignKey(OldBannerImage)
+from affiliates.shared.models import LocaleField
 
 
 class Category(MPTTModel):
