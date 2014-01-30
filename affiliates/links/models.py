@@ -15,6 +15,10 @@ class Link(models.Model):
     aggregate_firefox_downloads = models.PositiveIntegerField(default=0)
     aggregate_firefox_os_referrals = models.PositiveIntegerField(default=0)
 
+    # Ids for supporting old Affiliates URLs
+    legacy_banner_instance_id = models.IntegerField(default=None, null=True)
+    legacy_banner_image_id = models.IntegerField(default=None, null=True)
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
