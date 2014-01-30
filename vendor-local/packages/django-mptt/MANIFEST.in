@@ -1,0 +1,10 @@
+include INSTALL
+include LICENSE
+include MANIFEST.in
+include NOTES
+include README.rst
+recursive-include docs *.rst *.py Makefile
+recursive-include mptt *.json
+recursive-include tests *
+recursive-include mptt/templates *
+recursive-include mptt/locale *

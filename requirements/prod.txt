@@ -16,3 +16,5 @@ django-form-utils>=0.2.0
 
 # oremj's commander
 -e git://github.com/oremj/commander.git
+
+django-mptt==0.6.0

@@ -1,3 +1,4 @@
+packages/django-mptt
 src/basket-client
 src/django-browserid
 src/django-cache-machine

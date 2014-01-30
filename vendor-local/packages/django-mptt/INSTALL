@@ -1,0 +1,16 @@
+Thanks for downloading Django MPTT
+
+To install, run the following command inside this directory:
+
+    python setup.py install
+
+Or if you'd prefer, you can simply place the included ``mptt`` directory
+somewhere on your PYTHONPATH, or symlink to it from somewhere on your
+PYTHONPATH; this is useful if you're working from a git checkout.
+
+Requires:
+ - Python 2.5 or newer
+ - Django 1.2 or newer
+
+You can obtain Python from http://www.python.org/ and Django from
+http://www.djangoproject.com/
