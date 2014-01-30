@@ -48,4 +48,4 @@ class LocaleImage(ModelBase):
 
 # South introspection rules for LocaleField
 from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ['^shared\.models\.LocaleField'])
+add_introspection_rules([], ['^affiliates\.shared\.models\.LocaleField'])

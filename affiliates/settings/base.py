@@ -6,9 +6,13 @@ from funfactory.settings_base import *
 ROOT_URLCONF = 'affiliates.urls'
 
 INSTALLED_APPS = list(INSTALLED_APPS) + [
+    'affiliates.badges',
+    'affiliates.banners',
     'affiliates.base',
     'affiliates.facebook',
+    'affiliates.news',
     'affiliates.shared',
+    'affiliates.users',
 
     'csp',
     'django_extensions',

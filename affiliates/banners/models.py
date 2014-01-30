@@ -11,9 +11,6 @@ from affiliates.banners import COLOR_CHOICES
 from affiliates.shared.models import LocaleField, ModelBase
 
 
-BANNER_TEMPLATE_FILE = 'affiliates/banners/templates/banners/banner_template.html'
-with open(path(BANNER_TEMPLATE_FILE)) as f:
-    BANNER_TEMPLATE = f.read()
 
 
 def rename(instance, filename):
