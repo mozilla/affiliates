@@ -40,6 +40,10 @@ def update_assets(ctx):
 @task
 def south(ctx):
     with ctx.lcd(settings.SRC_DIR):
+        # Temporary commands to fake migrate for links and banners apps.
+        ctx.local("python2.6 ./manage.py migrate --fake --delete-ghost-migrations links 0001")
+        ctx.local("python2.6 ./manage.py migrate --fake --delete-ghost-migrations banners 0001")
+
         ctx.local("python2.6 ./manage.py syncdb")
         ctx.local("python2.6 ./manage.py migrate")
 

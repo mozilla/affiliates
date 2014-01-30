@@ -17,6 +17,8 @@ class Migration(SchemaMigration):
             ('aggregate_link_clicks', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('aggregate_firefox_downloads', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
             ('aggregate_firefox_os_referrals', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
+            ('legacy_banner_instance_id', self.gf('django.db.models.fields.IntegerField')(default=None, null=True)),
+            ('legacy_banner_image_id', self.gf('django.db.models.fields.IntegerField')(default=None, null=True)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
@@ -116,6 +118,8 @@ class Migration(SchemaMigration):
             'destination': ('django.db.models.fields.URLField', [], {'max_length': '255'}),
             'html': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'legacy_banner_image_id': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True'}),
+            'legacy_banner_instance_id': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
