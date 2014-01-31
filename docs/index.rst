@@ -30,6 +30,7 @@ Contents
 
    install
    banners
+   upgrading
 
 
 Indices and tables
