@@ -13,8 +13,6 @@ from affiliates.shared.utils import (absolutify, current_locale, redirect,
 
 
 class TestAbsolutify(TestCase):
-    fixtures = ['sites']
-
     def setUp(self):
         self.patcher = patch.object(settings, 'SITE_URL', 'http://badge.mo.com')
         self.patcher.start()
