@@ -3,7 +3,7 @@ from nose.tools import eq_
 from affiliates.facebook.cron import update_facebook_leaderboard
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.tests import FacebookClickStatsFactory
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 class UpdateFacebookLeaderboardTests(TestCase):

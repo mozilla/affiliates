@@ -13,9 +13,9 @@ from tower import ugettext_lazy as _lazy
 
 from affiliates.facebook import managers
 from affiliates.facebook.utils import current_hour
-from affiliates.shared.models import LocaleField, ModelBase
-from affiliates.shared.storage import OverwritingStorage
-from affiliates.shared.utils import absolutify, get_object_or_none
+from affiliates.base.models import LocaleField, ModelBase
+from affiliates.base.storage import OverwritingStorage
+from affiliates.base.utils import absolutify, get_object_or_none
 
 
 class FacebookUser(CachingMixin, ModelBase):

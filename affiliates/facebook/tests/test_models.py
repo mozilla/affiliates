@@ -8,7 +8,7 @@ from affiliates.facebook.models import (FacebookBannerInstance, fb_banner_rename
 from affiliates.facebook.tests import (FacebookBannerFactory,
                             FacebookBannerInstanceFactory,
                             FacebookBannerLocaleFactory, FacebookUserFactory)
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 @patch.object(settings, 'FACEBOOK_BANNER_IMAGE_PATH', 'simple/path/')

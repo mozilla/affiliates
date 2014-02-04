@@ -91,7 +91,7 @@ class Migration(SchemaMigration):
             'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'custom_image': ('django.db.models.fields.files.ImageField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-us'", 'max_length': '32'}),
+            'locale': ('affiliates.base.models.LocaleField', [], {'default': "'en-us'", 'max_length': '32'}),
             'processed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'review_status': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
             'text': ('django.db.models.fields.CharField', [], {'max_length': '90'}),
@@ -103,7 +103,7 @@ class Migration(SchemaMigration):
             'banner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'locale_set'", 'to': "orm['facebook.FacebookBanner']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'default': "''", 'max_length': '250', 'blank': 'True'}),
-            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
+            'locale': ('affiliates.base.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
             'thumbnail': ('django.db.models.fields.files.ImageField', [], {'default': "''", 'max_length': '250', 'blank': 'True'})
         },
         'facebook.facebookclickstats': {

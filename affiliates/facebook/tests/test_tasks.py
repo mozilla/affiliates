@@ -8,7 +8,7 @@ from mock import patch
 from affiliates.facebook.models import FacebookBannerInstance, FacebookClickStats
 from affiliates.facebook.tasks import add_click, generate_banner_instance_image
 from affiliates.facebook.tests import FacebookBannerInstanceFactory, path
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 class AddClickTests(TestCase):

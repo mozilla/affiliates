@@ -7,7 +7,7 @@ from affiliates.facebook.forms import (BannerInstanceDeleteForm, FacebookAccount
 from affiliates.facebook.tests import (FacebookBannerFactory,
                             FacebookBannerInstanceFactory,
                             FacebookBannerLocaleFactory, FacebookUserFactory)
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 from affiliates.users.tests import UserFactory
 
 

@@ -13,7 +13,7 @@ from mock import patch
 from affiliates.facebook import models
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.auth import login as fb_login
-from affiliates.shared.tokens import TokenGenerator
+from affiliates.base.tokens import TokenGenerator
 from affiliates.users.tests import UserFactory
 
 

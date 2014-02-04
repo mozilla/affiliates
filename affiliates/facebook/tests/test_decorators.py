@@ -11,7 +11,7 @@ from affiliates.facebook.auth import login as fb_login
 from affiliates.facebook.decorators import fb_login_required
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.tests import FacebookUserFactory
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 @fb_login_required

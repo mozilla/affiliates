@@ -11,7 +11,7 @@ from nose.tools import eq_
 from affiliates.facebook.tests import FACEBOOK_USER_AGENT, create_payload
 from affiliates.facebook.utils import (activate_locale, decode_signed_request,
                             is_facebook_bot, modified_url_b64decode)
-from affiliates.shared.tests import patch_settings, TestCase
+from affiliates.base.tests import patch_settings, TestCase
 
 
 def modified_url_b64encode(data):

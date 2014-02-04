@@ -10,8 +10,8 @@ from product_details import product_details
 from tower import ugettext as _, ugettext_lazy as _lazy
 
 from affiliates.facebook.models import FacebookBanner, FacebookBannerInstance, FacebookUser
-from affiliates.shared.models import ENGLISH_LANGUAGE_CHOICES
-from affiliates.shared.utils import absolutify
+from affiliates.base.models import ENGLISH_LANGUAGE_CHOICES
+from affiliates.base.utils import absolutify
 
 
 # L10n: &hellip; is an ellipses, the three dots like "I love Firefox because..."

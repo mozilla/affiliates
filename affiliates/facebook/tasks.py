@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw
 from affiliates.facebook.models import (AppNotification, FacebookBannerInstance,
                              FacebookClickStats, FacebookUser)
 from affiliates.facebook.utils import current_hour
-from affiliates.shared.utils import get_object_or_none
+from affiliates.base.utils import get_object_or_none
 
 
 log = commonware.log.getLogger('a.facebook')

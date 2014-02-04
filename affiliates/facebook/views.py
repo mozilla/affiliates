@@ -23,8 +23,8 @@ from affiliates.facebook.models import (FacebookAccountLink, FacebookBanner,
                              FacebookUser)
 from affiliates.facebook.utils import (decode_signed_request, fb_redirect, is_facebook_bot,
                             is_logged_in)
-from affiliates.shared.http import JSONResponse, JSONResponseBadRequest
-from affiliates.shared.utils import absolutify, redirect
+from affiliates.base.http import JSONResponse, JSONResponseBadRequest
+from affiliates.base.utils import absolutify, redirect
 
 
 SAFARI_WORKAROUND_KEY = 'safari_workaround'

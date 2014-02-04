@@ -13,8 +13,8 @@ import requests
 from caching.base import CachingManager
 from tower import ugettext as _
 
-from affiliates.shared.tokens import TokenGenerator
-from affiliates.shared.utils import get_object_or_none
+from affiliates.base.tokens import TokenGenerator
+from affiliates.base.utils import get_object_or_none
 
 
 log = commonware.log.getLogger('a.facebook')

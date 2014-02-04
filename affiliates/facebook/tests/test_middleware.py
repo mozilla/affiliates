@@ -8,7 +8,7 @@ from nose.tools import eq_, ok_
 from affiliates.facebook.auth import SESSION_KEY
 from affiliates.facebook.middleware import FacebookAuthenticationMiddleware
 from affiliates.facebook.tests import FacebookUserFactory
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 class FacebookAuthenticationMiddlewareTests(TestCase):

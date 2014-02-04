@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table('facebook_facebookbannerlocale', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('banner', self.gf('django.db.models.fields.related.ForeignKey')(related_name='locale_set', to=orm['facebook.FacebookBanner'])),
-            ('locale', self.gf('affiliates.shared.models.LocaleField')(default='en-US', max_length=32)),
+            ('locale', self.gf('affiliates.base.models.LocaleField')(default='en-US', max_length=32)),
         ))
         db.send_create_signal('facebook', ['FacebookBannerLocale'])
 
@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'FacebookBanner.locale'
         db.add_column('facebook_facebookbanner', 'locale',
-                      self.gf('affiliates.shared.models.LocaleField')(default='en-US', max_length=32),
+                      self.gf('affiliates.base.models.LocaleField')(default='en-US', max_length=32),
                       keep_default=False)
 
 
@@ -88,7 +88,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'FacebookBannerLocale'},
             'banner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'locale_set'", 'to': "orm['facebook.FacebookBanner']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
+            'locale': ('affiliates.base.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
         },
         'facebook.facebookuser': {
             'Meta': {'object_name': 'FacebookUser'},

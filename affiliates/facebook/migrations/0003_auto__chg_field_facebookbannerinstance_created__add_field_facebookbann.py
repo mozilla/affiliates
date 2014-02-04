@@ -66,7 +66,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'FacebookBanner'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '250'}),
-            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
+            'locale': ('affiliates.base.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'}),
             'name': ('django.db.models.fields.CharField', [], {'default': "'Banner'", 'max_length': '256'})
         },
         'facebook.facebookbannerinstance': {

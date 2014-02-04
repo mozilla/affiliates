@@ -9,7 +9,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from affiliates.banners import COLOR_CHOICES
 from affiliates.links.models import Link
-from affiliates.shared.models import LocaleField
+from affiliates.base.models import LocaleField
 
 
 class Category(MPTTModel):

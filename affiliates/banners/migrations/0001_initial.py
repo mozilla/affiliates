@@ -37,7 +37,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('banner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['banners.ImageBanner'])),
             ('color', self.gf('django.db.models.fields.CharField')(max_length=32)),
-            ('locale', self.gf('affiliates.shared.models.LocaleField')(default='en-US', max_length=32)),
+            ('locale', self.gf('affiliates.base.models.LocaleField')(default='en-US', max_length=32)),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=255)),
         ))
         db.send_create_signal(u'banners', ['ImageBannerVariation'])
@@ -97,7 +97,7 @@ class Migration(SchemaMigration):
             'color': ('django.db.models.fields.CharField', [], {'max_length': '32'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '255'}),
-            'locale': ('affiliates.shared.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
+            'locale': ('affiliates.base.models.LocaleField', [], {'default': "'en-US'", 'max_length': '32'})
         },
         u'banners.textbanner': {
             'Meta': {'object_name': 'TextBanner'},

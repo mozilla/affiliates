@@ -9,7 +9,7 @@ from affiliates.facebook.models import AnonymousFacebookUser
 from affiliates.facebook.tests import (AppNotificationFactory, FacebookUserFactory,
                             FacebookAccountLinkFactory)
 from affiliates.facebook.utils import activate_locale
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 class AppContextTests(TestCase):

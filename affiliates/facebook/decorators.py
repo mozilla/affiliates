@@ -1,7 +1,7 @@
 from django.utils.functional import wraps
 
 from affiliates.facebook.utils import is_logged_in
-from affiliates.shared.utils import redirect
+from affiliates.base.utils import redirect
 
 
 def fb_login_required(func):

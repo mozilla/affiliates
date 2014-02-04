@@ -6,7 +6,7 @@ from django.dispatch import receiver
 from product_details import product_details
 from tower import ugettext_lazy as _lazy
 
-from affiliates.shared.models import ModelBase
+from affiliates.base.models import ModelBase
 
 
 COUNTRIES = product_details.get_regions(settings.LANGUAGE_CODE).items()

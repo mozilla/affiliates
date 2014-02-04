@@ -8,7 +8,7 @@ from form_utils.widgets import ImageWidget
 from affiliates.facebook.models import (FacebookBanner, FacebookBannerInstance,
                              FacebookBannerLocale, FacebookClickStats,
                              FacebookUser)
-from affiliates.shared.admin import admin_site, BaseModelAdmin
+from affiliates.base.admin import admin_site, BaseModelAdmin
 
 
 class FacebookBannerLocaleInline(admin.TabularInline):

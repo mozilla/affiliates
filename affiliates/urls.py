@@ -5,8 +5,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from funfactory.monkeypatches import patch
 
-import affiliates.shared.views
-from affiliates.shared.admin import admin_site
+import affiliates.base.views
+from affiliates.base.admin import admin_site
 
 
 # Apply funfactory monkeypatches.
@@ -15,8 +15,8 @@ patch()
 admin.autodiscover()
 
 # Set 404 and 500 handlers.
-handler404 = affiliates.shared.views.handler404
-handler500 = affiliates.shared.views.handler500
+handler404 = affiliates.base.views.handler404
+handler500 = affiliates.base.views.handler500
 
 
 urlpatterns = patterns('',

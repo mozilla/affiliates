@@ -19,7 +19,7 @@ from affiliates.facebook.tests import (FacebookAccountLinkFactory,
                             FacebookBannerLocaleFactory,
                             FacebookClickStatsFactory, FacebookUserFactory,
                             path)
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 from affiliates.users.tests import UserFactory
 
 

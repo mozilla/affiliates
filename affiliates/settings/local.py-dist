@@ -95,7 +95,7 @@ CDN_DOMAIN = 'localhost:8000'
 # Uncomment to enable logging of exceptions to the console for local
 # development.
 #MIDDLEWARE_CLASSES = base.MIDDLEWARE_CLASSES + [
-#    'affiliates.shared.middleware.ExceptionLoggingMiddleware'
+#    'affiliates.base.middleware.ExceptionLoggingMiddleware'
 #]
 
 # Error Reporting

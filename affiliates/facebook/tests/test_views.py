@@ -17,8 +17,8 @@ from affiliates.facebook.tests import (create_payload, FACEBOOK_USER_AGENT,
                             FacebookBannerInstanceFactory,
                             FacebookBannerLocaleFactory, FacebookUserFactory)
 from affiliates.facebook.views import SAFARI_WORKAROUND_KEY
-from affiliates.shared.tests import TestCase
-from affiliates.shared.utils import absolutify
+from affiliates.base.tests import TestCase
+from affiliates.base.utils import absolutify
 from affiliates.users.tests import UserFactory
 
 

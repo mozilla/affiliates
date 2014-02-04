@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from affiliates.facebook import views
-from affiliates.shared.views import handler404, handler500
+from affiliates.base.views import handler404, handler500
 
 
 urlpatterns = patterns('affiliates.facebook.views',

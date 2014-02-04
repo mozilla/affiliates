@@ -9,7 +9,7 @@ from nose.tools import eq_, ok_
 from affiliates.facebook.auth import login
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.tests import FacebookUserFactory
-from affiliates.shared.tests import TestCase, patch_settings, refresh_model
+from affiliates.base.tests import TestCase, patch_settings, refresh_model
 
 
 session_middleware = SessionMiddleware()

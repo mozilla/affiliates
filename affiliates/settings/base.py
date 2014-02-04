@@ -33,13 +33,13 @@ MIDDLEWARE_CLASSES = [
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
-    'affiliates.shared.middleware.PrivacyMiddleware',
+    'affiliates.base.middleware.PrivacyMiddleware',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
-    'affiliates.shared.context_processors.common',
-    'affiliates.shared.context_processors.l10n',
-    'affiliates.shared.context_processors.month_year_picker',
+    'affiliates.base.context_processors.common',
+    'affiliates.base.context_processors.l10n',
+    'affiliates.base.context_processors.month_year_picker',
     'affiliates.facebook.context_processors.app_context',
 ]
 
