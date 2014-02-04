@@ -187,30 +187,6 @@ CSP_OPTIONS = ('eval-script', 'inline-script')
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
     'css': {
-        'common': (
-            'global/template.css',
-            'css/styles.css',
-            'css/uniform.default.css',
-            'css/affiliates.css',
-            'css/month_year_picker.css',
-            'css/my_banners.css',
-        ),
-        'home': (
-            'css/home.css',
-        ),
-        'user_profile': (
-            'css/user_profile.css',
-        ),
-        '404': (
-            'css/404.css',
-        ),
-        'banners': (
-            'css/banners.css',
-        ),
-        'persona-buttons': (
-            'css/persona-buttons.css',
-        ),
-
         # Facebook app
         'fb_base': (
             'css/facebook.css',
@@ -218,24 +194,6 @@ MINIFY_BUNDLES = {
         ),
     },
     'js': {
-        'common': (
-            'js/libs/jquery-1.7.1.js',
-            'js/libs/underscore.js',
-            'global/js/nav-main.js',
-            'js/libs/jquery.placeholder.min.js',
-            'js/libs/jquery.uniform.min.js',
-            'js/libs/spin.js',
-            'js/month_year_picker.js',
-            'js/affiliates.js',
-        ),
-        'banners': (
-            'js/libs/mustache.js',
-            'js/banners.js',
-        ),
-        'browserid': (
-            'js/browserid.js',
-        ),
-
         # Facebook app
         'fb_common': (
             'js/libs/jquery-1.7.1.js',
