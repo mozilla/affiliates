@@ -1,7 +1,7 @@
 from funfactory.urlresolvers import reverse
 from nose.tools import eq_
 
-from affiliates.shared.tests import TestCase
+from affiliates.base.tests import TestCase
 
 
 class ErrorPageTests(TestCase):

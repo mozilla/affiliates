@@ -7,8 +7,8 @@ from django.core.files.base import ContentFile as C
 from django.core.files import File
 from nose.tools import assert_raises, eq_
 
-from affiliates.shared.storage import OverwritingStorage
-from affiliates.shared.tests import TestCase
+from affiliates.base.storage import OverwritingStorage
+from affiliates.base.tests import TestCase
 
 class TestOverwritingStorage(TestCase):
     def setUp(self):

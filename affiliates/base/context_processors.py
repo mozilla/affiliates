@@ -3,7 +3,7 @@ from django.utils.translation import get_language
 
 from babel.dates import get_month_names
 
-from affiliates.shared.utils import current_locale
+from affiliates.base.utils import current_locale
 
 
 def common(request):

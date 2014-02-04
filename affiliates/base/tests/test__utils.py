@@ -6,8 +6,8 @@ from mock import patch
 from nose.tools import eq_
 from tower import activate
 
-from affiliates.shared.tests import TestCase
-from affiliates.shared.utils import absolutify, current_locale, redirect, get_object_or_none
+from affiliates.base.tests import TestCase
+from affiliates.base.utils import absolutify, current_locale, redirect, get_object_or_none
 
 
 class TestAbsolutify(TestCase):
@@ -42,7 +42,7 @@ class TestAbsolutify(TestCase):
 
 
 class TestRedirect(TestCase):
-    urls = 'affiliates.shared.tests.urls'
+    urls = 'affiliates.base.tests.urls'
 
     def test_basic(self):
         with self.activate('en-US'):

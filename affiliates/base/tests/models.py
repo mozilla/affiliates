@@ -1,6 +1,6 @@
 from django.db import models
 
-from affiliates.shared.models import ModelBase, MultiTableParentModel
+from affiliates.base.models import ModelBase, MultiTableParentModel
 
 
 class ModelBaseChild(ModelBase):

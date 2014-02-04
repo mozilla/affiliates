@@ -10,7 +10,6 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'affiliates.base',
     'affiliates.facebook',
     'affiliates.links',
-    'affiliates.shared',
     'affiliates.users',
 
     'csp',

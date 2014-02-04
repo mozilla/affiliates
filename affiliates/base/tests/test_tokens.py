@@ -1,18 +1,18 @@
 from mock import patch
 from nose.tools import eq_
 
-from affiliates.shared.tests import TestCase
-from affiliates.shared.tokens import TokenGenerator
+from affiliates.base.tests import TestCase
+from affiliates.base.tokens import TokenGenerator
 
 
 class TokenGeneratorTests(TestCase):
     def generate_token(self, generator, time):
-        with patch('affiliates.shared.tokens.time.time') as time_func:
+        with patch('affiliates.base.tokens.time.time') as time_func:
             time_func.return_value = time
             return generator.generate_token()
 
     def verify_token(self, generator, token, time):
-        with patch('affiliates.shared.tokens.time.time') as time_func:
+        with patch('affiliates.base.tokens.time.time') as time_func:
             time_func.return_value = time
             return generator.verify_token(token)
 
