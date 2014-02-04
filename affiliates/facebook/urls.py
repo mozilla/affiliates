@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from affiliates.facebook import views
-from affiliates.shared.views import view_404, view_500
+from affiliates.shared.views import handler404, handler500
 
 
 urlpatterns = patterns('affiliates.facebook.views',
@@ -54,9 +54,9 @@ urlpatterns = patterns('affiliates.facebook.views',
 
     url(r'^deauthorize/?$', views.deauthorize, name='facebook.deauthorize'),
 
-    url(r'^404/?$', view_404, name='facebook.404'),
+    url(r'^404/?$', handler404, name='facebook.404'),
 
-    url(r'^500/?$', view_500, name='facebook.500'),
+    url(r'^500/?$', handler500, name='facebook.500'),
 
     url(r'^safari_workaround/?$', views.safari_workaround,
         name='facebook.safari_workaround'),

@@ -1,18 +1,21 @@
 from django.shortcuts import render
-from django.views.defaults import server_error
+from django.views.defaults import page_not_found, server_error
+
+from commonware.response.decorators import xframe_allow
 
 from affiliates.facebook.utils import in_facebook_app
 
 
-def view_404(request):
-    template = '404.html'
+@xframe_allow
+def handler404(request):
     if in_facebook_app(request):
-        template = 'facebook/error.html'
+        return render(request, 'facebook/error.html', status=404)
+    else:
+        return page_not_found(request)
 
-    return render(request, template, status=404)
 
-
-def view_500(request):
+@xframe_allow
+def handler500(request):
     if in_facebook_app(request):
         return render(request, 'facebook/error.html', status=500)
     else:

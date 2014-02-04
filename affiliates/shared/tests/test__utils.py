@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.utils.translation import get_language
 
 from babel.core import Locale
 from mock import patch
@@ -8,8 +7,7 @@ from nose.tools import eq_
 from tower import activate
 
 from affiliates.shared.tests import TestCase
-from affiliates.shared.utils import (absolutify, current_locale, redirect,
-                          get_object_or_none, ugettext_locale as _locale)
+from affiliates.shared.utils import absolutify, current_locale, redirect, get_object_or_none
 
 
 class TestAbsolutify(TestCase):
@@ -72,25 +70,6 @@ class TestCurrentLocale(TestCase):
         """
         activate('fy')
         eq_(Locale('en', 'US'), current_locale())
-
-
-def mock_ugettext(message, context=None):
-    if (get_language() == 'xxx'):
-        return 'translated'
-    else:
-        return 'untranslated'
-
-
-@patch('affiliates.shared.utils.tower.ugettext', mock_ugettext)
-class TestUGetTextLocale(TestCase):
-    def test_basic(self):
-        """
-        Test that translating a string works and doesn't change the current
-        locale.
-        """
-        activate('fr')
-        eq_(_locale('message', 'xxx'), 'translated')
-        eq_(get_language(), 'fr')
 
 
 class TestGetObjectOrNone(TestCase):

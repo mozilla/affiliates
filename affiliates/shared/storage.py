@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.files import locks
 from django.core.files.move import file_move_safe
 from django.core.files.storage import FileSystemStorage
-from django.utils.text import get_valid_filename
+
 
 class OverwritingStorage(FileSystemStorage):
     """

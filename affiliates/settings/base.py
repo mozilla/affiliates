@@ -229,6 +229,9 @@ MINIFY_BUNDLES = {
     }
 }
 
+# Use staticfiles loaders for finding resources for minification.
+JINGO_MINIFY_USE_STATIC = True
+
 
 # Project-specific Settings
 ##############################################################################
@@ -267,19 +270,6 @@ DEFAULT_GRAVATAR = MEDIA_URL + 'img/template/user-avatar.jpg'
 # Bug 719522
 # Old Firefox get redirected there
 FIREFOX_UPGRADE_REDIRECT = 'http://www.mozilla.org/firefox/speed/?WT.mc_id=affaupgrade1&WT.mc_ev=click'
-
-# Bug 719522
-# List of hashes of banner images for upgrade campaign
-# NOTE: This list should only contain banners ready to go on production. If you
-# want to add more banners locally, you can override this setting in local.py.
-BANNERS_HASH = [
-    '1fe924573d36f18d1430311ecc892977ad0bd6a1',  # en-US Tall
-    'ab1148a01251db077970056468c9b19c5f9e01f7',  # en-US Box
-    '15413d5031733cefed719c624c30c6a20d337505',  # cs Tall
-    'cd817e1604c5319499c2a226e13487d74efd713d',  # cs Box
-    'a4de4d7b527b5b13eba9c9616d6f7d07db22ae2f',  # es-ES Tall
-    '7cefdb2af229483dc68798e404457f563930a31c',  # es-ES Box
-]
 
 # Settings for Affiliates Facebook app
 FACEBOOK_APP_NAMESPACE = 'affiliates'

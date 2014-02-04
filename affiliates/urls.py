@@ -2,10 +2,10 @@ from django.conf import settings
 from django.conf.urls import include, patterns, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.shortcuts import render
 
 from funfactory.monkeypatches import patch
 
+import affiliates.shared.views
 from affiliates.shared.admin import admin_site
 
 
@@ -14,13 +14,9 @@ patch()
 
 admin.autodiscover()
 
-
-def handler500(request):
-    return render(request, '500.html', status=500)
-
-
-def handler404(request):
-    return render(request, '404.html', status=404)
+# Set 404 and 500 handlers.
+handler404 = affiliates.shared.views.handler404
+handler500 = affiliates.shared.views.handler500
 
 
 urlpatterns = patterns('',

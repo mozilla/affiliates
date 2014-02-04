@@ -16,16 +16,6 @@ class ModelBase(models.Model):
         abstract = True
 
 
-class MultiTableParentModel(ModelBase):
-    """
-    Provides boilerplate for models that will be the parent in a multi-table
-    inheritence relationship.
-    """
-    child_type = models.CharField(max_length=255, editable=False)
-    class Meta:
-        abstract = True
-
-
 class LocaleField(models.CharField):
     description = ('CharField with locale settings specific to Affiliates '
                    'defaults.')
@@ -35,15 +25,6 @@ class LocaleField(models.CharField):
         return super(LocaleField, self).__init__(
             max_length=max_length, default=default, choices=choices,
             *args, **kwargs)
-
-
-class LocaleImage(ModelBase):
-    image = models.ImageField(upload_to=settings.LOCALE_IMAGE_PATH,
-                              max_length=settings.MAX_FILEPATH_LENGTH)
-    locale = LocaleField()
-
-    class Meta:
-        abstract = True
 
 
 # South introspection rules for LocaleField
