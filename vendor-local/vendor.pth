@@ -1,4 +1,5 @@
 packages/django-mptt
+packages/jingo-minify
 src/basket-client
 src/django-browserid
 src/django-cache-machine
