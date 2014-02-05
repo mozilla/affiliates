@@ -1,7 +1,9 @@
+packages/django-browserid
 packages/django-mptt
+packages/fancy-tag
 packages/jingo-minify
+packages/requests
 src/basket-client
-src/django-browserid
 src/django-cache-machine
 src/django-cronjobs
 src/django-csp

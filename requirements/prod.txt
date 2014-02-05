@@ -18,3 +18,4 @@ django-form-utils>=0.2.0
 -e git://github.com/oremj/commander.git
 
 django-mptt==0.6.0
+git+https://github.com/mozilla/django-browserid.git@e0674517b38b99f55924604b7ddd8b5a85aab258#egg=django-browserid

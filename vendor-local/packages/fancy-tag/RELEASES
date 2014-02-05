@@ -1,0 +1,71 @@
+0.2.0
+=====
+
+Tagged on October 29, 2012 by Sam Bull <sam@pocketuniverse.ca>
+
+* Verified that fancy_tag works when using Django 1.4
+* Missing variable lookup now falls back to
+  settings.TEMPLATE_STRING_IF_INVALID instead of
+  raising VariableDoesNotExist
+
+* * *
+
+0.1.5
+=====
+
+Tagged on December 13, 2010 by Sam Bull <sam@pocketuniverse.ca>
+
+* Fixed setup.py so it includes package data files (like README)
+* Fixed restructured text in README
+
+* * *
+
+0.1.4
+=====
+
+Tagged on December 13, 2010 by Sam Bull <sam@pocketuniverse.ca>
+
+* Updated version and added email to setup.py
+* Updated AUTHORS
+
+* * *
+
+0.1.3
+=====
+
+Tagged on December 13, 2010 by Sam Bull <osirius@gmail.com>
+
+* Added setup.py
+* Updated run_tests.py so it plays nice with virtualenv
+
+* * *
+
+fancy_tag-0.1.2STABLE
+=====================
+
+Tagged on June 2, 2010 by Tamas Kemenczy <tkemenczy@trapeze.com>
+
+* Added support for accessing template context.
+
+* * *
+
+fancy_tag-0.1.1STABLE
+=====================
+
+Identical to fancy_tag-0.1.0STABLE, but with improved documentation.
+
+* * *
+
+fancy_tag-0.1.0STABLE
+=====================
+
+Identical to fancy_tag-0.1.0ALPHA
+
+* * *
+
+fancy_tag-0.1.0ALPHA
+====================
+
+Tagged on February 3, 2010 by Sam Bull <sbull@trapeze.com>
+
+Initial release from existing codebase.
