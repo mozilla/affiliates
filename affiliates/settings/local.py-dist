@@ -60,7 +60,14 @@ DEV = True
 # URL users will use to access your site, including the protocol, hostname, and
 # port. For local development, this will typically be `http://localhost:8000'.
 SITE_URL = 'http://localhost:8000'
-MEDIA_URL = urljoin(SITE_URL, base.MEDIA_URL)
+
+# django-browserid requires you to specify audiences that are valid for your
+# site. An audience is a protocol + hosename + port that users will use to
+# access your site.
+#
+# In development, this is typically 'http://localhost:8000' or similar. In
+# production, this is typically the protocol and domain for the site.
+BROWSERID_AUDIENCES = [SITE_URL]
 
 # Set to enable Google Analytics
 #GA_ACCOUNT_CODE = ''

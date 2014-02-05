@@ -26,6 +26,8 @@ urlpatterns = patterns('',
     url(r'^404$', handler404, name='404'),
     url(r'^500$', handler500, name='500'),
 
+    (r'', include('django_browserid.urls')),
+
     (r'^admin/', include('smuggler.urls')),
     (r'^admin/', include(admin_site.urls)),
 )

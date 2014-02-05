@@ -7,13 +7,27 @@
     <title>{% if title|default(None) %}{{ title }} | {% endif %}{{ _('Firefox Affiliates') }}</title>
 
     {% block site_css %}
+      {{ css('base') }}
     {% endblock %}
   </head>
   <body>
     <div class="container">
+      <header>
+        {% if user %}
+          {% if user.is_authenticated() %}
+            <span>Hello, {{ user.email }}!</span>
+            {{ browserid_logout() }}
+          {% else %}
+            {{ browserid_login(color='dark') }}
+          {% endif %}
+        {% endif %}
+      </header>
       {% block content %}{% endblock %}
     </div>
     {% block site_js %}
+      <script src="//login.persona.org/include.js"></script>
+      <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+      {{ js('base') }}
     {% endblock %}
   </body>
 </html>

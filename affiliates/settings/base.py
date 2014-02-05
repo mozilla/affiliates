@@ -75,8 +75,10 @@ LANGUAGES = lazy(lazy_langs, dict)()
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 
 # Authentication
-#AUTHENTICATION_BACKENDS = ()
-LOGIN_VIEW_NAME = 'landing'
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend', # required for admin
+   'django_browserid.auth.BrowserIDBackend',
+)
 
 # Files
 MAX_FILEPATH_LENGTH = 250
@@ -122,13 +124,12 @@ LOGGING = {
 
 # Third-party Libary Settings
 ##############################################################################
-# BrowserID
-BROWSERID_VERIFICATION_URL = 'https://browserid.org/verify'
-BROWSERID_DISABLE_CERT_CHECK = False
-BROWSERID_CREATE_USER = False
+# django-browserid Config
+BROWSERID_DISABLE_SANITY_CHECKS = True
+LOGIN_REDIRECT_URL = '/'
 
 # Paths that do not need a locale
-SUPPORTED_NONLOCALES += ['link', 'admin', 'fb']
+SUPPORTED_NONLOCALES += ['link', 'admin', 'browserid', 'fb']
 
 # CacheMachine config
 CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
@@ -137,11 +138,14 @@ CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
 BASKET_URL = 'http://basket.mozilla.com'
 BASKET_NEWSLETTER = 'affiliates'
 
+# Force session-csrf to give CSRF tokens to all users.
+ANON_ALWAYS = True
+
 # Template paths that should use django tempates instead of Jinja2.
 JINGO_EXCLUDE_APPS = [
     'admin',
+    'browserid',
     'smuggler',
-    'stats',
     'fb',
     'registration',
 ]
@@ -156,14 +160,15 @@ STATSD_PATCHES = [
 CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
 CSP_SCRIPT_SRC = (
     '\'self\'',
-    'https://browserid.org',
+    'http://login.persona.org',
     'https://login.persona.org',
+    'http://code.jquery.com',
+    'https://code.jquery.com',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
 )
 CSP_FRAME_SRC = (
     '\'self\'',
-    'https://browserid.org',
     'https://login.persona.org'
 )
 CSP_IMG_SRC = (
@@ -187,6 +192,11 @@ CSP_OPTIONS = ('eval-script', 'inline-script')
 # and js files that can be bundled together by the minify app.
 MINIFY_BUNDLES = {
     'css': {
+        # Mothership
+        'base': (
+            'browserid/persona-buttons.css',
+        ),
+
         # Facebook app
         'fb_base': (
             'css/facebook.css',
@@ -194,6 +204,11 @@ MINIFY_BUNDLES = {
         ),
     },
     'js': {
+        # Mothership
+        'base': (
+            'browserid/browserid.js',
+        ),
+
         # Facebook app
         'fb_common': (
             'js/libs/jquery-1.7.1.js',
