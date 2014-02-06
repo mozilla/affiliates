@@ -21,6 +21,7 @@ handler500 = affiliates.base.views.handler500
 
 urlpatterns = patterns('',
     (r'', include('affiliates.base.urls')),
+    (r'', include('affiliates.banners.urls')),
     (r'^fb/', include('affiliates.facebook.urls')),
 
     url(r'^404$', handler404, name='404'),

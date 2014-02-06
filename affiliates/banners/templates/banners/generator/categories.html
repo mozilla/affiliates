@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>Select a category</h1>
+  {% for category in categories %}
+    <h2>{{ category.name }}</h2>
+    {% for subcategory in category.get_children() %}
+      <a href="{{ url('banners.generator.banners', subcategory.pk) }}">
+        {{ subcategory.name }}
+      </a>
+    {% endfor %}
+  {% endfor %}
+{% endblock %}

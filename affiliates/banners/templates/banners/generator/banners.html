@@ -1,0 +1,8 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <h1>{{ category.name }}</h1>
+  {% for banner in banners %}
+    <a href="#">{{ banner.name }}</a>
+  {% endfor %}
+{% endblock %}
