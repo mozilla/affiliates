@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="preview">
+    {{ link.html|safe }}
+  </div>
+  <div class="code">
+    <textarea>{{ link.html }}</textarea>
+  </div>
+  <ul>
+    <li>Total Clicks: {{ link.link_clicks }}</li>
+    <li>Total Downloads: {{ link.firefox_downloads }}</li>
+    <li>Total FxOS Referrals: {{ link.firefox_os_referrals }}</li>
+  </ul>
+{% endblock %}

@@ -3,6 +3,6 @@
 {% block content %}
   <h1>{{ category.name }}</h1>
   {% for banner in banners %}
-    <a href="#">{{ banner.name }}</a>
+    <a href="{{ banner.get_customize_url() }}">{{ banner.name }}</a>
   {% endfor %}
 {% endblock %}

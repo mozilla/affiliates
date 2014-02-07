@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block site_js %}
+  {{ super() }}
+  {{ js('customize_image_banner') }}
+{% endblock %}
+
+{% block content %}
+  <h1>Customize Banner</h1>
+
+  <form id="variation-choices" method="POST" data-variations="{{ variations_json }}">
+    {{ csrf() }}
+
+    <label for="locale">Locale</label>
+    <select name="locale" data-rv-value="selectedLocale">
+      <option data-rv-each-locale="locales" data-rv-value="locale">{ locale }</option>
+    </select>
+
+    <label for="size">Size</label>
+    <select name="size" data-rv-disabled="selectedLocale | not" data-rv-value="selectedSize" data-rv-reset="selectedLocale">
+      <option data-rv-each-size="sizes < selectedLocale" data-rv-value="size">{ size }</option>
+    </select>
+
+    <label for="color">Color</label>
+    <select name="color" data-rv-disabled="selectedSize | not" data-rv-value="selectedColor" data-rv-reset="selectedSize">
+      <option data-rv-each-color="colors < selectedSize selectedLocale" data-rv-value="color">{ color }</option>
+    </select>
+
+    <br>
+    <img class="preview" data-rv-src="previewSrc < selectedColor">
+    <br>
+
+    <input type="hidden" name="{{ form.variation.html_name }}" data-rv-value="variation < selectedColor">
+    <button type="submit">Create Banner</button>
+  </form>
+{% endblock %}

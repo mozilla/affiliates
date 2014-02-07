@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Sum
 
 
 class Link(models.Model):
@@ -21,6 +23,29 @@ class Link(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    def _get_metric_total(self, metric):
+        """
+        Get the sum total for a specific metric by combining data from
+        the DataPoint table and the aggregate stored on this link.
+        """
+        datapoint_sum = self.datapoint_set.aggregate(Sum(metric))['{0}__sum'.format(metric)]
+        return getattr(self, 'aggregate_{0}'.format(metric)) + (datapoint_sum or 0)
+
+    @property
+    def link_clicks(self):
+        return self._get_metric_total('link_clicks')
+
+    @property
+    def firefox_downloads(self):
+        return self._get_metric_total('firefox_downloads')
+
+    @property
+    def firefox_os_referrals(self):
+        return self._get_metric_total('firefox_os_referrals')
+
+    def get_absolute_url(self):
+        return reverse('links.detail', args=[self.pk])
 
 
 class DataPoint(models.Model):

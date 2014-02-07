@@ -2,6 +2,7 @@ import hashlib
 import os
 
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.loader import render_to_string
 
@@ -35,6 +36,9 @@ class Category(MPTTModel):
         if self.get_level() > 1:
             raise ValidationError('Categories cannot be more than one level deep.')
 
+    def __unicode__(self):
+        return self.name
+
 
 class Banner(models.Model):
     """A type of banner that a user can generate links from."""
@@ -56,22 +60,32 @@ class Banner(models.Model):
         """
         raise NotImplementedError()
 
-    def create_link(self, user, *args, **kwargs):
+    def get_customize_url(self):
+        """Generate a URL to the customization page for this banner."""
+        raise NotImplementedError()
+
+    def create_link(self, user, **kwargs):
         """
         Create a Link based off of this banner. Extra arguments are
         passed on to generate_banner_code.
         """
-        html = self.generate_banner_code(*args, **kwargs)
+        html = self.generate_banner_code(**kwargs)
         return Link(user=user, destination=self.destination, html=html)
+
+    def __unicode__(self):
+        return self.name
 
 
 class ImageBanner(Banner):
     """Banner displayed as an image link."""
-    def generate_banner_code(self, variation):
+    def generate_banner_code(self, variation, **kwargs):
         return render_to_string('banners/banner_code/image_banner.html', {
             'href': self.destination,
             'variation': variation
         })
+
+    def get_customize_url(self):
+        return reverse('banners.generator.image_banner.customize', kwargs={'pk': self.pk})
 
 
 class ImageBannerVariation(models.Model):
@@ -79,7 +93,7 @@ class ImageBannerVariation(models.Model):
     Variation of an image banner that a user can choose to use for their
     link.
     """
-    banner = models.ForeignKey(ImageBanner)
+    banner = models.ForeignKey(ImageBanner, related_name='variation_set')
     color = models.CharField(max_length=32, choices=COLOR_CHOICES)
     locale = LocaleField()
 
@@ -97,6 +111,10 @@ class ImageBannerVariation(models.Model):
 
     image = models.ImageField(upload_to=_filename, max_length=255)
 
+    @property
+    def size(self):
+        return '{width}x{height}'.format(width=self.image.width, height=self.image.height)
+
 
 class TextBanner(Banner):
     """
@@ -109,5 +127,5 @@ class TextBanner(Banner):
     """
     text = models.TextField()
 
-    def generate_banner_code(self):
+    def generate_banner_code(self, **kwargs):
         return self.text.format(href=self.destination)
