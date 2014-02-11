@@ -1,8 +1,10 @@
+packages/django-braces
 packages/django-browserid
 packages/django-mptt
 packages/fancy-tag
 packages/jingo-minify
 packages/requests
+packages/six
 src/basket-client
 src/django-cache-machine
 src/django-cronjobs
