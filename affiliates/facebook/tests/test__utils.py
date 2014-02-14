@@ -4,6 +4,7 @@ import hmac
 import json
 
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 from django.utils.translation import get_language
 
 from nose.tools import eq_
@@ -11,7 +12,7 @@ from nose.tools import eq_
 from affiliates.facebook.tests import FACEBOOK_USER_AGENT, create_payload
 from affiliates.facebook.utils import (activate_locale, decode_signed_request,
                             is_facebook_bot, modified_url_b64decode)
-from affiliates.base.tests import patch_settings, TestCase
+from affiliates.base.tests import TestCase
 
 
 def modified_url_b64encode(data):
@@ -85,7 +86,7 @@ class ActivateLocaleTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-    @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
+    @override_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
     def test_not_in_whitelist(self):
         """
         If the given locale is not in the whitelist, default back to en-us.
@@ -94,7 +95,7 @@ class ActivateLocaleTests(TestCase):
         activate_locale(request, 'de')
         eq_(request.locale, 'en-us')
 
-    @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'de'))
+    @override_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'de'))
     def test_language_code_in_whitelist(self):
         """If only a locale's language code is in the whitelist, use it."""
         request = self.factory.get('/')
@@ -102,14 +103,14 @@ class ActivateLocaleTests(TestCase):
         eq_(get_language(), 'de')
         eq_(request.locale, 'de')
 
-    @patch_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
+    @override_settings(DEV=False, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
     def test_locale_in_whitelist(self):
         """If a locale is in the whitelist, use it."""
         request = self.factory.get('/')
         activate_locale(request, 'en-us')
         eq_(request.locale, 'en-us')
 
-    @patch_settings(DEV=True, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
+    @override_settings(DEV=True, TEST=False, FACEBOOK_LOCALES=('en-us', 'fr'))
     def test_dev_dont_limit_locales(self):
         """
         If settings.DEV is True, do not verify that a locale is in the

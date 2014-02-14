@@ -51,14 +51,14 @@ class LoadAppTests(TestCase):
         with self.activate('en-US'):
             response = self.load_app(None)
             eq_(response.status_code, 302)
-            self.assert_viewname_url(response['Location'], 'base.landing')
+            self.assertRedirectsNoFollow(response, reverse('base.landing'))
 
     def test_invalid_signed_request(self, update_user_info):
         """If the signed request is invalid, redirect to the homepage."""
         with self.activate('en-US'):
             response = self.load_app(False)
             eq_(response.status_code, 302)
-            self.assert_viewname_url(response['Location'], 'base.landing')
+            self.assertRedirectsNoFollow(response, reverse('base.landing'))
 
     @patch('affiliates.facebook.views.fb_redirect')
     def test_safari_workaround(self, fb_redirect, update_user_info):
@@ -68,10 +68,11 @@ class LoadAppTests(TestCase):
         """
         fb_redirect.return_value = HttpResponse()
         payload = create_payload(user_id=1)
-        self.load_app(payload, HTTP_USER_AGENT='Safari/5.04')
-        ok_(fb_redirect.called)
-        self.assert_viewname_url(fb_redirect.call_args[0][1],
-                                 'facebook.safari_workaround')
+        with patch('affiliates.facebook.views.absolutify') as mock_absolutify:
+            mock_absolutify.return_value = 'test'
+            self.load_app(payload, HTTP_USER_AGENT='Safari/5.04')
+            mock_absolutify.assert_called_with(reverse('facebook.safari_workaround'))
+        fb_redirect.assert_called_with(ANY, 'test', top_window=True)
 
     @patch('affiliates.facebook.views.fb_redirect')
     def test_no_safari_workaround(self, fb_redirect, update_user_info):
@@ -463,7 +464,7 @@ class FollowBannerLinkTests(TestCase):
         redirect.
         """
         response = self.follow_link(999)
-        self.assert_redirects(response, 'http://mozilla.org')
+        self.assertRedirectsNoFollow(response, 'http://mozilla.org')
 
     @patch('affiliates.facebook.views.add_click')
     def test_banner_redirect(self, add_click):
@@ -474,7 +475,7 @@ class FollowBannerLinkTests(TestCase):
         instance = FacebookBannerInstanceFactory.create(
             banner__link='http://allizom.org')
         response = self.follow_link(instance.id)
-        self.assert_redirects(response, 'http://allizom.org')
+        self.assertRedirectsNoFollow(response, 'http://allizom.org')
         add_click.delay.assert_called_with(unicode(instance.id))
 
     @patch('affiliates.facebook.views.add_click')
@@ -484,7 +485,7 @@ class FollowBannerLinkTests(TestCase):
             banner__link='http://allizom.org')
         response = self.follow_link(instance.id,
                                     HTTP_USER_AGENT=FACEBOOK_USER_AGENT)
-        self.assert_redirects(response, 'http://allizom.org')
+        self.assertRedirectsNoFollow(response, 'http://allizom.org')
         ok_(not add_click.delay.called)
 
 
@@ -523,13 +524,13 @@ class PostBannerShareTest(TestCase):
     def test_no_post_id(self, success):
         """If no post_id parameter is provided, don't add a success message."""
         response = self.post_banner_share()
-        self.assert_redirects(response, 'http://mozilla.org')
+        self.assertRedirectsNoFollow(response, 'http://mozilla.org')
         ok_(not success.called)
 
     def test_post_id(self, success):
         """If no post_id parameter is provided, don't add a success message."""
         response = self.post_banner_share(post_id=999)
-        self.assert_redirects(response, 'http://mozilla.org')
+        self.assertRedirectsNoFollow(response, 'http://mozilla.org')
         ok_(success.called)
 
 

@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from mock import patch
 from nose.tools import eq_, ok_
@@ -9,7 +10,7 @@ from nose.tools import eq_, ok_
 from affiliates.facebook.auth import login
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.tests import FacebookUserFactory
-from affiliates.base.tests import TestCase, patch_settings, refresh_model
+from affiliates.base.tests import TestCase, refresh_model
 
 
 session_middleware = SessionMiddleware()
@@ -97,7 +98,7 @@ class LoginTests(TestCase):
         user = refresh_model(user)
         eq_(user.last_login, datetime(2012, 1, 1))
 
-    @patch_settings(DEV=True)
+    @override_settings(DEV=True)
     def test_delayed_task_overwritten(self, update_user_info):
         """
         Regression test: If DEV is true, the delayed task will execute

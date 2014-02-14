@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 
+from funfactory.urlresolvers import reverse
 from mock import patch
 from nose.tools import eq_
 
@@ -42,7 +43,7 @@ class FBLoginRequiredTests(TestCase):
         with self.activate('en-US'):
             response = view(request)
             eq_(response.status_code, 302)
-            self.assert_viewname_url(response['Location'], 'base.landing')
+            self.assertRedirectsNoFollow(response, reverse('base.landing'))
 
     def test_django_auth(self):
         """
