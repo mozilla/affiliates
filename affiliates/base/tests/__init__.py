@@ -6,6 +6,7 @@ from django.utils.translation import get_language
 
 import test_utils
 from funfactory.urlresolvers import get_url_prefix, Prefixer, set_url_prefix
+from mock import patch
 from nose.tools import eq_
 from tower import activate
 
@@ -49,3 +50,8 @@ class TestCase(DjangoTestCase):
 def refresh_model(instance):
     """Retrieves the latest version of a model instance from the DB."""
     return instance.__class__.objects.get(pk=instance.pk)
+
+
+def patch_super(obj, attr):
+    """Patch the given attribute on the object's superclass."""
+    return patch.object(obj.__class__.__bases__[0], attr)

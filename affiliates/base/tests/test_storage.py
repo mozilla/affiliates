@@ -5,10 +5,11 @@ import tempfile
 
 from django.core.files.base import ContentFile as C
 from django.core.files import File
-from nose.tools import assert_raises, eq_
+from nose.tools import eq_
 
 from affiliates.base.storage import OverwritingStorage
 from affiliates.base.tests import TestCase
+
 
 class TestOverwritingStorage(TestCase):
     def setUp(self):
@@ -61,5 +62,5 @@ class TestOverwritingStorage(TestCase):
 
         s.save("foo", C("old"))
 
-        assert_raises(Explosion, s.save, 'foo', ExplodingContentFile())
+        self.assertRaises(Explosion, s.save, 'foo', ExplodingContentFile())
         eq_(s.open("foo").read(), "old")

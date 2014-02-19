@@ -252,6 +252,9 @@ MINIFY_BUNDLES = {
 # Use staticfiles loaders for finding resources for minification.
 JINGO_MINIFY_USE_STATIC = True
 
+# Default Nose arguments
+NOSE_ARGS = ['--logging-filter=-django_browserid,-factory']
+
 
 # Project-specific Settings
 ##############################################################################
