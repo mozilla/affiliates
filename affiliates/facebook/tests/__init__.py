@@ -7,7 +7,7 @@ from time import time
 
 from django.test.client import Client
 
-from factory import Factory, LazyAttribute, SubFactory, Sequence
+from factory import DjangoModelFactory, LazyAttribute, SubFactory, Sequence
 from mock import patch
 
 from affiliates.facebook import models
@@ -60,38 +60,32 @@ class FacebookAuthClient(Client):
             return super(FacebookAuthClient, self).login()
 
 
-class FacebookUserFactory(Factory):
+class FacebookUserFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookUser
     id = Sequence(lambda n: 'test%s' % n)
     last_login = LazyAttribute(lambda o: datetime.now())
 
 
-class FacebookAccountLinkFactory(Factory):
-    FACTORY_FOR = models.FacebookAccountLink
-    facebook_user = SubFactory(FacebookUserFactory)
-    affiliates_user = SubFactory(UserFactory)
-
-
-class FacebookBannerFactory(Factory):
+class FacebookBannerFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookBanner
     name = Sequence(lambda n: 'test%s' % n)
     image = Sequence(lambda n: 'non-existant-path')
     thumbnail = Sequence(lambda n: 'non-existant-path')
 
 
-class FacebookBannerLocaleFactory(Factory):
+class FacebookBannerLocaleFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookBannerLocale
     banner = SubFactory(FacebookBannerFactory)
 
 
-class FacebookBannerInstanceFactory(Factory):
+class FacebookBannerInstanceFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookBannerInstance
     banner = SubFactory(FacebookBannerFactory)
     user = SubFactory(FacebookUserFactory)
     text = Sequence(lambda n: 'test%s' % n)
 
 
-class FacebookAccountLinkFactory(Factory):
+class FacebookAccountLinkFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookAccountLink
     facebook_user = SubFactory(FacebookUserFactory)
     affiliates_user = SubFactory(UserFactory)
@@ -106,12 +100,12 @@ class FacebookAccountLinkFactory(Factory):
         return link
 
 
-class FacebookClickStatsFactory(Factory):
+class FacebookClickStatsFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookClickStats
     banner_instance = SubFactory(FacebookBannerInstanceFactory)
 
 
-class AppNotificationFactory(Factory):
+class AppNotificationFactory(DjangoModelFactory):
     FACTORY_FOR = models.AppNotification
     user = SubFactory(FacebookUserFactory)
     message = Sequence(lambda n: random.choice(MESSAGES.keys()))
