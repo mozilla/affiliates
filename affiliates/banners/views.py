@@ -48,7 +48,6 @@ class CustomizeBannerView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         link = self.banner.create_link(self.request.user, **form.cleaned_data)
-        link.save()
         return redirect(link)
 
 

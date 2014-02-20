@@ -44,6 +44,9 @@ class Link(models.Model):
     def firefox_os_referrals(self):
         return self._get_metric_total('firefox_os_referrals')
 
+    def get_referral_url(self):
+        return reverse('links.referral', args=[self.pk])
+
     def get_absolute_url(self):
         return reverse('links.detail', args=[self.pk])
 

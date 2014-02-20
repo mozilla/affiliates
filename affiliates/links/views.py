@@ -11,3 +11,9 @@ class LinkDetailView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         return Link.objects.filter(user=self.request.user)
+
+
+class LinkReferralView(DetailView):
+    template_name = 'links/referral.html'
+    model = Link
+    context_object_name = 'link'

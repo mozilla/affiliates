@@ -70,7 +70,14 @@ class Banner(models.Model):
         passed on to generate_banner_code.
         """
         html = self.generate_banner_code(**kwargs)
-        return Link(user=user, destination=self.destination, html=html)
+        link = Link(user=user, destination=self.destination, html='')
+
+        # Save to get PK so that link can generate referral URL.
+        link.save()
+        link.html = html.format(href=link.get_referral_url())
+        link.save()
+
+        return link
 
     def __unicode__(self):
         return self.name
@@ -80,7 +87,6 @@ class ImageBanner(Banner):
     """Banner displayed as an image link."""
     def generate_banner_code(self, variation, **kwargs):
         return render_to_string('banners/banner_code/image_banner.html', {
-            'href': self.destination,
             'variation': variation
         })
 
@@ -128,4 +134,4 @@ class TextBanner(Banner):
     text = models.TextField()
 
     def generate_banner_code(self, **kwargs):
-        return self.text.format(href=self.destination)
+        return self.text
