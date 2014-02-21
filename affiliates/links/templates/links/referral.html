@@ -8,9 +8,9 @@
       <script src="{{ 'https://ssl' if request.is_secure() else 'http://www' }}.google-analytics.com/ga.js"></script>
       <script>
           var pageTracker = _gat._createTracker('{{ settings.GA_ACCOUNT_CODE }}');
-          pageTracker._trackPageview();
           pageTracker._setCustomVar(1, 'link_id', '{{ link.pk }}', 3);
           pageTracker._setCustomVar(2, 'link_user_id', '{{ link.user.pk }}', 3);
+          pageTracker._trackPageview();
       </script>
     {% endif %}
     <script>

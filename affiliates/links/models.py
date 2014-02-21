@@ -60,6 +60,9 @@ class DataPoint(models.Model):
     firefox_downloads = models.PositiveIntegerField(default=0)
     firefox_os_referrals = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        unique_together = ('link', 'date')
+
 
 class LeaderboardStanding(models.Model):
     """Ranking in a leaderboard for a specific metric."""

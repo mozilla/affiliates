@@ -105,6 +105,12 @@ CDN_DOMAIN = 'localhost:8000'
 #    'affiliates.base.middleware.ExceptionLoggingMiddleware'
 #]
 
+# Google Analytics API Credentials
+GA_API_ACCOUNT_EMAIL = ''
+GA_API_KEYFILE = ''
+GA_API_PROFILE_ID = ''
+
+
 # Error Reporting
 ##############################################################################
 
