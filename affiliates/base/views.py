@@ -11,7 +11,7 @@ def landing(request):
     if request.user.is_authenticated():
         return redirect('base.dashboard')
     else:
-        return render(request, 'base/landing.html')
+        return render(request, 'base/home.html')
 
 
 @login_required

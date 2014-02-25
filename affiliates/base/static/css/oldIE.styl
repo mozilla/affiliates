@@ -1,0 +1,98 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// This basic style sheet is served to IE 8 and lower. It provides
+// a minimal, linearized layout with some purposeful design but leaves
+// out the more advanced styling older versions of IE don't support.
+
+
+@import 'lib.styl';
+@import 'reset.styl';
+
+
+//*----------------------------------------------------------------*/
+// @Fonts
+// Only declaring EOT because old IE doesn't support other formats
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Regular-webfont.eot');
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Bold-webfont.eot');
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Italic-webfont.eot');
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Open Sans Light';
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Light-webfont.eot');
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans Light';
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Semibild-webfont.eot');
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans Light';
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-LightItalic-webfont.eot');
+    src: url('//mozorg.cdn.mozilla.net/media/fonts/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @General elements
+
+html {
+    background: #fff;
+}
+
+body {
+    font-size: $base-font-size;
+    line-height: 1.5;
+    font-family: 'Open Sans', sans-serif;
+    color: $primary-text-color;
+    background: pink;
+}
+
+//*----------------------------------------------------------------*/
+// @Layout containers
+
+#outer-wrap {
+    position: relative;
+    border-top: 2px solid #fff;
+    background: #eee;
+}
+
+.wrap {
+    width: $width-desktop;
+    margin: 0 auto;
+    position: relative;
+    zoom: 1;
+}

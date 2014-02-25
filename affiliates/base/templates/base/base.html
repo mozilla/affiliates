@@ -1,33 +1,129 @@
 <!DOCTYPE html>
-<html lang="{{ LANG }}" dir="{{ DIR }}">
+<html lang="{{ LANG }}" dir="{{ DIR }}" class="{{ LANG }} {{ DIR }}">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0">
+
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="imagetoolbar" content="no">
+    <![endif]-->
 
     <title>{% if title|default(None) %}{{ title }} | {% endif %}{{ _('Firefox Affiliates') }}</title>
 
+    {# OpenGraph Metadata #}
+    <meta property="og:title" content="{% block og_title %}{{ _('Firefox Affiliates') }}{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ absolutify(static('img/firefox-256.jpg')) }}{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri() }}{% endblock %}">
+    <meta property="og:site_name" content="{{ _('Firefox Affiliates') }}">
+    <meta property="og:description" content="{{ meta_description }}">
+
+    <link rel="shortcut icon" href="{{ static('img/favicon.ico') }}">
+
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="{{ static('js/libs/html5shiv.js') }}"></script>
+      {{ css('oldIE') }}
+    <![endif]-->
+
+    <!--[if !lt IE 9]><!-->
     {% block site_css %}
       {{ css('base') }}
     {% endblock %}
+
+    {% block page_css %}{% endblock %}
+    <!--<![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css">
   </head>
-  <body>
-    <div class="container">
-      <header>
-        {% if user %}
-          {% if user.is_authenticated() %}
-            <span>Hello, {{ user.email }}!</span>
-            {{ browserid_logout() }}
-          {% else %}
-            {{ browserid_login(color='dark') }}
-          {% endif %}
-        {% endif %}
-      </header>
-      {% block content %}{% endblock %}
+  <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+    <div id="strings"
+        data-close="{{ _('Close') }}"
+        data-input-required="{{ _('This field is required.') }}"
+        {% block string_data %}{% endblock %}>
     </div>
+
+    <div id="outer-wrapper">
+      <header id="masthead" role="banner">
+        <div class="contain">
+          <a href="//www.mozilla.org/" id="tabzilla">{{ _('Mozilla') }}</a>
+
+          {# TODO: Get some kind of actual logo/wordmark. #}
+          <h2 class="site-logo"><img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}"></h2>
+
+          {# TODO: Make these links actually work. Turn nav into a hamburger at mobile sizes. #}
+          <nav id="nav-main" role="navigation">
+            <ul>
+              <li><a href="/about">{{ _('About') }}</a></li>
+              <li><a href="/leaderboard">{{ _('Leaderboard') }}</a></li>
+              {% if user %}
+                {% if user.is_authenticated() %}
+                  {# TODO: Show display name and gravatar. #}
+                  <li class="user"><a href="/profile">{{ user.email }}</a></li>
+                  <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
+                  <li class="signout">{{ browserid_logout() }}</li>
+                {% else %}
+                  <li class="signin">{{ browserid_login() }}</li>
+                {% endif %}
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      {% block content %}{% endblock %}
+
+      {% block site_footer %}
+        <footer id="footer" role="contentinfo">
+          <div class="contain">
+
+            <div class="footer-logo">
+            <a href="//www.mozilla.org/"><img src="{{ static('img/footer-mozilla.png') }}" alt="{{ _('Mozilla') }}"></a>
+            </div>
+
+            <div class="footer-license">
+                <p>
+                  {% trans license='license' %}
+                  Portions of this content are ©1998–{{ current_year }} by individual
+                  mozilla.org contributors. Content available under
+                  a <a href="{{ license }}">Creative Commons license</a>.
+                  {% endtrans %}
+                </p>
+                <p>
+                  <a href="https://github.com/mozilla/affiliates">{{ _('Source code') }}</a>
+                </p>
+            </div>
+
+            <ul class="footer-nav">
+              <li><a href="/contact">{{_('Contact Us')}}</a></li>
+              <li><a href="/partner">{{_('Partner with Us')}}</a></li>
+              <li><a href="/donate">{{ _('Donate') }}</a></li>
+              <li><a href="/privacy">{{_('Privacy Policy')}}</a></li>
+              <li><a href="/about/legal">{{_('Legal Notices')}}</a></li>
+              <li><a href="/legal/fraud-report">{{_('Report Trademark Abuse')}}</a></li>
+            </ul>
+
+            <ul class="footer-nav">
+              <li><a href="https://twitter.com/mozilla">{{_('Mozilla on Twitter')}}</a></li>
+              <li><a href="https://twitter.com/firefox">{{_('Firefox on Twitter')}}</a></li>
+              <li><a href="https://www.facebook.com/mozilla">{{_('Mozilla on Facebook')}}</a></li>
+              <li><a href="https://www.facebook.com/Firefox">{{_('Firefox on Facebook')}}</a></li>
+            </ul>
+
+          </div>
+        </footer>
+      {% endblock %}
+
+    </div>{# end outer-wrap #}
+
     {% block site_js %}
       <script src="//login.persona.org/include.js"></script>
-      <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-      {{ js('base') }}
+      <!--[if !lte IE 7]><!-->
+        {{ js('base') }}
+      <!--<![endif]-->
     {% endblock %}
+
+    <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
+
   </body>
 </html>

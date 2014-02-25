@@ -1,0 +1,352 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// Global styling and layout
+
+@import 'fonts.styl';
+@import 'reset.styl';
+@import 'lib.styl';
+
+
+//*----------------------------------------------------------------*/
+// @General elements
+
+html {
+    background: #fff;
+    font-size: $base-font-size;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: $primary-text-color;
+    background: #fff;
+}
+
+ol.prose {
+    list-style: decimal;
+    margin-left: 40px;
+}
+
+ul.prose {
+    list-style: disc;
+    margin-left: 40px;
+
+    ul {
+        list-style: circle;
+        margin-left: 40px;
+    }
+}
+
+img.avatar {
+    border: 3px solid $light-text-color;
+    border-radius: 100%;
+}
+
+//*----------------------------------------------------------------*/
+// @Headings
+
+h1, h2, h3, h4, h5, h6, legend {
+    color: darken($primary-text-color, 10%);
+    font-family: 'Open Sans Light', sans-serif;
+    font-weight: normal;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .75);
+}
+
+h1,
+.section-title,
+.page-title {
+    font-size: 32px;
+}
+
+h2,  {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4, legend {
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 16px;
+    letter-spacing: normal;
+}
+
+h6 {
+    font-size: 14px;
+    letter-spacing: normal;
+}
+
+.section-title,
+.page-title {
+    text-align: center;
+    margin: 0 auto .5em;
+}
+
+
+//*----------------------------------------------------------------*/
+// @Links
+a:link {
+    color: $link-color;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: desaturate($link-color, 30%);
+}
+
+a:hover,
+a:focus,
+a:active {
+    color: darken($link-color, 30%);
+}
+
+.go:after {
+    content: " »";
+    white-space: nowrap;
+}
+
+// @Buttons
+// Standard blue buttons
+.button,
+.button:link,
+.button:visited {
+    background-color: #276195;
+    background-image:         linear-gradient(#3c88cc, #276195);
+    background-image: -webkit-linear-gradient(#3c88cc, #276195);
+    border-radius: .25em;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    min-width: 100px;
+    padding: .25em 25px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0, .2);
+            box-shadow: 0 2px 0 0 rgba(0,0,0,.1), inset 0 -2px 0 0 rgba(0, 0, 0, .2);
+    -webkit-transition: -webkit-box-shadow linear .25s;
+       -moz-transition: box-shadow linear .25s;
+            transition: box-shadow linear .25s;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #3089d8;
+    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0,.1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
+}
+
+.button:focus {
+  outline-color: #484848;
+}
+
+// Alternative orange buttons
+.button.secondary {
+    background-color: #e46322;
+    background-image: -webkit-linear-gradient(#f7921e, #e46322);
+    background-image:         linear-gradient(#f7921e, #e46322);
+}
+.button.secondary:hover,
+.button.secondary:focus,
+.button.secondary:active {
+  -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
+          box-shadow: 0 2px 0 0 rgba(0, 0, 0,.1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
+}
+
+
+//*----------------------------------------------------------------*/
+// @Layout containers
+
+#outer-wrapper {
+    position: relative;
+    border-top: 2px solid #fff;
+    background: $light-gray url('/static/img/light-grain.png');
+}
+
+.section {
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .25);
+}
+
+.contain {
+    padding: 0 20px;
+    margin: 0 auto;
+    position: relative;
+    clearfix();
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Header
+
+#masthead .contain {
+    padding-top: 48px;
+    height: 77px;
+}
+
+#masthead #tabzilla {
+    position: absolute;
+    right: 15px;
+    top: 0;
+}
+
+#nav-main {
+    position: absolute;
+    top: 10px;
+    right: 160px;
+
+    ul {
+        list-style: none;
+    }
+
+    li {
+        display: inline-block;
+        margin: 0 0 .25em;
+        padding: 0 14px 0 16px;
+        font-size: 14px;
+        font-size: .875rem;
+
+        &.user,
+        &.signin {
+            border-left: 1px solid #fff;
+        }
+    }
+
+    a {
+        color: $light-text-color;
+        text-transform: uppercase;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+}
+
+
+//*----------------------------------------------------------------*/
+// @Footer
+
+#footer {
+    background: $dark-gray url('/static/img/dark-grain.png') repeat;
+    color: $light-text-color;
+    font-size: 12px;
+    font-size: .75rem;
+    padding: 48px 0;
+
+    a {
+        color: lighten($link-color, 40%);
+        text-decoration: none;
+
+        &:visited {
+            color: lighten($link-color, 30%);
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: lighten($link-color, 50%);
+            text-decoration: underline;
+        }
+    }
+}
+
+.footer-logo a {
+    opacity: .8;
+    transition: opacity .1s linear;
+
+    &:hover,
+    &:focus {
+        opacity: 1;
+    }
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Tablet layout: 760px
+
+@media $media-query-tablet {
+
+    h1,
+    .section-title,
+    .page-title {
+        font-size: 48px;
+    }
+
+    h2,  {
+        font-size: 32px;
+    }
+
+    h3 {
+        font-size: 28px;
+    }
+
+    h4, legend {
+        font-size: 24px;
+    }
+
+    .contain {
+        width: $width-tablet - ($grid-gutter-width * 2);
+    }
+
+    .footer-license,
+    .footer-lang {
+        span_narrow(3);
+    }
+
+    .footer-logo,
+    .footer-nav {
+        span_narrow(2);
+    }
+
+    .footer-license {
+        margin-right: $grid-narrow-column-width + $grid-gutter-width;
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Desktop layout: 1000px
+
+@media $media-query-desktop {
+
+    .contain {
+        width: $width-desktop - ($grid-gutter-width * 2);
+    }
+
+    .footer-license,
+    .footer-lang {
+        span(3);
+    }
+
+    .footer-logo,
+    .footer-nav {
+        span(2);
+    }
+
+    .footer-license {
+        margin-right: $grid-column-width + $grid-gutter-width;
+    }
+
+}
+

@@ -161,10 +161,12 @@ STATSD_PATCHES = [
 CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
 CSP_SCRIPT_SRC = (
     '\'self\'',
+    'https://*.mozilla.org',
+    'http://*.mozilla.org',
+    'https://*.mozilla.net',
+    'http://*.mozilla.net',
     'http://login.persona.org',
     'https://login.persona.org',
-    'http://code.jquery.com',
-    'https://code.jquery.com',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
 )
@@ -175,6 +177,10 @@ CSP_FRAME_SRC = (
 CSP_IMG_SRC = (
     '\'self\'',
     'data:',
+    'https://*.mozilla.org',
+    'http://*.mozilla.org',
+    'https://*.mozilla.net',
+    'http://*.mozilla.net',
     'https://affiliates-cdn.mozilla.org',
     'https://secure.gravatar.com',
     'https://graph.facebook.com',
@@ -185,7 +191,17 @@ CSP_IMG_SRC = (
 )
 CSP_FONT_SRC = (
     '\'self\'',
-    'https://www.mozilla.org'
+    'https://*.mozilla.org',
+    'http://*.mozilla.org',
+    'https://*.mozilla.net',
+    'http://*.mozilla.net',
+)
+CSP_STYLE_SRC = (
+    '\'self\'',
+    'https://*.mozilla.org',
+    'http://*.mozilla.org',
+    'https://*.mozilla.net',
+    'http://*.mozilla.net',
 )
 CSP_OPTIONS = ('eval-script', 'inline-script')
 
@@ -195,7 +211,15 @@ MINIFY_BUNDLES = {
     'css': {
         # Mothership
         'base': (
+            'css/base.styl',
             'browserid/persona-buttons.css',
+        ),
+        'oldIE': (
+            'css/oldIE.styl',
+            'browserid/persona-buttons.css',
+        ),
+        'home': (
+            'css/home.styl',
         ),
 
         # Facebook app
@@ -207,6 +231,7 @@ MINIFY_BUNDLES = {
     'js': {
         # Mothership
         'base': (
+            'js/libs/jquery-2.1.0.min.js',
             'browserid/browserid.js',
         ),
         'customize_image_banner': (

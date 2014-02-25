@@ -1,0 +1,115 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// Define common variables and mixins
+
+// Typography
+// Respect the user's preferences by sizing with rems.
+$base-font-size = 100%;
+
+// Convert font-size units to rems if the unit is in pixels.
+// Declare your size in pixels and this function automatically adds the
+// equivalent size in rems while leaving the px declaration as the fallback
+// for old browsers.
+// Based on Aral Balkan's Responsive Pixels - https://github.com/aral/responsive-pixels
+remify(value)
+    if value == 'inherit' || value == 'smaller' || value == null
+        value
+    else if unit(value) == 'px'
+        unit(value/16, 'rem')
+    else
+        unit(value, unit(value))
+
+
+// Abstract longhand for properties that take a single value
+abstract-longhand(prop, originalArguments)
+    value = originalArguments[0]
+    remifiedValue = remify(value)
+
+    {prop} value
+
+    if value != remifiedValue
+        {prop} remify(value)
+
+
+// Remify font-size declarations
+font-size() {
+    abstract-longhand('font-size', arguments)
+}
+
+
+// Grid units
+$grid-column-width          = 60px;
+$grid-narrow-column-width   = 40px;
+$grid-gutter-width          = 20px;
+
+
+// Colors
+$primary-text-color     = #4e4f53;
+$secondary-text-color   = darken($primary-text-color, 10%);
+$light-text-color       = #fff;
+
+$link-color = #09c;
+
+$light-gray     = #dae1e7;
+$medium-gray    = #828d93;
+$dark-gray      = #4e4f53;
+$orange         = #e26522;
+
+
+// Common widths
+$width-desktop      = 1000px;
+$width-tablet       = 760px;
+$width-mobile-wide  = 440px;
+$width-mobile       = 320px;
+
+
+// Media queries
+$media-query-desktop        = 'screen and (min-width: 1000px)';
+$media-query-tablet         = 'screen and (min-width: 760px)';
+$media-query-mobile-wide    = 'screen and (min-width: 480px)';
+$media-query-mobile         = 'screen and (max-width: 480px)';
+
+
+// Column spans for standard column widths
+span(columns) {
+    float: left;
+    width: ($grid-column-width * columns) + ($grid-gutter-width * (columns - 1));
+    margin: 0 ($grid-gutter-width / 2);
+}
+
+span_all() {
+    float: none;
+    width: auto;
+    margin: 0 ($grid-gutter-width / 2);
+}
+
+offset(columns) {
+    margin-left: (($grid-column-width + $grid-gutter-width) * columns) + ($grid-gutter-width * 0.5);
+}
+
+// Column spans for narrow column widths
+span_narrow(columns) {
+    float: left;
+    width: ($grid-narrow-column-width * columns) + ($grid-gutter-width * (columns - 1));
+    margin: 0 ($grid-gutter-width / 2);
+}
+
+offset_narrow(columns) {
+    margin-left: (($grid-narrow-column-width + $grid-gutter-width) * columns) + ($grid-gutter-width * 0.5);
+}
+
+
+// Mixins
+clearfix() {
+  &:before, &:after {
+    content: ' ';
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}

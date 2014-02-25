@@ -74,7 +74,7 @@ class LandingTests(TestCase):
 
         with patch('affiliates.base.views.render') as render:
             eq_(views.landing(request), render.return_value)
-            render.assert_called_with(request, 'base/landing.html')
+            render.assert_called_with(request, 'base/home.html')
 
     def test_authenticated(self):
         """

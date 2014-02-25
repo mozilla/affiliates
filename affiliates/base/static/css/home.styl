@@ -1,0 +1,283 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// The home page
+
+@import 'lib.styl';
+
+#intro {
+    background: #e26522 url('/static/img/warm-grain.png');
+    background: url('/static/img/warm-grain.png'),
+                linear-gradient(to bottom, #f59121, #d05921),
+                #e26522;
+    color: $light-text-color;
+    text-align: center;
+    padding-top: 175px;
+    margin-top: -125px;
+
+    h1 {
+        font-size: 36px;
+        color: $light-text-color;
+        text-shadow: none;
+    }
+
+    .pitch {
+        font-size: 20px;
+        line-height: 1.1;
+        margin: .5em $grid-column-width 1.5em;
+    }
+
+    .button {
+        min-width: 200px;
+    }
+
+}
+
+#howitworks {
+    li {
+        background: url(/static/img/fpo.png) left top no-repeat;
+        background-size: 90px 90px;
+        padding: 0 0 20px 100px;
+    }
+
+    h3 {
+        font-size: 24px;
+        font-weight: bold;
+    }
+}
+
+#rewards {
+    background: $medium-gray url('/static/img/dark-grain.png');
+    background: url('/static/img/dark-grain.png'),
+                linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 50%),
+                $medium-gray;
+    color: $light-text-color;
+
+    h2 {
+        color: $light-text-color;
+        text-shadow: none;
+        margin: 0 0 .5em;
+    }
+
+    p {
+        text-align: center;
+        margin: 0 0 .5em;
+    }
+}
+
+#leaderboard {
+    .stats {
+        font-size: 24px;
+        font-style: italic;
+        text-align: center;
+        line-height: 1.1;
+        margin: 0 $grid-column-width 1em;
+
+        li {
+            padding: 1em 0;
+
+            &:nth-child(2) {
+                border: groove rgba(255, 255, 255, .75);
+                border-width: 2px 0;
+            }
+
+            strong {
+                display: block;
+                font-size: 1.25em;
+            }
+        }
+    }
+
+    .more {
+        text-align: center;
+    }
+}
+
+table.leaderboard {
+    width: 80%;
+    margin: 0 auto 1.5em;
+
+    th, td {
+        text-align: left;
+        padding: 20px 10px;
+        vertical-align: top;
+        font-size: 24px;
+        font-weight: normal;
+        line-height: 1.1;
+    }
+
+    thead th {
+        font-style: italic;
+        font-size: 18px;
+    }
+
+    tbody tr:nth-child(odd) {
+        background: rgba(130, 140, 150, .1);
+    }
+
+    .rank {
+        width: 30px;
+        text-align: center;
+    }
+
+    .vcard {
+        padding-left: 80px;
+        position: relative;
+
+        a:link,
+        a:visited {
+            color: $secondary-text-color;
+            text-decoration: none;
+        }
+
+        a:hover,
+        a:focus,
+        a:active {
+            color: darken($link-color, 30%);
+            text-decoration: underline;
+        }
+
+        .avatar {
+            float: left;
+            margin: -15px 0 -15px -80px;
+            width: 55px;
+            height: 55px;
+        }
+
+        .fn {
+            font-size: 22px;
+            font-weight: normal;
+            display: block;
+            margin-top: -3px;
+            margin-bottom: -.35em;
+        }
+
+        .website {
+            font-size: 14px;
+            margin-bottom: -20px;
+        }
+    }
+
+    .clicks {
+        width: 30%;
+        font-weight: bold;
+        font-style: italic;
+        font-size: 26px;
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Landscape mobile layout: 440px
+
+@media $media-query-mobile-wide {
+
+    #howitworks li {
+        min-height: 140px;
+        padding-left: 160px;
+        background-size: 140px 140px;
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Tablet layout: 760px
+
+@media $media-query-tablet {
+
+    #intro {
+        h1 {
+            font-size: 48px;
+        }
+
+        .pitch {
+            font-size: 24px;
+            margin: .5em 60px 1.5em;
+        }
+
+        .button {
+            font-size: 24px;
+        }
+    }
+
+    #howitworks li {
+        span_narrow(4);
+        background-position: center top;
+        background-size: 220px 220px;
+        padding: 240px 0 0;
+    }
+
+    #rewards p {
+        font-size: 24px;
+        margin: 0 $grid-column-width .5em;
+    }
+
+    #leaderboard .stats {
+        width: $width-tablet;
+        margin: 1em auto 2em;
+
+        li {
+            width: 30%;
+            padding: 0 1%;
+            display: inline-block;
+
+            &:nth-child(2) {
+                border-width: 0 2px;
+            }
+
+        }
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Desktop layout: 1000px
+
+@media $media-query-desktop {
+
+    #intro {
+
+        h1 {
+            font-size: 60px;
+        }
+
+        .pitch {
+            margin: .5em 160px 1.5em;
+        }
+
+    }
+
+    #howitworks li {
+        span(4);
+        padding: 320px 0 0;
+        background-size: 300px 300px;
+    }
+
+
+    #leaderboard .stats {
+        width: $width-tablet;
+        margin: 1em auto 2em;
+
+        li {
+            width: 30%;
+            padding: 0 1%;
+            display: inline-block;
+
+            &:nth-child(2) {
+                border-width: 0 2px;
+            }
+
+        }
+    }
+
+}
+
+

@@ -1,0 +1,27 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// This overrides most browser defaults for common elements, in some cases
+// replacing them with our own global styling (such as bottom margins for
+// some elements). This isn't a complete reset and allows some browser
+// defaults to remain (like italic style for em, bold weight for strong, etc).
+
+// Set new HTML5 elements to block or inline-block for older browsers
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+audio, video, canvas { display: inline-block; }
+
+html, body, form, fieldset, legend, h1, h2, h3, h4, h5, h6, dd { margin: 0; padding: 0; }
+p, pre, blockquote, ul, ol, dl, table, figure { margin: 0 0 1.5em; padding: 0; }
+blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+blockquote, q { quotes: "" ""; }
+table { border-collapse: collapse; border-spacing: 0; }
+fieldset, iframe { border: 0; }
+legend { color: inherit; } /* For IE */
+// It's more common for lists to be used for semantic structure and unstyled.
+// Use the .prose class (in base.styl) for lists in content that need normal styling.
+ul, ol { list-style: none; }
+a img { border: 0; }
+input, select, textarea { font-family: inherit; font-size: 100%; }
+img, video, object, embed { max-width: 100%; height: auto; }
