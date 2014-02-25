@@ -62,6 +62,9 @@ class AnalyticsService(object):
         """
         Retrive click totals for all banners that occurred on the given
         date.
+
+        :returns:
+            Dictionary mapping banner PKs to click totals.
         """
         date_string = query_date.strftime('%Y-%m-%d')
         result = self._get_data(
@@ -72,11 +75,8 @@ class AnalyticsService(object):
         )
 
         # We're expecting only unsampled data when not in debug mode.
-        if result['containsSampledData'] and not settings.DEBUG:
+        if result.get('containsSampledData', False) and not settings.DEBUG:
             raise AnalyticsError('API response contains sampled data when unsampled data was '
                                  'expected.')
 
-        if 'rows' in result:
-            return dict(result['rows'])
-        else:
-            return {}
+        return dict(result.get('rows', ()))

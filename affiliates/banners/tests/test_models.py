@@ -1,14 +1,14 @@
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from nose.tools import eq_, ok_
-from mock import Mock
+from mock import Mock, patch
 
 from affiliates.banners.models import Banner
 from affiliates.banners.tests import (CategoryFactory, ImageBannerVariationFactory,
                                       TextBannerFactory)
 from affiliates.base.tests import TestCase
 from affiliates.links.models import Link
+from affiliates.users.tests import UserFactory
 
 
 class CategoryTests(TestCase):
@@ -34,14 +34,21 @@ class BannerTests(TestCase):
         description and generated code.
         """
         banner = Banner(destination='https://www.mozilla.org')
-        banner.generate_banner_code = Mock(return_value='asdf')
-        user = Mock(spec=User)
+        banner.generate_banner_code = Mock(return_value="""
+            <a href="{href}">Link!</a>
+        """)
+        user = UserFactory.create()
 
-        link = banner.create_link(user, foo='bar', baz=1)
+        with patch.object(Link, 'get_referral_url') as get_referral_url:
+            get_referral_url.return_value = 'asdf'
+            link = banner.create_link(user, foo='bar', baz=1)
+
         ok_(isinstance(link, Link))
         eq_(link.user, user)
         eq_(link.destination, 'https://www.mozilla.org')
-        eq_(link.html, 'asdf')
+        self.assertHTMLEqual(link.html, """
+            <a href="asdf">Link!</a>
+        """)
         banner.generate_banner_code.assert_called_with(foo='bar', baz=1)
 
 
@@ -55,7 +62,7 @@ class ImageBannerTests(TestCase):
 
         with self.settings(MEDIA_URL='/media/'):
             self.assertHTMLEqual(banner.generate_banner_code(variation), """
-              <a href="https://www.mozilla.org">
+              <a href="{href}">
                 <img src="/media/uploads/banners/test.png">
               </a>
             """)
@@ -70,6 +77,5 @@ class ImageBannerVariationTests(TestCase):
 
 class TextBannerTests(TestCase):
     def test_generate_banner_code(self):
-        banner = TextBannerFactory(destination='https://www.mozilla.org',
-                                   text='<a href="{href}">Test</a>')
-        eq_(banner.generate_banner_code(), '<a href="https://www.mozilla.org">Test</a>')
+        banner = TextBannerFactory(text='<a href="{href}">Test</a>')
+        eq_(banner.generate_banner_code(), '<a href="{href}">Test</a>')

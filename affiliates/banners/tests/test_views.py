@@ -74,7 +74,6 @@ class CustomizeBannerViewTests(TestCase):
             eq_(response, redirect.return_value)
             redirect.assert_called_with(link)
 
-        link.save.assert_called_with()
         self.view.banner.create_link.assert_called_with(self.view.request.user, foo='bar', baz=1)
 
 

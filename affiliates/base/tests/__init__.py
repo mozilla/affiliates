@@ -46,6 +46,17 @@ class TestCase(DjangoTestCase):
 
         eq_(response['Location'], expected_url)
 
+    def create_patch(self, *args, **kwargs):
+        patcher = patch(*args, **kwargs)
+        obj = patcher.start()
+        self.addCleanup(patcher.stop)
+        return obj
+
+    def shortDescription(self):
+        # Stop nose using the test docstring and instead the test method
+        # name.
+        pass
+
 
 def refresh_model(instance):
     """Retrieves the latest version of a model instance from the DB."""
