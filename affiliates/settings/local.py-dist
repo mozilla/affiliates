@@ -75,6 +75,9 @@ BROWSERID_AUDIENCES = [SITE_URL]
 # CDN for absolutify. Set to 'localhost:8000' for local development.
 CDN_DOMAIN = 'localhost:8000'
 
+# Path to stylus executable
+STYLUS_BIN = 'stylus'
+
 # Uncomment to send email to the console, usually only for local development.
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
