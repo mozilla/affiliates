@@ -32,7 +32,10 @@ class FacebookAuthenticationMiddlewareTests(TestCase):
         an anonymous user.
         """
         request = self.request()
-        self.auth_middleware.process_request(request)
+        with patch('affiliates.facebook.middleware.Prefixer') as Prefixer:
+            Prefixer.return_value.get_language.return_value = 'en-US'
+            self.auth_middleware.process_request(request)
+            Prefixer.assert_called_with(request)
         eq_(request.user.is_anonymous(), True)
 
         # Check that the locale from the request was activated.
@@ -44,9 +47,12 @@ class FacebookAuthenticationMiddlewareTests(TestCase):
         If an invalid user id is given in the session, the user attribute should
         contain an anonymous user.
         """
-        request = self.request(locale='es')
+        request = self.request()
         request.session[SESSION_KEY] = 9999
-        self.auth_middleware.process_request(request)
+        with patch('affiliates.facebook.middleware.Prefixer') as Prefixer:
+            Prefixer.return_value.get_language.return_value = 'es'
+            self.auth_middleware.process_request(request)
+            Prefixer.assert_called_with(request)
         eq_(request.user.is_anonymous(), True)
 
         # Check that the locale from the request was activated.

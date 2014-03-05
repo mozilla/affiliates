@@ -1,10 +1,7 @@
-import os
-
 from django.conf.urls import include, patterns, url
 from django.http import HttpResponse
 from django.template import RequestContext
 
-from funfactory.manage import ROOT
 from jingo import env
 
 
@@ -18,7 +15,7 @@ def base_template_view(request):
 
 urlpatterns = patterns('',
     # Include base urls to avoid NoReverseMatch errors.
-    (r'', include('%s.urls' % os.path.basename(ROOT))),
+    (r'', include('affiliates.urls')),
 
     url('^fb/test$', base_template_view, name='facebook.base_test'),
 )

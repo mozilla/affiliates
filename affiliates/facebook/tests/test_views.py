@@ -171,10 +171,18 @@ class LoadAppTests(TestCase):
 
 
 class PreAuthPromoTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
     def _pre_auth_promo(self, locale='en-US'):
-        with self.activate(locale):
-            return self.client.get(reverse('facebook.pre_auth_promo'),
-                                   HTTP_ACCEPT_LANGUAGE=locale)
+        request = self.factory.get('/')
+        request.locale = locale
+
+        with patch('affiliates.facebook.views.render') as render:
+            response = views.pre_auth_promo(request)
+            response.context = render.call_args[0][2]
+
+        return response
 
     def test_locale_banners(self):
         """Ensure that the banners used by the page match the user's locale."""
