@@ -3,6 +3,8 @@ from funfactory.settings_base import *
 
 # Django Settings
 ##############################################################################
+ROOT_URLCONF = 'affiliates.urls'
+
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     'affiliates.base',
     'affiliates.facebook',

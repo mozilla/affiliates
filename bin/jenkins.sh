@@ -33,11 +33,9 @@ source $VENV/bin/activate
 pip install -q -r requirements/compiled.txt
 pip install -q -r requirements/dev.txt
 
-cat > settings/local.py <<SETTINGS
-from settings.base import *
+cat > affiliates/settings/local.py <<SETTINGS
+from . import base
 
-ROOT_URLCONF = 'workspace.urls'
-LOG_LEVEL = logging.ERROR
 # Database name has to be set because of sphinx
 DATABASES = {
     'default': {
@@ -46,14 +44,17 @@ DATABASES = {
         'NAME': '${JOB_NAME}',
         'USER': 'hudson',
         'PASSWORD': '',
-        'OPTIONS': {'init_command': 'SET storage_engine=InnoDB'},
+        'OPTIONS': {
+            'init_command': 'SET storage_engine=InnoDB',
+            'charset' : 'utf8',
+            'use_unicode' : True,
+        },
         'TEST_NAME': 'test_${JOB_NAME}',
         'TEST_CHARSET': 'utf8',
         'TEST_COLLATION': 'utf8_general_ci',
     }
 }
 
-INSTALLED_APPS += ('django_nose',)
 CELERY_ALWAYS_EAGER = True
 BANNERS_HASH = (
     '299839978f965e3b17d926572f91b4fbc340896c',
@@ -61,6 +62,13 @@ BANNERS_HASH = (
 )
 
 SECRET_KEY = 'v9h9h09hg04gb984bgbfb4f09f'
+HMAC_KEYS = {
+    '2012-06-06': 'some secret',
+}
+
+from django_sha2 import get_password_hashers
+PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
+
 SESSION_COOKIE_SECURE = True
 
 FACEBOOK_APP_ID = '00000000000'
@@ -74,7 +82,7 @@ echo "CREATE DATABASE IF NOT EXISTS ${JOB_NAME}"|mysql -u $DB_USER -h $DB_HOST
 
 echo "Starting tests..."
 export FORCE_DB=1
-coverage run manage.py test --noinput --with-xunit
+coverage run manage.py test --noinput
 coverage xml $(find apps lib -name '*.py')
 
 echo "FIN"
