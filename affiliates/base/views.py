@@ -19,6 +19,10 @@ def dashboard(request):
     return render(request, 'base/dashboard.html')
 
 
+def leaderboard(request):
+    return render(request, 'base/leaderboard.html')
+
+
 @xframe_allow
 def handler404(request):
     if in_facebook_app(request):

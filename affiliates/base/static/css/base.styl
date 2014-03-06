@@ -179,8 +179,30 @@ a:active {
 }
 
 .section {
-    padding: 30px 0;
+    padding: 15px 0;
     border-bottom: 1px solid rgba(0, 0, 0, .25);
+}
+
+.page-head {
+    background: $medium-gray url('/static/img/dark-grain.png');
+    background: url('/static/img/dark-grain.png'),
+                linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 50%),
+                $medium-gray;
+    color: $light-text-color;
+    text-align: center;
+    padding-top: 120px;
+    margin-top: -125px;
+    margin-bottom: 20px;
+
+    h1, h2, h3 {
+        color: $light-text-color;
+        text-shadow: none;
+    }
+
+}
+
+.section:last-child {
+    border-bottom: 0;
 }
 
 .contain {
@@ -190,6 +212,20 @@ a:active {
     clearfix();
 }
 
+// More height for tall viewports
+@media screen and (min-height: 600px) {
+
+    .section {
+        padding: 30px 0;
+    }
+
+    .page-head {
+        padding-top: 175px;
+        margin-top: -125px;
+        margin-bottom: 48px;
+    }
+
+}
 
 
 //*----------------------------------------------------------------*/
@@ -248,7 +284,7 @@ a:active {
     background: $dark-gray url('/static/img/dark-grain.png') repeat;
     color: $light-text-color;
     font-size: 12px;
-    font-size: .75rem;
+    margin-top: 48px;
     padding: 48px 0;
 
     a {
@@ -276,6 +312,85 @@ a:active {
     &:focus {
         opacity: 1;
     }
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Leaderboard
+
+table.leaderboard {
+    width: 80%;
+    margin: 0 auto 1.5em;
+
+    th, td {
+        text-align: left;
+        padding: 20px 10px;
+        vertical-align: top;
+        font-size: 24px;
+        font-weight: normal;
+        line-height: 1.1;
+    }
+
+    thead th {
+        font-style: italic;
+        font-size: 18px;
+    }
+
+    tbody tr:nth-child(odd) {
+        background: rgba(130, 140, 150, .1);
+    }
+
+    .rank {
+        width: 30px;
+        text-align: center;
+    }
+
+    .vcard {
+        padding-left: 80px;
+        position: relative;
+
+        a:link,
+        a:visited {
+            color: $secondary-text-color;
+            text-decoration: none;
+        }
+
+        a:hover,
+        a:focus,
+        a:active {
+            color: darken($link-color, 30%);
+            text-decoration: underline;
+        }
+
+        .avatar {
+            float: left;
+            margin: -15px 0 -15px -80px;
+            width: 55px;
+            height: 55px;
+        }
+
+        .fn {
+            font-size: 22px;
+            font-weight: normal;
+            display: block;
+            margin-top: -3px;
+            margin-bottom: -.35em;
+        }
+
+        .website {
+            font-size: 14px;
+            margin-bottom: -20px;
+        }
+    }
+
+    .clicks {
+        width: 30%;
+        font-weight: bold;
+        font-style: italic;
+        font-size: 26px;
+    }
+
 }
 
 

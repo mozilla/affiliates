@@ -1,59 +1,18 @@
 {% extends 'base/base.html' %}
 
-{% block body_id %}home{% endblock %}
-{% block body_class %}home{% endblock %}
+{% block body_id %}leaderboard{% endblock %}
+{% block body_class %}leaderboard{% endblock %}
 
-{% block page_css %}
-  {{ css('home') }}
-{% endblock %}
 
 {% block content %}
   <main role="main">
-    <section id="intro" class="section page-head">
+    <div class="section page-head">
       <div class="contain">
-        <h1>{{ _('Become a Firefox Affiliate today!') }}</h1>
-        <p class="pitch">{{ _('The Firefox Affliates program is a great way to share your love of Firefox and other Mozilla products.') }}</p>
-        <p><a href="/signin" class="button go">{{ _('Get started') }}</a></p>
+        <h1 class="page-title">{{ _('Top affiliates') }}</h1>
       </div>
-    </section>
+    </div>
 
-    <section id="howitworks" class="section">
-      <div class="contain">
-        <h2 class="section-title">{{ _('How it works') }}</h2>
-        <ol class="steps">
-          <li class="step-1">
-            <h3>1. Pick a banner</h3>
-            <p>Bacon ipsum dolor sit amet flank elit shank sed occaecat swine.</p>
-          </li>
-          <li class="step-2">
-            <h3>2. Customize</h3>
-            <p>Leberkas nulla meatball turkey shankle enim nisi occaecat. Esse ham laborum swine, chuck jowl ribeye shank.</p>
-          </li>
-          <li class="step-3">
-            <h3>3. Post to your site</h3>
-            <p>Pork belly eu ut, shoulder velit mollit cillum nisi bacon turkey swine esse cupidatat consectetur tenderloin.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <section id="rewards" class="section">
-      <div class="contain">
-        <h2 class="section-title">{{ _('Earn rewards!') }}</h2>
-        <p>T-shirts, stickers, and bon bons. Jelly-o bear claw sweet roll bonbon lollipop. Drageé drageé applicake chupa chups.</p>
-      </div>
-    </section>
-
-    <section id="leaderboard" class="section">
-      <div class="contain">
-
-        <ul class="stats">
-          <li><strong>59,434</strong> Affiliates</li>
-          <li><strong>53,358</strong> Banners</li>
-          <li><strong>15,766,631</strong> Clicks</li>
-        </ul>
-
-        <h2 class="section-title">{{ _('Top affiliates') }}</h2>
+    <div class="contain">
 
         <table class="leaderboard">
           <thead>
@@ -121,11 +80,13 @@
               </th>
               <td class="clicks">789</td>
             </tr>
+
+            <!-- and so on.... ->
+
           </tbody>
         </table>
 
-        <p class="more"><a href="/leaderboard" class="button secondary go">See all</a></p>
       </div>
-    </section>
+
   </main>
 {% endblock %}

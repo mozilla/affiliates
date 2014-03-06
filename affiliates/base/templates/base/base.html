@@ -48,14 +48,19 @@
         <div class="contain">
           <a href="//www.mozilla.org/" id="tabzilla">{{ _('Mozilla') }}</a>
 
-          {# TODO: Get some kind of actual logo/wordmark. #}
-          <h2 class="site-logo"><img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}"></h2>
+          <h2 class="site-logo">
+          {# TODO: Don't link to the home page you're on the home page. #}
+          {# TODO: Make this href point to the appropriate landing: home if logged out, dashboard if logged in. #}
+            <a href="/">
+              <img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}">
+            </a>
+          </h2>
 
-          {# TODO: Make these links actually work. Turn nav into a hamburger at mobile sizes. #}
+          {# TODO: Turn nav into a hamburger at mobile sizes. #}
           <nav id="nav-main" role="navigation">
             <ul>
               <li><a href="/about">{{ _('About') }}</a></li>
-              <li><a href="/leaderboard">{{ _('Leaderboard') }}</a></li>
+              <li><a href="{{ url('base.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
               {% if user %}
                 {% if user.is_authenticated() %}
                   {# TODO: Show display name and gravatar. #}
