@@ -6,3 +6,6 @@ Jinja2==2.5.5
 py-bcrypt==0.3
 
 Pillow==2.3.0
+
+# For google-api-python-client
+pyOpenSSL==0.13.1

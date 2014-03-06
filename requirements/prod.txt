@@ -20,3 +20,5 @@ django-form-utils>=0.2.0
 django-mptt==0.6.0
 git+https://github.com/mozilla/django-browserid.git@e0674517b38b99f55924604b7ddd8b5a85aab258#egg=django-browserid
 django-braces==1.3.1
+
+google-api-python-client==1.2
