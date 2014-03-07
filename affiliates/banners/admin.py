@@ -27,5 +27,20 @@ class ImageBannerModelAdmin(BaseModelAdmin):
     inlines = (ImageVariationInline,)
 
 
+class TextVariationInline(admin.TabularInline):
+    model = models.TextBannerVariation
+    fields = ('locale', 'text')
+    extra = 0
+
+
+class TextBannerModelAdmin(BaseModelAdmin):
+    list_display = ('name', 'category', 'visible', 'destination')
+    fields = ('name', 'category', 'visible', 'destination', 'created', 'modified')
+    readonly_fields = ('created', 'modified')
+    search_fields = ('name', 'destination', 'category__name')
+    inlines = (TextVariationInline,)
+
+
 admin_site.register(models.Category, CategoryModelAdmin)
 admin_site.register(models.ImageBanner, ImageBannerModelAdmin)
+admin_site.register(models.TextBanner, TextBannerModelAdmin)

@@ -238,6 +238,9 @@ MINIFY_BUNDLES = {
             'js/libs/rivets.min.js',
             'js/customize_image_banner.js',
         ),
+        'customize_text_banner': (
+            'js/customize_text_banner.js',
+        ),
 
         # Facebook app
         'fb_common': (

@@ -1,6 +1,6 @@
 from django import forms
 
-from affiliates.banners.models import ImageBannerVariation
+from affiliates.banners.models import ImageBannerVariation, TextBannerVariation
 
 
 class CustomizeImageBannerForm(forms.Form):
@@ -12,3 +12,13 @@ class CustomizeImageBannerForm(forms.Form):
 
         # Variation field choices are limited by image banner.
         self.fields['variation'].queryset = image_banner.variation_set.all()
+
+
+class CustomizeTextBannerForm(forms.Form):
+    variation = forms.ModelChoiceField(TextBannerVariation.objects.none())
+
+    def __init__(self, text_banner, *args, **kwargs):
+        super(CustomizeTextBannerForm, self).__init__(*args, **kwargs)
+
+        # Variation field choices are limited by banner.
+        self.fields['variation'].queryset = text_banner.variation_set.all()

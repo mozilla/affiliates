@@ -5,7 +5,7 @@ from mock import Mock, patch
 
 from affiliates.banners.models import Banner
 from affiliates.banners.tests import (CategoryFactory, ImageBannerVariationFactory,
-                                      TextBannerFactory)
+                                      TextBannerFactory, TextBannerVariationFactory)
 from affiliates.base.tests import TestCase
 from affiliates.links.models import Link
 from affiliates.users.tests import UserFactory
@@ -77,5 +77,6 @@ class ImageBannerVariationTests(TestCase):
 
 class TextBannerTests(TestCase):
     def test_generate_banner_code(self):
-        banner = TextBannerFactory(text='<a href="{href}">Test</a>')
-        eq_(banner.generate_banner_code(), '<a href="{href}">Test</a>')
+        banner = TextBannerFactory()
+        variation = TextBannerVariationFactory(text='Test')
+        eq_(banner.generate_banner_code(variation=variation), '<a href="{href}">Test</a>')

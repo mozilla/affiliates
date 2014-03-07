@@ -5,8 +5,8 @@ from django.views.generic import ListView, FormView
 
 from braces.views import LoginRequiredMixin
 
-from affiliates.banners.forms import CustomizeImageBannerForm
-from affiliates.banners.models import Category, ImageBanner
+from affiliates.banners.forms import CustomizeImageBannerForm, CustomizeTextBannerForm
+from affiliates.banners.models import Category, ImageBanner, TextBanner
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -26,7 +26,7 @@ class BannerListView(LoginRequiredMixin, ListView):
         return super(BannerListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        return self.category.imagebanner_set.all()
+        return list(self.category.imagebanner_set.all()) + list(self.category.textbanner_set.all())
 
     def get_context_data(self, **context):
         context['category'] = self.category
@@ -50,6 +50,10 @@ class CustomizeBannerView(LoginRequiredMixin, FormView):
         link = self.banner.create_link(self.request.user, **form.cleaned_data)
         return redirect(link)
 
+    def get_context_data(self, **context):
+        context['banner'] = self.banner
+        return super(CustomizeBannerView, self).get_context_data(**context)
+
 
 class CustomizeImageBannerView(CustomizeBannerView):
     """Display and process form for customizing an image banner."""
@@ -70,3 +74,16 @@ class CustomizeImageBannerView(CustomizeBannerView):
         context['variations_json'] = json.dumps(variations)
 
         return super(CustomizeImageBannerView, self).get_context_data(**context)
+
+
+class CustomizeTextBannerView(CustomizeBannerView):
+    """Display and process form for customizing a text banner."""
+    banner_class = TextBanner
+    form_class = CustomizeTextBannerForm
+    template_name = 'banners/generator/customize/text_banner.html'
+
+    def get_context_data(self, **context):
+        # Add JSON object containing text for each variation.
+        variations_text = dict([(v.pk, v.text) for v in self.banner.variation_set.all()])
+        context['variations_text_json'] = json.dumps(variations_text)
+        return super(CustomizeTextBannerView, self).get_context_data(**context)

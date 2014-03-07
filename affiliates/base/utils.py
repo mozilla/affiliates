@@ -6,6 +6,7 @@ from django.utils.translation import get_language
 
 from babel.core import Locale, UnknownLocaleError
 from funfactory.urlresolvers import reverse
+from product_details import product_details
 
 
 def absolutify(url, protocol=None, cdn=False):
@@ -74,3 +75,12 @@ def get_object_or_none(klass, *args, **kwargs):
         return klass.objects.get(*args, **kwargs)
     except (klass.DoesNotExist, klass.MultipleObjectsReturned):
         return None
+
+
+LOCALE_TO_NATIVE = dict([(key.lower(), value['native']) for key, value in
+                         product_details.languages.items()])
+
+
+def locale_to_native(locale):
+    """Return the native name for the given locale."""
+    return LOCALE_TO_NATIVE.get(locale)

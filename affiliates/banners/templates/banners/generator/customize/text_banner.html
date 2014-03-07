@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+
+{% block site_js %}
+  {{ super() }}
+  {{ js('customize_text_banner') }}
+{% endblock %}
+
+{% block content %}
+  <h1>Customize Banner</h1>
+
+  <form id="customize-banner-form" method="POST" data-variations-text="{{ variations_text_json }}">
+    {{ csrf() }}
+
+    {{ form.variation }}
+    <p class="preview"></p>
+
+    <button type="submit">Create Banner</button>
+  </form>
+{% endblock %}

@@ -7,7 +7,8 @@ from mock import Mock, patch
 from nose.tools import eq_
 
 from affiliates.banners import views
-from affiliates.banners.tests import CategoryFactory
+from affiliates.banners.tests import (CategoryFactory, ImageBannerFactory, TextBannerFactory,
+                                      TextBannerVariationFactory)
 from affiliates.base.tests import patch_super, TestCase
 
 
@@ -32,6 +33,20 @@ class BannerListViewTests(TestCase):
             eq_(response, super_dispatch.return_value)
 
         eq_(self.view.category, category)
+
+    def test_get_queryset(self):
+        """
+        The list returned by get_queryset should contain both image
+        banners and text banners.
+        """
+        category = CategoryFactory.create()
+        image_banner1, image_banner2 = ImageBannerFactory.create_batch(2, category=category)
+        text_banner1, text_banner2 = TextBannerFactory.create_batch(2, category=category)
+        self.view.category = category
+
+        eq_(set(self.view.get_queryset()),
+            set([image_banner1, image_banner2, text_banner1, text_banner2]))
+
 
 
 class CustomizeBannerViewTests(TestCase):
@@ -97,3 +112,21 @@ class CustomizeImageBannerViewTests(TestCase):
             {'locale': 'en-us', 'color': 'Blue', 'image': 'foo.png', 'size': '100x200'})
         eq_(variations['2'],
             {'locale': 'de', 'color': 'Red', 'image': 'bar.png', 'size': '150x250'})
+
+
+class CustomizeTextBannerViewTests(TestCase):
+    def test_get_context_data_variations(self):
+        view = views.CustomizeTextBannerView()
+        view.banner = TextBannerFactory.create()
+
+        variation1, variation2 = TextBannerVariationFactory.create_batch(2, banner=view.banner)
+
+        ctx = view.get_context_data(foo='bar', baz=1)
+        eq_(ctx['foo'], 'bar')
+        eq_(ctx['baz'], 1)
+
+        variations = json.loads(ctx['variations_text_json'])
+        eq_(variations, {
+            unicode(variation1.pk): variation1.text,
+            unicode(variation2.pk): variation2.text,
+        })

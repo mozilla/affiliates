@@ -9,8 +9,9 @@ from django.template.loader import render_to_string
 from mptt.models import MPTTModel, TreeForeignKey
 
 from affiliates.banners import COLOR_CHOICES
-from affiliates.links.models import Link
 from affiliates.base.models import LocaleField
+from affiliates.base.utils import locale_to_native
+from affiliates.links.models import Link
 
 
 class Category(MPTTModel):
@@ -123,15 +124,19 @@ class ImageBannerVariation(models.Model):
 
 
 class TextBanner(Banner):
-    """
-    Banner displayed as a string of text with a link.
+    """Banner displayed as a string of text with a link."""
+    def generate_banner_code(self, variation, **kwargs):
+        return u'<a href="{{href}}">{text}</a>'.format(text=variation.text)
 
-    Text should use Python format syntax to include the link. For
-    example:
+    def get_customize_url(self):
+        return reverse('banners.generator.text_banner.customize', kwargs={'pk': self.pk})
 
-    > Value privacy? <a href="{href}">Download Firefox!</a>
-    """
+
+class TextBannerVariation(models.Model):
+    """Localized variation of a text banner."""
+    banner = models.ForeignKey(TextBanner, related_name='variation_set')
     text = models.TextField()
+    locale = LocaleField()
 
-    def generate_banner_code(self, **kwargs):
-        return self.text
+    def __unicode__(self):
+        return locale_to_native(self.locale)

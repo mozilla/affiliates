@@ -7,7 +7,8 @@ from nose.tools import eq_
 from tower import activate
 
 from affiliates.base.tests import TestCase
-from affiliates.base.utils import absolutify, current_locale, redirect, get_object_or_none
+from affiliates.base.utils import (absolutify, current_locale, get_object_or_none,
+                                   locale_to_native, redirect)
 
 
 class TestAbsolutify(TestCase):
@@ -80,3 +81,14 @@ class TestGetObjectOrNone(TestCase):
 
     def test_none(self):
         eq_(get_object_or_none(User, username='does.not.exist'), None)
+
+
+class LocaleToNativeTests(TestCase):
+    def test_basic(self):
+        with patch('affiliates.base.utils.LOCALE_TO_NATIVE', {'en-us': 'English'}):
+            eq_(locale_to_native('en-us'), 'English')
+
+    def test_invalid_locale(self):
+        """If the given locale isn't in product_details, return None."""
+        with patch('affiliates.base.utils.LOCALE_TO_NATIVE', {'en-us': 'English'}):
+            eq_(locale_to_native('fr'), None)

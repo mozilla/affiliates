@@ -34,4 +34,10 @@ class ImageBannerVariationFactory(DjangoModelFactory):
 class TextBannerFactory(BannerFactory):
     FACTORY_FOR = models.TextBanner
 
-    text = Sequence(lambda n: '<a href="{{href}}">test{0}</a>'.format(n))
+
+class TextBannerVariationFactory(DjangoModelFactory):
+    FACTORY_FOR = models.TextBannerVariation
+
+    banner = SubFactory(TextBannerFactory)
+    locale = 'en-us'
+    text = Sequence(lambda n: 'test{0}'.format(n))
