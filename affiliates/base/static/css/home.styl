@@ -8,10 +8,7 @@
 @import 'lib.styl';
 
 #intro {
-    background: #e26522 url('/static/img/warm-grain.png');
-    background: url('/static/img/warm-grain.png'),
-                linear-gradient(to bottom, #f59121, #d05921),
-                #e26522;
+    {section-orange}
 
     .pitch {
         font-size: 20px;
@@ -39,11 +36,7 @@
 }
 
 #rewards {
-    background: $medium-gray url('/static/img/dark-grain.png');
-    background: url('/static/img/dark-grain.png'),
-                linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 50%),
-                $medium-gray;
-    color: $light-text-color;
+    {section-dark}
 
     h2 {
         color: $light-text-color;

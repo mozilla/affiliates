@@ -43,7 +43,7 @@ class FBLoginRequiredTests(TestCase):
         with self.activate('en-US'):
             response = view(request)
             eq_(response.status_code, 302)
-            self.assertRedirectsNoFollow(response, reverse('base.landing'))
+            self.assertRedirectsNoFollow(response, reverse('base.home'))
 
     def test_django_auth(self):
         """

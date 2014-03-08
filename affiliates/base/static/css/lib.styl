@@ -55,9 +55,95 @@ $link-color = #09c;
 
 $light-gray     = #dae1e7;
 $medium-gray    = #828d93;
+$med-dark-gray  = #b6bfc9;
 $dark-gray      = #4e4f53;
 $orange         = #e26522;
 
+// Orange backgrounds for some page sections
+section-orange = @block {
+    background: #e26522 url('/static/img/warm-grain.png');
+    background: url('/static/img/warm-grain.png'),
+                linear-gradient(to bottom, #f59121, #d05921),
+                #e26522;
+    color: $light-text-color;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .15);
+
+    h1, h2, h3 {
+        color: $light-text-color;
+    }
+
+    {light-links}
+}
+
+
+// Medium gray backgrounds for some page sections
+section-medium = @block {
+    background: $med-dark-gray url('/static/img/light-grain.png');
+
+    .section-title {
+        color: $light-text-color;
+    }
+}
+
+// Dark gray backgrounds for some page sections
+section-dark = @block {
+    background: $medium-gray url('/static/img/dark-grain.png');
+    background: url('/static/img/dark-grain.png'),
+                linear-gradient(to top, rgba(85, 90, 95, .25) 0, rgba(85, 90, 95, 0) 15px),
+                linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 50%),
+                $medium-gray;
+    color: $light-text-color;
+
+    h1, h2, h3 {
+        color: $light-text-color;
+    }
+
+    {invert-links}
+}
+
+// Light links for dark backgrounds
+invert-links = @block {
+    a {
+        color: lighten($link-color, 60%);
+        text-decoration: none;
+
+        &:visited {
+            color: lighten($link-color, 50%);
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: lighten($link-color, 70%);
+            text-decoration: underline;
+        }
+    }
+}
+
+// White links for some occasions
+light-links = @block {
+    a {
+        color: #fff;
+
+        &:visited {
+            color: #eee;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: #fff;
+            text-decoration: underline;
+        }
+    }
+}
+
+// Override base heading styles
+normalize-heading = @block {
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: normal;
+    text-shadow: none;
+}
 
 // Common widths
 $width-desktop      = 1000px;

@@ -7,7 +7,7 @@ from commonware.response.decorators import xframe_allow
 from affiliates.facebook.utils import in_facebook_app
 
 
-def landing(request):
+def home(request):
     if request.user.is_authenticated():
         return redirect('base.dashboard')
     else:

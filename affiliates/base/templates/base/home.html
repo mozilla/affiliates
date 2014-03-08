@@ -7,6 +7,12 @@
   {{ css('home') }}
 {% endblock %}
 
+{% block site_logo %}
+  <h2 class="site-logo">
+    <img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}">
+  </h2>
+{% endblock %}
+
 {% block content %}
   <main role="main">
     <section id="intro" class="section page-head">

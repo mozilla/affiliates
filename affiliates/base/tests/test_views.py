@@ -59,13 +59,13 @@ class ErrorPageTests(TestCase):
             render.assert_called_with(request, 'facebook/error.html', status=500)
 
 
-class LandingTests(TestCase):
+class HomeTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
     def test_not_authenticated(self):
         """
-        If the current user isn't authenticated, render the landing
+        If the current user isn't authenticated, render the home
         page.
         """
         request = self.factory.get('/')
@@ -73,7 +73,7 @@ class LandingTests(TestCase):
         request.user.is_authenticated.return_value = False
 
         with patch('affiliates.base.views.render') as render:
-            eq_(views.landing(request), render.return_value)
+            eq_(views.home(request), render.return_value)
             render.assert_called_with(request, 'base/home.html')
 
     def test_authenticated(self):
@@ -84,5 +84,5 @@ class LandingTests(TestCase):
         request.user = Mock()
         request.user.is_authenticated.return_value = True
 
-        response = views.landing(request)
+        response = views.home(request)
         self.assertRedirectsNoFollow(response, reverse('base.dashboard'))

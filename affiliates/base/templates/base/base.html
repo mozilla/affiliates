@@ -48,13 +48,13 @@
         <div class="contain">
           <a href="//www.mozilla.org/" id="tabzilla">{{ _('Mozilla') }}</a>
 
+        {% block site_logo %}
           <h2 class="site-logo">
-          {# TODO: Don't link to the home page you're on the home page. #}
-          {# TODO: Make this href point to the appropriate landing: home if logged out, dashboard if logged in. #}
-            <a href="/">
+            <a href="{{ url('base.home') }}">
               <img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}">
             </a>
           </h2>
+        {% endblock %}
 
           {# TODO: Turn nav into a hamburger at mobile sizes. #}
           <nav id="nav-main" role="navigation">

@@ -217,12 +217,15 @@ MINIFY_BUNDLES = {
             'css/base.styl',
             'browserid/persona-buttons.css',
         ),
-        'oldIE': (
-            'css/oldIE.styl',
-            'browserid/persona-buttons.css',
+        'dashboard': (
+            'css/dashboard.styl',
         ),
         'home': (
             'css/home.styl',
+        ),
+        'oldIE': (
+            'css/oldIE.styl',
+            'browserid/persona-buttons.css',
         ),
 
         # Facebook app

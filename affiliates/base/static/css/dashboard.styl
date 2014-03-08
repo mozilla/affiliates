@@ -1,0 +1,249 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// The dashboard
+
+@import 'lib.styl';
+
+.mystats {
+    padding-top: 30px;
+    background: transparent url(/static/img/div-shadow-narrow.png) center top no-repeat;
+
+    h2 {
+        font-size: 36px;
+        margin: 0 0 .5em;
+    }
+}
+
+.stats {
+    margin: 20px 0;
+
+    li {
+        margin: 0;
+        font-size: 18px;
+        text-align: left;
+        padding: 20px 0 20px 100px;
+        position: relative;
+        border-width: 1px 0;
+        border-top: 1px solid rgba( 255, 255, 255, .25);
+        border-bottom: 1px solid rgba( 0, 0, 0, .25);
+
+        &:first-child {
+            border-top: 0;
+        }
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        strong {
+            font-size: 28px;
+            font-style: italic;
+        }
+
+        &:before {
+            width: 80px;
+            height: 50px;
+            display: block;
+            font-size: 60px;
+            line-height: 1;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-family: 'Font Awesome';
+            color: darken($medium-gray, 15%);
+            text-shadow: 0 0 3px rgba(255, 255, 255, .25);
+        }
+
+        &.downloads:before {
+            content: '\f019';
+        }
+
+        &.banners:before {
+            content: '\f02e';
+        }
+
+        &.clicks:before {
+            content: '\f05b';
+        }
+    }
+}
+
+#mybanners {
+
+    header {
+        margin: 0 0 30px;
+        overflow: hidden;
+        position: relative;
+
+        .section-title {
+            text-align: left;
+            margin-top: 0;
+        }
+
+        .create {
+            position: absolute;
+            right: 0;
+            top: .5em;
+        }
+    }
+
+    .all {
+        text-align: center;
+    }
+}
+
+#mymilestones {
+    {section-medium}
+}
+
+.timeline {
+    background: url(/static/img/milestone-line.png) 30px top repeat-y;
+    position: relative;
+    margin: 60px 0;
+
+    .milestone {
+        margin: 0 0 20px;
+        min-height: 60px;
+        padding: 10px 0 0 85px;
+        background: url(/static/img/milestone-dot.png) 4px top no-repeat;
+        position: relative;
+
+        h3 {
+            {normalize-heading}
+            font-size: 18px;
+        }
+    }
+
+    .milestone:first-child {
+        top: -30px;
+        margin-bottom: -10px;
+    }
+
+    .milestone:last-child {
+        bottom: -30px;
+        margin-top: -30px;
+    }
+
+}
+
+#news {
+    {section-orange}
+
+    .entry-title {
+        font-size: 36px;
+        margin: 0 0 .5em;
+    }
+
+    .hentry {
+        font-size: 18px;
+    }
+
+    .sidebar {
+        padding: 20px;
+        font-size: 16px;
+        background: rgba(0, 0, 0, .05);
+
+        h2 {
+            {normalize-heading}
+            font-size: 26px;
+            margin: 0 0 .5em;
+        }
+    }
+}
+
+//*----------------------------------------------------------------*/
+// @Tablet layout: 760px
+
+@media $media-query-tablet {
+
+    .stats {
+
+        li {
+            float: left;
+            margin: 0 0 20px;
+            width: 33%;
+            padding: 60px 0 0;
+            text-align: center;
+            border-top: 0;
+            border-bottom: 0;
+            border-left: 1px solid rgba( 255, 255, 255, .25);
+            border-right: 1px solid rgba( 0, 0, 0, .25);
+
+            &:first-child {
+                border-left: 0;
+            }
+
+            &:last-child {
+                border-right: 0;
+            }
+
+            strong {
+                font-size: 28px;
+                font-style: italic;
+            }
+
+            &:before {
+                width: 100%;
+                height: 50px;
+                display: block;
+                font-size: 60px;
+                line-height: 1;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+        }
+    }
+
+    #news {
+
+        .hentry {
+            width: 460px;
+            float: left;
+        }
+
+        .sidebar {
+            width: 200px;
+            float: right;
+        }
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Desktop layout: 1000px
+
+@media $media-query-desktop {
+
+    .mystats {
+        background-image: url(/static/img/div-shadow.png);
+    }
+
+    .timeline {
+        background-position: center top;
+        position: relative;
+        margin: 60px 0;
+
+        .milestone {
+            padding-left: 530px;
+            background-position: center top;
+        }
+
+        .milestone:nth-child(even) {
+            padding-right: 530px;
+            padding-left: 0;
+            text-align: right;
+        }
+    }
+
+    #news .hentry {
+        width: 620px;
+    }
+
+}

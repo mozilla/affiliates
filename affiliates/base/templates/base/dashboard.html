@@ -3,13 +3,188 @@
 {% block body_id %}dashboard{% endblock %}
 {% block body_class %}dashboard{% endblock %}
 
+{% block page_css %}
+  {{ css('dashboard') }}
+{% endblock %}
+
+{% set title = _('Dashboard') %}
+
 {% block content %}
   <main role="main">
-    <section>
+    <section class="section page-head">
       <div class="contain">
-        <h1>Dashboard</h1>
-        <p>You're logged in as {{ user.email }} and this is your dashboard.</p>
-        <p><a href="{{ url('banners.generator.categories') }}">Create a new banner</a></p>
+
+        <aside class="notice">
+          <p>Woot! You’ve driven 12,000 downloads since your last visit! You’re awesome!</p>
+        </aside>
+
+        <h1 class="page-title">{{ _('Dashboard') }}</h1>
+        <p class="tagline">Bacon ipsum dolor sit amet jerky beef andouille pig capicola shank.</p>
+
+        <div class="mystats">
+          <h2>{{ _('My stats') }}</h2>
+          <ul class="stats">
+            <li class="downloads"><strong>1,037</strong> {{ _('downloads') }}</li>
+            <li class="banners"><strong>7</strong> {{ _('banners') }}</li>
+            <li class="clicks"><strong>3,543</strong> {{ _('clicks') }}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="mybanners" class="section">
+      <div class="contain">
+        <header>
+          <h2 class="section-title">{{ _('My Banners') }}</h2>
+          {# TODO: add a sorting widget. #}
+          <p class="create"><a class="button secondary go" href="{{ url('banners.generator.categories') }}">{{ _('Create a new banner') }}</a></p>
+        </header>
+
+        <ul class="banners-list">
+          <li class="banner">
+            <a href="/banner-detail">
+              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+              <h3 class="name">Banner Name</h3>
+              <ul class="desc">
+                <li>125 × 125 {{ _('pixels') }}</li>
+                <li>Created <time datetime="2014-03-28">28 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="banner">
+            <a href="/banner-detail">
+              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+              <h3 class="name">This Banner Name Is Much Longer And Wraps Like This</h3>
+              <ul class="desc">
+                <li>300 × 250 {{ _('pixels') }}</li>
+                <li>Created <time datetime="2014-03-27">27 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="banner smart">
+            <a href="/banner-detail">
+              <em class="flag">Smart Banner</em>
+              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+              <h3 class="name">Smart Banner</h3>
+              <ul class="desc">
+                <li>300 × 250 {{ _('pixels') }}</li>
+                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="banner text">
+            <a href="/banner-detail">
+              <div class="preview">Bacon ipsum dolor sit amet short loin rump turkey pork ribeye filet mignon capicola ham hock rump chuck jerky flank shankle t-bone.</div>
+              <h3 class="name">Text Banner</h3>
+              <ul class="desc">
+                <li>Text banner</li>
+                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="banner smart">
+            <a href="/banner-detail">
+              <em class="flag">{{ _('Smart banner') }}</em>
+              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+              <h3 class="name">Smart Banner</h3>
+              <ul class="desc">
+                <li>300 × 250 {{ _('pixels') }}</li>
+                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="banner text">
+            <a href="/banner-detail">
+              <div class="preview">Bacon ipsum dolor sit amet short loin rump turkey pork ribeye filet mignon capicola ham hock rump chuck jerky flank shankle t-bone.</div>
+              <h3 class="name">A Different Text Banner</h3>
+              <ul class="desc">
+                <li>Text banner</li>
+                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+
+          <li class="banner">
+            <a href="/banner-detail">
+              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+              <h3 class="name">Banner Name</h3>
+              <ul class="desc">
+                <li>125 × 125 {{ _('pixels') }}</li>
+                <li>Created <time datetime="2014-03-28">28 March, 2014</time></li>
+              </ul>
+            </a>
+          </li>
+        </ul>
+
+        <p class="all"><a class="go" href="/banners">{{ _('See all') }}</a></p>
+      </div>
+    </section>
+
+    <section id="mymilestones" class="section">
+      <div class="contain">
+        <h2 class="section-title">{{ _('My Milestones') }}</h2>
+        <ol class="timeline">
+          <li class="milestone">
+            <h3><time datetime="2014-02-04">4 February, 2014</time></h3>
+            <p>You reached <strong>1,000</strong> clicks!</p>
+          </li>
+          <li class="milestone">
+            <h3><time datetime="2014-02-02">2 February, 2014</time></h3>
+            <p>You're at <strong>987</strong> clicks. Almost 1,000!</p>
+          </li>
+          <li class="milestone">
+            <h3><time datetime="2014-02-01">1 February, 2014</time></h3>
+            <p>You drove <strong>3</strong> downloads today!</p>
+          </li>
+          <li class="milestone">
+            <h3><time datetime="2014-01-21">21 January, 2014</time></h3>
+            <p>You joined Firefox Affiliates. Welcome!</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="news" class="section hfeed">
+      <div class="contain">
+        <h2 class="section-title">{{ _('Affiliates News') }}</h2>
+
+        <article class="hentry main">
+          <h1 class="entry-title">News Title Goes Here</h1>
+          <p>Bacon ipsum dolor sit amet shankle ground round salami, strip steak biltong pig
+            sausage beef ribs pancetta tri-tip short ribs ball tip. Pastrami ball tip frankfurter
+            porchetta, shank rump kevin. Jowl biltong <a href="/link">sirloin ribeye</a>, tenderloin hamburger
+            boudin filet mignon beef swine ball tip cow drumstick pastrami leberkas. Beef
+            t-bone capicola meatloaf jowl. Turducken kielbasa leberkas ham ham hock. Landjaeger
+            turducken leberkas pork.</p>
+
+          <p>Chuck hamburger ground round jowl sirloin drumstick. Venison ham hock porchetta,
+            pork loin meatball frankfurter ham jerky chicken brisket pork chop beef sausage.
+            Short ribs tri-tip shank, bresaola meatball chicken leberkas bacon tongue kevin
+            boudin ham prosciutto. Rump tri-tip ham, turducken ball tip short loin sirloin pork
+            drumstick spare ribs tenderloin jowl boudin landjaeger.</p>
+
+          <p>Fatback pancetta short loin, prosciutto tenderloin corned beef porchetta tri-tip
+            doner leberkas pastrami sirloin ground round. Turducken doner pork chop, cow kielbasa
+            bacon bresaola chuck boudin pork shankle meatloaf ribeye strip steak. Capicola kielbasa
+            fatback doner venison. <a href="/link">Short ribs pork chicken pork chop, meatball turkey</a> leberkas
+            pastrami jerky beef ribs strip steak shank venison prosciutto. Pig sausage drumstick
+            beef ribs ribeye. Tri-tip flank landjaeger sausage meatloaf chuck jerky pig tongue
+            pancetta short loin bacon pork.</p>
+        </article>
+
+        <aside class="sidebar aside">
+          <h2>Become a Mozillian</h2>
+          <p>Meatloaf bresaola kevin, doner shankle swine fatback andouille pig ham hock bacon
+            ground round kielbasa. Andouille shoulder ribeye tongue bacon flank. Beef porchetta
+            turkey boudin pork pig meatloaf short ribs kevin kielbasa. Swine cow meatloaf,
+            landjaeger drumstick pork prosciutto.</p>
+          <p><strong><a href="/more" class="go">Learn more</a></strong></p>
+        </aside>
       </div>
     </section>
   </main>
