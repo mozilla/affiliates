@@ -22,3 +22,4 @@ git+https://github.com/mozilla/django-browserid.git@e0674517b38b99f55924604b7ddd
 django-braces==1.3.1
 
 google-api-python-client==1.2
+pytz==2014.2

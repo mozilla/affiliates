@@ -5,6 +5,7 @@ packages/fancy-tag
 packages/google-api-python-client
 packages/httplib2
 packages/jingo-minify
+packages/pytz
 packages/requests
 packages/six
 src/basket-client
