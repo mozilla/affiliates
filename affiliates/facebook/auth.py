@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.tasks import update_user_info
@@ -27,7 +27,7 @@ def login(request, user):
     # Facebook Graph. If this is not their first time logging in, we'll do it
     # asynchronously.
     last_login = user.last_login
-    user.last_login = datetime.now()
+    user.last_login = timezone.now()
     user.save()
 
     if last_login is None:

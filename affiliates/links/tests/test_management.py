@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 
 from django.core.management.base import CommandError
 from django.db import IntegrityError
@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from mock import patch
 from nose.tools import ok_
 
-from affiliates.base.tests import TestCase
+from affiliates.base.tests import aware_datetime, TestCase
 from affiliates.links.google_analytics import AnalyticsError
 from affiliates.links.management.commands import collect_ga_data
 from affiliates.links.tests import LinkFactory
@@ -64,8 +64,8 @@ class CollectGADataTests(TestCase):
             unicode(link2.pk): '7'
         }
 
-        with patch.object(collect_ga_data, 'datetime') as mock_datetime:
-            mock_datetime.utcnow.return_value = datetime(2014, 1, 2)
+        with patch.object(collect_ga_data, 'timezone') as mock_timezone:
+            mock_timezone.now.return_value = aware_datetime(2014, 1, 2)
             self.command.execute()
 
         self.service.get_clicks_for_date.assert_called_with(date(2014, 1, 1))

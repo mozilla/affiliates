@@ -5,6 +5,9 @@ from funfactory.settings_base import *
 ##############################################################################
 ROOT_URLCONF = 'affiliates.urls'
 
+USE_TZ = True
+TIME_ZONE = 'UTC'
+
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     'affiliates.banners',
     'affiliates.base',

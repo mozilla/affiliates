@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -7,6 +6,7 @@ from django.core.mail import send_mail
 from django.db.models import Q, Sum
 from django.db.models.query import QuerySet
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 import commonware.log
 import requests
@@ -81,7 +81,7 @@ class FacebookUserManager(CachingManager):
             message = render_to_string('facebook/deauthorized_email.html', {
                 'user': user,
                 'ads': ads,
-                'now': datetime.now()
+                'now': timezone.now()
             })
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                       [settings.FACEBOOK_CLICK_GOAL_EMAIL])

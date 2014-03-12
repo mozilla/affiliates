@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
@@ -10,7 +8,7 @@ from nose.tools import eq_, ok_
 from affiliates.facebook.auth import login
 from affiliates.facebook.models import FacebookUser
 from affiliates.facebook.tests import FacebookUserFactory
-from affiliates.base.tests import TestCase, refresh_model
+from affiliates.base.tests import aware_datetime, TestCase, refresh_model
 
 
 session_middleware = SessionMiddleware()
@@ -84,19 +82,19 @@ class LoginTests(TestCase):
         update_task.delay.assert_called_once_with(user.id)
         ok_(not update_method.called)
 
-    @patch('affiliates.facebook.auth.datetime')
-    def test_last_login_attribute(self, mock_datetime, update_user_info):
+    @patch('affiliates.facebook.auth.timezone')
+    def test_last_login_attribute(self, mock_timezone, update_user_info):
         """
         During the login process, the last_login attribute on the user must be
         set to the current datetime.
         """
-        mock_datetime.now.return_value = datetime(2012, 1, 1)
+        mock_timezone.now.return_value = aware_datetime(2012, 1, 1)
         request = self.request()
-        user = FacebookUserFactory.create(last_login=datetime(2000, 1, 1))
+        user = FacebookUserFactory.create(last_login=aware_datetime(2000, 1, 1))
         login(request, user)
 
         user = refresh_model(user)
-        eq_(user.last_login, datetime(2012, 1, 1))
+        eq_(user.last_login, aware_datetime(2012, 1, 1))
 
     @override_settings(DEV=True)
     def test_delayed_task_overwritten(self, update_user_info):

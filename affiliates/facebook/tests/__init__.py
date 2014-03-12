@@ -1,11 +1,11 @@
 import os
 import random
 from contextlib import nested
-from datetime import datetime
 from os.path import abspath, dirname
 from time import time
 
 from django.test.client import Client
+from django.utils import timezone
 
 from factory import DjangoModelFactory, LazyAttribute, SubFactory, Sequence
 from mock import patch
@@ -63,7 +63,7 @@ class FacebookAuthClient(Client):
 class FacebookUserFactory(DjangoModelFactory):
     FACTORY_FOR = models.FacebookUser
     id = Sequence(lambda n: 'test%s' % n)
-    last_login = LazyAttribute(lambda o: datetime.now())
+    last_login = LazyAttribute(lambda o: timezone.now())
 
 
 class FacebookBannerFactory(DjangoModelFactory):

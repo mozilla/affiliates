@@ -1,8 +1,10 @@
 from contextlib import contextmanager
+from datetime import datetime
 from urlparse import urlsplit, urlunsplit
 
 from django.test import TestCase as DjangoTestCase
 from django.utils.translation import get_language
+from django.utils import timezone
 
 import test_utils
 from funfactory.urlresolvers import get_url_prefix, Prefixer, set_url_prefix
@@ -66,3 +68,8 @@ def refresh_model(instance):
 def patch_super(obj, attr):
     """Patch the given attribute on the object's superclass."""
     return patch.object(obj.__class__.__bases__[0], attr)
+
+
+def aware_datetime(*args, **kwargs):
+    dt = datetime(*args, **kwargs)
+    return timezone.make_aware(dt, timezone.utc)

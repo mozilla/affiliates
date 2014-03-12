@@ -1,10 +1,10 @@
-from datetime import datetime
 from StringIO import StringIO
 
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 import commonware
 import requests
@@ -50,7 +50,7 @@ def add_click(banner_instance_id):
             message = render_to_string('facebook/click_goal_email.html', {
                 'goal': settings.FACEBOOK_CLICK_GOAL,
                 'banner_instance': banner_instance,
-                'now': datetime.now()
+                'now': timezone.now()
             })
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
                       [settings.FACEBOOK_CLICK_GOAL_EMAIL])
