@@ -4,6 +4,7 @@ from django.views.defaults import page_not_found, server_error
 
 from commonware.response.decorators import xframe_allow
 
+from affiliates.base.milestones import MilestoneDisplay
 from affiliates.base.models import NewsItem
 from affiliates.facebook.utils import in_facebook_app
 
@@ -22,7 +23,10 @@ def dashboard(request):
     except NewsItem.DoesNotExist:
         newsitem = None
 
-    return render(request, 'base/dashboard.html', {'newsitem': newsitem})
+    return render(request, 'base/dashboard.html', {
+        'newsitem': newsitem,
+        'milestones': MilestoneDisplay(request.user),
+    })
 
 
 @xframe_allow

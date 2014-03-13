@@ -1,7 +1,9 @@
+from datetime import timedelta
 from urlparse import urlparse
 
 from django.conf import settings
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.utils import timezone
 from django.utils.translation import get_language
 
 from babel.core import Locale, UnknownLocaleError
@@ -84,3 +86,7 @@ LOCALE_TO_NATIVE = dict([(key.lower(), value['native']) for key, value in
 def locale_to_native(locale):
     """Return the native name for the given locale."""
     return LOCALE_TO_NATIVE.get(locale)
+
+
+def date_yesterday():
+    return timezone.now().date() - timedelta(days=1)

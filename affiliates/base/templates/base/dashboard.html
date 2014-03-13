@@ -133,22 +133,12 @@
       <div class="contain">
         <h2 class="section-title">{{ _('My Milestones') }}</h2>
         <ol class="timeline">
-          <li class="milestone">
-            <h3><time datetime="2014-02-04">4 February, 2014</time></h3>
-            <p>You reached <strong>1,000</strong> clicks!</p>
-          </li>
-          <li class="milestone">
-            <h3><time datetime="2014-02-02">2 February, 2014</time></h3>
-            <p>You're at <strong>987</strong> clicks. Almost 1,000!</p>
-          </li>
-          <li class="milestone">
-            <h3><time datetime="2014-02-01">1 February, 2014</time></h3>
-            <p>You drove <strong>3</strong> downloads today!</p>
-          </li>
-          <li class="milestone">
-            <h3><time datetime="2014-01-21">21 January, 2014</time></h3>
-            <p>You joined Firefox Affiliates. Welcome!</p>
-          </li>
+          {% for date, message in milestones %}
+            <li class="milestone">
+              <h3><time datetime="{{ date.isoformat() }}">{{ date|babel_date }}</time></h3>
+              <p>{{ message }}</p>
+            </li>
+          {% endfor %}
         </ol>
       </div>
     </section>

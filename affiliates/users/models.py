@@ -13,6 +13,16 @@ COUNTRIES = product_details.get_regions(settings.LANGUAGE_CODE).items()
 COUNTRIES.append(('', '---'))  # Empty choice
 
 
+# User class extensions
+def user_metric_aggregate_total(self, metric):
+    return sum(getattr(link, 'aggregate_' + metric) for link in self.link_set.all())
+User.add_to_class('metric_aggregate_total', user_metric_aggregate_total)
+
+def user_metric_total(self, metric):
+    return sum(getattr(link, metric) for link in self.link_set.all())
+User.add_to_class('metric_total', user_metric_total)
+
+
 @receiver(models.signals.post_save, sender=User)
 def add_default_permissions(sender, **kwargs):
     """Add default set of permissions to users when they are first created."""

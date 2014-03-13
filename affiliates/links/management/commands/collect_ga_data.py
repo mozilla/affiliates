@@ -1,9 +1,7 @@
-from datetime import timedelta
-
 from django.core.management.base import BaseCommand, CommandError
 from django.db import IntegrityError
-from django.utils import timezone
 
+from affiliates.base.utils import date_yesterday
 from affiliates.links.google_analytics import AnalyticsError, AnalyticsService
 from affiliates.links.models import DataPoint, Link
 
@@ -17,8 +15,7 @@ class Command(BaseCommand):
         except AnalyticsError as e:
             raise CommandError('Could not connect to analytics service: {0}'.format(e), e)
 
-        today = timezone.now().date()
-        yesterday = today - timedelta(days=1)
+        yesterday = date_yesterday()
 
         print 'Downloading click counts from GA...'
         try:
