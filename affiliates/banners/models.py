@@ -65,13 +65,21 @@ class Banner(models.Model):
         """Generate a URL to the customization page for this banner."""
         raise NotImplementedError()
 
+    def get_banner_type(self):
+        """
+        Return the value for the banner_type field on Links created by
+        this banner.
+        """
+        raise NotImplementedError()
+
     def create_link(self, user, **kwargs):
         """
         Create a Link based off of this banner. Extra arguments are
         passed on to generate_banner_code.
         """
         html = self.generate_banner_code(**kwargs)
-        link = Link(user=user, destination=self.destination, html='')
+        link = Link(user=user, destination=self.destination, html='',
+                    banner_type=self.get_banner_type())
 
         # Save to get PK so that link can generate referral URL.
         link.save()
@@ -93,6 +101,9 @@ class ImageBanner(Banner):
 
     def get_customize_url(self):
         return reverse('banners.generator.image_banner.customize', kwargs={'pk': self.pk})
+
+    def get_banner_type(self):
+        return 'image_banner'
 
 
 class ImageBannerVariation(models.Model):
@@ -140,3 +151,9 @@ class TextBannerVariation(models.Model):
 
     def __unicode__(self):
         return locale_to_native(self.locale)
+
+    def generate_banner_code(self, **kwargs):
+        return self.text
+
+    def get_banner_type(self):
+        return 'text_banner'

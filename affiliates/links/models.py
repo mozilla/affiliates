@@ -9,6 +9,10 @@ class Link(models.Model):
     user = models.ForeignKey(User)
     destination = models.URLField(max_length=255)
     html = models.TextField()
+    banner_type = models.CharField(max_length=255, default='image_banner', choices=(
+        ('image_banner', 'Image Banner'),
+        ('text_banner', 'Text Banner')
+    ))
 
     # Aggregates do not include data currently stored in the DataPoint
     # model. After a retention period, DataPoint data is added to these
