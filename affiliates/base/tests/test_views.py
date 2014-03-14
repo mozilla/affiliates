@@ -1,7 +1,7 @@
 from django.test.client import RequestFactory
 
 from funfactory.urlresolvers import reverse
-from mock import Mock, patch
+from mock import ANY, Mock, patch
 from nose.tools import eq_
 
 from affiliates.base import views
@@ -110,7 +110,10 @@ class DashboardTests(TestCase):
         with patch('affiliates.base.views.render') as render:
             views.dashboard(request)
 
-        render.assert_called_with(request, 'base/dashboard.html', {'newsitem': visible_newsitem})
+        render.assert_called_with(request, 'base/dashboard.html', {
+            'newsitem': visible_newsitem,
+            'milestones': ANY,
+        })
 
     def test_no_available_newsitem(self):
         """
@@ -123,4 +126,7 @@ class DashboardTests(TestCase):
         with patch('affiliates.base.views.render') as render:
             views.dashboard(request)
 
-        render.assert_called_with(request, 'base/dashboard.html', {'newsitem': None})
+        render.assert_called_with(request, 'base/dashboard.html', {
+            'newsitem': None,
+            'milestones': ANY,
+        })

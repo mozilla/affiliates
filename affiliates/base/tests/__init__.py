@@ -78,6 +78,10 @@ def aware_datetime(*args, **kwargs):
     return timezone.make_aware(dt, timezone.utc)
 
 
+def aware_date(*args, **kwargs):
+    return aware_datetime(*args, **kwargs).date()
+
+
 class NewsItemFactory(DjangoModelFactory):
     FACTORY_FOR = models.NewsItem
 

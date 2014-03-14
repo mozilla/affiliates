@@ -65,14 +65,15 @@ class CollectGADataTests(TestCase):
             unicode(link1.pk): '4',
             unicode(link2.pk): '7'
         }
+        yesterday = aware_datetime(2014, 1, 1).date()
 
-        with patch.object(collect_ga_data, 'timezone') as mock_timezone:
-            mock_timezone.now.return_value = aware_datetime(2014, 1, 2)
+        with patch.object(collect_ga_data, 'date_yesterday') as date_yesterday:
+            date_yesterday.return_value = yesterday
             self.command.execute()
 
-        self.service.get_clicks_for_date.assert_called_with(date(2014, 1, 1))
-        ok_(link1.datapoint_set.filter(date=date(2014, 1, 1), link_clicks=4).exists())
-        ok_(link2.datapoint_set.filter(date=date(2014, 1, 1), link_clicks=7).exists())
+        self.service.get_clicks_for_date.assert_called_with(yesterday)
+        ok_(link1.datapoint_set.filter(date=yesterday, link_clicks=4).exists())
+        ok_(link2.datapoint_set.filter(date=yesterday, link_clicks=7).exists())
 
 
 class UpdateLeaderboardTests(TestCase):

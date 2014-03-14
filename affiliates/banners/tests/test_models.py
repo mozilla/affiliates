@@ -37,6 +37,7 @@ class BannerTests(TestCase):
         banner.generate_banner_code = Mock(return_value="""
             <a href="{href}">Link!</a>
         """)
+        banner.get_banner_type = Mock(return_value='generic_banner')
         user = UserFactory.create()
 
         with patch.object(Link, 'get_referral_url') as get_referral_url:

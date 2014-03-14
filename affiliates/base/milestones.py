@@ -43,18 +43,20 @@ class MilestoneDisplay(object):
         'link_created': 'You created your last text link.'
     }
 
-    future_date = 'Someday soon!'
+    future_date = None
 
     def __init__(self, user):
         self.user = user
-        self.milestones = sorted([
-            self.metric_milestone('link_clicks', self.link_click_messages),
-            self.metric_milestone('firefox_downloads', self.firefox_download_messages),
-            self.creation_milestone('image_banner', self.image_banner_messages),
-            self.creation_milestone('text_banner', self.text_banner_messages),
-        ], self.milestone_cmp)
+        self.milestones = None
 
     def __iter__(self):
+        if not self.milestones:
+            self.milestones = sorted([
+                self.metric_milestone('link_clicks', self.link_click_messages),
+                self.metric_milestone('firefox_downloads', self.firefox_download_messages),
+                self.creation_milestone('image_banner', self.image_banner_messages),
+                self.creation_milestone('text_banner', self.text_banner_messages),
+            ], self.milestone_cmp)
         return iter(self.milestones)
 
     def metric_milestone(self, metric, messages):
@@ -100,12 +102,13 @@ class MilestoneDisplay(object):
     def creation_milestone(self, banner_type, messages):
         """
         :param banner_type:
-            banner_type of links to create a milestone from, e.g. text_banner.
+            banner_type of links to create a milestone from,
+            e.g. text_banner.
         :param messages:
             Dictionary of messages to choose from.
         """
-        links = self.user.link_set.filter(banner_type=banner_type).order_by('created')
-        link_count = len(links)
+        links = self.user.link_set.filter(banner_type=banner_type)
+        link_count = links.count()
 
         # If no links have been created, show a future milestone.
         if link_count == 0:
@@ -120,13 +123,14 @@ class MilestoneDisplay(object):
 
         # As a last resort, show their previous milestone.
         if prev_milestone:
-            milestone_link = links[prev_milestone - 1]
-            return milestone_link.created, messages['achieved_milestone'].format(prev_milestone)
+            milestone_link = links.order_by('created')[prev_milestone - 1]
+            return (milestone_link.created.date(),
+                    messages['achieved_milestone'].format(prev_milestone))
 
         # This shouldn't ever happen (no previous milestone yet at least
         # one banner created), but just in case, show when the last link
         # was created.
-        return links[-1].created, messages['link_created']
+        return links.latest('created').created.date(), messages['link_created']
 
     def milestone_date(self, metric, milestone, aggregated_amount):
         """
@@ -203,4 +207,4 @@ class MilestoneDisplay(object):
         """
         Determine if the given amount is within 10% of the milestone.
         """
-        return milestone and amount + (milestone / 10) > milestone
+        return milestone and amount + (milestone / 10) >= milestone

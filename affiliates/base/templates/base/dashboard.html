@@ -135,7 +135,13 @@
         <ol class="timeline">
           {% for date, message in milestones %}
             <li class="milestone">
-              <h3><time datetime="{{ date.isoformat() }}">{{ date|babel_date }}</time></h3>
+              <h3>
+                {% if date %}
+                  <time datetime="{{ date.isoformat() }}">{{ date|babel_date }}</time>
+                {% else %}
+                  Someday soon!
+                {% endif %}
+              </h3>
               <p>{{ message }}</p>
             </li>
           {% endfor %}

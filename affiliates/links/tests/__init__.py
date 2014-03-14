@@ -1,7 +1,4 @@
-from datetime import date
-
 from factory import DjangoModelFactory, Sequence, SubFactory
-from factory.fuzzy import FuzzyDate
 
 from affiliates.links import models
 from affiliates.users.tests import UserFactory
@@ -19,7 +16,6 @@ class DataPointFactory(DjangoModelFactory):
     FACTORY_FOR = models.DataPoint
 
     link = SubFactory(LinkFactory)
-    date = FuzzyDate(date(2014, 1, 1))
 
 
 class LeaderboardStandingFactory(DjangoModelFactory):
