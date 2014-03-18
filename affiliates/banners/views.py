@@ -6,7 +6,7 @@ from django.views.generic import ListView, FormView
 from braces.views import LoginRequiredMixin
 
 from affiliates.banners.forms import CustomizeImageBannerForm, CustomizeTextBannerForm
-from affiliates.banners.models import Category, ImageBanner, TextBanner
+from affiliates.banners.models import Category, FirefoxUpgradeBanner, ImageBanner, TextBanner
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -26,7 +26,9 @@ class BannerListView(LoginRequiredMixin, ListView):
         return super(BannerListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        return list(self.category.imagebanner_set.all()) + list(self.category.textbanner_set.all())
+        return (list(self.category.imagebanner_set.all()) +
+                list(self.category.textbanner_set.all()) +
+                list(self.category.firefoxupgradebanner_set.all()))
 
     def get_context_data(self, **context):
         context['category'] = self.category
@@ -87,3 +89,7 @@ class CustomizeTextBannerView(CustomizeBannerView):
         variations_text = dict([(v.pk, v.text) for v in self.banner.variation_set.all()])
         context['variations_text_json'] = json.dumps(variations_text)
         return super(CustomizeTextBannerView, self).get_context_data(**context)
+
+
+class CustomizeFirefoxUpgradeBannerView(CustomizeImageBannerView):
+    banner_class = FirefoxUpgradeBanner

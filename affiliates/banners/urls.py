@@ -15,4 +15,8 @@ urlpatterns = patterns('',
 
     url(r'^generator/text_banners/(?P<pk>\d+)/customize/$',
         views.CustomizeTextBannerView.as_view(), name='banners.generator.text_banner.customize'),
+
+    url(r'^generator/firefox_upgrade_banners/(?P<pk>\d+)/customize/$',
+        views.CustomizeFirefoxUpgradeBannerView.as_view(),
+        name='banners.generator.firefox_upgrade_banner.customize'),
 )

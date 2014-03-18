@@ -1,0 +1,26 @@
+# Auto-generated file by manage.py generate_media_htaccess
+# DO NOT EDIT
+RewriteEngine On
+Options FollowSymLinks
+
+# Vary by User-Agent if we are getting an upgrade banner.
+SetEnvIfNoCase Request_URI uploads/upgrade/\d+$ accessing_upgrade_banner
+Header always append Vary "User-Agent" env=accessing_upgrade_banner
+
+SetEnvIf User-Agent ^.*Firefox.*$ using_firefox
+SetEnvIf User-Agent ^.*Firefox/(?!{{ version_regex }}).*$ out_of_date
+
+{% for variation in upgrade_banner_variations %}
+
+### Upgrade Banner {{ variation.pk }} ###
+
+# If the User-Agent is out of date, serve the upgrade variation.
+RewriteCond %%{ENV:accessing_upgrade_banner} "1"
+RewriteCond %%{ENV:using_firefox} "1"
+RewriteCond %%{ENV:out_of_date} "1"
+RewriteRule ^uploads/upgrade/{{ variation.pk }}$ {{ variation.upgrade_image.name }} [L]
+
+# In all other cases, serve the normal variation.
+RewriteRule ^uploads/upgrade/{{ variation.pk }}$ {{ variation.image.name }} [L]
+
+{% endfor %}

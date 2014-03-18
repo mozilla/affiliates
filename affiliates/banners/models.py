@@ -9,7 +9,9 @@ from django.template.loader import render_to_string
 from mptt.models import MPTTModel, TreeForeignKey
 
 from affiliates.banners import COLOR_CHOICES
+from affiliates.base.helpers import media
 from affiliates.base.models import LocaleField
+from affiliates.base.storage import OverwritingStorage
 from affiliates.base.utils import locale_to_native
 from affiliates.links.models import Link
 
@@ -106,12 +108,14 @@ class ImageBanner(Banner):
         return 'image_banner'
 
 
-class ImageBannerVariation(models.Model):
+class ImageVariation(models.Model):
     """
-    Variation of an image banner that a user can choose to use for their
-    link.
+    Base class for variations of banners that use priarily images in
+    their display.
+
+    Child classes _must_ define a ForeignKey field named "banner" that
+    points to the banner this variation is categorized under.
     """
-    banner = models.ForeignKey(ImageBanner, related_name='variation_set')
     color = models.CharField(max_length=32, choices=COLOR_CHOICES)
     locale = LocaleField()
 
@@ -125,13 +129,30 @@ class ImageBannerVariation(models.Model):
         )
         props_hash = hashlib.sha1(props).hexdigest()
         extension = os.path.splitext(filename)[1]
-        return os.path.join('uploads/banners', props_hash + extension)
+        return os.path.join(self.get_media_subdirectory(), props_hash + extension)
 
-    image = models.ImageField(upload_to=_filename, max_length=255)
+    image = models.ImageField(upload_to=_filename, max_length=255, storage=OverwritingStorage())
+
+    class Meta:
+        abstract = True
 
     @property
     def size(self):
         return '{width}x{height}'.format(width=self.image.width, height=self.image.height)
+
+    def get_media_subdirectory(self):
+        """
+        Return the name to use for the subdirectory to store variations
+        in, under MEDIA_ROOT.
+        """
+        raise NotImplementedError()
+
+
+class ImageBannerVariation(ImageVariation):
+    banner = models.ForeignKey(ImageBanner, related_name='variation_set')
+
+    def get_media_subdirectory(self):
+        return 'uploads/banners'
 
 
 class TextBanner(Banner):
@@ -157,3 +178,37 @@ class TextBannerVariation(models.Model):
 
     def get_banner_type(self):
         return 'text_banner'
+
+
+class FirefoxUpgradeBanner(Banner):
+    """
+    Image banner that shows a different image depending on whether the
+    viewer has an up-to-date version of Firefox or not.
+    """
+    def generate_banner_code(self, variation, **kwargs):
+        return render_to_string('banners/banner_code/firefox_upgrade_banner.html', {
+            'variation': variation
+        })
+
+    def get_customize_url(self):
+        return reverse('banners.generator.firefox_upgrade_banner.customize',
+                       kwargs={'pk': self.pk})
+
+
+class FirefoxUpgradeBannerVariation(ImageVariation):
+    banner = models.ForeignKey(FirefoxUpgradeBanner, related_name='variation_set')
+
+    def _filename(self, filename):
+        filename = super(FirefoxUpgradeBannerVariation, self)._filename(filename)
+        filename, extension = os.path.splitext(filename)
+        return filename + '_upgrade' + extension
+    upgrade_image = models.ImageField(upload_to=_filename, max_length=255,
+                                      storage=OverwritingStorage())
+
+    def get_media_subdirectory(self):
+        return 'uploads/firefox_upgrade_banners'
+
+    @property
+    def image_url(self):
+        # TODO: Make this URL absolute.
+        return media('uploads/upgrade/{pk}'.format(pk=self.pk))

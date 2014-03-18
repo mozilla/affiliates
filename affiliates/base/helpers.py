@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+
 from babel.dates import format_date
 from babel.numbers import format_number
 from jingo import register
@@ -33,3 +35,8 @@ def absolutify(*args, **kwargs):
 @register.filter
 def jsonencode(data):
     return json.dumps(data)
+
+
+@register.function
+def media(url):
+    return settings.MEDIA_URL + url
