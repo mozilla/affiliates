@@ -248,6 +248,9 @@ MINIFY_BUNDLES = {
         'customize_text_banner': (
             'js/customize_text_banner.js',
         ),
+        'edit_profile': (
+            'js/edit_profile.js',
+        ),
 
         # Facebook app
         'fb_common': (

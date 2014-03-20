@@ -66,10 +66,10 @@
                 {% if user.is_authenticated() %}
                   {# TODO: Show display name and gravatar. #}
                   <li class="user">
-                    <a href="/profile" aria-owns="nav-user-submenu" aria-haspopup="true">Display Name</a>
+                    <a href="{{ user.userprofile.get_absolute_url() }}" aria-owns="nav-user-submenu" aria-haspopup="true">{{ user.display_name }}</a>
                     <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
                       <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
-                      <li><a href="/profile">{{ _('Profile') }}</a></li>
+                      <li><a href="{{ user.userprofile.get_absolute_url() }}">{{ _('Profile') }}</a></li>
                       <li>{{ browserid_logout() }}</li>
                     </ul>
                   </li>

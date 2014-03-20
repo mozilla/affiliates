@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     (r'', include('affiliates.base.urls')),
     (r'', include('affiliates.banners.urls')),
     (r'', include('affiliates.links.urls')),
+    (r'', include('affiliates.users.urls')),
+
     (r'^fb/', include('affiliates.facebook.urls')),
 
     url(r'^404$', handler404, name='404'),

@@ -1,16 +1,19 @@
-from django.conf import settings
 from django.contrib.auth.models import Permission, User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.dispatch import receiver
 
-from product_details import product_details
-from tower import ugettext_lazy as _lazy
+from tower import ugettext as _
 
 from affiliates.base.models import ModelBase
 
 
-COUNTRIES = product_details.get_regions(settings.LANGUAGE_CODE).items()
-COUNTRIES.append(('', '---'))  # Empty choice
+# User class extensions
+@property
+def display_name(self):
+    """Return the user's display name, or a localized default."""
+    return self.userprofile.display_name or _(u'Affiliate')
+User.add_to_class('display_name', display_name)
 
 
 # User class extensions
@@ -40,52 +43,33 @@ def add_default_permissions(sender, **kwargs):
         user.save()
 
 
+@receiver(models.signals.post_save, sender=User)
+def create_profile(sender, **kwargs):
+    """Create a user profile when a new user is created."""
+    if kwargs['created']:
+        user = kwargs['instance']
+        UserProfile.objects.create(user=user)
+
+
 class UserProfile(ModelBase):
     """
     Stores information about a user account. Created post-activation.
-    Accessible via user.get_profile().
     """
-
     user = models.OneToOneField(User, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-    name = models.CharField(max_length=255, blank=True,
-                            verbose_name=_lazy(u'Full Name'))
-    display_name = models.CharField(max_length=255,
-                                    verbose_name=_lazy(u'Display name'))
-
-    address_1 = models.CharField(max_length=255, blank=True, null=True,
-                                 verbose_name=_lazy(u'Address Line 1'))
-    address_2 = models.CharField(max_length=255, blank=True, null=True,
-                                 verbose_name=_lazy(u'Address Line 2'))
-    city = models.CharField(max_length=255, blank=True, null=True,
-                            verbose_name=_lazy(u'City'))
-    state = models.CharField(max_length=255, blank=True, null=True,
-                             verbose_name=_lazy(u'State or Province'))
-    postal_code = models.CharField(max_length=32, blank=True, null=True,
-                                   verbose_name=_lazy(u'ZIP or Postal Code'))
-    country = models.CharField(max_length=2, choices=COUNTRIES, blank=True,
-                               verbose_name=_lazy(u'Country'))
-
+    display_name = models.CharField(max_length=255, blank=True)
     website = models.URLField(blank=True)
+    bio = models.TextField(blank=True)
 
     def __unicode__(self):
         return unicode(self.display_name)
+
+    def get_absolute_url(self):
+        return reverse('users.profile', args=(self.pk,))
 
     class Meta:
         permissions = (
             ('can_share_website', 'Can share website link on leaderboard'),
         )
-
-
-class RegisterProfile(ModelBase):
-    """Stores activation information for a user."""
-    activation_key = models.CharField(max_length=40, editable=False)
-    display_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-    user = models.OneToOneField(User, null=True)
-
-    def __unicode__(self):
-        return u'Registration information for %s' % self.user

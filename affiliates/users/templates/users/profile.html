@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <main role="main">
+    <section>
+      <div class="contain">
+        <h1>{{ profile.user.display_name }}</h1>
+
+        {% if profile.bio %}
+          <p>{{ profile.bio }}</p>
+        {% endif %}
+
+        {% if profile.website %}
+          <p><a href="{{ profile.website }}" rel="nofollow">{{ profile.website }}</a></p>
+        {% endif %}
+
+        {% if request.user == profile.user  %}
+          <a href="#" id="edit-profile-link">Edit Profile</a>
+          <form id="edit-profile-popup" method="post">
+            {{ csrf() }}
+            {{ form }}
+            <button type="submit">Update</button>
+            <button type="button" class="close">Cancel</button>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+{% endblock %}
+
+{% block site_js %}
+  {{ super() }}
+  {% if request.user == profile.user %}
+    {{ js('edit_profile') }}
+  {% endif %}
+{% endblock %}
