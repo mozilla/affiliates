@@ -4,6 +4,7 @@ from django.views.defaults import page_not_found, server_error
 
 from commonware.response.decorators import xframe_allow
 
+from affiliates.base.models import NewsItem
 from affiliates.facebook.utils import in_facebook_app
 
 
@@ -16,7 +17,12 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'base/dashboard.html')
+    try:
+        newsitem = NewsItem.objects.filter(visible=True).latest('created')
+    except NewsItem.DoesNotExist:
+        newsitem = None
+
+    return render(request, 'base/dashboard.html', {'newsitem': newsitem})
 
 
 def leaderboard(request):

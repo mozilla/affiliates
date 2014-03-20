@@ -7,12 +7,15 @@ from django.utils.translation import get_language
 from django.utils import timezone
 
 import test_utils
+from factory import DjangoModelFactory, Sequence, SubFactory
 from funfactory.urlresolvers import get_url_prefix, Prefixer, set_url_prefix
 from mock import patch
 from nose.tools import eq_
 from tower import activate
 
+from affiliates.base import models
 from affiliates.facebook.tests import FacebookAuthClient
+from affiliates.users.tests import UserFactory
 
 
 class TestCase(DjangoTestCase):
@@ -73,3 +76,20 @@ def patch_super(obj, attr):
 def aware_datetime(*args, **kwargs):
     dt = datetime(*args, **kwargs)
     return timezone.make_aware(dt, timezone.utc)
+
+
+class NewsItemFactory(DjangoModelFactory):
+    FACTORY_FOR = models.NewsItem
+
+    author = SubFactory(UserFactory)
+    title = Sequence(lambda n: 'Test Title {0}'.format(n))
+    html = Sequence(lambda n: '<p>Acting {0}</p>'.format(n))
+
+
+class NewsItemTranslationFactory(DjangoModelFactory):
+    FACTORY_FOR = models.NewsItemTranslation
+
+    newsitem = SubFactory(NewsItemFactory)
+    locale = 'de'
+    title = Sequence(lambda n: 'Test Titel {0}'.format(n))
+    html = Sequence(lambda n: '<p>Schauspielkunst {0}</p>'.format(n))

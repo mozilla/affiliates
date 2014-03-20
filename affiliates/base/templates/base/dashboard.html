@@ -153,43 +153,21 @@
       </div>
     </section>
 
-    <section id="news" class="section hfeed">
-      <div class="contain">
-        <h2 class="section-title">{{ _('Affiliates News') }}</h2>
-
-        <article class="hentry main">
-          <h1 class="entry-title">News Title Goes Here</h1>
-          <p>Bacon ipsum dolor sit amet shankle ground round salami, strip steak biltong pig
-            sausage beef ribs pancetta tri-tip short ribs ball tip. Pastrami ball tip frankfurter
-            porchetta, shank rump kevin. Jowl biltong <a href="/link">sirloin ribeye</a>, tenderloin hamburger
-            boudin filet mignon beef swine ball tip cow drumstick pastrami leberkas. Beef
-            t-bone capicola meatloaf jowl. Turducken kielbasa leberkas ham ham hock. Landjaeger
-            turducken leberkas pork.</p>
-
-          <p>Chuck hamburger ground round jowl sirloin drumstick. Venison ham hock porchetta,
-            pork loin meatball frankfurter ham jerky chicken brisket pork chop beef sausage.
-            Short ribs tri-tip shank, bresaola meatball chicken leberkas bacon tongue kevin
-            boudin ham prosciutto. Rump tri-tip ham, turducken ball tip short loin sirloin pork
-            drumstick spare ribs tenderloin jowl boudin landjaeger.</p>
-
-          <p>Fatback pancetta short loin, prosciutto tenderloin corned beef porchetta tri-tip
-            doner leberkas pastrami sirloin ground round. Turducken doner pork chop, cow kielbasa
-            bacon bresaola chuck boudin pork shankle meatloaf ribeye strip steak. Capicola kielbasa
-            fatback doner venison. <a href="/link">Short ribs pork chicken pork chop, meatball turkey</a> leberkas
-            pastrami jerky beef ribs strip steak shank venison prosciutto. Pig sausage drumstick
-            beef ribs ribeye. Tri-tip flank landjaeger sausage meatloaf chuck jerky pig tongue
-            pancetta short loin bacon pork.</p>
-        </article>
-
-        <aside class="sidebar aside">
-          <h2>Become a Mozillian</h2>
-          <p>Meatloaf bresaola kevin, doner shankle swine fatback andouille pig ham hock bacon
-            ground round kielbasa. Andouille shoulder ribeye tongue bacon flank. Beef porchetta
-            turkey boudin pork pig meatloaf short ribs kevin kielbasa. Swine cow meatloaf,
-            landjaeger drumstick pork prosciutto.</p>
-          <p><strong><a href="/more" class="go">Learn more</a></strong></p>
-        </aside>
-      </div>
-    </section>
+    {% if newsitem %}
+      <section id="news" class="section hfeed">
+        <div class="contain">
+          <h2 class="section-title">{{ _('Affiliates News') }}</h2>
+          {{ newsitem.render(LOCALE) }}
+          <aside class="sidebar aside">
+            <h2>Become a Mozillian</h2>
+            <p>Meatloaf bresaola kevin, doner shankle swine fatback andouille pig ham hock bacon
+              ground round kielbasa. Andouille shoulder ribeye tongue bacon flank. Beef porchetta
+              turkey boudin pork pig meatloaf short ribs kevin kielbasa. Swine cow meatloaf,
+              landjaeger drumstick pork prosciutto.</p>
+            <p><strong><a href="/more" class="go">Learn more</a></strong></p>
+          </aside>
+        </div>
+      </section>
+    {% endif %}
   </main>
 {% endblock %}

@@ -1,7 +1,5 @@
 from django.contrib import admin
-from django.db.models import ImageField
 
-from form_utils.widgets import ImageWidget
 from mptt.admin import MPTTModelAdmin
 
 from affiliates.banners import models
@@ -15,7 +13,6 @@ class CategoryModelAdmin(MPTTModelAdmin):
 class ImageVariationInline(admin.TabularInline):
     model = models.ImageBannerVariation
     fields = ('color', 'locale', 'image')
-    formfield_overrides = {ImageField: {'widget': ImageWidget}}
     extra = 0
 
 
