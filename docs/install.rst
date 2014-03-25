@@ -30,10 +30,11 @@ have ``pip`` installed, you can install it with ``easy_install pip``.
 3. Set up a local MySQL database. The `MySQL Installation Documentation`_
    explains this fairly well.
 
-4. Configure your local settings by copying ``settings/local.py-dist`` to
-   ``settings/local.py`` and customizing the settings in it::
+4. Configure your local settings by copying
+   ``affiliates/settings/local.py-dist`` to ``affiliates/settings/local.py``
+   and customizing the settings in it::
 
-    $ cp settings/local.py-dist settings/local.py
+    $ cp affiliates/settings/local.py-dist affiliates/settings/local.py
 
    The file is commented to explain what each setting does and how to customize
    them.

@@ -20,3 +20,9 @@ PASSWORD_HASHERS = (
 # tests, jingo-minify will generate the wrong path to static media due
 # to Django forcing DEBUG to be False during tests.
 TEMPLATE_DEBUG = False
+
+
+# Filler settings to make the Facebook app tests happy.
+FACEBOOK_APP_ID = '000000000000000'
+FACEBOOK_APP_SECRET = 'its.a.secret.to.everybody'
+FACEBOOK_APP_NAMESPACE = 'local.affiliates.test.app'

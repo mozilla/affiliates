@@ -18,7 +18,14 @@ def add_default_permissions(sender, **kwargs):
     """Add default set of permissions to users when they are first created."""
     if kwargs['created']:
         user = kwargs['instance']
-        can_share_website = Permission.objects.get(codename='can_share_website')
+
+        try:
+            can_share_website = Permission.objects.get(codename='can_share_website')
+        except Permission.DoesNotExist:
+            # Permission will be created by migration and thus doesn't
+            # need to be added now.
+            return
+
         user.user_permissions.add(can_share_website)
         user.save()
 
