@@ -34,21 +34,22 @@ def update_locales(ctx):
 @task
 def update_assets(ctx):
     with ctx.lcd(settings.SRC_DIR):
+        ctx.local('python2.6 manage.py collectstatic --noinput')
         ctx.local("LANG=en_US.UTF-8 python2.6 manage.py compress_assets")
 
 
 @task
 def south(ctx):
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local("python2.6 ./manage.py syncdb")
-        ctx.local("python2.6 ./manage.py migrate")
+        ctx.local("python2.6 ./manage.py syncdb --noinput")
+        ctx.local("python2.6 ./manage.py migrate --noinput")
+        ctx.local('python2.6 manage.py migrate --list')
 
 
 @task
-def banners_htaccess(ctx):
+def update_product_details(ctx):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("python2.6 ./manage.py update_product_details")
-        ctx.local("python2.6 ./manage.py banners_htaccess")
 
 
 @task
@@ -100,7 +101,7 @@ def update(ctx):
     update_assets()
     update_locales()
     south()
-    banners_htaccess()
+    update_product_details()
 
 
 @task
@@ -116,3 +117,17 @@ def update_affiliates(ctx, tag):
     """Do typical affiliates update"""
     pre_update(tag)
     update()
+
+
+# Enable script to be run from the cli.
+def main():
+    """
+    deploy all the things
+    """
+    pre_update()
+    update()
+    deploy()
+
+
+if __name__ == "__main__":
+    main()
