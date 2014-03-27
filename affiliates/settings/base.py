@@ -75,6 +75,7 @@ LANGUAGES = lazy(lazy_langs, dict)()
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 
 # Authentication
+LOGIN_URL = '/'  # TODO: Change when we have a dedicated login view.
 AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend', # required for admin
    'django_browserid.auth.BrowserIDBackend',
