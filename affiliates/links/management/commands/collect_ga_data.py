@@ -35,7 +35,7 @@ class Command(BaseCommand):
             datapoints.append(datapoint)
 
         try:
-            DataPoint.objects.bulk_create(datapoints)
+            DataPoint.objects.bulk_create(datapoints, batch_size=1000)
         except IntegrityError as e:
             raise CommandError('Could not insert datapoints into database due to IntegrityError.', e)
 
