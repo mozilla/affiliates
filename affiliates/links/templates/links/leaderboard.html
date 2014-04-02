@@ -1,0 +1,45 @@
+{% extends 'base/base.html' %}
+
+{% block body_id %}leaderboard{% endblock %}
+{% block body_class %}leaderboard{% endblock %}
+
+
+{% block content %}
+  <main role="main">
+    <div class="section page-head">
+      <div class="contain">
+        <h1 class="page-title">{{ _('Top Affiliates') }}</h1>
+      </div>
+    </div>
+
+    <div class="contain">
+
+        <table class="leaderboard">
+          <thead>
+            <tr>
+              <th scope="col">{{ _('Rank') }}</th>
+              <th scope="col">{{ _('Affiliate') }}</th>
+              <th scope="col">{{ _('Number of clicks') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for standing in standings %}
+              <tr>
+                <td class="rank">{{ standing.ranking|babel_number }}</td>
+                <th scope="row" class="vcard">
+                  <a href="/profile" class="url">
+                    <img src="{{ gravatar(standing.user) }}" alt="" class="avatar">
+                    <strong class="fn">{{ standing.user.email }}</strong>
+                  </a>
+                  <a href="http://example.com" rel="external" class="url website">{{ _('Website') }}</a>
+                </th>
+                <td class="clicks">{{ standing.value|babel_number }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
+
+  </main>
+{% endblock %}

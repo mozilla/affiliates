@@ -1,8 +1,8 @@
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from braces.views import LoginRequiredMixin
 
-from affiliates.links.models import Link
+from affiliates.links.models import LeaderboardStanding, Link
 
 
 class LinkDetailView(LoginRequiredMixin, DetailView):
@@ -17,3 +17,10 @@ class LinkReferralView(DetailView):
     template_name = 'links/referral.html'
     model = Link
     context_object_name = 'link'
+
+
+class LeaderboardView(ListView):
+    queryset = LeaderboardStanding.objects.filter(metric='link_clicks').order_by('ranking')
+    template_name = 'links/leaderboard.html'
+    context_object_name = 'standings'
+    paginate_by = 10
