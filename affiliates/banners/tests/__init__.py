@@ -22,13 +22,18 @@ class ImageBannerFactory(BannerFactory):
     FACTORY_FOR = models.ImageBanner
 
 
-class ImageBannerVariationFactory(DjangoModelFactory):
+class ImageVariationFactory(DjangoModelFactory):
+    ABSTRACT_FACTORY = True
+
+    color = 'Blue'
+    locale = 'en-us'
+    image = 'uploads/image_banners/test.png'
+
+
+class ImageBannerVariationFactory(ImageVariationFactory):
     FACTORY_FOR = models.ImageBannerVariation
 
     banner = SubFactory(ImageBannerFactory)
-    color = 'Blue'
-    locale = 'en-us'
-    image = 'uploads/banners/test.png'
 
 
 class TextBannerFactory(BannerFactory):
@@ -41,3 +46,15 @@ class TextBannerVariationFactory(DjangoModelFactory):
     banner = SubFactory(TextBannerFactory)
     locale = 'en-us'
     text = Sequence(lambda n: 'test{0}'.format(n))
+
+
+class FirefoxUpgradeBannerFactory(BannerFactory):
+    FACTORY_FOR = models.FirefoxUpgradeBanner
+
+
+class FirefoxUpgradeBannerVariationFactory(ImageVariationFactory):
+    FACTORY_FOR = models.FirefoxUpgradeBannerVariation
+
+    banner = SubFactory(FirefoxUpgradeBannerFactory)
+    image = 'uploads/firefox_upgrade_banners/test.png'
+    upgrade_image = 'uploads/firefox_upgrade_banners/test_upgrade.png'

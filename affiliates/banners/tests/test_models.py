@@ -3,9 +3,10 @@ from django.core.exceptions import ValidationError
 from nose.tools import eq_, ok_
 from mock import Mock, patch
 
-from affiliates.banners.models import Banner
-from affiliates.banners.tests import (CategoryFactory, ImageBannerVariationFactory,
-                                      TextBannerFactory, TextBannerVariationFactory)
+from affiliates.banners.models import Banner, ImageVariation
+from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerVariationFactory,
+                                      ImageBannerVariationFactory, TextBannerFactory,
+                                      TextBannerVariationFactory)
 from affiliates.base.tests import TestCase
 from affiliates.links.models import Link
 from affiliates.users.tests import UserFactory
@@ -69,11 +70,27 @@ class ImageBannerTests(TestCase):
             """)
 
 
-class ImageBannerVariationTests(TestCase):
+class ImageVariationTests(TestCase):
     def test_size(self):
-        variation = ImageBannerVariationFactory.build()
+        variation = ImageVariation()
         variation.image = Mock(width=250, height=140)
         eq_(variation.size, '250x140')
+
+    def test_filename(self):
+        variation = ImageVariation(color='blue', locale='en-us')
+        variation.banner_id = 7
+        variation.image = Mock(width=250, height=140)
+        variation.get_media_subdirectory = Mock(return_value='uploads/test')
+
+        with patch('affiliates.banners.models.hashlib.sha1') as sha1:
+            sha1.return_value.hexdigest.return_value = 'somehash'
+            filename = variation._filename('test_file.png')
+
+        # Filename should take the path from get_media_subdirectory and
+        # the hash from sha1.hexdigest, which should've been given a
+        # string with data unique to this variation.
+        eq_(filename, 'uploads/test/somehash.png')
+        sha1.assert_called_with('7_250_140_blue_en-us')
 
 
 class TextBannerTests(TestCase):
@@ -81,3 +98,21 @@ class TextBannerTests(TestCase):
         banner = TextBannerFactory()
         variation = TextBannerVariationFactory(text='Test')
         eq_(banner.generate_banner_code(variation=variation), '<a href="{href}">Test</a>')
+
+
+class FirefoxUpgradeBannerTests(TestCase):
+    def test_generate_banner_code(self):
+        # This is less a test of initial correctness and more to alert
+        # us of unexpected changes to banner code generation.
+        variation = FirefoxUpgradeBannerVariationFactory.create(
+            banner__destination='https://www.mozilla.org',
+            image='uploads/firefox_upgrade_banners/test.png',
+            upgrade_image='uploads/firefox_upgrade_banners/test_upgrade.png')
+        banner = variation.banner
+
+        with self.settings(MEDIA_URL='/media/'):
+            self.assertHTMLEqual(banner.generate_banner_code(variation), """
+              <a href="{{href}}">
+                <img src="/media/uploads/upgrade/{pk}">
+              </a>
+            """.format(pk=variation.pk))
