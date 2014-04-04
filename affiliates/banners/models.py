@@ -152,7 +152,7 @@ class ImageBannerVariation(ImageVariation):
     banner = models.ForeignKey(ImageBanner, related_name='variation_set')
 
     def get_media_subdirectory(self):
-        return 'uploads/banners'
+        return 'uploads/image_banners'
 
 
 class TextBanner(Banner):

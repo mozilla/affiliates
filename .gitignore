@@ -21,7 +21,6 @@ affiliates/locale/templates
 affiliates/locale/.svn
 locale
 *.egg-info
-media/*
 venv/*
 ga_key.p12
 static/*

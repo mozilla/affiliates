@@ -12,7 +12,7 @@ SetEnvIf User-Agent ^.*Firefox/(?!{{ version_regex }}).*$ out_of_date
 
 {% for variation in upgrade_banner_variations %}
 
-### Upgrade Banner {{ variation.pk }} ###
+### Upgrade Banner Variation {{ variation.pk }} ###
 
 # If the User-Agent is out of date, serve the upgrade variation.
 RewriteCond %%{ENV:accessing_upgrade_banner} "1"
@@ -24,3 +24,15 @@ RewriteRule ^uploads/upgrade/{{ variation.pk }}$ {{ variation.upgrade_image.name
 RewriteRule ^uploads/upgrade/{{ variation.pk }}$ {{ variation.image.name }} [L]
 
 {% endfor %}
+
+
+### Legacy Banner Support ###
+# Taken from Affiliates production server April 4th 2014
+
+SetEnvIfNoCase Request_URI "1fe924573d36f18d1430311ecc892977ad0bd6a1|ab1148a01251db077970056468c9b19c5f9e01f7|15413d5031733cefed719c624c30c6a20d337505|cd817e1604c5319499c2a226e13487d74efd713d|a4de4d7b527b5b13eba9c9616d6f7d07db22ae2f|7cefdb2af229483dc68798e404457f563930a31c" 3_6_banner=yes
+Header always append Vary "User-Agent" env=3_6_banner
+
+RewriteCond %{ENV:3_6_banner} "yes"
+RewriteCond %%{ENV:using_firefox} "1"
+RewriteCond %%{ENV:out_of_date} "1"
+RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ static_banners/$1.upgrade.$2
