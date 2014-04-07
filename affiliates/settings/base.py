@@ -304,7 +304,11 @@ BROWSERID_LOCALES = [lang.lower() for lang in (
 # List of valid country codes.
 def lazy_countries():
     from product_details import product_details
-    return product_details.get_regions('en-US')
+
+    try:
+        return product_details.get_regions('en-US')
+    except IOError:
+        return {u'us': 'United States'}
 COUNTRIES = lazy(lazy_countries, dict)()
 
 # Paths for uploaded files.

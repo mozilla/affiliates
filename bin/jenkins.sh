@@ -81,6 +81,9 @@ echo "Destroying and recreating database..."
 echo "DROP DATABASE IF EXISTS test_${JOB_NAME}"|mysql -u $DB_USER -h $DB_HOST
 echo "CREATE DATABASE test_${JOB_NAME}"|mysql -u $DB_USER -h $DB_HOST
 
+echo "Updating product details..."
+python manage.py update_product_details
+
 echo "Starting tests..."
 export FORCE_DB=1
 coverage run manage.py test --noinput

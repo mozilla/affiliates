@@ -39,7 +39,11 @@ have ``pip`` installed, you can install it with ``easy_install pip``.
    The file is commented to explain what each setting does and how to customize
    them.
 
-5. Initialize your database structure::
+5. Download the latest product_details JSON files::
+
+    $ python manage.py update_product_details
+
+6. Initialize your database structure::
 
     $ python manage.py syncdb
     $ python manage.py migrate
