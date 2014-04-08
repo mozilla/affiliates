@@ -238,6 +238,7 @@ MINIFY_BUNDLES = {
         # Mothership
         'base': (
             'js/libs/jquery-2.1.0.min.js',
+            'js/global.js',
             'browserid/browserid.js',
         ),
         'customize_image_banner': (

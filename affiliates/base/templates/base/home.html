@@ -9,7 +9,7 @@
 
 {% block site_logo %}
   <h2 class="site-logo">
-    <img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}">
+    <img src="{{ static('img/affiliates-logo-light.png') }}" alt="{{ _('Firefox Affiliates') }}">
   </h2>
 {% endblock %}
 
@@ -18,7 +18,7 @@
     <section id="intro" class="section page-head">
       <div class="contain">
         <h1>{{ _('Become a Firefox Affiliate today!') }}</h1>
-        <p class="pitch">{{ _('The Firefox Affliates program is a great way to share your love of Firefox and other Mozilla products.') }}</p>
+        <p class="tagline">{{ _('Get everything you need to share Firefox – and the other Mozilla products you love – with the world. Climb the leaderboard to help us build a better Web.') }}</p>
         <p><a href="/signin" class="button go">{{ _('Get started') }}</a></p>
       </div>
     </section>
@@ -28,16 +28,16 @@
         <h2 class="section-title">{{ _('How it works') }}</h2>
         <ol class="steps">
           <li class="step-1">
-            <h3>1. Pick a banner</h3>
-            <p>Bacon ipsum dolor sit amet flank elit shank sed occaecat swine.</p>
+            <h3>{{ _('1. Pick a banner') }}</h3>
+            <p>{{ _('Choose from a number of designs that support Firefox and other Mozilla products.') }}</p>
           </li>
           <li class="step-2">
-            <h3>2. Customize</h3>
-            <p>Leberkas nulla meatball turkey shankle enim nisi occaecat. Esse ham laborum swine, chuck jowl ribeye shank.</p>
+            <h3>{{ _('2. Customize') }}</h3>
+            <p>{{ _('Select the size and color that suits your site. Banners and links are also available in over 30 languages.') }}</p>
           </li>
           <li class="step-3">
-            <h3>3. Post to your site</h3>
-            <p>Pork belly eu ut, shoulder velit mollit cillum nisi bacon turkey swine esse cupidatat consectetur tenderloin.</p>
+            <h3>{{ _('3. Post to your site') }}</h3>
+            <p>{{ _('Copy and paste the HTML or text link into your site, email or wherever you’d like to share it.') }}</p>
           </li>
         </ol>
       </div>
@@ -46,7 +46,7 @@
     <section id="rewards" class="section">
       <div class="contain">
         <h2 class="section-title">{{ _('Earn rewards!') }}</h2>
-        <p>T-shirts, stickers, and bon bons. Jelly-o bear claw sweet roll bonbon lollipop. Drageé drageé applicake chupa chups.</p>
+        <p>{{ _('Climb the affiliates leaderboard for your chance to win awesome Firefox gear, and to get even more involved with Mozilla. The more you share, the higher you can climb.') }}</p>
       </div>
     </section>
 
@@ -130,7 +130,7 @@
           </tbody>
         </table>
 
-        <p class="more"><a href="/leaderboard" class="button secondary go">See all</a></p>
+        <p class="more"><a href="{{ url('base.leaderboard') }}" class="button go">See all</a></p>
       </div>
     </section>
   </main>

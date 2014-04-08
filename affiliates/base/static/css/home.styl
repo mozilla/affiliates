@@ -8,13 +8,7 @@
 @import 'lib.styl';
 
 #intro {
-    {section-orange}
-
-    .pitch {
-        font-size: 20px;
-        line-height: 1.1;
-        margin: .5em $grid-column-width 1.5em;
-    }
+    {section-dark}
 
     .button {
         min-width: 200px;
@@ -24,14 +18,40 @@
 
 #howitworks {
     li {
-        background: url(/static/img/fpo.png) left top no-repeat;
-        background-size: 90px 90px;
-        padding: 0 0 20px 100px;
+        padding: 0 0 20px 80px;
+        position: relative;
     }
 
     h3 {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
+        text-transform: uppercase;
+        margin: 0 0 .75em;
+
+        &:before {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 80px;
+            display: block;
+            font-family: 'Font Awesome';
+            font-size: 70px;
+            font-weight: normal;
+            color: darken($medium-gray, 15%);
+            text-shadow: 0 0 3px rgba(255, 255, 255, .25);
+        }
+    }
+
+    .step-1 h3:before {
+        content: '\f0a6'; /* finger */
+    }
+
+    .step-2 h3:before {
+        content: '\f0c4'; /* scissors */
+    }
+
+    .step-3 h3:before {
+        content: '\f0c1'; /* link */
     }
 }
 
@@ -85,12 +105,16 @@
 
 @media $media-query-mobile-wide {
 
-    #howitworks li {
-        min-height: 140px;
-        padding-left: 160px;
-        background-size: 140px 140px;
-    }
+    #howitworks {
+        li {
+            padding-left: 100px;
+        }
 
+        h3:before {
+            width: 80px;
+            font-size: 80px;
+        }
+    }
 }
 
 
@@ -105,21 +129,24 @@
             font-size: 48px;
         }
 
-        .pitch {
-            font-size: 24px;
-            margin: .5em 60px 1.5em;
-        }
-
         .button {
             font-size: 24px;
         }
     }
 
-    #howitworks li {
-        span_narrow(4);
-        background-position: center top;
-        background-size: 220px 220px;
-        padding: 240px 0 0;
+    #howitworks {
+        li {
+            span_narrow(4);
+            padding: 140px 0 0;
+            text-align: center;
+        }
+
+        h3:before {
+            left: 0;
+            top: 10px;
+            width: 100%;
+            font-size: 100px;
+        }
     }
 
     #rewards p {
@@ -152,22 +179,12 @@
 
 @media $media-query-desktop {
 
-    #intro {
-
-        h1 {
-            font-size: 60px;
-        }
-
-        .pitch {
-            margin: .5em 160px 1.5em;
-        }
-
+    #intro h1 {
+        font-size: 60px;
     }
 
     #howitworks li {
         span(4);
-        padding: 320px 0 0;
-        background-size: 300px 300px;
     }
 
 

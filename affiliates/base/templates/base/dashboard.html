@@ -19,7 +19,7 @@
         </aside>
 
         <h1 class="page-title">{{ _('Dashboard') }}</h1>
-        <p class="tagline">Bacon ipsum dolor sit amet jerky beef andouille pig capicola shank.</p>
+        <p class="tagline">{{ _('See how your banners are performing and where you rank among other Firefox Affiliates. Thanks for supporting Firefox and the Mozilla mission to build a better Web for all!') }}</p>
 
         <div class="mystats">
           <h2>{{ _('My stats') }}</h2>
@@ -36,8 +36,7 @@
       <div class="contain">
         <header>
           <h2 class="section-title">{{ _('My Banners') }}</h2>
-          {# TODO: add a sorting widget. #}
-          <p class="create"><a class="button secondary go" href="{{ url('banners.generator.categories') }}">{{ _('Create a new banner') }}</a></p>
+          <p class="create"><a class="button go" href="{{ url('banners.generator.categories') }}">{{ _('Create a new banner') }}</a></p>
         </header>
 
         <ul class="banners-list">
@@ -46,8 +45,9 @@
               <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
               <h3 class="name">Banner Name</h3>
               <ul class="desc">
-                <li>125 × 125 {{ _('pixels') }}</li>
+                <li>125 × 125</li>
                 <li>Created <time datetime="2014-03-28">28 March, 2014</time></li>
+                <li>3,245,159 clicks</li>
               </ul>
             </a>
           </li>
@@ -57,8 +57,9 @@
               <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
               <h3 class="name">This Banner Name Is Much Longer And Wraps Like This</h3>
               <ul class="desc">
-                <li>300 × 250 {{ _('pixels') }}</li>
+                <li>300 × 250</li>
                 <li>Created <time datetime="2014-03-27">27 March, 2014</time></li>
+                <li>1,140,987 clicks</li>
               </ul>
             </a>
           </li>
@@ -69,8 +70,9 @@
               <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
               <h3 class="name">Smart Banner</h3>
               <ul class="desc">
-                <li>300 × 250 {{ _('pixels') }}</li>
+                <li>300 × 250</li>
                 <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+                <li>931,018 clicks</li>
               </ul>
             </a>
           </li>
@@ -82,6 +84,7 @@
               <ul class="desc">
                 <li>Text banner</li>
                 <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+                <li>66,402 clicks</li>
               </ul>
             </a>
           </li>
@@ -92,8 +95,9 @@
               <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
               <h3 class="name">Smart Banner</h3>
               <ul class="desc">
-                <li>300 × 250 {{ _('pixels') }}</li>
+                <li>300 × 250</li>
                 <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+                <li>45,054 clicks</li>
               </ul>
             </a>
           </li>
@@ -105,6 +109,7 @@
               <ul class="desc">
                 <li>Text banner</li>
                 <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
+                <li>16,341 clicks</li>
               </ul>
             </a>
           </li>
@@ -114,14 +119,13 @@
               <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
               <h3 class="name">Banner Name</h3>
               <ul class="desc">
-                <li>125 × 125 {{ _('pixels') }}</li>
+                <li>125 × 125</li>
                 <li>Created <time datetime="2014-03-28">28 March, 2014</time></li>
+                <li>144 clicks</li>
               </ul>
             </a>
           </li>
         </ul>
-
-        <p class="all"><a class="go" href="/banners">{{ _('See all') }}</a></p>
       </div>
     </section>
 

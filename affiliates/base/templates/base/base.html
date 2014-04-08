@@ -36,7 +36,7 @@
 
     <link rel="stylesheet" type="text/css" href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css">
   </head>
-  <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+  <body id="{% block body_id %}{% endblock %}" class="no-js {% block body_class %}{% endblock %}">
     <div id="strings"
         data-close="{{ _('Close') }}"
         data-input-required="{{ _('This field is required.') }}"
@@ -51,22 +51,28 @@
         {% block site_logo %}
           <h2 class="site-logo">
             <a href="{{ url('base.home') }}">
-              <img src="{{ static('img/header-logo-inverse.png') }}" alt="{{ _('Firefox Affliates') }}">
+              <img src="{{ static('img/affiliates-logo-light.png') }}" alt="{{ _('Firefox Affiliates') }}">
             </a>
           </h2>
         {% endblock %}
 
           {# TODO: Turn nav into a hamburger at mobile sizes. #}
           <nav id="nav-main" role="navigation">
-            <ul>
+            <span class="toggle" role="button" aria-controls="nav-main-menu" tabindex="0">{{_('Menu')}}</span>
+            <ul id="nav-main-menu" class="menu">
               <li><a href="/about">{{ _('About') }}</a></li>
               <li><a href="{{ url('base.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
               {% if user %}
                 {% if user.is_authenticated() %}
                   {# TODO: Show display name and gravatar. #}
-                  <li class="user"><a href="/profile">{{ user.email }}</a></li>
-                  <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
-                  <li class="signout">{{ browserid_logout() }}</li>
+                  <li class="user">
+                    <a href="/profile" aria-owns="nav-user-submenu" aria-haspopup="true">Display Name</a>
+                    <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
+                      <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
+                      <li><a href="/profile">{{ _('Profile') }}</a></li>
+                      <li>{{ browserid_logout() }}</li>
+                    </ul>
+                  </li>
                 {% else %}
                   <li class="signin">{{ browserid_login() }}</li>
                 {% endif %}

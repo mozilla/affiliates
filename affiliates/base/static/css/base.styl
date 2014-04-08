@@ -67,19 +67,19 @@ h1, h2, h3, h4, h5, h6, legend {
 h1,
 .page-title,
 .section-title {
-    font-size: 48px;
-}
-
-h2 {
     font-size: 36px;
 }
 
-h3 {
+h2 {
     font-size: 28px;
 }
 
-h4, legend {
+h3 {
     font-size: 20px;
+}
+
+h4, legend {
+    font-size: 18px;
 }
 
 h5 {
@@ -99,7 +99,7 @@ h6 {
 
 .section-title {
     text-align: center;
-    margin: 30px auto .5em;
+    margin: 0 auto .5em;
 }
 
 
@@ -127,13 +127,13 @@ a:active {
 }
 
 // @Buttons
-// Standard blue buttons
+// Standard orange buttons
 .button,
 .button:link,
 .button:visited {
-    background-color: #276195;
-    background-image:         linear-gradient(#3c88cc, #276195);
-    background-image: -webkit-linear-gradient(#3c88cc, #276195);
+    background-color: #e46322;
+    background-image: -webkit-linear-gradient(#f7921e, #e46322);
+    background-image:         linear-gradient(#f7921e, #e46322);
     border-radius: .25em;
     border: 0;
     color: #fff;
@@ -157,25 +157,28 @@ a:active {
     color: #fff;
     text-decoration: none;
     background-color: #3089d8;
-    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
-            box-shadow: 0 2px 0 0 rgba(0, 0, 0,.1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
+    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
 }
 
 .button:focus {
   outline-color: #484848;
 }
 
-// Alternative orange buttons
+// Alternative blue buttons
 .button.secondary {
-    background-color: #e46322;
-    background-image: -webkit-linear-gradient(#f7921e, #e46322);
-    background-image:         linear-gradient(#f7921e, #e46322);
+    color: #fff;
+    background-color: #276195;
+    background-image: -webkit-linear-gradient(#3c88cc, #276195);
+    background-image:         linear-gradient(#3c88cc, #276195);
 }
 .button.secondary:hover,
 .button.secondary:focus,
 .button.secondary:active {
-  -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
-          box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
+    color: #fff;
+    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
+
 }
 
 
@@ -184,25 +187,25 @@ a:active {
 // @Layout containers
 
 #outer-wrapper {
-    position: relative;
-    border-top: 2px solid #fff;
     background: $light-gray url('/static/img/light-grain.png');
+    border-top: 2px solid #fff;
+    position: relative;
 }
 
 .section {
-    padding: 15px 0;
     border-bottom: 1px solid rgba(0, 0, 0, .15);
+    padding: 24px 0;
 }
 
 .page-head {
     {section-dark}
 
-    text-align: center;
-    padding-top: 120px;
     margin-top: -125px;
+    padding-top: 150px;
+    text-align: center;
 
     .tagline {
-        font-size: 24px;
+        font-size: 18px;
         margin: -.25em 0 1.5em;
     }
 }
@@ -212,8 +215,9 @@ a:active {
 }
 
 .contain {
-    padding: 0 20px;
     margin: 0 auto;
+    min-width: 290px;
+    padding: 0 20px;
     position: relative;
     clearfix();
 }
@@ -239,13 +243,12 @@ a:active {
 @media screen and (min-height: 600px) {
 
     .section {
-        padding: 30px 0;
+        padding: 48px 0;
     }
 
     .page-head {
         padding-top: 175px;
         margin-top: -125px;
-        margin-bottom: 48px;
     }
 
 }
@@ -268,30 +271,102 @@ a:active {
 #nav-main {
     position: absolute;
     top: 10px;
-    right: 160px;
+    left: 20px;
+    z-index: 10;
 
-    ul {
-        list-style: none;
-    }
+    .menu {
+        margin: 0;
+        min-width: 160px;
+        box-shadow: 3px 3px 0 0 rgba(0, 0, 0, .2);
+        position: absolute;
+        top: 40px;
+        left: -999em;
+        padding: 2px;
+        background: #fff;
 
-    li {
-        display: inline-block;
-        font-size: 14px;
-        margin: 0 0 .25em;
-        padding: 0 14px 0 16px;
-        text-transform: uppercase;
+        li {
+            font-size: 14px;
+            text-transform: uppercase;
+            border-bottom: 1px solid $light-gray;
+            margin: 0;
 
-        &.user,
-        &.signin {
-            border-left: 1px solid #fff;
+            &:last-child {
+                border: 0;
+            }
+        }
+
+        &:before {
+            content: '';
+            border-bottom: 12px solid #fff;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            position: absolute;
+            top: -10px;
+            left: 14px;
+        }
+
+        &:after {
+            content: '';
+            height: 20px;
+            width: 100%;
+            position: absolute;
+            top: -20px;
+            left: 0;
         }
     }
 
-    {light-links}
+    .submenu {
+        border-top: 1px solid $light-gray;
+        margin: 0;
+
+        li {
+            font-size: 12px;
+        }
+
+        a {
+            padding: .3em 15px .3em 20px;
+        }
+
+    }
 
     a {
         text-decoration: none;
+        display: block;
+        padding: .3em 10px;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background: $light-gray;
+        }
     }
+
+    .toggle {
+        background: url(/static/img/icn-menu.png) center center no-repeat;
+        cursor: pointer;
+        display: block;
+        height: 32px;
+        overflow: hidden;
+        position: relative;
+        text-indent: 150%;
+        top: -3px;
+        width: 32px;
+    }
+
+}
+
+.no-js #nav-main:hover .menu,
+.no-js #nav-main .toggle:hover + .menu {
+    left: -10px;
+}
+
+.js #nav-main .menu {
+    left: -10px;
+    display: none;
+}
+
+.js #nav-main .submenu {
+    display: block;
 }
 
 
@@ -324,7 +399,7 @@ a:active {
 
 table.leaderboard {
     width: 80%;
-    margin: 0 auto 1.5em;
+    margin: 0 auto 30px;
 
     th, td {
         text-align: left;
@@ -434,16 +509,17 @@ table.leaderboard {
         .flag {
             background: #374655;
             background: rgba(55, 70, 85, .85);
-            padding: .15em 6px;
+            box-shadow: 2px 2px 0 0 rgba(0, 0, 0, .15);
             color: $light-text-color;
-            position: absolute;
-            top: 25px;
-            right: 50%;
-            margin-right: -75px;
-            text-align: right;
-            font-style: normal;
             font-size: 12px;
+            font-style: normal;
+            text-align: right;
             text-transform: uppercase;
+            margin-right: -75px;
+            padding: .15em 6px;
+            position: absolute;
+            right: 50%;
+            top: 25px;
             z-index: 5;
         }
     }
@@ -466,22 +542,21 @@ table.leaderboard {
         margin-left: -66px;
         width: 125px;
         height: 125px;
-        background: #f0f8fb;
         padding: 4px;
     }
 
     .text .preview {
         background: #5e7489;
-        color: $light-text-color;
-        width: 105px;
-        height: 105px;
-        padding: 10px;
         border: 4px solid #f0f8fb;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        color: $light-text-color;
         font-size: 12px;
-        line-height: 1.4;
+        line-height: 1.35;
+        height: 105px;
+        width: 105px;
+        overflow: hidden;
+        padding: 10px;
         text-align: left;
+        text-overflow: ellipsis;
     }
 }
 
@@ -491,6 +566,133 @@ table.leaderboard {
 // @Tablet layout: 760px
 
 @media $media-query-tablet {
+
+    #nav-main {
+        left: auto;
+        top: 10px;
+        right: 160px;
+
+        a {
+            display: inline-block;
+            padding: 0;
+            color: $light-text-color;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background: transparent;
+                text-decoration: underline;
+            }
+        }
+
+        .menu {
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+            position: static;
+
+            &:before {
+                border: 0;
+                display: none;
+            }
+
+            li {
+                display: inline-block;
+                border: 0;
+                padding: 0 10px;
+
+                &.user,
+                &.signin {
+                    border-left: 1px solid #fff;
+                }
+            }
+        }
+
+        .user {
+            position: relative;
+        }
+
+        .submenu {
+            border: 0;
+            padding: 2px;
+            position: absolute;
+            top: 2.25em;
+            left: -999em;
+            min-width: 160px;
+            box-shadow: 2px 2px 0 0 rgba(0, 0, 0, .2);
+
+            &:before {
+                content: '';
+                border-bottom: 12px solid #fff;
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                position: absolute;
+                top: -10px;
+                left: 14px;
+            }
+
+            &:after {
+                content: '';
+                height: 18px;
+                width: 100%;
+                position: absolute;
+                top: -18px;
+                left: 0;
+            }
+
+            li {
+                border-bottom: 1px solid $light-gray;
+                display: block;
+                padding: 0 2px;
+                background: #fff;
+
+                &:first-child {
+                    padding-top: 2px;
+                }
+
+                &:last-child {
+                    border: 0;
+                    padding-bottom: 2px;
+                }
+            }
+
+            a {
+                display: block;
+                padding: .3em 15px;
+                color: $link-color;
+
+                &:hover,
+                &:focus,
+                &:active {
+                    background: $light-gray;
+                    text-decoration: none;
+                }
+            }
+
+            .user.open > a {
+                text-decoration: underline;
+            }
+        }
+
+        .toggle {
+            display: none;
+        }
+    }
+
+    .no-js #nav-main:hover .menu,
+    .no-js #nav-main .toggle:hover + .menu {
+        left: auto;
+    }
+
+    .no-js #nav-main .user:hover .submenu,
+    .no-js #nav-main .user a:focus + .submenu {
+        left: -5px;
+    }
+
+    .js #nav-main .submenu {
+        left: -5px;
+        display: none;
+    }
 
     h1,
     .section-title,
@@ -511,7 +713,7 @@ table.leaderboard {
     }
 
     .page-head .tagline {
-        margin: -.25em (($grid-column-width * 2) + ($grid-gutter-width * 2)) 1.5em;
+        margin: .5em $grid-column-width 1.5em;
     }
 
     .contain {

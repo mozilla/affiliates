@@ -59,6 +59,7 @@ $med-dark-gray  = #b6bfc9;
 $dark-gray      = #4e4f53;
 $orange         = #e26522;
 
+
 // Orange backgrounds for some page sections
 section-orange = @block {
     background: #e26522 url('/static/img/warm-grain.png');
@@ -70,6 +71,10 @@ section-orange = @block {
 
     h1, h2, h3 {
         color: $light-text-color;
+    }
+
+    a {
+        font-weight: bold;
     }
 
     {light-links}
@@ -85,6 +90,7 @@ section-medium = @block {
     }
 }
 
+
 // Dark gray backgrounds for some page sections
 section-dark = @block {
     background: $medium-gray url('/static/img/dark-grain.png');
@@ -97,9 +103,8 @@ section-dark = @block {
     h1, h2, h3 {
         color: $light-text-color;
     }
-
-    {invert-links}
 }
+
 
 // Light links for dark backgrounds
 invert-links = @block {
@@ -120,6 +125,7 @@ invert-links = @block {
     }
 }
 
+
 // White links for some occasions
 light-links = @block {
     a {
@@ -138,12 +144,14 @@ light-links = @block {
     }
 }
 
+
 // Override base heading styles
 normalize-heading = @block {
     font-family: 'Open Sans', sans-serif;
     letter-spacing: normal;
     text-shadow: none;
 }
+
 
 // Common widths
 $width-desktop      = 1000px;
@@ -175,6 +183,7 @@ span_all() {
 offset(columns) {
     margin-left: (($grid-column-width + $grid-gutter-width) * columns) + ($grid-gutter-width * 0.5);
 }
+
 
 // Column spans for narrow column widths
 span_narrow(columns) {
