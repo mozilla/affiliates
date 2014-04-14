@@ -1,13 +1,46 @@
 {% extends 'base/base.html' %}
 
+{% block body_id %}generator{% endblock %}
+{% block body_class %}category{% endblock %}
+
+{% block page_css %}
+  {{ css('make-banner') }}
+{% endblock %}
+
+{% set title = _('Choose a Category') %}
+
 {% block content %}
-  <h1>Select a category</h1>
-  {% for category in categories %}
-    <h2>{{ category.name }}</h2>
-    {% for subcategory in category.get_children() %}
-      <a href="{{ url('banners.generator.banners', subcategory.pk) }}">
-        {{ subcategory.name }}
-      </a>
-    {% endfor %}
-  {% endfor %}
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
+
+    {% block progress_bar %}
+      <div class="progress">
+        <ol>
+          <li class="step1"><strong>{{ _('Category') }}</strong></li>
+          <li class="step2"><span>{{ _('Choose') }}</span></li>
+          <li class="step3"><span>{{ _('Configure') }}</span></li>
+          <li class="step4"><span>{{ _('Embed') }}</span></li>
+        </ol>
+      </div>
+    {% endblock %}
+
+      <h1 class="page-title">{{ _('Choose a Category') }}</h1>
+
+      <ul class="categories-list">
+      {% for category in categories %}
+        {% for subcategory in category.get_children() %}
+        <li class="category">
+          <a href="{{ url('banners.generator.banners', subcategory.pk) }}">
+            <b class="parent">{{ category.name }}</b>
+            <strong class="name">{{ subcategory.name }}</strong>
+          </a>
+        </li>
+        {% endfor %}
+      {% endfor %}
+      </ul>
+
+    </div>
+  </section>
+</main>
 {% endblock %}

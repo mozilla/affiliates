@@ -14,24 +14,29 @@ $base-font-size = 100%;
 // equivalent size in rems while leaving the px declaration as the fallback
 // for old browsers.
 // Based on Aral Balkan's Responsive Pixels - https://github.com/aral/responsive-pixels
-remify(value)
-    if value == 'inherit' || value == 'smaller' || value == null
-        value
-    else if unit(value) == 'px'
-        unit(value/16, 'rem')
-    else
-        unit(value, unit(value))
+remify(value) {
+    u = unit(value);
 
+    if value is 'inherit' or value is 'smaller' or value is null {
+        value
+    } else if u is 'px' {
+        return unit(value/16, 'rem');
+    } else {
+        return unit(value, u);
+    }
+}
 
 // Abstract longhand for properties that take a single value
-abstract-longhand(prop, originalArguments)
+abstract-longhand(prop, originalArguments) {
     value = originalArguments[0]
     remifiedValue = remify(value)
 
     {prop} value
 
-    if value != remifiedValue
+    if value != remifiedValue {
         {prop} remify(value)
+    }
+}
 
 
 // Remify font-size declarations
@@ -62,8 +67,8 @@ $orange         = #e26522;
 
 // Orange backgrounds for some page sections
 section-orange = @block {
-    background: #e26522 url('/static/img/warm-grain.png');
-    background: url('/static/img/warm-grain.png'),
+    background: #e26522 url(/static/img/warm-grain.png);
+    background: url(/static/img/warm-grain.png),
                 linear-gradient(to bottom, #f59121, #d05921),
                 #e26522;
     color: $light-text-color;
@@ -83,7 +88,7 @@ section-orange = @block {
 
 // Medium gray backgrounds for some page sections
 section-medium = @block {
-    background: $med-dark-gray url('/static/img/light-grain.png');
+    background: $med-dark-gray url(/static/img/light-grain.png);
 
     .section-title {
         color: $light-text-color;
@@ -93,8 +98,8 @@ section-medium = @block {
 
 // Dark gray backgrounds for some page sections
 section-dark = @block {
-    background: $medium-gray url('/static/img/dark-grain.png');
-    background: url('/static/img/dark-grain.png'),
+    background: $medium-gray url(/static/img/dark-grain.png);
+    background: url(/static/img/dark-grain.png),
                 linear-gradient(to top, rgba(85, 90, 95, .25) 0, rgba(85, 90, 95, 0) 15px),
                 linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 50%),
                 $medium-gray;

@@ -2,11 +2,13 @@
 ;(function($) {
     'use strict';
 
+    var $form = $('#customize-banner-form');
+
     // When the variation selectbox changes, update the adjacent preview.
     $(document).on('change', '#customize-banner-form select[name="variation"]', function(e) {
         var $select = $(this);
-        var variationsText = $select.parent('#customize-banner-form').data('variationsText');
-        var $preview = $select.siblings('.preview');
+        var variationsText = $form.data('variationsText');
+        var $preview = $('#text-preview');
 
         $preview.text(variationsText[$select.val()]);
     });

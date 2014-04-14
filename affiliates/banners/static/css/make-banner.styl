@@ -1,0 +1,409 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+@import '../../../base/static/css/lib.styl';
+
+
+// No progress bar on small screens
+.progress {
+    display: none;
+}
+
+
+//*----------------------------------------------------------------*/
+// Choose a @category
+
+.categories-list {
+    margin: 40px auto 1.5em;
+    clearfix();
+
+    .category {
+        width: 200px;
+        margin: 0 auto 1.5em;
+        text-align: center;
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            padding: 0 20px 20px;
+            border-radius: 6px;
+            box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .1) inset, -1px -1px 2px 0 rgba(255, 255, 255, .1) inset;
+            transition: background ease-in-out .25s;
+            background: lighten($dark-gray, 15%);
+            background: rgba(255, 255, 255, .15);
+
+            &:hover,
+            &:focus,
+            &:active {
+                background: lighten($dark-gray, 25%);
+                background: rgba(255, 255, 255, .25);
+            }
+
+            &:hover .name,
+            &:focus .name {
+                text-decoration: underline;
+            }
+        }
+
+    }
+
+    .parent {
+        display: block;
+        padding: 10px 20px;
+        margin: 0 -20px 15px;
+        font-size: 12px;
+        font-weight: normal;
+        text-transform: uppercase;
+        background: rgba(0, 0, 0, .05);
+        border-radius: 6px 6px 0 0;
+    }
+
+    .name {
+        display: block;
+        font-size: 18px;
+        font-weight: normal;
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Configure banner
+
+.options {
+    margin: 0 auto 40px;
+    clearfix();
+}
+
+.config-option {
+    width: ($grid-column-width * 3) + ($grid-gutter-width * 2);
+    text-align: center;
+    margin: 0 auto 1.5em;
+
+    label {
+        display: block;
+        margin: 0 0 .5em;
+        text-transform: uppercase;
+    }
+
+    select {
+        width: 100%;
+    }
+
+    select:disabled {
+        opacity: .5;
+    }
+}
+
+.banner-preview {
+    margin: 40px auto;
+
+    .banner {
+        margin: 0 auto 30px;
+    }
+}
+
+.banner-preview.text {
+    background: $light-gray;
+    border: 4px solid #f0f8fb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    color: $link-color;
+    max-width: $width-mobile-wide;
+    padding: 40px;
+    text-align: left;
+    text-decoration: underline;
+
+    #text-preview {
+        margin: 0;
+    }
+}
+
+.continue {
+    margin: 0 0 1.5em;
+
+    .button {
+        font-size: 20px;
+    }
+}
+
+
+
+//*----------------------------------------------------------------*/
+// Banner @details
+
+dl.details {
+    clearfix();
+    font-size: 14px;
+
+    dt {
+        text-transform: uppercase;
+        text-align: right;
+        width: 40%;
+        margin-right: $grid-gutter-width;
+        float: left;
+        clear: left;
+    }
+
+    dd {
+        float: left;
+        text-align: left;
+        width: 55%;
+    }
+}
+
+.page-head dl.details {
+    {light-links}
+}
+
+.embed {
+    text-align: center;
+    margin: 0 0 40px;
+
+    label {
+        text-transform: uppercase;
+        display: block;
+        margin: 0 0 .5em;
+        font-size: 14px;
+    }
+
+    .note {
+        text-transform: none;
+        display: block;
+    }
+
+}
+
+#embed-code {
+    font-family: monospace;
+    padding: 10px;
+}
+
+//*----------------------------------------------------------------*/
+// @Mobile @Landscape layout: 480px
+
+@media $media-query-mobile-wide {
+
+    // @Progress bar
+    .progress {
+        display: block;
+        width: 340px;
+        margin: 20px auto 40px;
+        height: 60px;
+        background: url(/static/img/prog-bar.png) center 34px repeat-x;
+
+        {light-links}
+
+        ol {
+            margin: 0 -50px 30px;
+            padding: 0 0 30px;
+            background: url(/static/img/div-shadow-narrow.png) center bottom no-repeat;
+            clearfix();
+        }
+
+        li {
+            float: left;
+            width: 25%;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        strong,
+        span,
+        a {
+            display: block;
+            padding: 0 0 40px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+
+        // Step 1, current
+        .step1 strong {
+            background: url(/static/img/prog-first-current.png) center 26px no-repeat;
+        }
+
+        // Step 1, complete
+        .step1 a {
+            background: url(/static/img/prog-first-complete.png) center 26px no-repeat, url(/static/img/prog-bar-fill.png) 50px 34px no-repeat;
+        }
+
+        // Steps 2 and 3, current
+        .step2 strong,
+        .step3 strong {
+            background: url(/static/img/prog-mid-current.png) center 26px no-repeat, url(/static/img/prog-bar-fill.png) -250px 34px no-repeat;
+        }
+
+        // Steps 2 and 3, complete
+        .step2 a,
+        .step3 a {
+            background: url(/static/img/prog-mid-complete.png) center 26px no-repeat, url(/static/img/prog-bar-fill.png) center 34px no-repeat;
+        }
+
+        // Steps 2 and 3, empty
+        .step2 span,
+        .step3 span {
+            background: url(/static/img/prog-mid.png) center 26px no-repeat;
+        }
+
+        // Step 4, empty
+        .step4 span {
+            background: url(/static/img/prog-last.png) center 26px no-repeat;
+        }
+
+        // Step 4, current
+        .step4 strong {
+            background: url(/static/img/prog-last-current.png) center 26px no-repeat, url(/static/img/prog-bar-fill.png) -250px 34px no-repeat;
+        }
+    }
+
+    .categories-list {
+        width: $width-mobile-wide;
+
+        .category {
+            margin: 0 10px 1.5em;
+            float: left;
+        }
+    }
+
+    .categories-list .category:nth-child(2n+1) {
+        clear: left;
+    }
+
+}
+
+
+//*----------------------------------------------------------------*/
+// @Tablet layout: 760px
+
+@media $media-query-tablet {
+
+    .options {
+        width: ($grid-narrow-column-width * 9) + ($grid-gutter-width * 9);
+
+        .config-option {
+            span_narrow(3);
+        }
+    }
+
+    .progress {
+        width: auto;
+        margin: 20px 80px 40px;
+
+        ol {
+            margin: 0 -80px 30px;
+            background-image: url(/static/img/div-shadow.png);
+        }
+
+        // Step 1, complete
+        .step1 a {
+            background-position: center 26px, 80px 34px;
+        }
+
+        // Steps 2 and 3, current
+        .step2 strong,
+        .step3 strong {
+            background-position: center 26px, -200px 34px;
+        }
+
+        // Step 4, current
+        .step4 strong {
+            background-position: center 26px, -200px 34px;
+        }
+    }
+
+    .categories-list {
+        width: auto;
+
+        .category {
+            margin: 0 10px 1.5em;
+            float: left;
+        }
+    }
+
+    .categories-list .category:nth-child(4n+1),
+    .categories-list .category:nth-child(2n+1) {
+        clear: none;
+    }
+
+    .categories-list .category:nth-child(3n+1) {
+        clear: left;
+    }
+
+    .banner-preview {
+        width: $width-tablet;
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Desktop layout: 1000px
+
+@media $media-query-desktop {
+
+    .categories-list .category:nth-child(3n+1) {
+        clear: none;
+    }
+
+    .categories-list .category:nth-child(4n+1) {
+        clear: left;
+    }
+
+    .options {
+        width: ($grid-column-width * 9) + ($grid-gutter-width * 9);
+
+        .config-option {
+            span(3);
+        }
+    }
+
+    .progress {
+        margin: 20px 125px 50px;
+
+        ol {
+            margin: 0 -125px 30px;
+        }
+
+        // Step 1, complete
+        .step1 a {
+            background-position: center 26px, -200% 34px;
+        }
+
+        // Steps 2 and 3, current
+        .step2 strong,
+        .step3 strong {
+            background-position: center 26px, -175px 34px;
+        }
+
+        // Step 4, current
+        .step4 strong {
+            background-position: center 26px, -175px 34px;
+        }
+    }
+
+}
+
+
+
+//*----------------------------------------------------------------*/
+// More height for tall viewports
+
+@media screen and (min-height: 600px) {
+
+    .progress {
+        margin-bottom: 80px;
+
+        ol {
+            padding-bottom: 50px;
+            margin-bottom: 50px;
+        }
+    }
+
+}

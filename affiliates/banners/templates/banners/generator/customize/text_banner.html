@@ -1,19 +1,54 @@
 {% extends 'base/base.html' %}
 
+{% block page_css %}
+  {{ css('make-banner') }}
+{% endblock %}
+
 {% block site_js %}
   {{ super() }}
   {{ js('customize_text_banner') }}
 {% endblock %}
 
+{% set title = _('Configure Your Banner') %}
+
 {% block content %}
-  <h1>Customize Banner</h1>
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
 
-  <form id="customize-banner-form" method="POST" data-variations-text="{{ variations_text_json }}">
-    {{ csrf() }}
+    {% block progress_bar %}
+      <div class="progress">
+        <ol>
+          <li class="step1"><a href="{{ url('banners.generator.categories') }}">{{ _('Category') }}</a></li>
+          {# TODO: This should link to the selections for the current banner's category #}
+          <li class="step2"><a href="#">{{ _('Choose') }}</a></li>
+          <li class="step3"><strong>{{ _('Configure') }}</strong></li>
+          <li class="step4"><span>{{ _('Embed') }}</span></li>
+        </ol>
+      </div>
+    {% endblock %}
 
-    {{ form.variation }}
-    <p class="preview"></p>
+      <h1 class="page-title">{{ _('Configure Your Banner') }}</h1>
 
-    <button type="submit">Create Banner</button>
-  </form>
+      <form id="customize-banner-form" class="banner-config" method="POST" data-variations-text="{{ variations_text_json }}">
+        <fieldset>
+          {{ csrf() }}
+
+          <p class="config-option">
+            <label for="">{{ _('Language') }}</label>
+            {{ form.variation }}
+          </p>
+
+          <figure class="banner-preview text">
+            <p id="text-preview"></p>
+          </figure>
+
+          <p class="continue">
+            <button type="submit" class="button go">{{ _('Save') }}</button>
+          </p>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+</main>
 {% endblock %}

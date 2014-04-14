@@ -1,36 +1,85 @@
 {% extends 'base/base.html' %}
 
+{% block body_id %}generator{% endblock %}
+{% block body_class %}configure{% endblock %}
+
+{% block page_css %}
+  {{ css('make-banner') }}
+{% endblock %}
+
+{% set title = _('Configure Your Banner') %}
+
 {% block site_js %}
   {{ super() }}
   {{ js('customize_image_banner') }}
 {% endblock %}
 
 {% block content %}
-  <h1>Customize Banner</h1>
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
 
-  <form id="variation-choices" method="POST" data-variations="{{ variations_json }}">
-    {{ csrf() }}
+    {% block progress_bar %}
+      <div class="progress">
+        <ol>
+          <li class="step1"><a href="{{ url('banners.generator.categories') }}">{{ _('Category') }}</a></li>
+          {# TODO: This should link to the selections for the current banner's category #}
+          <li class="step2"><a href="#">{{ _('Choose') }}</a></li>
+          <li class="step3"><strong>{{ _('Configure') }}</strong></li>
+          <li class="step4"><span>{{ _('Embed') }}</span></li>
+        </ol>
+      </div>
+    {% endblock %}
 
-    <label for="locale">Locale</label>
-    <select name="locale" data-rv-value="selectedLocale">
-      <option data-rv-each-locale="locales" data-rv-value="locale">{ locale }</option>
-    </select>
+      <h1 class="page-title">{{ _('Configure Your Banner') }}</h1>
 
-    <label for="size">Size</label>
-    <select name="size" data-rv-disabled="selectedLocale | not" data-rv-value="selectedSize" data-rv-reset="selectedLocale">
-      <option data-rv-each-size="sizes < selectedLocale" data-rv-value="size">{ size }</option>
-    </select>
+      <form id="variation-choices" class="banner-config" method="POST" data-variations="{{ variations_json }}">
+        <fieldset>
+          {{ csrf() }}
 
-    <label for="color">Color</label>
-    <select name="color" data-rv-disabled="selectedSize | not" data-rv-value="selectedColor" data-rv-reset="selectedSize">
-      <option data-rv-each-color="colors < selectedSize selectedLocale" data-rv-value="color">{ color }</option>
-    </select>
+          <ul class="options">
+            <li class="config-option option-language">
+              <label for="locale">{{ _('Language') }}</label>
+              <select name="locale" data-rv-value="selectedLocale">
+                {# L10n: This acts as a placeholder/label for a form selection #}
+                <option selected disabled value="">{{ _('-- select --') }}</option>
+                {# TODO: The displayed value should be the language name (written in said language), not the locale code #}
+                <option data-rv-each-locale="locales" data-rv-value="locale">{ locale }</option>
+              </select>
+            </li>
 
-    <br>
-    <img class="preview" data-rv-src="previewSrc < selectedColor">
-    <br>
+            <li class="config-option option-size">
+              <label for="size">{{ _('Size') }}</label>
+              <select name="size" data-rv-disabled="selectedLocale | not" data-rv-value="selectedSize" data-rv-reset="selectedLocale">
+                {# L10n: This acts as a placeholder/label for a form selection #}
+                <option selected disabled value="">{{ _('-- select --') }}</option>
+                <option data-rv-each-size="sizes < selectedLocale" data-rv-value="size">{ size }</option>
+              </select>
+            </li>
 
-    <input type="hidden" name="{{ form.variation.html_name }}" data-rv-value="variation < selectedColor">
-    <button type="submit">Create Banner</button>
-  </form>
+            <li class="config-option option-color">
+              <label for="color">{{ _('Color') }}</label>
+              <select name="color" data-rv-disabled="selectedSize | not" data-rv-value="selectedColor" data-rv-reset="selectedSize">
+                {# L10n: This acts as a placeholder/label for a form selection #}
+                <option selected disabled value="">{{ _('-- select --') }}</option>
+                <option data-rv-each-color="colors < selectedSize selectedLocale" data-rv-value="color">{ color }</option>
+              </select>
+            </li>
+          </ul>
+
+          {# TODO: Preview and save button should initially be hidden and only appear when all options are selected #}
+          <figure class="banner-preview">
+            <img class="preview" data-rv-src="previewSrc < selectedColor" src="{{ static('img/banner-blank.png') }}">
+          </figure>
+
+          <p class="continue">
+            <input type="hidden" name="{{ form.variation.html_name }}" data-rv-value="variation < selectedColor">
+            <button type="submit" class="button go">{{ _('Save') }}</button>
+          </p>
+        </fieldset>
+      </form>
+
+    </div>
+  </section>
+</main>
 {% endblock %}

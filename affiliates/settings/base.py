@@ -219,6 +219,9 @@ MINIFY_BUNDLES = {
             'css/base.styl',
             'browserid/persona-buttons.css',
         ),
+        'make-banner': (
+            'css/make-banner.styl',
+        ),
         'dashboard': (
             'css/dashboard.styl',
         ),

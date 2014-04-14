@@ -1,8 +1,46 @@
 {% extends 'base/base.html' %}
 
+{% block body_id %}generator{% endblock %}
+{% block body_class %}banner{% endblock %}
+
+{% block page_css %}
+  {{ css('make-banner') }}
+{% endblock %}
+
+{% set title = _('Choose a Banner') %}
+
 {% block content %}
-  <h1>{{ category.name }}</h1>
-  {% for banner in banners %}
-    <a href="{{ banner.get_customize_url() }}">{{ banner.name }}</a>
-  {% endfor %}
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
+
+    {% block progress_bar %}
+      <div class="progress">
+        <ol>
+          <li class="step1"><a href="{{ url('banners.generator.categories') }}">{{ _('Category') }}</a></li>
+          <li class="step2"><strong>{{ _('Choose') }}</strong></li>
+          <li class="step3"><span>{{ _('Configure') }}</span></li>
+          <li class="step4"><span>{{ _('Embed') }}</span></li>
+        </ol>
+      </div>
+    {% endblock %}
+
+      <h1 class="page-title">{{ _('Choose a Banner') }}</h1>
+
+      <ul class="banners-list">
+      {% for banner in banners %}
+        <li class="banner">
+          {# TODO: Add the 'smart banner' flag here if it's a smart banner. #}
+          <a href="{{ banner.get_customize_url() }}">
+            {# TODO: This should be the correct banner preview image, with the blank as fallback. If it's a text banner, this should be the text preview. #}
+            <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+            <h3 class="name">{{ banner.name }}</h3>
+          </a>
+        </li>
+      {% endfor %}
+      </ul>
+
+    </div>
+  </section>
+</main>
 {% endblock %}

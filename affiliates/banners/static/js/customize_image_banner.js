@@ -126,7 +126,7 @@
             if (pk !== '') {
                 return this.variations[pk].image;
             } else {
-                return ''; // TODO: No-preview filler url goes here.
+                return '/static/img/banner-blank.png';
             }
         }
     };

@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+
+{% block body_id %}generator{% endblock %}
+{% block body_class %}detail{% endblock %}
+
+{% block page_css %}
+  {{ css('make-banner') }}
+{% endblock %}
+
+{% set title = _('Banner Details') %}
+
+{% block content %}
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
+
+    {% block progress_bar %}
+    {# TODO: No progress bar on detail page #}
+      <div class="progress">
+        <ol>
+          <li class="step1"><a href="{{ url('banners.generator.categories') }}">{{ _('Category') }}</a></li>
+          {# TODO: This should link to the selections for the current banner's category #}
+          <li class="step2"><a href="#">{{ _('Choose') }}</a></li>
+          {# TODO: This should link to the customize page for the current banner #}
+          <li class="step3"><a href="#">{{ _('Configure') }}</a></li>
+          <li class="step4"><strong>{{ _('Embed') }}</strong></li>
+        </ol>
+      </div>
+    {% endblock %}
+
+      <h1 class="page-title">{{ _('Banner Details') }}</h1>
+
+      <figure class="banner-preview">
+        <a href="{href}">
+          {# TODO: Include alt text if it exists, otherwise leave it blank #}
+          <img class="banner" src="{{ static('img/banner-blank.png') }}" alt="">
+        </a>
+      </figure>
+
+      <dl class="details">
+        <dt>{{ _('Created:') }}</dt>
+        <dd><time datetime="2014-04-21">21 April, 2014</time></dd>
+        {# TODO: Only show clicks on detail page, not embed page #}
+        <dt>{{ _('Clicks:') }}</dt>
+        <dd>3,147,017</dd>
+        <dt>{{ _('Linked URL:') }}</dt>
+        <dd><a href="http://www.mozilla.org/firefox?utm_source=firefox-affiliates&utm_medium=banner&utm_campaign=campaign-tag">https://www.mozilla.org/firefox?utm_source=firefox-affiliates&utm_medium=banner&utm_campaign=campaign-tag</a></dd>
+        {# TODO: No size for text banners (obviously) #}
+        <dt>{{ _('Size:') }}</dt>
+        <dd>300 x 250</dd>
+      </dl>
+
+      <div class="embed">
+        <label for="embed-code">{{ _('Embed code:') }} <span class="note">{{ _('Use this code to embed this banner on your website.') }}</span></label>
+        {# TODO: Select all on focus. #}
+        <textarea id="embed-code" readonly rows="4" cols="60"><a href="//affiliates.mozilla.org/link/banner/55601"><img src="//affiliates.mozilla.org/media/uploads/banners/c3d1065eacadd1f97d1d54cb962a4f7ac1e9e874.png" alt="" /></a></textarea>
+      </div>
+
+      <p class="continue">
+        <a href="{{ url('base.dashboard') }}" class="button go">{{ _('Dashboard') }}</a>
+      </p>
+
+    </div>
+  </section>
+</main>
+{% endblock %}
