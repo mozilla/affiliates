@@ -67,7 +67,7 @@ def lazy_langs():
 
     available_langs = dict([(key.lower(), value) for key, value in
                             product_details.languages.items()])
-    langs = DEV_LANGUAGES if settings.DEV else settings.PROD_LANGUAGES
+    langs = settings.DEV_LANGUAGES if settings.DEV else settings.PROD_LANGUAGES
     langs = [lang.lower() for lang in langs]
 
     return dict([(lang, available_langs[lang]['native'])
