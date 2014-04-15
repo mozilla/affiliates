@@ -1,15 +1,15 @@
 from datetime import date, timedelta
 
 from django.core.management.base import CommandError
-from django.db import IntegrityError
 
 from mock import patch
 from nose.tools import eq_, ok_
 
-from affiliates.base.tests import aware_datetime, TestCase
+from affiliates.base.tests import aware_date, aware_datetime, TestCase
 from affiliates.links.google_analytics import AnalyticsError
-from affiliates.links.management.commands import collect_ga_data, update_leaderboard
-from affiliates.links.models import LeaderboardStanding
+from affiliates.links.management.commands import (aggregate_old_datapoints, collect_ga_data,
+                                                  update_leaderboard)
+from affiliates.links.models import DataPoint, LeaderboardStanding, Link
 from affiliates.links.tests import DataPointFactory, LeaderboardStandingFactory, LinkFactory
 from affiliates.users.tests import UserFactory
 
@@ -42,24 +42,8 @@ class CollectGADataTests(TestCase):
         with self.assertRaises(CommandError):
             self.command.handle()
 
-    def test_integrity_error_bulk_create(self):
-        """
-        If an IntegrityError is raised during bulk_create, raise a
-        CommandError.
-        """
-        link1, link2 = LinkFactory.create_batch(2)
-        self.service.get_clicks_for_date.return_value = {
-            unicode(link1.pk): '4',
-            unicode(link2.pk): '7'
-        }
-
-        with patch.object(collect_ga_data, 'DataPoint') as MockDataPoint:
-            MockDataPoint.objects.bulk_create.side_effect = IntegrityError
-
-            with self.assertRaises(CommandError):
-                self.command.execute()
-
-    def test_success(self):
+    def test_default_yesterday(self):
+        """When no date is given, fetch data for the previous day."""
         link1, link2 = LinkFactory.create_batch(2)
         self.service.get_clicks_for_date.return_value = {
             unicode(link1.pk): '4',
@@ -72,8 +56,37 @@ class CollectGADataTests(TestCase):
             self.command.execute()
 
         self.service.get_clicks_for_date.assert_called_with(yesterday)
-        ok_(link1.datapoint_set.filter(date=yesterday, link_clicks=4).exists())
-        ok_(link2.datapoint_set.filter(date=yesterday, link_clicks=7).exists())
+        eq_(link1.datapoint_set.get(date=yesterday).link_clicks, 4)
+        eq_(link2.datapoint_set.get(date=yesterday).link_clicks, 7)
+
+    def test_date_argument(self):
+        """
+        If a date argument is given, parse it as DD-MM-YYYY and use it
+        as the query date.
+        """
+        link1, link2 = LinkFactory.create_batch(2)
+        self.service.get_clicks_for_date.return_value = {
+            unicode(link1.pk): '4',
+            unicode(link2.pk): '7'
+        }
+        query_date = aware_datetime(2014, 1, 1).date()
+
+        # Create pre-existing data to check that it is replaced.
+        DataPointFactory.create(link=link1, date=query_date, link_clicks=18)
+        DataPointFactory.create(link=link2, date=query_date, link_clicks=14)
+
+        self.command.execute('01-01-2014')
+
+        # There must only be one datapoint for the query date, and the
+        # link_clicks must match the new data.
+        self.service.get_clicks_for_date.assert_called_with(query_date)
+        eq_(link1.datapoint_set.get(date=query_date).link_clicks, 4)
+        eq_(link2.datapoint_set.get(date=query_date).link_clicks, 7)
+
+    def test_invalid_date_argument(self):
+        """If the date argument is invalid, raise a CommandError."""
+        with self.assertRaises(CommandError):
+            self.command.execute('asdgasdihg')
 
 
 class UpdateLeaderboardTests(TestCase):
@@ -146,3 +159,43 @@ class UpdateLeaderboardTests(TestCase):
         ok_(not (LeaderboardStanding.objects
                  .filter(user=user2, ranking=2, metric='link_clicks')
                  .exists()))
+
+
+class AggregateOldDataPointsTests(TestCase):
+    def setUp(self):
+        self.command = aggregate_old_datapoints.Command()
+
+    def test_basic(self):
+        """
+        Aggregate any datapoints older than 90 days into the totals
+        stored on their links.
+        """
+        link1 = LinkFactory.create(aggregate_link_clicks=7, aggregate_firefox_downloads=10)
+        link1_old_datapoint = DataPointFactory.create(link=link1, date=aware_date(2014, 1, 1),
+                                                      link_clicks=8, firefox_downloads=4)
+        link1_new_datapoint = DataPointFactory.create(link=link1, date=aware_date(2014, 3, 1),
+                                                      link_clicks=2, firefox_downloads=7)
+
+        link2 = LinkFactory.create(aggregate_link_clicks=7, aggregate_firefox_downloads=10)
+        link2_old_datapoint1 = DataPointFactory.create(link=link2, date=aware_date(2014, 1, 1),
+                                                       link_clicks=8, firefox_downloads=4)
+        link2_old_datapoint2 = DataPointFactory.create(link=link2, date=aware_date(2013, 12, 30),
+                                                       link_clicks=2, firefox_downloads=7)
+
+        self.command.handle()
+
+        # link1 should have 7+8=15 clicks, 10+4=14 downloads, and the
+        # new datapoint should still exist.
+        link1 = Link.objects.get(pk=link1.pk)
+        eq_(link1.aggregate_link_clicks, 15)
+        eq_(link1.aggregate_firefox_downloads, 14)
+        ok_(not DataPoint.objects.filter(pk=link1_old_datapoint.pk).exists())
+        ok_(DataPoint.objects.filter(pk=link1_new_datapoint.pk).exists())
+
+        # link2 should have 7+8+2=17 clicks, 10+4+7=21 downloads, and the
+        # old datapoints should not exist.
+        link2 = Link.objects.get(pk=link2.pk)
+        eq_(link2.aggregate_link_clicks, 17)
+        eq_(link2.aggregate_firefox_downloads, 21)
+        ok_(not DataPoint.objects.filter(pk=link2_old_datapoint1.pk).exists())
+        ok_(not DataPoint.objects.filter(pk=link2_old_datapoint2.pk).exists())
