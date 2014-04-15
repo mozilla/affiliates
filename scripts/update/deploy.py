@@ -43,7 +43,7 @@ def south(ctx):
     with ctx.lcd(settings.SRC_DIR):
         ctx.local("python2.6 ./manage.py syncdb --noinput")
         ctx.local("python2.6 ./manage.py migrate --noinput")
-        ctx.local('python2.6 manage.py migrate --list')
+        ctx.local('python2.6 manage.py migrate --list --noinput')
 
 
 @task
@@ -83,7 +83,7 @@ def update_info(ctx):
         ctx.local("git log -3")
         ctx.local("git status")
         ctx.local("git submodule status")
-        ctx.local("python ./manage.py migrate --db-dry-run")
+        ctx.local("python ./manage.py migrate --db-dry-run --noinput")
         with ctx.lcd("locale"):
             ctx.local("svn info")
             ctx.local("svn status")
