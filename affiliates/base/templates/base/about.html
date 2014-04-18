@@ -1,0 +1,233 @@
+{% extends 'base/base.html' %}
+
+{% block body_id %}about{% endblock %}
+{% block body_class %}about text-page{% endblock %}
+
+{% set title = _('About') %}
+
+{% block content %}
+  <main role="main">
+    <section class="section page-head">
+      <div class="contain">
+
+      	<h1 class="page-title">{{ _('About Firefox Affiliates') }}</h1>
+
+        <p class="prose">
+          {% trans %}
+          Firefox Affiliate buttons are bits of HTML code that you put on your
+          website or blog to encourage visitors to download Firefox. When
+          someone clicks a button on your site and visits the Firefox download
+          page, you get credit for that click.
+          {% endtrans %}
+        </p>
+
+        <p class="prose">
+          {% trans %}
+          Affiliates who get a lot of clicks will be featured on our
+          leaderboard and be eligible for rewards, like Firefox T-shirts.
+          While we do send out prizes and gifts to our affiliates from time to
+          time, Firefox Affiliates does not offer monetary rewards for hosting
+          Firefox buttons.
+          {% endtrans %}
+        </p>
+
+      </div>
+  </section>
+
+  <article id="faq" class="section">
+    <div class="contain">
+      <h2 class="section-title">{{ _('Frequently Asked Questions') }}</h2>
+
+      <h3>{{ _('Using Affiliate buttons') }}</h3>
+      <dl class="faq">
+        <dt>{{ _('How do affiliate buttons work?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Firefox Affiliate buttons are bits of HTML code that you put on
+            your website or blog to encourage visitors to download Firefox.
+            When someone clicks a button on your site and visits the Firefox
+            download page, you get credit for that click.
+            {% endtrans %}
+          </p>
+
+          <p>
+            {% trans %}
+            Affiliates who get a lot of clicks will be featured on our
+            leaderboard and be eligible for rewards, like Firefox T-shirts.
+            While we do send out prizes and gifts to our affiliates from time
+            to time, Firefox Affiliates does not offer monetary rewards for
+            hosting Firefox buttons.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('How do I add an affiliate button to my website?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            It’s super easy! To start, choose a button and select the Firefox
+            product or campaign you’d like to support. From there, simply pick
+            your button’s style, shape and color, and then copy and paste the
+            code into the HTML of your site. Done! Your unique affiliate ID
+            will be in the code to make sure you get credit for every click
+            you send our way.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('How do I remove an affiliate button from my website?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            This is also easy. Simply delete the code. If you want to put it
+            back in again, just copy and paste it from the button picker.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('How do text links work?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Text links work very much like banners. You start by choosing the
+            Firefox product or campaign you’d like to support, then select the
+            text link you’d like to use. Copy and paste the link code into the
+            HTML of your site, onto your email signature, or anywhere else
+            you’d like to have it appear. Your unique affiliate ID will be in
+            the code to make sure you get credit for every click you send our
+            way.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('What happens when an affiliate button for a campaign is deactivated?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Sometimes we run special time-limited campaigns to encourage
+            people to download Firefox. If you’re using an affiliate button
+            for one of these campaigns, try to update your button as soon as
+            you can. People who click on that button will be directed to a
+            general Firefox download page. You’ll get credit for the click as
+            an Affiliate, but you may not get credit for clicks for that
+            specific campaign.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt id="smartbanners">{{ _('What are smart banners?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Smart Banners show visitors slightly different messages depending
+            on their browser. For example, visitors on an older version of
+            Firefox would be encouraged to upgrade, while visitors on Internet
+            Explorer would be encouraged to switch.
+            {% endtrans %}
+          </p>
+        </dd>
+      </dl>
+
+      <h3>{{ _('Leaderboard and user statistics') }}</h3>
+      <dl class="faq">
+        <dt>{{ _('How often do leaderboard statistics update?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Leaderboard stats update every night at midnight Pacific Time. No
+            need to keep hitting refresh over and over again to see how you’re
+            doing. Just check in the next day to see your progress.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('Is there a prize for getting the most Firefox clicks?') }}</dt>
+        <dd>
+          <p>{% trans %}
+            From time to time we will be sending out T-shirts and other prizes.
+            In future versions of Firefox Affiliates we will have a rewards
+            program and more opportunities to participate in affiliate
+            challenges.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('I think my click statistics are wrong. Is there any way to fix them?') }}</dt>
+        <dd>
+          <p>
+            {% trans email='mailto:affiliates@mozilla.org'%}
+            If you think there is an error with your click statistics, drop us
+            a note at <a href="{{ email }}">affiliates@mozilla.org</a> and
+            we’ll do our best to help you out.
+            {% endtrans %}
+          </p>
+        </dd>
+      </dl>
+
+
+      <h3>{{ _('My profile') }}</h3>
+      <dl class="faq">
+        <dt>{{ _('How do I update my personal profile information?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Moved? Changed your name? Grew a moustache? Just click on the edit
+            profile link at the top of the site.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('How will you contact me if I win a prize?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            If you qualify for an affiliates prize you will be notified that
+            you have won via the email account in your affiliates profile.
+            {% endtrans %}
+          </p>
+        </dd>
+      </dl>
+
+
+      <h3>{{ _('Getting involved With Firefox Affiliates') }}</h3>
+      <dl class="faq">
+        <dt>{{ _('I have an idea of a button. How can I share it?') }}</dt>
+        <dd>
+          <p>
+            {% trans email='mailto:affiliates@mozilla.org' %}
+            Mozilla and Firefox are all about community. If you have an idea,
+            we want to hear it. Send us a note at
+            <a href="{{ email }}">affiliates@mozilla.org</a> and tell us your
+            amazing idea for the program.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('Can I build my own button?') }}</dt>
+        <dd>
+          <p>
+            {% trans %}
+            Not yet… but soon. We're working on a way to make it easy for
+            people to create their own Firefox buttons in their language. Look
+            for this in future versions of Firefox Affiliates.
+            {% endtrans %}
+          </p>
+        </dd>
+
+        <dt>{{ _('I want to help make Firefox Affiliates better. How can I get involved?') }}</dt>
+        <dd>
+          <p>
+            {% trans email='mailto:affiliates@mozilla.org' %}
+            If you’d like to help out with the affiliates program, contact us
+            at <a href="{{ email }}">affiliates@mozilla.org</a>. We’d love
+            your help with everything from coding to marketing.
+            {% endtrans %}
+          </p>
+        </dd>
+      </dl>
+
+    </div>
+  </article>
+</main>
+{% endblock %}

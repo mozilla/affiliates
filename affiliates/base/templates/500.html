@@ -1,5 +1,18 @@
 {% extends 'base/base.html' %}
 
+{% block body_class %}error{% endblock %}
+
+{% set title = _('Server error') %}
+
 {% block content %}
-  <h1>500 Server Error</h1>
+<main role="main">
+  <article class="section page-head">
+    <div class="contain">
+      <h1 class="page-title">{{ _('D’oh! Something went wrong!') }}</h1>
+      <p class="tagline">
+      {{ _('Sorry, but something went wrong on our end and we couldn’t process your request. Please try again in a few minutes.') }}
+      </p>
+    </div>
+  </article>
+</main>
 {% endblock %}

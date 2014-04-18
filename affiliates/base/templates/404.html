@@ -1,5 +1,18 @@
 {% extends 'base/base.html' %}
 
+{% block body_class %}error{% endblock %}
+
+{% set title = _('Page not found') %}
+
 {% block content %}
-  <h1>404 Not Found</h1>
+<main role="main">
+  <article class="section page-head">
+    <div class="contain">
+      <h1 class="page-title">{{ _('Page not found') }}</h1>
+      <p class="tagline">
+        {{ _('Sorry, but we couldn’t find the page you’re looking for.') }}
+      </p>
+    </div>
+  </article>
+</main>
 {% endblock %}

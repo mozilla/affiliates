@@ -15,6 +15,11 @@ def home(request):
     else:
         return render(request, 'base/home.html')
 
+def about(request):
+    return render(request, 'base/about.html')
+
+def terms(request):
+    return render(request, 'base/terms.html')
 
 @login_required
 def dashboard(request):

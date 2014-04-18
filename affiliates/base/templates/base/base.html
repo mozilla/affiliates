@@ -60,16 +60,16 @@
           <nav id="nav-main" role="navigation">
             <span class="toggle" role="button" aria-controls="nav-main-menu" tabindex="0">{{_('Menu')}}</span>
             <ul id="nav-main-menu" class="menu">
-              <li><a href="/about">{{ _('About') }}</a></li>
+              <li><a href="{{ url('base.about') }}">{{ _('About') }}</a></li>
               <li><a href="{{ url('links.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
               {% if user %}
                 {% if user.is_authenticated() %}
                   {# TODO: Show display name and gravatar. #}
                   <li class="user">
-                    <a href="{{ user.userprofile.get_absolute_url() }}" aria-owns="nav-user-submenu" aria-haspopup="true">{{ user.display_name }}</a>
+                    <a href="/profile" aria-owns="nav-user-submenu" aria-haspopup="true">Display Name</a>
                     <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
                       <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
-                      <li><a href="{{ user.userprofile.get_absolute_url() }}">{{ _('Profile') }}</a></li>
+                      <li><a href="/profile">{{ _('Profile') }}</a></li>
                       <li>{{ browserid_logout() }}</li>
                     </ul>
                   </li>
@@ -106,12 +106,12 @@
             </div>
 
             <ul class="footer-nav">
-              <li><a href="/contact">{{_('Contact Us')}}</a></li>
-              <li><a href="/partner">{{_('Partner with Us')}}</a></li>
-              <li><a href="/donate">{{ _('Donate') }}</a></li>
-              <li><a href="/privacy">{{_('Privacy Policy')}}</a></li>
-              <li><a href="/about/legal">{{_('Legal Notices')}}</a></li>
-              <li><a href="/legal/fraud-report">{{_('Report Trademark Abuse')}}</a></li>
+              <li><a href="https://www.mozilla.org/contact/spaces/">{{_('Contact Us')}}</a></li>
+              <li><a href="https://www.mozilla.org/about/partnerships/">{{_('Partner with Us')}}</a></li>
+              <li><a href="https://sendto.mozilla.org/">{{ _('Donate') }}</a></li>
+              <li><a href="https://www.mozilla.org/privacy/">{{_('Privacy Policy')}}</a></li>
+              <li><a href="https://www.mozilla.org/about/legal.html">{{_('Legal Notices')}}</a></li>
+              <li><a href="https://www.mozilla.org/legal/fraud-report/">{{_('Report Trademark Abuse')}}</a></li>
             </ul>
 
             <ul class="footer-nav">
