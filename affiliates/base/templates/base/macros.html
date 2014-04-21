@@ -31,7 +31,9 @@
 {% macro notices() -%}
 {% for message in messages %}
   <aside class="notice {{ message.tags }}">
-    <p>{{ message }}</p>
+    <p {% if 'warning' in message.tags or 'error' in message.tags %}role="alert"{% endif %}>
+      {{ message }}
+    </p>
   </aside>
 {% endfor %}
 {%- endmacro %}

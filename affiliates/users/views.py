@@ -27,3 +27,8 @@ class UserProfileView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, _('Your profile has been updated!'))
         return super(UpdateView, self).form_valid(form)
+
+
+def login_required(request):
+    messages.warning(request, _('You must be logged in to view that page.'))
+    return redirect('base.home')

@@ -1,3 +1,5 @@
+from django.core.urlresolvers import reverse_lazy
+
 from funfactory.settings_base import *
 
 
@@ -78,7 +80,7 @@ LANGUAGES = lazy(lazy_langs, dict)()
 DEFAULT_FROM_EMAIL = 'notifications@affiliates.mozilla.org'
 
 # Authentication
-LOGIN_URL = '/'  # TODO: Change when we have a dedicated login view.
+LOGIN_URL = reverse_lazy('users.login_required')
 AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend', # required for admin
    'django_browserid.auth.BrowserIDBackend',
