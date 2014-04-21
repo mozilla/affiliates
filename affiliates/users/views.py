@@ -1,5 +1,8 @@
+from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.generic import UpdateView
+
+from tower import ugettext as _
 
 from affiliates.users.forms import EditProfileForm
 from affiliates.users.models import UserProfile
@@ -20,3 +23,7 @@ class UserProfileView(UpdateView):
             return redirect(profile)
         else:
             return super(UserProfileView, self).post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Your profile has been updated!'))
+        return super(UpdateView, self).form_valid(form)

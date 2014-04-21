@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
 
+{% from 'base/macros.html' import notices with context %}
+
 {% block body_id %}home{% endblock %}
 {% block body_class %}home{% endblock %}
 
@@ -17,6 +19,8 @@
   <main role="main">
     <section id="intro" class="section page-head">
       <div class="contain">
+        {{ notices() }}
+
         <h1>{{ _('Become a Firefox Affiliate today!') }}</h1>
         <p class="tagline">{{ _('Get everything you need to share Firefox – and the other Mozilla products you love – with the world. Climb the leaderboard to help us build a better Web.') }}</p>
         <p><a href="/signin" class="button go">{{ _('Get started') }}</a></p>

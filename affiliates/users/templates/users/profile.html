@@ -1,9 +1,13 @@
 {% extends 'base/base.html' %}
 
+{% from 'base/macros.html' import notices with context %}
+
 {% block content %}
   <main role="main">
-    <section>
+    <section class="section page-head">
       <div class="contain">
+        {{ notices() }}
+
         <h1>{{ profile.user.display_name }}</h1>
 
         {% if profile.bio %}
@@ -14,6 +18,11 @@
           <p><a href="{{ profile.website }}" rel="nofollow">{{ profile.website }}</a></p>
         {% endif %}
 
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="contain">
         {% if request.user == profile.user  %}
           <a href="#" id="edit-profile-link">Edit Profile</a>
           <form id="edit-profile-popup" method="post">

@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
 
+{% from 'base/macros.html' import notices with context %}
+
 {% block body_id %}leaderboard{% endblock %}
 {% block body_class %}leaderboard{% endblock %}
 
@@ -8,6 +10,8 @@
   <main role="main">
     <div class="section page-head">
       <div class="contain">
+        {{ notices() }}
+
         <h1 class="page-title">{{ _('Top Affiliates') }}</h1>
       </div>
     </div>

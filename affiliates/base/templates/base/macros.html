@@ -27,3 +27,11 @@
   </div>
 </div>
 {%- endmacro %}
+
+{% macro notices() -%}
+{% for message in messages %}
+  <aside class="notice {{ message.tags }}">
+    <p>{{ message }}</p>
+  </aside>
+{% endfor %}
+{%- endmacro %}
