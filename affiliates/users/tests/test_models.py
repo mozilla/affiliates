@@ -31,7 +31,7 @@ class UserTests(TestCase):
 class CreateProfileTests(TestCase):
     def test_create_profile(self):
         """Create an empty profile for newly-created users."""
-        user = UserFactory.build()
+        user = UserFactory.build(userprofile=None)
 
         # Profile doesn't exist yet.
         with self.assertRaises(UserProfile.DoesNotExist):

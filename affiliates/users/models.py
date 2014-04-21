@@ -65,6 +65,7 @@ class UserProfile(ModelBase):
     user = models.OneToOneField(User, primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    last_visit = models.DateField(blank=True, null=True, default=None)
 
     display_name = models.CharField(max_length=255, blank=True)
     website = models.URLField(blank=True)

@@ -6,4 +6,4 @@
 -r ../vendor/src/funfactory/funfactory/requirements/dev.txt
 
 fudge==1.0.3
-factory_boy>=2.2.1
+-e git://github.com/rbarrois/factory_boy.git@42d3d4b8c543850668186440d5a3ce93e2832c5a#egg=factory_boy

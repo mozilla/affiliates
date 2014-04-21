@@ -44,6 +44,7 @@ MIDDLEWARE_CLASSES = (
     'csp.middleware.CSPMiddleware',
     'affiliates.base.middleware.FrameOptionsHeader',
     'affiliates.base.middleware.PrivacyMiddleware',
+    'affiliates.links.middleware.StatsSinceLastVisitMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
