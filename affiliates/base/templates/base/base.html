@@ -84,6 +84,23 @@
 
       {% block content %}{% endblock %}
 
+      {% block newsletter %}
+        <section id="newsletter" class="section">
+          <form class="contain" action="POST">
+            <h3>{{ _('Get Firefox Affiliates News') }}</h3>
+            <ol>
+              <li>
+                <label for="newsletter-email">{{ _('Your email address') }}</label>
+                <input type="email" id="newsletter-email" name="email" required placeholder="{{ _('yourname@example.com') }}">
+              </li>
+              <li class="submit">
+                <button type="submit" class="button secondary">{{ _('Sign me up!') }}</button>
+              </li>
+            </ol>
+          </form>
+        </section>
+      {% endblock %}
+
       {% block site_footer %}
         <footer id="footer" role="contentinfo">
           <div class="contain">
@@ -94,8 +111,8 @@
 
             <div class="footer-license">
                 <p>
-                  {% trans license='license' %}
-                  Portions of this content are ©1998–{{ current_year }} by individual
+                  {% trans license='license', thisyear=thisyear() %}
+                  Portions of this content are ©1998–{{ thisyear }} by individual
                   mozilla.org contributors. Content available under
                   a <a href="{{ license }}">Creative Commons license</a>.
                   {% endtrans %}

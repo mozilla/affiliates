@@ -19,6 +19,12 @@
   <main role="main">
     <section id="intro" class="section page-head">
       <div class="contain">
+        <noscript>
+          <div class="notice">
+            <p>{{ _('This site requires JavaScript.') }}</p>
+          </div>
+        </noscript>
+
         {{ notices() }}
 
         <h1>{{ _('Become a Firefox Affiliate today!') }}</h1>
@@ -78,7 +84,7 @@
               <td class="rank">1</td>
               <th scope="row" class="vcard">
                 <a href="/profile" class="url">
-                  <img src="/static/img/avatar.png" alt="" class="avatar">
+                  <img src="/static/img/avatar.jpg" alt="" class="avatar">
                   <strong class="fn">Muddy Waters</strong>
                 </a>
                 <a href="http://example.com" rel="external" class="url website">{{ _('Website') }}</a>
@@ -90,7 +96,7 @@
               <td class="rank">2</td>
               <th scope="row" class="vcard">
                 <a href="/profile" class="url">
-                  <img src="/static/img/avatar.png" alt="" class="avatar">
+                  <img src="/static/img/avatar.jpg" alt="" class="avatar">
                   <strong class="fn">B.B. King</strong>
                 </a>
               </th>
@@ -101,7 +107,7 @@
               <td class="rank">3</td>
               <th scope="row" class="vcard">
                 <a href="/profile" class="url">
-                  <img src="/static/img/avatar.png" alt="" class="avatar">
+                  <img src="/static/img/avatar.jpg" alt="" class="avatar">
                   <strong class="fn">Nina Simone</strong>
                   <a href="http://example.com" rel="external" class="url website">{{ _('Website') }}</a>
                 </a>
@@ -113,7 +119,7 @@
               <td class="rank">4</td>
               <th scope="row" class="vcard">
                 <a href="/profile" class="url">
-                  <img src="/static/img/avatar.png" alt="" class="avatar">
+                  <img src="/static/img/avatar.jpg" alt="" class="avatar">
                   <strong class="fn">Walter Horton</strong>
                   <a href="http://example.com" rel="external" class="url website">{{ _('Website') }}</a>
                 </a>
@@ -125,7 +131,7 @@
               <td class="rank">5</td>
               <th scope="row" class="vcard">
                 <a href="/profile" class="url">
-                  <img src="/static/img/avatar.png" alt="" class="avatar">
+                  <img src="/static/img/avatar.jpg" alt="" class="avatar">
                   <strong class="fn">Koko Taylor</strong>
                 </a>
               </th>

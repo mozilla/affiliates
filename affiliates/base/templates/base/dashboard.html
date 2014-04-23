@@ -69,7 +69,7 @@
                 {% if date %}
                   <time datetime="{{ date.isoformat() }}">{{ date|babel_date }}</time>
                 {% else %}
-                  Someday soon!
+                  {{ _('Someday soon!') }}
                 {% endif %}
               </h3>
               <p>{{ message }}</p>
@@ -83,14 +83,20 @@
       <section id="news" class="section hfeed">
         <div class="contain">
           <h2 class="section-title">{{ _('Affiliates News') }}</h2>
+
           {{ newsitem.render(LOCALE) }}
+
           <aside class="sidebar aside">
-            <h2>Become a Mozillian</h2>
-            <p>Meatloaf bresaola kevin, doner shankle swine fatback andouille pig ham hock bacon
-              ground round kielbasa. Andouille shoulder ribeye tongue bacon flank. Beef porchetta
-              turkey boudin pork pig meatloaf short ribs kevin kielbasa. Swine cow meatloaf,
-              landjaeger drumstick pork prosciutto.</p>
-            <p><strong><a href="/more" class="go">Learn more</a></strong></p>
+            <h2>{{ _('Become a Mozillian') }}</h2>
+            <p>
+            {% trans %}
+            At Mozilla, doing good is part of our code. Our mission is to promote
+            openness, innovation and opportunity on the Web, and we can only do it
+            with awesome people like you. If you’d like to do even more to help our
+            mission, we have volunteer opportunities available in a number of areas.
+            {% endtrans %}
+            </p>
+            <p><strong><a href="https://www.mozilla.org/contribute/" class="go">{{ _('Learn more') }}</a></strong></p>
           </aside>
         </div>
       </section>

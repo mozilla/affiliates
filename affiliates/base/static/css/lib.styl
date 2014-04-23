@@ -176,13 +176,15 @@ $media-query-mobile         = 'screen and (max-width: 480px)';
 span(columns) {
     float: left;
     width: ($grid-column-width * columns) + ($grid-gutter-width * (columns - 1));
-    margin: 0 ($grid-gutter-width / 2);
+    margin-left: ($grid-gutter-width / 2);
+    margin-right: ($grid-gutter-width / 2);
 }
 
 span_all() {
     float: none;
     width: auto;
-    margin: 0 ($grid-gutter-width / 2);
+    margin-left: ($grid-gutter-width / 2);
+    margin-right: ($grid-gutter-width / 2);
 }
 
 offset(columns) {
@@ -194,7 +196,8 @@ offset(columns) {
 span_narrow(columns) {
     float: left;
     width: ($grid-narrow-column-width * columns) + ($grid-gutter-width * (columns - 1));
-    margin: 0 ($grid-gutter-width / 2);
+    margin-left: ($grid-gutter-width / 2);
+    margin-right: ($grid-gutter-width / 2);
 }
 
 offset_narrow(columns) {

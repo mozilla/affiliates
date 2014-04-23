@@ -24,12 +24,12 @@
     <section class="section">
       <div class="contain">
         {% if request.user == profile.user  %}
-          <a href="#" id="edit-profile-link">Edit Profile</a>
+          <a href="#edit-profile-popup" id="edit-profile-link">{{ _('Edit Profile') }}</a>
           <form id="edit-profile-popup" method="post">
             {{ csrf() }}
             {{ form }}
-            <button type="submit">Update</button>
-            <button type="button" class="close">Cancel</button>
+            <button type="submit" class="button go">{{ _('Save') }}</button>
+            <button type="button" class="button close">{{ _('Cancel') }}</button>
           </form>
         {% endif %}
       </div>
