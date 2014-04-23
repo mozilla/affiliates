@@ -82,12 +82,13 @@ class CustomizeBannerViewTests(TestCase):
         self.view.request = Mock()
         self.view.banner = Mock()
         link = self.view.banner.create_link.return_value
+        link.get_absolute_url.return_value = '/foo/bar'
         form = Mock(cleaned_data={'foo': 'bar', 'baz': 1})
 
         with patch('affiliates.banners.views.redirect') as redirect:
             response = self.view.form_valid(form)
             eq_(response, redirect.return_value)
-            redirect.assert_called_with(link)
+            redirect.assert_called_with('/foo/bar?generator=1')
 
         self.view.banner.create_link.assert_called_with(self.view.request.user, foo='bar', baz=1)
 

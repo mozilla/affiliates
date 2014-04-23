@@ -113,6 +113,7 @@ class DashboardTests(TestCase):
         render.assert_called_with(request, 'base/dashboard.html', {
             'newsitem': visible_newsitem,
             'milestones': ANY,
+            'links': ANY,
         })
 
     def test_no_available_newsitem(self):
@@ -129,4 +130,5 @@ class DashboardTests(TestCase):
         render.assert_called_with(request, 'base/dashboard.html', {
             'newsitem': None,
             'milestones': ANY,
+            'links': ANY,
         })
