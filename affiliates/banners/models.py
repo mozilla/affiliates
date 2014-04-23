@@ -56,10 +56,10 @@ class Banner(models.Model):
     class Meta:
         abstract = True
 
-    def generate_banner_code(self, *args, **kwargs):
+    def generate_banner_code(self, variation):
         """
         Generate the HTML that users will copy onto their website to
-        display this banner. Arguments will vary based on the subclass.
+        display this banner.
         """
         raise NotImplementedError()
 
@@ -67,21 +67,20 @@ class Banner(models.Model):
         """Generate a URL to the customization page for this banner."""
         raise NotImplementedError()
 
-    def get_banner_type(self):
+    @staticmethod
+    def get_variation_class():
         """
-        Return the value for the banner_type field on Links created by
-        this banner.
+        Return the class object that stores variations of this banner.
         """
         raise NotImplementedError()
 
-    def create_link(self, user, **kwargs):
+    def create_link(self, user, variation):
         """
         Create a Link based off of this banner. Extra arguments are
         passed on to generate_banner_code.
         """
-        html = self.generate_banner_code(**kwargs)
-        link = Link(user=user, destination=self.destination, html='',
-                    banner_type=self.get_banner_type())
+        html = self.generate_banner_code(variation)
+        link = Link(user=user, html='', banner_variation=variation)
 
         # Save to get PK so that link can generate referral URL.
         link.save()
@@ -94,9 +93,26 @@ class Banner(models.Model):
         return self.name
 
 
+class BannerVariation(models.Model):
+    """
+    A variation of a banner, typically differing by locale and possibly
+    other dimenisons.
+
+    Mostly useful for being explicit about what is expected from a
+    variation subclass.
+    """
+    @property
+    def banner(self):
+        """The banner that this is a variation of."""
+        raise NotImplementedError()
+
+    class Meta:
+        abstract = True
+
+
 class ImageBanner(Banner):
     """Banner displayed as an image link."""
-    def generate_banner_code(self, variation, **kwargs):
+    def generate_banner_code(self, variation):
         return render_to_string('banners/banner_code/image_banner.html', {
             'variation': variation
         })
@@ -104,11 +120,12 @@ class ImageBanner(Banner):
     def get_customize_url(self):
         return reverse('banners.generator.image_banner.customize', kwargs={'pk': self.pk})
 
-    def get_banner_type(self):
-        return 'image_banner'
+    @staticmethod
+    def get_variation_class():
+        return ImageBannerVariation
 
 
-class ImageVariation(models.Model):
+class ImageVariation(BannerVariation):
     """
     Base class for variations of banners that use priarily images in
     their display.
@@ -157,17 +174,18 @@ class ImageBannerVariation(ImageVariation):
 
 class TextBanner(Banner):
     """Banner displayed as a string of text with a link."""
-    def generate_banner_code(self, variation, **kwargs):
+    def generate_banner_code(self, variation):
         return u'<a href="{{href}}">{text}</a>'.format(text=variation.text)
 
     def get_customize_url(self):
         return reverse('banners.generator.text_banner.customize', kwargs={'pk': self.pk})
 
-    def get_banner_type(self):
-        return 'text_banner'
+    @staticmethod
+    def get_variation_class():
+        return TextBannerVariation
 
 
-class TextBannerVariation(models.Model):
+class TextBannerVariation(BannerVariation):
     """Localized variation of a text banner."""
     banner = models.ForeignKey(TextBanner, related_name='variation_set')
     text = models.TextField()
@@ -176,19 +194,13 @@ class TextBannerVariation(models.Model):
     def __unicode__(self):
         return locale_to_native(self.locale)
 
-    def generate_banner_code(self, **kwargs):
-        return self.text
-
-    def get_banner_type(self):
-        return 'text_banner'
-
 
 class FirefoxUpgradeBanner(Banner):
     """
     Image banner that shows a different image depending on whether the
     viewer has an up-to-date version of Firefox or not.
     """
-    def generate_banner_code(self, variation, **kwargs):
+    def generate_banner_code(self, variation):
         return render_to_string('banners/banner_code/firefox_upgrade_banner.html', {
             'variation': variation
         })
@@ -197,8 +209,9 @@ class FirefoxUpgradeBanner(Banner):
         return reverse('banners.generator.firefox_upgrade_banner.customize',
                        kwargs={'pk': self.pk})
 
-    def get_banner_type(self):
-        return 'upgrade_banner'
+    @staticmethod
+    def get_variation_class():
+        return FirefoxUpgradeBannerVariation
 
 
 class FirefoxUpgradeBannerVariation(ImageVariation):

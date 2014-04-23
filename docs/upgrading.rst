@@ -7,26 +7,31 @@ There are a few manual steps required to upgrade an instance of Affiliates v1.0
 1. Migrate to new Data Model
 ----------------------------
 
-1. Merge/checkout up to the tag ``v2.0-migrate-data``. This commit and its
-   ancestors contain the data migration scripts that migrate data from the old
-   data model to the new one.
+1. Create a copy of your old database and add it to your MySQL instance. Edit
+   ``affiliates/settings.local.py`` to add this copy to the ``DATABASES``
+   setting under the name ``oldbackup``.
 
-2. Run the migrations:
+2. Merge/checkout up to the latest commit.
 
-   .. code-block:: sh
+3. Manually edit the database and remove tables from the ``banners``,
+   ``badges``, and ``news`` apps (these tables start with the app name and an
+   underscore, e.g. ``banners_bannerinstance``).
 
-      ./manage.py migrate
-
-3. Merge/checkout up to the tag ``v2.0-migrate-remove-models``. This commit
-   removes a few apps that had their models deleted in the previous commit.
-
-4. Reset the ``links`` and ``banners`` apps to their new initial migrations
-   with the following two commands:
+4. Run fake migrations to reset the ``banners`` app and then re-run the
+   migrations for create tables for the ``links`` app and ``banners`` app:
 
    .. code-block:: sh
 
-      ./manage.py migrate --fake --delete-ghost-migrations links 0001
-      ./manage.py migrate --fake --delete-ghost-migrations banners 0001
+      ./manage.py migrate --fake --delete-ghost-migrations banners zero
+      ./manage.py migrate --delete-ghost-migrations
 
-At this point your database should be through the data migration; you can now
-checkout the latest commit on master and run the migrations normally.
+5. Run the data migration command, passing in the name you used for the backup
+   database:
+
+   .. code-block:: sh
+
+      ./manage.py migrate_v1_links oldbackup
+
+At this point your database should be migrated successfully. You should look
+through the data to ensure that it has been migrated properly, and keep a
+backup of your old data in case you ever find an issue with the new data.

@@ -1,5 +1,8 @@
+from django.contrib.contenttypes.models import ContentType
+
 from tower import ugettext_lazy as _lazy
 
+from affiliates.banners.models import ImageBanner, TextBanner
 from affiliates.base.utils import date_yesterday
 from affiliates.links.models import DataPoint
 
@@ -56,8 +59,8 @@ class MilestoneDisplay(object):
             self.milestones = sorted([
                 self.metric_milestone('link_clicks', self.link_click_messages),
                 self.metric_milestone('firefox_downloads', self.firefox_download_messages),
-                self.creation_milestone('image_banner', self.image_banner_messages),
-                self.creation_milestone('text_banner', self.text_banner_messages),
+                self.creation_milestone(ImageBanner, self.image_banner_messages),
+                self.creation_milestone(TextBanner, self.text_banner_messages),
             ], self.milestone_cmp)
         return iter(self.milestones)
 
@@ -103,15 +106,16 @@ class MilestoneDisplay(object):
         else:
             return date_yesterday(), unicode(messages['total_no_milestone']).format(metric_total)
 
-    def creation_milestone(self, banner_type, messages):
+    def creation_milestone(self, banner_class, messages):
         """
-        :param banner_type:
-            banner_type of links to create a milestone from,
-            e.g. text_banner.
+        :param banner_class:
+            Class for the type of banner used to create links used for
+            this milestone, e.g. TextBanner.
         :param messages:
             Dictionary of messages to choose from.
         """
-        links = self.user.link_set.filter(banner_type=banner_type)
+        content_type = ContentType.objects.get_for_model(banner_class.get_variation_class())
+        links = self.user.link_set.filter(banner_variation_content_type=content_type)
         link_count = links.count()
 
         # If no links have been created, show a future milestone.

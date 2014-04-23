@@ -1,6 +1,8 @@
 from mock import Mock, patch
 from nose.tools import eq_, ok_
 
+from affiliates.banners.models import TextBanner
+from affiliates.banners.tests import TextBannerVariationFactory
 from affiliates.base.milestones import MilestoneDisplay
 from affiliates.base.tests import aware_date, aware_datetime, TestCase
 from affiliates.links.tests import DataPointFactory, LinkFactory
@@ -140,7 +142,7 @@ class MilestoneDisplayTests(TestCase):
         If the user hasn't created any links, return a future date with
         the nothing_yet message.
         """
-        milestone = self.display.creation_milestone('test', self.messages)
+        milestone = self.display.creation_milestone(TextBanner, self.messages)
 
         # creation_milestone doesn't format the nothing_yet message.
         eq_(milestone, (self.display.future_date, 'nothing_yet_{0}'))
@@ -150,11 +152,12 @@ class MilestoneDisplayTests(TestCase):
         If the user is within 1 link of the next milestone, return
         yesterday's date with the close_to_milestone message.
         """
-        LinkFactory.create_batch(2, banner_type='test', user=self.user)
+        variation = TextBannerVariationFactory.create()
+        LinkFactory.create_batch(2, banner_variation=variation, user=self.user)
         self.display.surrounding_milestones.return_value = (None, 3)
 
         with patch('affiliates.base.milestones.date_yesterday') as date_yesterday:
-            milestone = self.display.creation_milestone('test', self.messages)
+            milestone = self.display.creation_milestone(TextBanner, self.messages)
             eq_(milestone, (date_yesterday.return_value, 'close_to_milestone_3'))
 
             self.display.surrounding_milestones.assert_called_with(
@@ -165,7 +168,8 @@ class MilestoneDisplayTests(TestCase):
         If the user isn't close to the next milestone, show the date of
         their last milestone.
         """
-        links = LinkFactory.create_batch(4, banner_type='test', user=self.user)
+        variation = TextBannerVariationFactory.create()
+        links = LinkFactory.create_batch(4, banner_variation=variation, user=self.user)
         links[0].created = aware_datetime(2014, 1, 1, 5)
         links[1].created = aware_datetime(2014, 1, 1, 8)
         links[2].created = aware_datetime(2014, 1, 2, 5)  # Winner!
@@ -175,7 +179,7 @@ class MilestoneDisplayTests(TestCase):
 
         self.display.surrounding_milestones.return_value = (3, 10)
 
-        milestone = self.display.creation_milestone('test', self.messages)
+        milestone = self.display.creation_milestone(TextBanner, self.messages)
         eq_(milestone, (aware_date(2014, 1, 2), 'achieved_milestone_3'))
 
     def test_creation_milestone_no_next_milestone(self):
@@ -183,7 +187,8 @@ class MilestoneDisplayTests(TestCase):
         If there is no next milestone, show the date of their last
         milestone.
         """
-        links = LinkFactory.create_batch(4, banner_type='test', user=self.user)
+        variation = TextBannerVariationFactory.create()
+        links = LinkFactory.create_batch(4, banner_variation=variation, user=self.user)
         links[0].created = aware_datetime(2014, 1, 1, 5)
         links[1].created = aware_datetime(2014, 1, 1, 8)
         links[2].created = aware_datetime(2014, 1, 2, 5)  # Winner!
@@ -193,7 +198,7 @@ class MilestoneDisplayTests(TestCase):
 
         self.display.surrounding_milestones.return_value = (3, None)
 
-        milestone = self.display.creation_milestone('test', self.messages)
+        milestone = self.display.creation_milestone(TextBanner, self.messages)
         eq_(milestone, (aware_date(2014, 1, 2), 'achieved_milestone_3'))
 
     def test_creation_milestone_no_previous_links_created(self):
@@ -202,7 +207,8 @@ class MilestoneDisplayTests(TestCase):
         least one link (which is normally impossible, as the default
         milestones start at 1), show when their last link was created.
         """
-        links = LinkFactory.create_batch(2, banner_type='test', user=self.user)
+        variation = TextBannerVariationFactory.create()
+        links = LinkFactory.create_batch(2, banner_variation=variation, user=self.user)
         links[0].created = aware_datetime(2014, 1, 1, 5)
         links[1].created = aware_datetime(2014, 1, 2, 8)
         for link in links:
@@ -210,7 +216,7 @@ class MilestoneDisplayTests(TestCase):
 
         self.display.surrounding_milestones.return_value = (None, 5)
 
-        milestone = self.display.creation_milestone('test', self.messages)
+        milestone = self.display.creation_milestone(TextBanner, self.messages)
         eq_(milestone, (aware_date(2014, 1, 2), 'link_created'))
 
 

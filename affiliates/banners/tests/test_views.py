@@ -130,14 +130,14 @@ class CustomizeBannerViewTests(TestCase):
         self.view.banner = Mock()
         link = self.view.banner.create_link.return_value
         link.get_absolute_url.return_value = '/foo/bar'
-        form = Mock(cleaned_data={'foo': 'bar', 'baz': 1})
+        form = Mock(cleaned_data={'variation': 'bar'})
 
         with patch('affiliates.banners.views.redirect') as redirect:
             response = self.view.form_valid(form)
             eq_(response, redirect.return_value)
             redirect.assert_called_with('/foo/bar?generator=1')
 
-        self.view.banner.create_link.assert_called_with(self.view.request.user, foo='bar', baz=1)
+        self.view.banner.create_link.assert_called_with(self.view.request.user, 'bar')
 
     def test_dispatch_invalid_pk(self):
         """If an invalid PK is given to dispatch, raise an Http404."""

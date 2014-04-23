@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum
@@ -8,13 +10,12 @@ from affiliates.base.utils import absolutify
 class Link(models.Model):
     """Affiliate link that banners link to."""
     user = models.ForeignKey(User)
-    destination = models.URLField(max_length=255)
     html = models.TextField()
-    banner_type = models.CharField(max_length=255, default='image_banner', choices=(
-        ('image_banner', 'Image Banner'),
-        ('text_banner', 'Text Banner'),
-        ('upgrade_banner', 'Firefox Upgrade Banner'),
-    ))
+
+    banner_variation_content_type = models.ForeignKey(ContentType)
+    banner_variation_id = models.PositiveIntegerField()
+    banner_variation = generic.GenericForeignKey('banner_variation_content_type',
+                                                 'banner_variation_id')
 
     # Aggregates do not include data currently stored in the DataPoint
     # model. After a retention period, DataPoint data is added to these
@@ -49,6 +50,14 @@ class Link(models.Model):
     @property
     def firefox_os_referrals(self):
         return self._get_metric_total('firefox_os_referrals')
+
+    @property
+    def banner(self):
+        return self.banner_variation.banner
+
+    @property
+    def destination(self):
+        return self.banner.destination
 
     def get_referral_url(self):
         return absolutify(reverse('links.referral', args=[self.pk]))

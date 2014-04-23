@@ -40,18 +40,19 @@ class BannerTests(TestCase):
         """)
         banner.get_banner_type = Mock(return_value='generic_banner')
         user = UserFactory.create()
+        variation = TextBannerVariationFactory.create()
 
         with patch.object(Link, 'get_referral_url') as get_referral_url:
             get_referral_url.return_value = 'asdf'
-            link = banner.create_link(user, foo='bar', baz=1)
+            link = banner.create_link(user, variation)
 
         ok_(isinstance(link, Link))
         eq_(link.user, user)
-        eq_(link.destination, 'https://www.mozilla.org')
+        eq_(link.banner_variation, variation)
         self.assertHTMLEqual(link.html, """
             <a href="asdf">Link!</a>
         """)
-        banner.generate_banner_code.assert_called_with(foo='bar', baz=1)
+        banner.generate_banner_code.assert_called_with(variation)
 
 
 class ImageBannerTests(TestCase):

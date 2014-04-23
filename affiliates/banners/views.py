@@ -58,7 +58,7 @@ class CustomizeBannerView(LoginRequiredMixin, FormView):
         return form_class(self.banner, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        link = self.banner.create_link(self.request.user, **form.cleaned_data)
+        link = self.banner.create_link(self.request.user, form.cleaned_data['variation'])
         return redirect(link.get_absolute_url() + '?generator=1')
 
     def get_context_data(self, **context):
