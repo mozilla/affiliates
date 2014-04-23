@@ -163,6 +163,9 @@ class TextBanner(Banner):
     def get_customize_url(self):
         return reverse('banners.generator.text_banner.customize', kwargs={'pk': self.pk})
 
+    def get_banner_type(self):
+        return 'text_banner'
+
 
 class TextBannerVariation(models.Model):
     """Localized variation of a text banner."""
@@ -193,6 +196,9 @@ class FirefoxUpgradeBanner(Banner):
     def get_customize_url(self):
         return reverse('banners.generator.firefox_upgrade_banner.customize',
                        kwargs={'pk': self.pk})
+
+    def get_banner_type(self):
+        return 'upgrade_banner'
 
 
 class FirefoxUpgradeBannerVariation(ImageVariation):

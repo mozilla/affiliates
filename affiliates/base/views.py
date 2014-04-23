@@ -48,11 +48,3 @@ def handler500(request):
         return render(request, 'facebook/error.html', status=500)
     else:
         return server_error(request)
-
-
-# TODO: These are static templates; they do not belong here.
-def embed(request):
-    return render(request, 'base/embed.html')
-
-def embed_text(request):
-    return render(request, 'base/embed_text.html')

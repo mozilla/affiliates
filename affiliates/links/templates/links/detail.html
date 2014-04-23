@@ -1,15 +1,55 @@
 {% extends 'base/base.html' %}
 
+{% from 'banners/generator/macros.html' import progress %}
+
+{% block body_id %}generator{% endblock %}
+{% block body_class %}detail{% endblock %}
+
+{% block page_css %}
+  {{ css('make-banner') }}
+{% endblock %}
+
+{% set title = _('Banner Details') %}
+
 {% block content %}
-  <div class="preview">
-    {{ link.html|safe }}
-  </div>
-  <div class="code">
-    <textarea>{{ link.html }}</textarea>
-  </div>
-  <ul>
-    <li>Total Clicks: {{ link.link_clicks }}</li>
-    <li>Total Downloads: {{ link.firefox_downloads }}</li>
-    <li>Total FxOS Referrals: {{ link.firefox_os_referrals }}</li>
-  </ul>
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
+
+      {% if request.GET.get('generator') %}
+        {{ progress(4) }}
+      {% endif %}
+
+      <h1 class="page-title">{{ _('Banner Details') }}</h1>
+
+      <figure class="banner-preview {{ link.banner_type }}">
+        {{ link.html|safe }}
+      </figure>
+
+      <dl class="details">
+        <dt>{{ _('Created:') }}</dt>
+        <dd><time datetime="{{ link.created.isoformat() }}">{{ link.created|babel_date }}</time></dd>
+        {# TODO: Only show clicks on detail page, not embed page #}
+        <dt>{{ _('Clicks:') }}</dt>
+        <dd>{{ link.link_clicks }}</dd>
+        <dt>{{ _('Linked URL:') }}</dt>
+        <dd><a href="{{ link.destination }}">{{ link.destination }}</a></dd>
+        {# TODO: No size for text banners (obviously) #}
+        <dt>{{ _('Size:') }}</dt>
+        <dd>300 x 250</dd>
+      </dl>
+
+      <div class="embed">
+        <label for="embed-code">{{ _('Embed code:') }} <span class="note">{{ _('Use this code to embed this banner on your website.') }}</span></label>
+        {# TODO: Select all on focus. #}
+        <textarea id="embed-code" readonly rows="4" cols="60">{{ link.html }}</textarea>
+      </div>
+
+      <p class="continue">
+        <a href="{{ url('base.dashboard') }}" class="button go">{{ _('Dashboard') }}</a>
+      </p>
+
+    </div>
+  </section>
+</main>
 {% endblock %}

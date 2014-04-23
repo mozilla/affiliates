@@ -1,0 +1,38 @@
+{% macro progress(step=1, category=None, banner=None) -%}
+<div class="progress">
+  <ol>
+    <li class="step1">
+      {% if step == 1 %}
+        <strong>{{ _('Category') }}</strong>
+      {% else %}
+        <a href="{{ url('banners.generator.categories') }}">{{ _('Category') }}</a>
+      {% endif %}
+    </li>
+    <li class="step2">
+      {% if step == 2 %}
+        <strong>{{ _('Choose') }}</strong>
+      {% elif category %}
+        <a href="{{ url('banners.generator.banners', category.pk) }}">{{ _('Choose') }}</a>
+      {% else %}
+        <span>{{ _('Choose') }}</span>
+      {% endif %}
+    </li>
+    <li class="step3">
+      {% if step == 3 %}
+        <strong>{{ _('Configure') }}</strong>
+      {% elif banner %}
+        <a href="{{ banner.get_customize_url() }}">{{ _('Configure') }}</a>
+      {% else %}
+        <span>{{ _('Configure') }}</span>
+      {% endif %}
+    </li>
+    <li class="step4">
+      {% if step == 4 %}
+        <strong>{{ _('Embed') }}</strong>
+      {% else %}
+        <span>{{ _('Embed') }}</span>
+      {% endif %}
+    </li>
+  </ol>
+</div>
+{%- endmacro %}
