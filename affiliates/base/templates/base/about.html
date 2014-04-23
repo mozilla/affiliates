@@ -6,32 +6,32 @@
 {% set title = _('About') %}
 
 {% block content %}
-  <main role="main">
-    <section class="section page-head">
-      <div class="contain">
+<main role="main">
+  <section class="section page-head">
+    <div class="contain">
 
-      	<h1 class="page-title">{{ _('About Firefox Affiliates') }}</h1>
+    	<h1 class="page-title">{{ _('About Firefox Affiliates') }}</h1>
 
-        <p class="prose">
-          {% trans %}
-          Firefox Affiliate buttons are bits of HTML code that you put on your
-          website or blog to encourage visitors to download Firefox. When
-          someone clicks a button on your site and visits the Firefox download
-          page, you get credit for that click.
-          {% endtrans %}
-        </p>
+      <p class="prose">
+        {% trans %}
+        Firefox Affiliate buttons are bits of HTML code that you put on your
+        website or blog to encourage visitors to download Firefox. When
+        someone clicks a button on your site and visits the Firefox download
+        page, you get credit for that click.
+        {% endtrans %}
+      </p>
 
-        <p class="prose">
-          {% trans %}
-          Affiliates who get a lot of clicks will be featured on our
-          leaderboard and be eligible for rewards, like Firefox T-shirts.
-          While we do send out prizes and gifts to our affiliates from time to
-          time, Firefox Affiliates does not offer monetary rewards for hosting
-          Firefox buttons.
-          {% endtrans %}
-        </p>
+      <p class="prose">
+        {% trans %}
+        Affiliates who get a lot of clicks will be featured on our
+        leaderboard and be eligible for rewards, like Firefox T-shirts.
+        While we do send out prizes and gifts to our affiliates from time to
+        time, Firefox Affiliates does not offer monetary rewards for hosting
+        Firefox buttons.
+        {% endtrans %}
+      </p>
 
-      </div>
+    </div>
   </section>
 
   <article id="faq" class="section">
@@ -171,9 +171,12 @@
         <dt>{{ _('How do I update my personal profile information?') }}</dt>
         <dd>
           <p>
-            {% trans %}
-            Moved? Changed your name? Grew a moustache? Just click on the edit
-            profile link at the top of the site.
+            {% trans profile=request.user.userprofile.get_absolute_url() %}
+            Moved? Changed your name? Grew a moustache? Just <a href="{{ profile }}">visit your profile page</a>
+            and click on the edit profile link at the top.
+            {% endtrans %}
+            {% trans gravatar='https://gravatar.com' %}
+            You can update your avatar picture at <a href="{{ gravatar }}">gravatar.com</a>.
             {% endtrans %}
           </p>
         </dd>

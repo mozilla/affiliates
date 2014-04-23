@@ -144,6 +144,76 @@ a:active {
     white-space: nowrap;
 }
 
+
+//*----------------------------------------------------------------*/
+// @Forms
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: 100%;
+    color: $primary-text-color;
+}
+
+input,
+textarea {
+    background: #fff;
+    padding: 3px 6px;
+    border: 1px solid darken($light-gray, 20%);
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+        border-color: darken($light-gray, 30%);
+    }
+}
+
+fieldset.inline {
+    legend {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        margin: 0 0 .25em;
+        text-transform: uppercase;
+    }
+
+    ul, ol {
+        margin: 0;
+    }
+
+    li {
+        display: inline;
+        margin-right: $grid-gutter-width;
+    }
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin: 0 0 .25em;
+    text-transform: uppercase;
+
+    &.check {
+        display: inline;
+        margin: 0;
+        text-transform: none;
+
+        input {
+            width: auto;
+            background: transparent;
+            border: 0;
+            padding: 0;
+        }
+    }
+}
+
+.form-submit button {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+
+
+//*----------------------------------------------------------------*/
 // @Buttons
 // Standard orange buttons
 .button,
@@ -174,7 +244,7 @@ a:active {
 .button:active {
     color: #fff;
     text-decoration: none;
-    background-color: #3089d8;
+    background-color: #f79e20;
     -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
             box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #f79e20;
 }
@@ -185,7 +255,6 @@ a:active {
 
 // Alternative blue buttons
 .button.secondary {
-    color: #fff;
     background-color: #276195;
     background-image: -webkit-linear-gradient(#3c88cc, #276195);
     background-image:         linear-gradient(#3c88cc, #276195);
@@ -193,9 +262,21 @@ a:active {
 .button.secondary:hover,
 .button.secondary:focus,
 .button.secondary:active {
-    color: #fff;
     -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
             box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px #3089d8;
+
+}
+
+.button.cancel {
+    background-color: $dark-gray;
+    background-image: -webkit-linear-gradient(lighten($dark-gray, 20%), $dark-gray);
+    background-image:         linear-gradient(lighten($dark-gray, 20%), $dark-gray);
+}
+.button.cancel:hover,
+.button.cancel:focus,
+.button.cancel:active {
+    -webkit-box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px lighten($dark-gray, 25%);
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, .1), inset 0 -2px 0 0 rgba(0, 0, 0,.2), inset 0 12px 24px 2px lighten($dark-gray, 25%);
 
 }
 
@@ -265,23 +346,6 @@ a:active {
     background: rgba(255, 200, 155, .5);
 }
 
-
-
-//*----------------------------------------------------------------*/
-// More height for tall viewports
-
-@media screen and (min-height: 600px) {
-
-    .section {
-        padding: 48px 0;
-    }
-
-    .page-head {
-        padding-top: 175px;
-        margin-top: -125px;
-    }
-
-}
 
 
 //*----------------------------------------------------------------*/
@@ -383,6 +447,11 @@ a:active {
         width: 32px;
     }
 
+    .avatar {
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+
 }
 
 .no-js #nav-main:hover .menu,
@@ -406,7 +475,8 @@ a:active {
 
 #newsletter {
     padding: 20px 0;
-    {section-medium}
+    {section-dark}
+    {invert-links}
 
     h3 {
         font-size: 24px;
@@ -417,24 +487,26 @@ a:active {
         margin: 0 0 .5em;
     }
 
-    label {
-        text-transform: uppercase;
-        display: block;
-        margin: 0 0 .25em;
-        font-size: 14px;
+    .inline li {
+        margin: 0 $grid-gutter-width 0 0;
     }
 
-    input {
-        padding: 2px 6px;
+    input[type~='text, email'],
+    select {
         width: 90%;
     }
 
-    .submit {
+    .form-submit {
         padding-top: 1.75em;
 
         button {
             font-size: 14px;
         }
+    }
+
+    .form-extra {
+        display: none;
+        margin: 1em 0 0;
     }
 }
 
@@ -460,25 +532,41 @@ a:active {
     }
 }
 
+
+
 //*----------------------------------------------------------------*/
-// @Mobile @Landscape layout: 480px
+// @Milestones
 
-@media $media-query-mobile-wide {
+.timeline {
+    background: url(/static/img/milestone-line.png) 30px top repeat-y;
+    position: relative;
+    margin: 60px 0;
 
-    .banners-list {
-        width: $width-mobile-wide;
+    .milestone {
+        margin: 0 0 20px;
+        min-height: 60px;
+        padding: 10px 0 0 85px;
+        background: url(/static/img/milestone-dot.png) 4px top no-repeat;
+        position: relative;
 
-        .banner {
-            margin: 0 10px 1.5em;
-            float: left;
+        h3 {
+            {normalize-heading}
+            font-size: 18px;
         }
     }
 
-    .banners-list .banner:nth-child(2n+1) {
-        clear: left;
+    .milestone:first-child {
+        top: -30px;
+        margin-bottom: -10px;
+    }
+
+    .milestone:last-child {
+        bottom: -30px;
+        margin-top: -30px;
     }
 
 }
+
 
 
 //*----------------------------------------------------------------*/
@@ -666,24 +754,76 @@ table.leaderboard {
     }
 }
 
+body.noscroll {
+    overflow-y: hidden;
+}
 
-//*----------------------------------------------------------------*/
-// @Profile
-
-#edit-profile-popup {
+#modal {
+    background: rgba(78, 79, 83, .75) url(/static/img/dark-grain.png);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    overflow: auto;
     display: none;
+
+    .inner {
+        background: $light-gray url(/static/img/light-grain.png);
+        border-radius: 12px;
+        border: 6px solid $medium-gray;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+        margin: 30px auto;
+        max-width: $width-mobile-wide;
+        padding: 40px;
+        position: relative;
+        width: 80%;
+    }
+
+    .close {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        padding: 5px;
+        width: 25px
+        height: 25px;
+        min-width: 0;
+        text-indent: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &:after {
+            font-family: 'Font Awesome';
+            font-size: 18px;
+            content: '\f00d';
+            position: absolute;
+            left: 0;
+            top: .125em;
+            width: 25px;
+            height: 25px;
+            text-indent: 0;
+            text-align: center;
+        }
+    }
 }
 
 
 
 //*----------------------------------------------------------------*/
-// @Landscape mobile layout: 440px
+// @Mobile @Landscape layout: 480px
 
 @media $media-query-mobile-wide {
 
-    .banners-list .banner {
-        margin: 0 10px 1.5em;
-        float: left;
+    .banners-list {
+        width: $width-mobile-wide;
+
+        .banner {
+            margin: 0 10px 1.5em;
+            float: left;
+        }
     }
 
     .banners-list .banner:nth-child(2n+1) {
@@ -746,13 +886,20 @@ table.leaderboard {
 
         .user {
             position: relative;
+
+            &:after {
+                font-family: 'Font Awesome';
+                content: '\f0d7';
+                color: $light-gray;
+                margin-left: 6px;
+                font-size: 15px;
+            }
         }
 
         .submenu {
             border: 0;
-            padding: 2px;
             position: absolute;
-            top: 2.25em;
+            top: 2.75em;
             left: -999em;
             min-width: 160px;
             box-shadow: 2px 2px 0 0 rgba(0, 0, 0, .2);
@@ -764,7 +911,7 @@ table.leaderboard {
                 border-right: 12px solid transparent;
                 position: absolute;
                 top: -10px;
-                left: 14px;
+                left: 16px;
             }
 
             &:after {
@@ -859,13 +1006,16 @@ table.leaderboard {
     }
 
     #newsletter {
-        h3 {
+        .col {
             span_narrow(4);
-            margin-top: 1em;
+
+            .col {
+                margin: 0;
+            }
         }
 
-        li {
-            span_narrow(4);
+        h3 {
+            margin-top: 1em;
         }
     }
 
@@ -895,7 +1045,6 @@ table.leaderboard {
     .banners-list .banner:nth-child(3n+1) {
         clear: left;
     }
-
 }
 
 
@@ -909,11 +1058,8 @@ table.leaderboard {
         width: $width-desktop - ($grid-gutter-width * 2);
     }
 
-    #newsletter {
-        h3,
-        li {
-            span(4);
-        }
+    #newsletter .col {
+        span(4);
     }
 
     .footer-license,
@@ -944,3 +1090,24 @@ table.leaderboard {
 
 }
 
+
+
+//*----------------------------------------------------------------*/
+// More height for tall viewports
+
+@media screen and (min-height: 600px) {
+
+    .section {
+        padding: 48px 0;
+    }
+
+    .page-head {
+        padding-top: 175px;
+        margin-top: -125px;
+    }
+
+    #modal .inner {
+        margin: 80px auto;
+    }
+
+}

@@ -9,7 +9,7 @@ from affiliates.users.tests import UserFactory
 
 @override_settings(SITE_URL='https://example.com')
 class TestGravatar(TestCase):
-    default = 'https%3A%2F%2Fexample.com%2Fstatic%2Fimg%2Favatar.png'
+    default = 'https%3A%2F%2Fexample.com%2Fstatic%2Fimg%2Favatar.jpg'
 
     def test_basic(self):
         """Passing an email returns the gravatar url for that email."""

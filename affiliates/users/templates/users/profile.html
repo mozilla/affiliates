@@ -2,44 +2,99 @@
 
 {% from 'base/macros.html' import notices with context %}
 
+{% block body_id %}profile{% endblock %}
+{% block body_class %}profile{% endblock %}
+
+{% block page_css %}
+  {{ css('profile') }}
+{% endblock %}
+
+{% set title = profile.user.display_name %}
+
 {% block content %}
   <main role="main">
-    <section class="section page-head">
+    <section id="profile-head" class="section page-head">
       <div class="contain">
         {{ notices() }}
 
-        <h1>{{ profile.user.display_name }}</h1>
+        <h1 class="page-title">{{ profile.user.display_name }}</h1>
 
-        {% if profile.bio %}
-          <p>{{ profile.bio }}</p>
-        {% endif %}
+        <img src="{{ gravatar(profile.user, size=125) }}" alt="" class="avatar">
 
-        {% if profile.website %}
-          <p><a href="{{ profile.website }}" rel="nofollow">{{ profile.website }}</a></p>
-        {% endif %}
+      {% if profile.bio %}
+        <p class="bio">{{ profile.bio }}</p>
+      {% endif %}
+
+      {% if profile.website %}
+        <p class="website"><a href="{{ profile.website }}" rel="nofollow">{{ profile.website }}</a></p>
+      {% endif %}
+
+      {% if request.user == profile.user  %}
+        <p class="edit">
+          <a href="#edit-profile" id="edit-profile-link" class="button secondary has-modal">{{ _('Edit your profile') }}</a>
+        </p>
+
+        <div id="edit-profile">
+          <form method="post">
+            {{ csrf() }}
+
+            {# TODO: Each field in this form should be wrapped in a paragraph, if possible #}
+            {{ form }}
+
+            <p class="form-submit">
+              <button type="submit" class="button go">{{ _('Save') }}</button>
+            </p>
+          </form>
+
+          <p>
+          {% trans gravatar='https://gravatar.com' %}
+            You can update your avatar picture at <a href="{{ gravatar }}">gravatar.com</a>.
+          {% endtrans %}
+          </p>
+        </div>
+      {% endif %}
 
       </div>
     </section>
 
-    <section class="section">
+    <section id="stats" class="section">
       <div class="contain">
-        {% if request.user == profile.user  %}
-          <a href="#edit-profile-popup" id="edit-profile-link">{{ _('Edit Profile') }}</a>
-          <form id="edit-profile-popup" method="post">
-            {{ csrf() }}
-            {{ form }}
-            <button type="submit" class="button go">{{ _('Save') }}</button>
-            <button type="button" class="button close">{{ _('Cancel') }}</button>
-          </form>
-        {% endif %}
+
+        <h2 class="section-title">{{ _('Stats') }}</h2>
+        <ul class="stats">
+          <li class="ranking"><strong>1,652</strong> {{ _('ranking') }}</li>
+          <li class="banners"><strong>7</strong> {{ _('banners') }}</li>
+          <li class="clicks"><strong>3,543</strong> {{ _('clicks') }}</li>
+        </ul>
+
+      </div>
+    </section>
+
+    <section id="milestones" class="section">
+      <div class="contain">
+        <h2 class="section-title">{{ _('Milestones') }}</h2>
+
+        {# TODO: This should be the same milestone timeline from the dashboard #}
+        <ol class="timeline">
+          <li class="milestone">
+            <h3><time datetime="2014-02-04">4 February, 2014</time></h3>
+            <p>You reached <strong>1,000</strong> clicks!</p>
+          </li>
+          <li class="milestone">
+            <h3><time datetime="2014-02-02">2 February, 2014</time></h3>
+            <p>You're at <strong>987</strong> clicks. Almost 1,000!</p>
+          </li>
+          <li class="milestone">
+            <h3><time datetime="2014-02-01">1 February, 2014</time></h3>
+            <p>You drove <strong>3</strong> downloads today!</p>
+          </li>
+          <li class="milestone">
+            <h3><time datetime="2014-01-21">21 January, 2014</time></h3>
+            <p>You joined Firefox Affiliates. Welcome!</p>
+          </li>
+        </ol>
+
       </div>
     </section>
   </main>
-{% endblock %}
-
-{% block site_js %}
-  {{ super() }}
-  {% if request.user == profile.user %}
-    {{ js('edit_profile') }}
-  {% endif %}
 {% endblock %}

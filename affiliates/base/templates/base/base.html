@@ -56,7 +56,6 @@
           </h2>
         {% endblock %}
 
-          {# TODO: Turn nav into a hamburger at mobile sizes. #}
           <nav id="nav-main" role="navigation">
             <span class="toggle" role="button" aria-controls="nav-main-menu" tabindex="0">{{_('Menu')}}</span>
             <ul id="nav-main-menu" class="menu">
@@ -64,12 +63,14 @@
               <li><a href="{{ url('links.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
               {% if user %}
                 {% if user.is_authenticated() %}
-                  {# TODO: Show display name and gravatar. #}
                   <li class="user">
-                    <a href="/profile" aria-owns="nav-user-submenu" aria-haspopup="true">Display Name</a>
+                    <a href="{{ request.user.userprofile.get_absolute_url() }}" aria-owns="nav-user-submenu" aria-haspopup="true">
+                      <img src="{{ gravatar(request.user, size=20) }}" alt="" class="avatar">
+                      {{ user.display_name }}
+                    </a>
                     <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
                       <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
-                      <li><a href="/profile">{{ _('Profile') }}</a></li>
+                      <li><a href="{{ request.user.userprofile.get_absolute_url() }}">{{ _('Profile') }}</a></li>
                       <li>{{ browserid_logout() }}</li>
                     </ul>
                   </li>
@@ -87,13 +88,56 @@
       {% block newsletter %}
         <section id="newsletter" class="section">
           <form class="contain" action="POST">
-            <h3>{{ _('Get Firefox Affiliates News') }}</h3>
+            <h3 class="col">{{ _('Get Firefox Affiliates News') }}</h3>
             <ol>
-              <li>
+              <li class="col">
                 <label for="newsletter-email">{{ _('Your email address') }}</label>
-                <input type="email" id="newsletter-email" name="email" required placeholder="{{ _('yourname@example.com') }}">
+                <input type="email" id="newsletter-email" name="email" required aria-required="true" placeholder="{{ _('yourname@example.com') }}">
+
+                <ul class="form-extra">
+                  <li>
+                    <label for="newsletter-lang">{{ _('Language') }}</label>
+                    <select id="newsletter-lang" name="language">
+                      {# L10n: This acts as a placeholder/label for a form selection #}
+                      <option selected value="">{{ _('-- select --') }}</option>
+                      {# TODO: Make this list dynamic and, you know, real. #}
+                      <option value="en-US">English (US)</option>
+                      <option value="es-ES">Español</option>
+                      <option value="fr">Français</option>
+                      <option value="tlh">tlhIngan Hol</option>
+                    </select>
+                  </li>
+                  <li>
+                    <fieldset class="inline">
+                      <legend>{{ _('Format') }}</legend>
+                      <ul>
+                        <li>
+                          <label for="newsletter-format-text" class="check">
+                            <input type="radio" name="format" id="newsletter-format-text" value="text">
+                            {{ _('Text') }}
+                          </label>
+                        </li>
+                        <li>
+                          <label for="newsletter-format-html" class="check">
+                            <input type="radio" name="format" id="newsletter-format-html" value="html">
+                            {{ _('HTML') }}
+                          </label>
+                        </li>
+                      </ul>
+                    </fieldset>
+                  </li>
+                  <li>
+                    <label for="newsletter-privacy" class="check form-privacy">
+                      <input type="checkbox" name="privacy" id="newsletter-privacy" required aria-required="true">
+                      <span class="title">
+                        {{ _('I’m okay with Mozilla handling my info as explained in <a href="%s">this Privacy Policy</a>')|format('https://www.mozilla.org/privacy/') }}
+                      </span>
+                    </label>
+                  </li>
+                </ul>
               </li>
-              <li class="submit">
+
+              <li class="col form-submit">
                 <button type="submit" class="button secondary">{{ _('Sign me up!') }}</button>
               </li>
             </ol>

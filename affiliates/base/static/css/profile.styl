@@ -1,0 +1,53 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+// User profile page
+
+@import 'stats.styl';
+@import 'milestones.styl';
+
+#profile-head {
+    {light-links}
+
+    .avatar {
+        display: block;
+        margin: 20px auto;
+    }
+
+    .bio {
+        font-size: 18px;
+    }
+
+    .bio,
+    .website {
+        margin: 0 0 .5em;
+    }
+
+    .edit {
+        font-size: 14px;
+        margin: 1em 0;
+    }
+}
+
+#edit-profile {
+    display: none;
+
+    button[type='submit'] {
+        font-size: 16px;
+    }
+}
+
+#stats {
+    {section-orange}
+
+    .stats li:before {
+        color: #fff;
+    }
+
+}
+
+#milestones {
+    {section-medium}
+}

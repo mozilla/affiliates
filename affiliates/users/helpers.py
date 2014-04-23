@@ -23,5 +23,5 @@ def gravatar(arg, size=80):
     return '{url}/avatar/{email_hash}?{options}'.format(
         url=GRAVATAR_URL,
         email_hash=md5(email.lower()).hexdigest(),
-        options=urllib.urlencode({'s': unicode(size), 'd': absolutify(static('img/avatar.png'))})
+        options=urllib.urlencode({'s': unicode(size), 'd': absolutify(static('img/avatar.jpg'))})
     )

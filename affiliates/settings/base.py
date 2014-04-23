@@ -233,6 +233,9 @@ MINIFY_BUNDLES = {
             'css/oldIE.styl',
             'browserid/persona-buttons.css',
         ),
+        'profile': (
+            'css/profile.styl',
+        ),
 
         # Facebook app
         'fb_base': (
@@ -254,9 +257,6 @@ MINIFY_BUNDLES = {
         ),
         'customize_text_banner': (
             'js/customize_text_banner.js',
-        ),
-        'edit_profile': (
-            'js/edit_profile.js',
         ),
 
         # Facebook app

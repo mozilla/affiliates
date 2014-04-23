@@ -4,11 +4,15 @@
 
 (function($) {
     'use strict';
+
+    var open = false;
     var $window = $(window);
     var $document = $(document);
     var $body = $('body');
     var $navList = $('#nav-main-menu');
     var $navListSub = $('#nav-user-submenu');
+    var $strings = $('#strings');
+    var evtNamespace = 'moz-modal';
 
     // Add a class to use as a style hook when JavaScript is available
     $body.removeClass('no-js').addClass('js');
@@ -56,12 +60,12 @@
     $document.on('mouseleave', '.wide-mode #nav-main .user', collapseSubNav);
 
     function expandSubNav() {
-        $navListSub.slideDown('fast').removeAttr('aria-hidden').attr('aria-expanded', 'true');
+        $navListSub.stop().slideDown('fast').removeAttr('aria-hidden').attr('aria-expanded', 'true');
         $("#nav-main .user").addClass("open");
     }
 
     function collapseSubNav() {
-        $navListSub.slideUp('fast').attr('aria-hidden', 'true').removeAttr('aria-expanded');
+        $navListSub.stop().slideUp('fast').attr('aria-hidden', 'true').removeAttr('aria-expanded');
         $("#nav-main .user").removeClass("open");
     }
 
@@ -69,4 +73,108 @@
     $(function() {
         $('img.lazy').show().unveil();
     });
+
+    // Store common functions on affiliates global.
+    var affiliates = {
+        trans: function(stringId, data){
+            var string = $strings.data(stringId);
+            if (data) {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        string = string.replace('%(' + key + ')s', data[key]);
+                    }
+                }
+            }
+            return string;
+        },
+
+        createModal: function(origin, content, bg_close) {
+            // Clear existing modal, if necessary,
+            if (open) {
+                $('#modal').remove();
+                $('.modalOrigin').removeClass('modalOrigin');
+            }
+
+            // If bg_close is false, we disable being able to close the modal
+            // just by clicking the background.
+            var modal_class = 'bg_close';
+            if (!bg_close && bg_close !== undefined) {
+                modal_class = '';
+            }
+
+            // Create new modal
+            var $modal = $(
+                '<div id="modal" tabindex="-1" role="dialog" aria-labelledby="' + origin.attr('id') + '" class="' + modal_class + '">' +
+                '  <div class="inner">' +
+                '    <button type="button" class="button secondary close">' +
+                '      ' + affiliates.trans('close') +
+                '    </button>' +
+                '  </div>' +
+                '</div>'
+            );
+
+            // Add the modal to the page.
+            $('body').addClass('noscroll').append($modal);
+            $('#modal .inner').prepend(content);
+            $modal.fadeIn(200).focus();
+            $(origin).addClass('modalOrigin');
+
+            open = true;
+
+            // Close modal on clicking close or background.
+            $document.on('click', '#modal .close', affiliates.closeModal);
+            $document.on('click', '#modal.bg_close', function(e){
+                if (e.target === this) {
+                    affiliates.closeModal();
+                }
+            });
+
+            // Close on escape
+            $document.on('keyup.' + evtNamespace, function(e) {
+                if (open && e.keyCode === 27) { // esc
+                    affiliates.closeModal();
+                }
+            });
+
+            // prevent focusing out of modal while open
+            $document.on('focus.' + evtNamespace, 'body', function(e) {
+                // .contains must be called on the underlying HTML element, not the jQuery object
+                if (open && !$modal[0].contains(e.target)) {
+                    e.stopPropagation();
+                    $modal.focus();
+                }
+            });
+
+        },
+
+        closeModal: function() {
+            if (open) {
+                $('#modal').fadeOut(200, function(){
+                    $(this).remove();
+                });
+                $('body').removeClass('noscroll');
+                $('.modalOrigin').focus().removeClass('modalOrigin');
+                open = false;
+                // unbind document listeners
+                $document.off('.' + evtNamespace);
+            }
+        }
+
+    };
+    window.affiliates = affiliates;
+
+    // Load some links in a full-page modal
+    $('.has-modal').on('click', function(e) {
+        e.preventDefault();
+        var $origin = $(this);
+        // Extract the target element's ID from the link's href.
+        var elem = $origin.attr('href').replace( /.*?(#.*)/g, "$1" );
+        var content = $(elem).html();
+        affiliates.createModal($origin, content);
+    });
+
+    $('#newsletter-email').on('focus', function() {
+        $('#newsletter .form-extra').slideDown();
+    });
+
 })(jQuery);
