@@ -31,6 +31,7 @@ def dashboard(request):
     return render(request, 'base/dashboard.html', {
         'newsitem': newsitem,
         'milestones': MilestoneDisplay(request.user),
+        'links': request.user.link_set.order_by('-created'),
     })
 
 

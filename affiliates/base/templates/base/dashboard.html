@@ -39,93 +39,22 @@
         </header>
 
         <ul class="banners-list">
-          <li class="banner">
-            <a href="/banner-detail">
-              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-              <h3 class="name">Banner Name</h3>
-              <ul class="desc">
-                <li>125 × 125</li>
-                <li>Created <time datetime="2014-03-28">28 March, 2014</time></li>
-                <li>3,245,159 clicks</li>
-              </ul>
-            </a>
-          </li>
-
-          <li class="banner">
-            <a href="/banner-detail">
-              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-              <h3 class="name">This Banner Name Is Much Longer And Wraps Like This</h3>
-              <ul class="desc">
-                <li>300 × 250</li>
-                <li>Created <time datetime="2014-03-27">27 March, 2014</time></li>
-                <li>1,140,987 clicks</li>
-              </ul>
-            </a>
-          </li>
-
-          <li class="banner smart">
-            {# TODO: Make the help thingie open a modal with an explanation #}
-            <em class="flag">Smart <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
-            <a href="/banner-detail">
-              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-              <h3 class="name">Smart Banner</h3>
-              <ul class="desc">
-                <li>300 × 250</li>
-                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
-                <li>931,018 clicks</li>
-              </ul>
-            </a>
-          </li>
-
-          <li class="banner text">
-            <a href="/banner-detail">
-              <div class="preview">Bacon ipsum dolor sit amet short loin rump turkey pork ribeye filet mignon capicola ham hock rump chuck jerky flank shankle t-bone.</div>
-              <h3 class="name">Text Banner</h3>
-              <ul class="desc">
-                <li>Text banner</li>
-                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
-                <li>66,402 clicks</li>
-              </ul>
-            </a>
-          </li>
-
-          <li class="banner smart">
-            {# TODO: Make the help thingie open a modal with an explanation #}
-            <em class="flag">Smart <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
-            <a href="/banner-detail">
-              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-              <h3 class="name">Smart Banner</h3>
-              <ul class="desc">
-                <li>300 × 250</li>
-                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
-                <li>45,054 clicks</li>
-              </ul>
-            </a>
-          </li>
-
-          <li class="banner text">
-            <a href="/banner-detail">
-              <div class="preview">Bacon ipsum dolor sit amet short loin rump turkey pork ribeye filet mignon capicola ham hock rump chuck jerky flank shankle t-bone.</div>
-              <h3 class="name">A Different Text Banner</h3>
-              <ul class="desc">
-                <li>Text banner</li>
-                <li>Created <time datetime="2014-03-26">26 March, 2014</time></li>
-                <li>16,341 clicks</li>
-              </ul>
-            </a>
-          </li>
-
-          <li class="banner">
-            <a href="/banner-detail">
-              <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-              <h3 class="name">Banner Name</h3>
-              <ul class="desc">
-                <li>125 × 125</li>
-                <li>Created <time datetime="2014-03-28">28 March, 2014</time></li>
-                <li>144 clicks</li>
-              </ul>
-            </a>
-          </li>
+          {% for link in links %}
+            <li class="banner {{ link.banner_type }}">
+              {% if link.banner_type == 'smart_banner' %}
+                {# TODO: Make the help thingie open a modal with an explanation #}
+                <em class="flag">Smart <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
+              {% endif %}
+              <a href="{{ link.get_absolute_url() }}">
+                <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
+                <ul class="desc">
+                  <li>125 × 125</li>
+                  <li>Created <time datetime="{{ link.created.isoformat() }}">{{ link.created|babel_date }}</time></li>
+                  <li>{{ link.link_clicks|babel_number }} clicks</li>
+                </ul>
+              </a>
+            </li>
+          {% endfor %}
         </ul>
       </div>
     </section>

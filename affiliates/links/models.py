@@ -11,7 +11,8 @@ class Link(models.Model):
     html = models.TextField()
     banner_type = models.CharField(max_length=255, default='image_banner', choices=(
         ('image_banner', 'Image Banner'),
-        ('text_banner', 'Text Banner')
+        ('text_banner', 'Text Banner'),
+        ('upgrade_banner', 'Firefox Upgrade Banner'),
     ))
 
     # Aggregates do not include data currently stored in the DataPoint
