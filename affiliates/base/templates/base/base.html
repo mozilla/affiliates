@@ -135,6 +135,8 @@
     {% endblock %}
 
     <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
-
+    {% if settings.DEV %}
+      <script src="https://pontoon.mozillalabs.com/static/js/pontoon.js"></script>
+    {% endif %}
   </body>
 </html>

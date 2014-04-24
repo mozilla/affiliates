@@ -174,6 +174,7 @@ CSP_SCRIPT_SRC = (
     'https://login.persona.org',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
+    'https://pontoon.mozillalabs.com',
 )
 CSP_FRAME_SRC = (
     '\'self\'',
