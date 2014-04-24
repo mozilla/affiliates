@@ -7,7 +7,9 @@ from mock import Mock, patch
 from nose.tools import eq_
 
 from affiliates.banners import views
-from affiliates.banners.tests import (CategoryFactory, ImageBannerFactory, TextBannerFactory,
+from affiliates.banners.models import TextBanner
+from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerFactory,
+                                      ImageBannerFactory, TextBannerFactory,
                                       TextBannerVariationFactory)
 from affiliates.base.tests import patch_super, TestCase
 
@@ -36,16 +38,26 @@ class BannerListViewTests(TestCase):
 
     def test_get_queryset(self):
         """
-        The list returned by get_queryset should contain both image
-        banners and text banners.
+        The list returned by get_queryset should contain image banners,
+        text banners, and upgrade banners.
         """
         category = CategoryFactory.create()
-        image_banner1, image_banner2 = ImageBannerFactory.create_batch(2, category=category)
-        text_banner1, text_banner2 = TextBannerFactory.create_batch(2, category=category)
+        image_banner1, image_banner2 = ImageBannerFactory.create_batch(
+            2, category=category, visible=True)
+        text_banner1, text_banner2 = TextBannerFactory.create_batch(
+            2, category=category, visible=True)
+        upgrade_banner1, upgrade_banner2 = FirefoxUpgradeBannerFactory.create_batch(
+            2, category=category, visible=True)
         self.view.category = category
 
+        # Create banners with visible=False that should not show up.
+        ImageBannerFactory.create(category=category, visible=False)
+        TextBannerFactory.create(category=category, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category, visible=False)
+
         eq_(set(self.view.get_queryset()),
-            set([image_banner1, image_banner2, text_banner1, text_banner2]))
+            set([image_banner1, image_banner2, text_banner1, text_banner2, upgrade_banner1,
+                 upgrade_banner2]))
 
 
 
@@ -91,6 +103,19 @@ class CustomizeBannerViewTests(TestCase):
             redirect.assert_called_with('/foo/bar?generator=1')
 
         self.view.banner.create_link.assert_called_with(self.view.request.user, foo='bar', baz=1)
+
+    def test_dispatch_invalid_pk(self):
+        """If an invalid PK is given to dispatch, raise an Http404."""
+        self.view.banner_class = TextBanner
+        with self.assertRaises(Http404):
+            self.view.dispatch(pk=999999999)
+
+    def test_dispatch_invisible(self):
+        self.view.banner_class = TextBanner
+        banner = TextBannerFactory.create(visible=False)
+
+        with self.assertRaises(Http404):
+            self.view.dispatch(pk=banner.pk)
 
 
 class CustomizeImageBannerViewTests(TestCase):

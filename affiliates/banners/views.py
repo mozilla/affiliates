@@ -27,9 +27,9 @@ class BannerListView(LoginRequiredMixin, ListView):
         return super(BannerListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        return (list(self.category.imagebanner_set.all()) +
-                list(self.category.textbanner_set.all()) +
-                list(self.category.firefoxupgradebanner_set.all()))
+        return (list(self.category.imagebanner_set.filter(visible=True)) +
+                list(self.category.textbanner_set.filter(visible=True)) +
+                list(self.category.firefoxupgradebanner_set.filter(visible=True)))
 
     def get_context_data(self, **context):
         context['category'] = self.category
@@ -41,7 +41,7 @@ class CustomizeBannerView(LoginRequiredMixin, FormView):
     banner_class = None
 
     def dispatch(self, *args, **kwargs):
-        self.banner = get_object_or_404(self.banner_class, pk=kwargs['pk'])
+        self.banner = get_object_or_404(self.banner_class, pk=kwargs['pk'], visible=True)
         return super(CustomizeBannerView, self).dispatch(*args, **kwargs)
 
     def get_form(self, form_class):
