@@ -1,4 +1,6 @@
 #!/bin/bash
+export PYTHONPATH=/usr/local/lib64/python2.6/site-packages/:$PYTHONPATH
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 MANAGE="$DIR/manage.py"
 
