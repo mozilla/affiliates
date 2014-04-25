@@ -104,15 +104,17 @@ class CustomizeImageBannerViewTests(TestCase):
                           **{'image.url': 'bar.png'})
         view.banner.variation_set.all.return_value = [variation1, variation2]
 
-        ctx = view.get_context_data(foo='bar', baz=1)
+        with patch('affiliates.banners.views.locale_to_native') as locale_to_native:
+            locale_to_native.side_effect = lambda k: {'en-us': 'English', 'de': 'German'}[k]
+            ctx = view.get_context_data(foo='bar', baz=1)
         eq_(ctx['foo'], 'bar')
         eq_(ctx['baz'], 1)
 
         variations = json.loads(ctx['variations_json'])
         eq_(variations['1'],
-            {'locale': 'en-us', 'color': 'Blue', 'image': 'foo.png', 'size': '100x200'})
+            {'locale': 'English', 'color': 'Blue', 'image': 'foo.png', 'size': '100x200'})
         eq_(variations['2'],
-            {'locale': 'de', 'color': 'Red', 'image': 'bar.png', 'size': '150x250'})
+            {'locale': 'German', 'color': 'Red', 'image': 'bar.png', 'size': '150x250'})
 
 
 class CustomizeTextBannerViewTests(TestCase):

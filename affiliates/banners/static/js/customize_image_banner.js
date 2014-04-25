@@ -72,7 +72,7 @@
                 }
             });
 
-            return choices;
+            return choices.sort();
         },
 
         /**

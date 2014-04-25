@@ -7,6 +7,7 @@ from braces.views import LoginRequiredMixin
 
 from affiliates.banners.forms import CustomizeImageBannerForm, CustomizeTextBannerForm
 from affiliates.banners.models import Category, FirefoxUpgradeBanner, ImageBanner, TextBanner
+from affiliates.base.utils import locale_to_native
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -68,7 +69,7 @@ class CustomizeImageBannerView(CustomizeBannerView):
         variations = {}
         for variation in self.banner.variation_set.all():
             variations[variation.pk] = {
-                'locale': variation.locale,
+                'locale': locale_to_native(variation.locale),
                 'color': variation.color,
                 'size': variation.size,  # <- Why we can't use serialize.
                 'image': variation.image.url

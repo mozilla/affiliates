@@ -5,9 +5,18 @@
     var $form = $('#customize-banner-form');
     var $preview = $('#text-preview');
     var $submit = $form.find('button[type="submit"]');
+    var $select = $('#customize-banner-form select[name="variation"]');
+
+    // Sort select options by display name.
+    var $selectOptions = $select.find('option');
+    $selectOptions.sort(function(a, b) {
+        return a.innerHTML.localeCompare(b.innerHTML);
+    });
+    $select.html($selectOptions);
+    $select.prop('selectedIndex', 0);
 
     // When the variation selectbox changes, update the adjacent preview.
-    $(document).on('change', '#customize-banner-form select[name="variation"]', function(e) {
+    $select.change(function(e) {
         var $select = $(this);
         var variationsText = $form.data('variationsText');
 
