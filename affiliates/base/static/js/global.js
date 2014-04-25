@@ -65,4 +65,8 @@
         $("#nav-main .user").removeClass("open");
     }
 
+    // Lazy-load images that have data-src attributes.
+    $(function() {
+        $('img.lazy').show().unveil();
+    });
 })(jQuery);

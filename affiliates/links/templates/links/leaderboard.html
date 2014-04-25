@@ -32,7 +32,10 @@
                 <td class="rank">{{ standing.ranking|babel_number }}</td>
                 <th scope="row" class="vcard">
                   <a href="/profile" class="url">
-                    <img src="{{ gravatar(standing.user) }}" alt="" class="avatar">
+                    <img src="{{ static('img/avatar.png') }}" data-src="{{ gravatar(standing.user) }}" alt="" class="avatar lazy">
+                    <noscript>
+                      <img src="{{ gravatar(standing.user) }}" alt="" class="avatar">
+                    </noscript>
                     <strong class="fn">{{ standing.user.email }}</strong>
                   </a>
                   <a href="http://example.com" rel="external" class="url website">{{ _('Website') }}</a>

@@ -244,6 +244,7 @@ MINIFY_BUNDLES = {
         # Mothership
         'base': (
             'js/libs/jquery-2.1.0.min.js',
+            'js/libs/jquery.unveil.min.js',
             'js/global.js',
             'browserid/browserid.js',
         ),

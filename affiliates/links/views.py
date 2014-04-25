@@ -23,4 +23,4 @@ class LeaderboardView(ListView):
     queryset = LeaderboardStanding.objects.filter(metric='link_clicks').order_by('ranking')
     template_name = 'links/leaderboard.html'
     context_object_name = 'standings'
-    paginate_by = 10
+    paginate_by = 100
