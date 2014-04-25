@@ -135,7 +135,7 @@ BROWSERID_DISABLE_SANITY_CHECKS = True
 LOGIN_REDIRECT_URL = '/'
 
 # Paths that do not need a locale
-SUPPORTED_NONLOCALES += ['link', 'admin', 'browserid', 'fb']
+SUPPORTED_NONLOCALES += ['referral', 'admin', 'browserid', 'fb']
 
 # CacheMachine config
 CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
