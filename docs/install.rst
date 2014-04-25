@@ -48,6 +48,16 @@ have ``pip`` installed, you can install it with ``easy_install pip``.
     $ python manage.py syncdb
     $ python manage.py migrate
 
+7. Install Stylus_. If you have npm_ set up, just run::
+
+    $ npm install -g stylus
+
+.. note:: You may have to set the ``STYLUS_BIN`` setting to point towards the
+   stylus binary if it doesn't end up on your path after installation.
+
+.. _stylus: http://learnboost.github.io/stylus/
+.. _npm: https://www.npmjs.org/
+
 Running the Development Server
 ------------------------------
 
