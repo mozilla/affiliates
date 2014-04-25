@@ -65,7 +65,7 @@
 
           <p class="continue">
             <input type="hidden" name="{{ form.variation.html_name }}" data-rv-value="variation < selectedColor">
-            <button type="submit" class="button go">{{ _('Save') }}</button>
+            <button type="submit" class="button go" data-rv-disabled="selectedColor | not" disabled>{{ _('Save') }}</button>
           </p>
         </fieldset>
       </form>
