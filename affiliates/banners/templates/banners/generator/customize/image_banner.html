@@ -33,7 +33,7 @@
               <label for="locale">{{ _('Language') }}</label>
               <select name="locale" data-rv-value="selectedLocale">
                 {# L10n: This acts as a placeholder/label for a form selection #}
-                <option selected disabled value="">{{ _('-- select --') }}</option>
+                <option selected value="">{{ _('-- select --') }}</option>
                 {# TODO: The displayed value should be the language name (written in said language), not the locale code #}
                 <option data-rv-each-locale="locales" data-rv-value="locale">{ locale }</option>
               </select>
@@ -43,7 +43,7 @@
               <label for="size">{{ _('Size') }}</label>
               <select name="size" data-rv-disabled="selectedLocale | not" data-rv-value="selectedSize" data-rv-reset="selectedLocale">
                 {# L10n: This acts as a placeholder/label for a form selection #}
-                <option selected disabled value="">{{ _('-- select --') }}</option>
+                <option selected value="">{{ _('-- select --') }}</option>
                 <option data-rv-each-size="sizes < selectedLocale" data-rv-value="size">{ size }</option>
               </select>
             </li>
@@ -52,7 +52,7 @@
               <label for="color">{{ _('Color') }}</label>
               <select name="color" data-rv-disabled="selectedSize | not" data-rv-value="selectedColor" data-rv-reset="selectedSize">
                 {# L10n: This acts as a placeholder/label for a form selection #}
-                <option selected disabled value="">{{ _('-- select --') }}</option>
+                <option selected value="">{{ _('-- select --') }}</option>
                 <option data-rv-each-color="colors < selectedSize selectedLocale" data-rv-value="color">{ color }</option>
               </select>
             </li>
