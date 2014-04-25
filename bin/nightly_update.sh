@@ -15,7 +15,7 @@ function run {
 }
 
 echo "Updating product_details"
-echo "===================="
+echo "========================"
 run $MANAGE update_product_details
 
 echo ""
@@ -24,11 +24,16 @@ echo "====================================="
 run $MANAGE collect_ga_data
 
 echo ""
+echo "Aggregating old datapoints"
+echo "=========================="
+run $MANAGE aggregate_old_datapoints
+
+echo ""
 echo "Updating leaderboard"
 echo "===================="
 run $MANAGE update_leaderboard
 
 echo ""
 echo "Generating media .htaccess"
-echo "===================="
+echo "=========================="
 run $MANAGE generate_media_htaccess
