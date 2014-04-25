@@ -17,7 +17,10 @@ _has_banners_q = (Q(imagebanner__visible=True) | Q(textbanner__visible=True) |
 
 class CategoryListView(LoginRequiredMixin, ListView):
     """List all categories."""
-    queryset = Category.objects.filter(_has_banners_q, level=1).order_by('parent__name', 'name')
+    queryset = (Category.objects
+                .filter(_has_banners_q, level=1)
+                .distinct()
+                .order_by('parent__name', 'name'))
     template_name = 'banners/generator/categories.html'
     context_object_name = 'categories'
 
