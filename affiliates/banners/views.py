@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, FormView
 
@@ -10,9 +11,13 @@ from affiliates.banners.models import Category, FirefoxUpgradeBanner, ImageBanne
 from affiliates.base.utils import locale_to_native
 
 
+_has_banners_q = (Q(imagebanner__visible=True) | Q(textbanner__visible=True) |
+                  Q(firefoxupgradebanner__visible=True))
+
+
 class CategoryListView(LoginRequiredMixin, ListView):
-    """List root categories and their subcategories."""
-    queryset = Category.objects.root_nodes()
+    """List all categories."""
+    queryset = Category.objects.filter(_has_banners_q, level=1).order_by('parent__name', 'name')
     template_name = 'banners/generator/categories.html'
     context_object_name = 'categories'
 

@@ -14,6 +14,41 @@ from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerFacto
 from affiliates.base.tests import patch_super, TestCase
 
 
+class CategoryListViewTests(TestCase):
+    def setUp(self):
+        self.view = views.CategoryListView()
+
+    def test_get_queryset_visible_banners(self):
+        """
+        get_queryset should return a queryset with only categories that
+        have visible banners.
+        """
+        parent = CategoryFactory.create()
+        category1, category2, category3, category4 = CategoryFactory.create_batch(4, parent=parent)
+
+        # category1 has a visible ImageBanner
+        ImageBannerFactory.create(category=category1, visible=True)
+        TextBannerFactory.create(category=category1, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category1, visible=False)
+
+        # category2 has a visible TextBanner
+        ImageBannerFactory.create(category=category2, visible=False)
+        TextBannerFactory.create(category=category2, visible=True)
+        FirefoxUpgradeBannerFactory.create(category=category2, visible=False)
+
+        # category3 has a visible FirefoxUpgradeBanner
+        ImageBannerFactory.create(category=category3, visible=False)
+        TextBannerFactory.create(category=category3, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category3, visible=True)
+
+        # category4 has no visible banners
+        ImageBannerFactory.create(category=category4, visible=False)
+        TextBannerFactory.create(category=category4, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category4, visible=False)
+
+        eq_(set(self.view.get_queryset()), set([category1, category2, category3]))
+
+
 class BannerListViewTests(TestCase):
     def setUp(self):
         self.view = views.BannerListView()

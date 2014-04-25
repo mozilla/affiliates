@@ -21,14 +21,12 @@
 
       <ul class="categories-list">
       {% for category in categories %}
-        {% for subcategory in category.get_children() %}
         <li class="category">
-          <a href="{{ url('banners.generator.banners', subcategory.pk) }}">
-            <b class="parent">{{ category.name }}</b>
-            <strong class="name">{{ subcategory.name }}</strong>
+          <a href="{{ url('banners.generator.banners', category.pk) }}">
+            <b class="parent">{{ category.parent.name }}</b>
+            <strong class="name">{{ category.name }}</strong>
           </a>
         </li>
-        {% endfor %}
       {% endfor %}
       </ul>
 
