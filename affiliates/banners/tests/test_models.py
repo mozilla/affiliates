@@ -65,7 +65,7 @@ class ImageBannerTests(TestCase):
         with self.settings(MEDIA_URL='/media/'):
             self.assertHTMLEqual(banner.generate_banner_code(variation), """
               <a href="{href}">
-                <img src="/media/uploads/banners/test.png">
+                <img src="/media/uploads/banners/test.png" alt="">
               </a>
             """)
 
