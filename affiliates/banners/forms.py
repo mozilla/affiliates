@@ -1,5 +1,7 @@
 from django import forms
 
+from tower import ugettext_lazy as _lazy
+
 from affiliates.banners.models import ImageBannerVariation, TextBannerVariation
 
 
@@ -15,7 +17,8 @@ class CustomizeImageBannerForm(forms.Form):
 
 
 class CustomizeTextBannerForm(forms.Form):
-    variation = forms.ModelChoiceField(TextBannerVariation.objects.none())
+    variation = forms.ModelChoiceField(TextBannerVariation.objects.none(),
+                                       empty_label=_lazy('-- select --'))
 
     def __init__(self, text_banner, *args, **kwargs):
         super(CustomizeTextBannerForm, self).__init__(*args, **kwargs)
