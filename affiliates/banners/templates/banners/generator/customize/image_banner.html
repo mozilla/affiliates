@@ -44,7 +44,7 @@
               <select name="size" data-rv-disabled="selectedLocale | not" data-rv-value="selectedSize" data-rv-reset="selectedLocale">
                 {# L10n: This acts as a placeholder/label for a form selection #}
                 <option selected value="">{{ _('-- select --') }}</option>
-                <option data-rv-each-size="sizes < selectedLocale" data-rv-value="size">{ size }</option>
+                <option data-rv-each-size="sizes < selectedLocale" data-rv-value="size" data-rv-html="size"></option>
               </select>
             </li>
 

@@ -74,7 +74,7 @@ class ImageVariationTests(TestCase):
     def test_size(self):
         variation = ImageVariation()
         variation.image = Mock(width=250, height=140)
-        eq_(variation.size, '250x140')
+        eq_(variation.size, '250 &times; 140')
 
     def test_filename(self):
         variation = ImageVariation(color='blue', locale='en-us')

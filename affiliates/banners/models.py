@@ -138,7 +138,7 @@ class ImageVariation(models.Model):
 
     @property
     def size(self):
-        return '{width}x{height}'.format(width=self.image.width, height=self.image.height)
+        return '{width} &times; {height}'.format(width=self.image.width, height=self.image.height)
 
     def get_media_subdirectory(self):
         """
