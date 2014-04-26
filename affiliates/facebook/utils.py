@@ -6,6 +6,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.translation import get_language
 
 import commonware.log
@@ -79,8 +80,8 @@ def is_facebook_bot(request):
 
 def current_hour():
     """Return a datetime representing the current hour."""
-    now = datetime.now()
-    return datetime(now.year, now.month, now.day, now.hour)
+    now = timezone.now()
+    return timezone.make_aware(datetime(now.year, now.month, now.day, now.hour), timezone.utc)
 
 
 def activate_locale(request, locale):

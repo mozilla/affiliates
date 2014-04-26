@@ -33,7 +33,7 @@ class FacebookUser(CachingMixin, ModelBase):
     country = models.CharField(max_length=16, blank=True,
                                choices=settings.COUNTRIES.items())
 
-    created = models.DateTimeField(default=datetime.now)
+    created = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(default=None, blank=True, null=True)
 
     objects = managers.FacebookUserManager()
@@ -244,7 +244,7 @@ class FacebookBannerInstance(CachingMixin, ModelBase):
                                      storage=OverwritingStorage(),
                                      max_length=settings.MAX_FILEPATH_LENGTH)
 
-    created = models.DateTimeField(default=datetime.now)
+    created = models.DateTimeField(auto_now_add=True)
     total_clicks = models.IntegerField(default=0)
     total_clicks.total_clicks_goal = True
 

@@ -1,6 +1,5 @@
 import json
 import os
-from datetime import datetime
 
 from django.conf import settings
 from django.core import mail
@@ -19,7 +18,7 @@ from affiliates.facebook.tests import (FacebookAccountLinkFactory,
                             FacebookBannerLocaleFactory,
                             FacebookClickStatsFactory, FacebookUserFactory,
                             path)
-from affiliates.base.tests import TestCase
+from affiliates.base.tests import aware_datetime, TestCase
 from affiliates.users.tests import UserFactory
 
 
@@ -226,7 +225,7 @@ class FacebookClickStatsManagerTests(TestCase):
     manager = FacebookClickStats.objects
 
     def _mkstats(self, user, year, month, clicks):
-        hour = datetime(year, month, 1, 0)
+        hour = aware_datetime(year, month, 1, 0)
         return FacebookClickStatsFactory.create(banner_instance__user=user,
                                                 hour=hour, clicks=clicks)
 

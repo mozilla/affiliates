@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import timedelta
 
 from django.core.management.base import CommandError
 
@@ -98,7 +98,7 @@ class UpdateLeaderboardTests(TestCase):
         Create a link with a specific number of aggregate links and
         datapoints with the given click counts.
         """
-        start_date = date(2014, 4, 1)
+        start_date = aware_date(2014, 4, 1)
         link = LinkFactory.create(user=user, aggregate_link_clicks=aggregate_link_clicks)
         for link_clicks in link_click_counts:
             DataPointFactory.create(link=link, link_clicks=link_clicks, date=start_date)
