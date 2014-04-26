@@ -96,7 +96,7 @@ class DataPoint(models.Model):
 
 class LeaderboardStanding(models.Model):
     """Ranking in a leaderboard for a specific metric."""
-    ranking = models.PositiveIntegerField(primary_key=True)
+    ranking = models.PositiveIntegerField()
     user = models.ForeignKey(User)
     value = models.PositiveIntegerField(default=0)
     metric = models.CharField(max_length=255, choices=(
@@ -104,3 +104,9 @@ class LeaderboardStanding(models.Model):
         ('firefox_downloads', 'Firefox Downloads'),
         ('firefox_os_referrals', ('Firefox OS Referrals'))
     ))
+
+    class Meta:
+        unique_together = ('ranking', 'metric')
+
+    def __unicode__(self):
+        return u'{metric}: {ranking}'.format(metric=self.metric, ranking=self.ranking)

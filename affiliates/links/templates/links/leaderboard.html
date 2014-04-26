@@ -17,36 +17,8 @@
     </div>
 
     <div class="contain">
-
-        <table class="leaderboard">
-          <thead>
-            <tr>
-              <th scope="col">{{ _('Rank') }}</th>
-              <th scope="col">{{ _('Affiliate') }}</th>
-              <th scope="col">{{ _('Number of clicks') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for standing in standings %}
-              <tr>
-                <td class="rank">{{ standing.ranking|babel_number }}</td>
-                <th scope="row" class="vcard">
-                  <a href="/profile" class="url">
-                    <img src="{{ static('img/avatar.jpg') }}" data-src="{{ gravatar(standing.user) }}" alt="" class="avatar lazy">
-                    <noscript>
-                      <img src="{{ gravatar(standing.user) }}" alt="" class="avatar">
-                    </noscript>
-                    <strong class="fn">{{ standing.user.email }}</strong>
-                  </a>
-                  <a href="http://example.com" rel="external" class="url website">{{ _('Website') }}</a>
-                </th>
-                <td class="clicks">{{ standing.value|babel_number }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-
-      </div>
+      {{ leaderboard(metric='link_clicks', count=100) }}
+    </div>
 
   </main>
 {% endblock %}
