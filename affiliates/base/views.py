@@ -49,3 +49,7 @@ def handler500(request):
         return render(request, 'facebook/error.html', status=500)
     else:
         return server_error(request)
+
+
+def strings(request):
+    return render(request, 'base/strings.html')

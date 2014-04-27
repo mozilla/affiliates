@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^dashboard/$', views.dashboard, name='base.dashboard'),
     url(r'^about/$', views.about, name='base.about'),
     url(r'^terms/$', views.terms, name='base.terms'),
+    url(r'^strings/$', views.strings, name='base.strings'),
 )

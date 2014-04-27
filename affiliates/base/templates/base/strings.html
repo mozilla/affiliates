@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+{% block body_id %}strings{% endblock %}
+{% block body_class %}strings text-page{% endblock %}
+
+{% set title = 'Strings' %}
+
+{# NOTE: Strings not used outside of this page don't need to be marked for l10n
+   since only localizers should be viewing this page anyway. #}
+
+{% block content %}
+  <main role="main">
+    <section class="section page-head">
+      <div class="contain">
+
+        <h1 class="page-title">Strings</h1>
+
+        <p class="prose">
+          This page lists strings that need to be translated for Affiliates that
+          are not normally stored in the site's code (category titles, for
+          example, are stored in the database). If you are not a localizer for
+          Firefox Affiliates, then you are probably in the wrong place.
+        </p>
+      </div>
+  </section>
+
+  <article id="string-list" class="section">
+    <div class="contain">
+      <h2>Banner Category Names</h2>
+      <ul>
+        <li>{{ _('Firefox') }}</li>
+        <li>{{ _('Mozilla') }}</li>
+        <li>{{ _('Firefox OS') }}</li>
+      </ul>
+
+      <h2>Banner Subcategory Names</h2>
+      <ul>
+        <li>{{ _('Mozilla Recruiting') }}</li>
+        <li>{{ _('Firefox for Mobile') }}</li>
+        <li>{{ _('Firefox for Desktop') }}</li>
+        <li>{{ _('Firefox Plugins') }}</li>
+      </ul>
+
+      <h2>Banner Names</h2>
+      <ul>
+        <li>{{ _('Android') }}</li>
+        <li>{{ _('Upgrade') }}</li>
+        <li>{{ _('Download: Fast, Fun, Awesome') }}</li>
+        <li>{{ _('Work for Mozilla') }}</li>
+        <li>{{ _('Plugin Checker') }}</li>
+        <li>{{ _('Download Aurora') }}</li>
+        <li>{{ _('Aurora for Android') }}</li>
+        <li>{{ _('Download Beta') }}</li>
+        {# L10n: 3.6 refers to Firefox version 3.6 #}
+        <li>{{ _('3.6 Upgrade') }}</li>
+        <li>{{ _('Facebook Messenger for Firefox') }}</li>
+      </ul>
+
+      <h2>Colors</h2>
+      <ul>
+        <li>{{ _('Purple') }}</li>
+        <li>{{ _('Blue') }}</li>
+        <li>{{ _('Green') }}</li>
+        <li>{{ _('Red') }}</li>
+        <li>{{ _('Orange') }}</li>
+        <li>{{ _('Yellow') }}</li>
+        <li>{{ _('White') }}</li>
+        <li>{{ _('Black') }}</li>
+      </ul>
+    </div>
+  </article>
+</main>
+{% endblock %}
