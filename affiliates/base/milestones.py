@@ -1,3 +1,5 @@
+from tower import ugettext_lazy as _lazy
+
 from affiliates.base.utils import date_yesterday
 from affiliates.links.models import DataPoint
 
@@ -15,32 +17,32 @@ class MilestoneDisplay(object):
     creation_milestones = [1, 3, 5, 7, 10, 20]
 
     link_click_messages = {
-        'close_to_milestone': 'You\'re almost at {0} clicks!',
-        'achieved_milestone': 'You have driven {0} clicks!',
-        'total_next_milestone': ('You have driven {0} clicks. You\'re {1} clicks away from your '
-                                 'next milestone!'),
-        'total_no_milestone': 'You have driven {0} clicks!',
-        'nothing_yet': 'You will drive {0} clicks!'
+        'close_to_milestone': _lazy('Almost {0} clicks!'),
+        'achieved_milestone': _lazy('Drove {0} clicks!'),
+        'total_next_milestone': _lazy('Drove {0} clicks. That\'s {1} clicks away from the next '
+                                      'milestone!'),
+        'total_no_milestone': _lazy('Driven {0} clicks in total!'),
+        'nothing_yet': _lazy('Drive {0} clicks!'),
     }
     firefox_download_messages = {
-        'close_to_milestone': 'You\'re almost at {0} downloads!',
-        'achieved_milestone': 'You have driven {0} downloads!',
-        'total_next_milestone': ('You have driven {0} downloads. You\'re {1} downloads away from '
-                                 'your next milestone!'),
-        'total_no_milestone': 'You have driven {0} downloads!',
-        'nothing_yet': 'You will drive {0} downloads!'
+        'close_to_milestone': _lazy('Almost {0} downloads!'),
+        'achieved_milestone': _lazy('Drove {0} downloads!'),
+        'total_next_milestone': _lazy('Drove {0} downloads. That\'s {1} downloads away from the '
+                                      'next milestone!'),
+        'total_no_milestone': _lazy('Driven {0} downloads in total!'),
+        'nothing_yet': _lazy('Drive {0} downloads!'),
     }
     image_banner_messages = {
-        'nothing_yet': 'You will create your first banner!',
-        'close_to_milestone': 'You\'re almost at {0} banners created!',
-        'achieved_milestone': 'You\'ve created {0} banners!',
-        'link_created': 'You created your last banner.'
+        'nothing_yet': _lazy('Create a banner!'),
+        'close_to_milestone': _lazy('Almost {0} banners created!'),
+        'achieved_milestone': _lazy('Created {0} banners!'),
+        'link_created': _lazy('Created a banner.'),
     }
     text_banner_messages = {
-        'nothing_yet': 'You will create your first text link!',
-        'close_to_milestone': 'You\'re almost at {0} text links created!',
-        'achieved_milestone': 'You\'ve created {0} text links!',
-        'link_created': 'You created your last text link.'
+        'nothing_yet': _lazy('Create a text link!'),
+        'close_to_milestone': _lazy('Almost {0} text links created!'),
+        'achieved_milestone': _lazy('Created {0} text links!'),
+        'link_created': _lazy('Created a text link.'),
     }
 
     future_date = None
@@ -73,7 +75,8 @@ class MilestoneDisplay(object):
 
         # If the user has nothing at all, show a "future" milestone.
         if metric_total == 0:
-            return self.future_date, messages['nothing_yet'].format(self.metric_milestones[0])
+            return (self.future_date,
+                    unicode(messages['nothing_yet']).format(self.metric_milestones[0]))
 
         # Find the last milestone we passed and the next one.
         prev_milestone, next_milestone = self.surrounding_milestones(metric_total,
@@ -82,22 +85,23 @@ class MilestoneDisplay(object):
         # If we are within 10% of the next milestone, show a message.
         if self.close_to_milestone(metric_total, next_milestone):
             remaining = next_milestone - metric_total
-            return (date_yesterday(), messages['close_to_milestone'].format(remaining))
+            return (date_yesterday(), unicode(messages['close_to_milestone']).format(remaining))
 
         # If the last milestone happened within the Datapoint
         # retentation period, show when it happened.
         if prev_milestone and metric_aggregate_total < prev_milestone:
             milestone_date = self.milestone_date(metric, prev_milestone, metric_aggregate_total)
             if milestone_date:
-                return milestone_date, messages['achieved_milestone'].format(prev_milestone)
+                return (milestone_date,
+                        unicode(messages['achieved_milestone']).format(prev_milestone))
 
         # As a last resort, show the metric total as of yesterday.
         if next_milestone:
             difference = next_milestone - metric_total
             return (date_yesterday(),
-                    messages['total_next_milestone'].format(metric_total, difference))
+                    unicode(messages['total_next_milestone']).format(metric_total, difference))
         else:
-            return date_yesterday(), messages['total_no_milestone'].format(metric_total)
+            return date_yesterday(), unicode(messages['total_no_milestone']).format(metric_total)
 
     def creation_milestone(self, banner_type, messages):
         """
@@ -112,25 +116,25 @@ class MilestoneDisplay(object):
 
         # If no links have been created, show a future milestone.
         if link_count == 0:
-            return self.future_date, messages['nothing_yet']
+            return self.future_date, unicode(messages['nothing_yet'])
 
         prev_milestone, next_milestone = self.surrounding_milestones(link_count,
                                                                      self.creation_milestones)
 
         # If we are within 1 link of the next milestone, show a message.
         if next_milestone and next_milestone - link_count == 1:
-            return date_yesterday(), messages['close_to_milestone'].format(next_milestone)
+            return date_yesterday(), unicode(messages['close_to_milestone']).format(next_milestone)
 
         # As a last resort, show their previous milestone.
         if prev_milestone:
             milestone_link = links.order_by('created')[prev_milestone - 1]
             return (milestone_link.created.date(),
-                    messages['achieved_milestone'].format(prev_milestone))
+                    unicode(messages['achieved_milestone']).format(prev_milestone))
 
         # This shouldn't ever happen (no previous milestone yet at least
         # one banner created), but just in case, show when the last link
         # was created.
-        return links.latest('created').created.date(), messages['link_created']
+        return links.latest('created').created.date(), unicode(messages['link_created'])
 
     def milestone_date(self, metric, milestone, aggregated_amount):
         """
