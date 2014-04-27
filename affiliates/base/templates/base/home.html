@@ -29,7 +29,7 @@
 
         <h1>{{ _('Become a Firefox Affiliate today!') }}</h1>
         <p class="tagline">{{ _('Get everything you need to share Firefox – and the other Mozilla products you love – with the world. Climb the leaderboard to help us build a better Web.') }}</p>
-        <p><a href="/signin" class="button go">{{ _('Get started') }}</a></p>
+        <p>{{ browserid_login(link_class='button go', text=_('Get started')) }}</a></p>
       </div>
     </section>
 
@@ -64,9 +64,9 @@
       <div class="contain">
 
         <ul class="stats">
-          <li><strong>59,434</strong> Affiliates</li>
-          <li><strong>53,358</strong> Banners</li>
-          <li><strong>15,766,631</strong> Clicks</li>
+          <li>{{ _('<strong>{affiliate_count}</strong> Affiliates')|fe(affiliate_count=affiliate_count|babel_number) }}</li>
+          <li>{{ _('<strong>{link_count}</strong> Banners')|fe(link_count=link_count|babel_number) }}</li>
+          <li>{{ _('<strong>{click_count}</strong> Clicks')|fe(click_count=click_count|babel_number) }}</li>
         </ul>
 
         <h2 class="section-title">{{ _('Top affiliates') }}</h2>
