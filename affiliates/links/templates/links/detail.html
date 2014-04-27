@@ -17,7 +17,8 @@
     <div class="contain">
 
       {% if request.GET.get('generator') %}
-        {{ progress(4) }}
+        {% set banner = link.banner_variation.banner %}
+        {{ progress(4, category=banner.category, banner=banner) }}
       {% endif %}
 
       <h1 class="page-title">{{ _('Banner Details') }}</h1>
