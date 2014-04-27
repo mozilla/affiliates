@@ -34,7 +34,6 @@
               <select name="locale" data-rv-value="selectedLocale">
                 {# L10n: This acts as a placeholder/label for a form selection #}
                 <option selected value="">{{ _('-- select --') }}</option>
-                {# TODO: The displayed value should be the language name (written in said language), not the locale code #}
                 <option data-rv-each-locale="locales" data-rv-value="locale">{ locale }</option>
               </select>
             </li>
@@ -58,7 +57,6 @@
             </li>
           </ul>
 
-          {# TODO: Preview and save button should initially be hidden and only appear when all options are selected #}
           <figure class="banner-preview">
             <img class="preview" data-rv-src="previewSrc < selectedColor" src="{{ static('img/banner-blank.png') }}">
           </figure>
