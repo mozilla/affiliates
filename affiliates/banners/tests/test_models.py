@@ -62,10 +62,10 @@ class ImageBannerTests(TestCase):
                                                 image='uploads/banners/test.png')
         banner = variation.banner
 
-        with self.settings(MEDIA_URL='/media/'):
+        with self.settings(MEDIA_URL='/media/', SITE_URL='https://example.com'):
             self.assertHTMLEqual(banner.generate_banner_code(variation), """
               <a href="{href}">
-                <img src="/media/uploads/banners/test.png" alt="">
+                <img src="https://example.com/media/uploads/banners/test.png" alt="">
               </a>
             """)
 
@@ -110,9 +110,9 @@ class FirefoxUpgradeBannerTests(TestCase):
             upgrade_image='uploads/firefox_upgrade_banners/test_upgrade.png')
         banner = variation.banner
 
-        with self.settings(MEDIA_URL='/media/'):
+        with self.settings(MEDIA_URL='/media/', SITE_URL='https://example.com'):
             self.assertHTMLEqual(banner.generate_banner_code(variation), """
               <a href="{{href}}">
-                <img src="/media/uploads/upgrade/{pk}">
+                <img src="https://example.com/media/uploads/upgrade/{pk}">
               </a>
             """.format(pk=variation.pk))

@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum
 
+from affiliates.base.utils import absolutify
 
 class Link(models.Model):
     """Affiliate link that banners link to."""
@@ -50,7 +51,7 @@ class Link(models.Model):
         return self._get_metric_total('firefox_os_referrals')
 
     def get_referral_url(self):
-        return reverse('links.referral', args=[self.pk])
+        return absolutify(reverse('links.referral', args=[self.pk]))
 
     def get_absolute_url(self):
         return reverse('links.detail', args=[self.pk])

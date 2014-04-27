@@ -12,7 +12,7 @@ from affiliates.banners import COLOR_CHOICES
 from affiliates.base.helpers import media
 from affiliates.base.models import LocaleField
 from affiliates.base.storage import OverwritingStorage
-from affiliates.base.utils import locale_to_native
+from affiliates.base.utils import absolutify, locale_to_native
 from affiliates.links.models import Link
 
 
@@ -216,5 +216,4 @@ class FirefoxUpgradeBannerVariation(ImageVariation):
 
     @property
     def image_url(self):
-        # TODO: Make this URL absolute.
-        return media('uploads/upgrade/{pk}'.format(pk=self.pk))
+        return absolutify(media('uploads/upgrade/{pk}'.format(pk=self.pk)))
