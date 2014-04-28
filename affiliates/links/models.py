@@ -59,6 +59,21 @@ class Link(models.Model):
     def destination(self):
         return self.banner.destination
 
+    @property
+    def is_upgrade_link(self):
+        from affiliates.banners.models import FirefoxUpgradeBanner
+        return isinstance(self.banner, FirefoxUpgradeBanner)
+
+    @property
+    def is_image_link(self):
+        from affiliates.banners.models import ImageBanner
+        return isinstance(self.banner, ImageBanner)
+
+    @property
+    def is_text_link(self):
+        from affiliates.banners.models import TextBanner
+        return isinstance(self.banner, TextBanner)
+
     def get_referral_url(self):
         return absolutify(reverse('links.referral', args=[self.pk]))
 

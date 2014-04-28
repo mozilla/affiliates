@@ -23,7 +23,7 @@
 
       <h1 class="page-title">{{ _('Banner Details') }}</h1>
 
-      <figure class="banner-preview {{ link.banner_type }}">
+      <figure class="banner-preview {{ 'text' if link.is_text_link else '' }}">
         {{ link.html|safe }}
       </figure>
 
@@ -35,9 +35,11 @@
         <dd>{{ link.link_clicks }}</dd>
         <dt>{{ _('Linked URL:') }}</dt>
         <dd><a href="{{ link.destination }}">{{ link.destination }}</a></dd>
-        {# TODO: No size for text banners (obviously) #}
-        <dt>{{ _('Size:') }}</dt>
-        <dd>300 x 250</dd>
+
+        {% if link.is_image_link or link.is_upgrade_link %}
+          <dt>{{ _('Size:') }}</dt>
+          <dd>{{ link.banner_variation.size }}</dd>
+        {% endif %}
       </dl>
 
       <div class="embed">
