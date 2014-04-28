@@ -6,6 +6,8 @@ from django.dispatch import receiver
 from tower import ugettext as _
 
 from affiliates.base.models import ModelBase
+from affiliates.base.utils import get_object_or_none
+from affiliates.links.models import LeaderboardStanding
 
 
 # User class extensions
@@ -24,6 +26,11 @@ User.add_to_class('metric_aggregate_total', user_metric_aggregate_total)
 def user_metric_total(self, metric):
     return sum(getattr(link, metric) for link in self.link_set.all())
 User.add_to_class('metric_total', user_metric_total)
+
+def user_leaderboard_rank(self, metric):
+    standing = get_object_or_none(LeaderboardStanding, user=self, metric=metric)
+    return standing.ranking if standing else None
+User.add_to_class('leaderboard_rank', user_leaderboard_rank)
 
 
 @receiver(models.signals.post_save, sender=User)

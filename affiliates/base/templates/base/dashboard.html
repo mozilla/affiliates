@@ -23,9 +23,28 @@
         <div class="mystats">
           <h2>{{ _('My stats') }}</h2>
           <ul class="stats">
-            <li class="downloads"><strong>1,037</strong> {{ _('downloads') }}</li>
-            <li class="banners"><strong>7</strong> {{ _('banners') }}</li>
-            <li class="clicks"><strong>3,543</strong> {{ _('clicks') }}</li>
+            <li class="downloads">
+              {% set rank = request.user.leaderboard_rank('link_clicks') %}
+              {% if rank %}
+                Leaderboard Rank: <strong>{{ rank }}</strong>
+              {% else %}
+                Leaderboard Rank: <strong>New</strong>
+              {% endif %}
+            </li>
+            <li class="banners">
+              {% trans count=links|length|babel_number %}
+                <strong>{{ count }}</strong> banner
+              {% pluralize %}
+                <strong>{{ count }}</strong> banners
+              {% endtrans %}
+            </li>
+            <li class="clicks">
+              {% trans count=request.user.metric_total('link_clicks') %}
+                <strong>{{ count }}</strong> click
+              {% pluralize %}
+                <strong>{{ count }}</strong> clicks
+              {% endtrans %}
+            </li>
           </ul>
         </div>
       </div>
