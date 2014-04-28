@@ -26,7 +26,7 @@
             <li class="downloads">
               {% set rank = request.user.leaderboard_rank('link_clicks') %}
               {% if rank %}
-                Leaderboard Rank: <strong>{{ rank }}</strong>
+                Leaderboard Rank: <strong>{{ rank|babel_number }}</strong>
               {% else %}
                 Leaderboard Rank: <strong>New</strong>
               {% endif %}
