@@ -1,3 +1,6 @@
+from django.db.models.signals import post_init
+
+from factory.django import mute_signals
 from nose.tools import ok_
 
 from affiliates.banners.forms import CustomizeImageBannerForm, CustomizeTextBannerForm
@@ -15,11 +18,16 @@ class CustomizeImageBannerFormTests(TestCase):
         banner = ImageBannerFactory.create()
 
         variation1, variation2 = ImageBannerVariationFactory.create_batch(2, banner=banner)
-        ok_(CustomizeImageBannerForm(banner, {'variation': variation1.pk}).is_valid())
-        ok_(CustomizeImageBannerForm(banner, {'variation': variation2.pk}).is_valid())
+
+        # Mute post_init to avoid ImageField attempting to open a file
+        # when the form creates variations as part of validation.
+        with mute_signals(post_init):
+            ok_(CustomizeImageBannerForm(banner, {'variation': variation1.pk}).is_valid())
+            ok_(CustomizeImageBannerForm(banner, {'variation': variation2.pk}).is_valid())
 
         non_matching_variation = ImageBannerVariationFactory.create()
-        invalid_form = CustomizeImageBannerForm(banner, {'variation': non_matching_variation.pk})
+        with mute_signals(post_init):
+            invalid_form = CustomizeImageBannerForm(banner, {'variation': non_matching_variation.pk})
         ok_(not invalid_form.is_valid())
 
 

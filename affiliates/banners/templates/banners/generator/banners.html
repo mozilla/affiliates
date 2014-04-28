@@ -21,14 +21,7 @@
 
       <ul class="banners-list">
       {% for banner in banners %}
-        <li class="banner">
-          {# TODO: Add the 'smart banner' flag here if it's a smart banner. #}
-          <a href="{{ banner.get_customize_url() }}">
-            {# TODO: This should be the correct banner preview image, with the blank as fallback. If it's a text banner, this should be the text preview. #}
-            <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-            <h3 class="name">{{ banner.name }}</h3>
-          </a>
-        </li>
+        {{ banner.preview_html(banner.get_customize_url()) }}
       {% endfor %}
       </ul>
 

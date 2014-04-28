@@ -1,0 +1,9 @@
+{% extends 'banners/previews/base.html' %}
+
+{% block preview %}
+  <img class="preview" src="{{ preview_img|default(static('img/banner-blank.png')) }}" alt="">
+{% endblock %}
+
+{% block link_extra %}
+  <li>{{ link.banner_variation.size }}</li>
+{% endblock %}

@@ -39,20 +39,7 @@
         {% if links %}
           <ul class="banners-list">
             {% for link in links %}
-              <li class="banner {{ link.banner_type }}">
-                {% if link.banner_type == 'smart_banner' %}
-                  {# TODO: Make the help thingie open a modal with an explanation #}
-                  <em class="flag">{{ _('Smart') }} <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
-                {% endif %}
-                <a href="{{ link.get_absolute_url() }}">
-                  <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
-                  <ul class="desc">
-                    <li>125 × 125</li>
-                    <li>Created <time datetime="{{ link.created.isoformat() }}">{{ link.created|babel_date }}</time></li>
-                    <li>{{ link.link_clicks|babel_number }} clicks</li>
-                  </ul>
-                </a>
-              </li>
+              {{ link.preview_html(link.get_absolute_url()) }}
             {% endfor %}
           </ul>
         {% else %}

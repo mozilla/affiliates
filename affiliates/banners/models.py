@@ -5,7 +5,9 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.loader import render_to_string
+from django.utils import translation
 
+from jinja2 import Markup
 from mptt.models import MPTTModel, TreeForeignKey
 
 from affiliates.banners import COLOR_CHOICES
@@ -70,6 +72,12 @@ class Banner(models.Model):
         """Generate a URL to the customization page for this banner."""
         raise NotImplementedError()
 
+    def preview_html(self, href):
+        """
+        Render HTML for previewing this banner in a list of banners.
+        """
+        raise NotImplementedError()
+
     @staticmethod
     def get_variation_class():
         """
@@ -113,7 +121,34 @@ class BannerVariation(models.Model):
         abstract = True
 
 
-class ImageBanner(Banner):
+class ImageBannerBase(Banner):
+    """Common functionality for banners that involve images."""
+    preview_template = 'banners/previews/image_banner.html'
+
+    def preview_html(self, href, **kwargs):
+        kwargs['href'] = href
+        kwargs['banner'] = self
+
+        # Fetch localized variations that are 125x125.
+        locale = translation.get_language()
+        sized_variations = self.variation_set.filter(width=125, height=125)
+        localized_variations = sized_variations.filter(locale=locale)
+
+        # Fallback to en-US if no localized variations are found.
+        if localized_variations:
+            kwargs['preview_img'] = localized_variations[0].image.url
+        elif locale != 'en-us':
+            fallback_variations = sized_variations.filter(locale='en-us')
+            if fallback_variations:
+                kwargs['preview_img'] = fallback_variations[0].image.url
+
+        return Markup(render_to_string(self.preview_template, kwargs))
+
+    class Meta:
+        abstract = True
+
+
+class ImageBanner(ImageBannerBase):
     """Banner displayed as an image link."""
     def generate_banner_code(self, variation):
         return render_to_string('banners/banner_code/image_banner.html', {
@@ -151,18 +186,17 @@ class ImageVariation(BannerVariation):
         extension = os.path.splitext(filename)[1]
         return os.path.join(self.get_media_subdirectory(), props_hash + extension)
 
-    image = models.ImageField(upload_to=_filename, max_length=255, storage=OverwritingStorage())
+    image = models.ImageField(upload_to=_filename, max_length=255, storage=OverwritingStorage(),
+                              width_field='width', height_field='height')
+    width = models.PositiveIntegerField(default=0)
+    height = models.PositiveIntegerField(default=0)
 
     class Meta:
         abstract = True
 
     @property
     def size(self):
-        try:
-            return '{width} &times; {height}'.format(width=self.image.width,
-                                                     height=self.image.height)
-        except IOError:
-            return 'Unknown'
+        return '{width} &times; {height}'.format(width=self.width, height=self.height)
 
     def get_media_subdirectory(self):
         """
@@ -191,6 +225,26 @@ class TextBanner(Banner):
     def get_customize_url(self):
         return reverse('banners.generator.text_banner.customize', kwargs={'pk': self.pk})
 
+    def preview_html(self, href, **kwargs):
+        kwargs['href'] = href
+        kwargs['banner'] = self
+
+        # Fetch localized variation.
+        locale = translation.get_language()
+        try:
+            kwargs['preview_text'] = self.variation_set.get(locale=locale).text
+        except TextBannerVariation.DoesNotExist:
+            pass
+
+        # Fallback to en-US if necessary.
+        if 'preview_text' not in kwargs and locale != 'en-us':
+            try:
+                kwargs['preview_text'] = self.variation_set.get(locale='en-us').text
+            except TextBannerVariation.DoesNotExist:
+                pass
+
+        return Markup(render_to_string('banners/previews/text_banner.html', kwargs))
+
     @staticmethod
     def get_variation_class():
         return TextBannerVariation
@@ -206,11 +260,13 @@ class TextBannerVariation(BannerVariation):
         return locale_to_native(self.locale)
 
 
-class FirefoxUpgradeBanner(Banner):
+class FirefoxUpgradeBanner(ImageBannerBase):
     """
     Image banner that shows a different image depending on whether the
     viewer has an up-to-date version of Firefox or not.
     """
+    preview_template = 'banners/previews/upgrade_banner.html'
+
     def generate_banner_code(self, variation):
         return render_to_string('banners/banner_code/firefox_upgrade_banner.html', {
             'variation': variation

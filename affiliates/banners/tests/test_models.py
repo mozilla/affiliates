@@ -1,12 +1,13 @@
 from django.core.exceptions import ValidationError
+from django.test.utils import override_settings
 
 from nose.tools import eq_, ok_
 from mock import Mock, patch
 
 from affiliates.banners.models import Banner, ImageVariation
 from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerVariationFactory,
-                                      ImageBannerVariationFactory, TextBannerFactory,
-                                      TextBannerVariationFactory)
+                                      ImageBannerFactory, ImageBannerVariationFactory,
+                                      TextBannerFactory, TextBannerVariationFactory)
 from affiliates.base.tests import TestCase
 from affiliates.links.models import Link
 from affiliates.users.tests import UserFactory
@@ -53,6 +54,79 @@ class BannerTests(TestCase):
             <a href="asdf">Link!</a>
         """)
         banner.generate_banner_code.assert_called_with(variation)
+
+
+@override_settings(MEDIA_URL='/media/')
+class ImageBannerBaseTests(TestCase):
+    # Test base behavior via ImageBanner because mocking would be
+    # tedious and wouldn't help prove much.
+
+    def setUp(self):
+        self.banner = ImageBannerFactory.create()
+        self.banner.preview_template = 'test_template.html'
+
+        patcher = patch('affiliates.banners.models.render_to_string')
+        self.addCleanup(patcher.stop)
+        self.render_to_string = patcher.start()
+        self.render_to_string.return_value = 'asdf'
+
+        patcher = patch('affiliates.banners.models.translation.get_language')
+        self.addCleanup(patcher.stop)
+        self.get_language = patcher.start()
+
+    def test_preview_html_localized_variations(self):
+        """
+        If 125x125 variations in the correct locale are available, use
+        the first one as the preview image.
+        """
+        ImageBannerVariationFactory.create(banner=self.banner, width=125, height=125, locale='fr',
+                                           image='uploads/banners/test.png')
+
+        self.get_language.return_value = 'fr'
+        eq_(self.banner.preview_html('http://example.com', foo='bar'), 'asdf')
+        self.render_to_string.assert_called_with('test_template.html', {
+            'href': 'http://example.com',
+            'foo': 'bar',
+            'banner': self.banner,
+            'preview_img': '/media/uploads/banners/test.png',
+        })
+
+    def test_preview_html_fallback(self):
+        """
+        If there are no previews available in the current locale, but
+        are available in en-US, use them.
+        """
+        ImageBannerVariationFactory.create(banner=self.banner, width=125, height=125,
+                                           locale='en-us', image='uploads/banners/test.png')
+        ImageBannerVariationFactory.create(banner=self.banner, width=300, height=125,
+                                           locale='fr', image='uploads/banners/test.png')
+
+        self.get_language.return_value = 'fr'
+        eq_(self.banner.preview_html('http://example.com', foo='bar'), 'asdf')
+        self.render_to_string.assert_called_with('test_template.html', {
+            'href': 'http://example.com',
+            'foo': 'bar',
+            'banner': self.banner,
+            'preview_img': '/media/uploads/banners/test.png',
+        })
+
+    def test_preview_html_none(self):
+        """
+        If no variations are available at the right size and locale, and
+        no fallbacks are available either, don't include a preview_img.
+        """
+        ImageBannerVariationFactory.create(banner=self.banner, width=125, height=125,
+                                           locale='de', image='uploads/banners/test.png')
+        ImageBannerVariationFactory.create(banner=self.banner, width=300, height=125,
+                                           locale='fr', image='uploads/banners/test.png')
+
+        self.get_language.return_value = 'fr'
+        eq_(self.banner.preview_html('http://example.com', foo='bar'), 'asdf')
+        self.render_to_string.assert_called_with('test_template.html', {
+            'href': 'http://example.com',
+            'foo': 'bar',
+            'banner': self.banner,
+        })
 
 
 class ImageBannerTests(TestCase):

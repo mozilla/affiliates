@@ -74,6 +74,9 @@ class Link(models.Model):
         from affiliates.banners.models import TextBanner
         return isinstance(self.banner, TextBanner)
 
+    def preview_html(self, href):
+        return self.banner.preview_html(href)
+
     def get_referral_url(self):
         return absolutify(reverse('links.referral', args=[self.pk]))
 

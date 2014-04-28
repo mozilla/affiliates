@@ -1,0 +1,11 @@
+{% extends 'banners/previews/base.html' %}
+
+{% set extra_class = 'text' %}
+
+{% block preview %}
+  <div class="preview">{{ preview_text|default(_('No preview available.')) }}</div>
+{% endblock %}
+
+{% block link_extra %}
+  <li>{{ _('Text banner') }}</li>
+{% endblock %}

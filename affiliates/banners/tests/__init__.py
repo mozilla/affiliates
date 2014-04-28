@@ -1,4 +1,7 @@
+from django.db.models.signals import post_init
+
 from factory import DjangoModelFactory, Sequence, SubFactory
+from factory.django import mute_signals
 
 from affiliates.banners import models
 
@@ -22,6 +25,7 @@ class ImageBannerFactory(BannerFactory):
     FACTORY_FOR = models.ImageBanner
 
 
+@mute_signals(post_init)
 class ImageVariationFactory(DjangoModelFactory):
     ABSTRACT_FACTORY = True
 
@@ -52,6 +56,7 @@ class FirefoxUpgradeBannerFactory(BannerFactory):
     FACTORY_FOR = models.FirefoxUpgradeBanner
 
 
+@mute_signals(post_init)
 class FirefoxUpgradeBannerVariationFactory(ImageVariationFactory):
     FACTORY_FOR = models.FirefoxUpgradeBannerVariation
 

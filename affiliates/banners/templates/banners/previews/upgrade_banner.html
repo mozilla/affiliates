@@ -1,0 +1,8 @@
+{% extends 'banners/previews/image_banner.html' %}
+
+{% set extra_class = 'smart' %}
+
+{% block flag %}
+  {# TODO: Make the help thingie open a modal with an explanation #}
+  <em class="flag">{{ _('Smart') }} <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
+{% endblock %}
