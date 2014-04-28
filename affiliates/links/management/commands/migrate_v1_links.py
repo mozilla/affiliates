@@ -2,6 +2,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from django.db import connections
 
+from multidb.pinning import use_master
+
 from affiliates.banners.models import Category, ImageBanner, ImageBannerVariation
 from affiliates.base.utils import absolutify
 from affiliates.links.models import Link
@@ -11,6 +13,7 @@ class Command(BaseCommand):
     help = ('Migrate link data from an Affiliates v1 database.')
     args = ('[old_db_name]')
 
+    @use_master
     def handle(self, old_db_name, *args, **kwargs):
         cursor = connections[old_db_name].cursor()
 
