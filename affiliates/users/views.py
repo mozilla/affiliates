@@ -28,6 +28,11 @@ class UserProfileView(UpdateView):
         messages.success(self.request, _('Your profile has been updated!'))
         return super(UpdateView, self).form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super(UserProfileView, self).get_form_kwargs()
+        kwargs['label_suffix'] = ''
+        return kwargs
+
 
 def login_required(request):
     messages.warning(request, _('You must be logged in to view that page.'))

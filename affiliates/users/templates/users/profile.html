@@ -37,10 +37,7 @@
         <div id="edit-profile">
           <form method="post">
             {{ csrf() }}
-
-            {# TODO: Each field in this form should be wrapped in a paragraph, if possible #}
-            {{ form }}
-
+            {{ form.as_p() }}
             <p class="form-submit">
               <button type="submit" class="button go">{{ _('Save') }}</button>
             </p>
