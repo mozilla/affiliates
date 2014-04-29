@@ -171,8 +171,8 @@
         <dt>{{ _('How do I update my personal profile information?') }}</dt>
         <dd>
           <p>
-            {% trans profile=request.user.userprofile.get_absolute_url() %}
-            Moved? Changed your name? Grew a moustache? Just <a href="{{ profile }}">visit your profile page</a>
+            {% trans %}
+            Moved? Changed your name? Grew a moustache? Just visit your profile page
             and click on the edit profile link at the top.
             {% endtrans %}
             {% trans gravatar='https://gravatar.com' %}

@@ -64,13 +64,13 @@
               {% if user %}
                 {% if user.is_authenticated() %}
                   <li class="user">
-                    <a href="{{ request.user.userprofile.get_absolute_url() }}" aria-owns="nav-user-submenu" aria-haspopup="true">
-                      <img src="{{ gravatar(request.user, size=20) }}" alt="" class="avatar">
+                    <a href="{{ user.userprofile.get_absolute_url() }}" aria-owns="nav-user-submenu" aria-haspopup="true">
+                      <img src="{{ gravatar(user, size=20) }}" alt="" class="avatar">
                       {{ user.display_name }}
                     </a>
                     <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
                       <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
-                      <li><a href="{{ request.user.userprofile.get_absolute_url() }}">{{ _('Profile') }}</a></li>
+                      <li><a href="{{ user.userprofile.get_absolute_url() }}">{{ _('Profile') }}</a></li>
                       <li>{{ browserid_logout() }}</li>
                     </ul>
                   </li>
