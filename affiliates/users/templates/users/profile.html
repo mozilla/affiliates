@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% from 'base/macros.html' import notices with context %}
+{% from 'base/macros.html' import milestone_timeline, stats_list %}
 
 {% block body_id %}profile{% endblock %}
 {% block body_class %}profile{% endblock %}
@@ -58,11 +59,7 @@
       <div class="contain">
 
         <h2 class="section-title">{{ _('Stats') }}</h2>
-        <ul class="stats">
-          <li class="ranking"><strong>1,652</strong> {{ _('ranking') }}</li>
-          <li class="banners"><strong>7</strong> {{ _('banners') }}</li>
-          <li class="clicks"><strong>3,543</strong> {{ _('clicks') }}</li>
-        </ul>
+        {{ stats_list(profile.user) }}
 
       </div>
     </section>
@@ -70,27 +67,7 @@
     <section id="milestones" class="section">
       <div class="contain">
         <h2 class="section-title">{{ _('Milestones') }}</h2>
-
-        {# TODO: This should be the same milestone timeline from the dashboard #}
-        <ol class="timeline">
-          <li class="milestone">
-            <h3><time datetime="2014-02-04">4 February, 2014</time></h3>
-            <p>You reached <strong>1,000</strong> clicks!</p>
-          </li>
-          <li class="milestone">
-            <h3><time datetime="2014-02-02">2 February, 2014</time></h3>
-            <p>You're at <strong>987</strong> clicks. Almost 1,000!</p>
-          </li>
-          <li class="milestone">
-            <h3><time datetime="2014-02-01">1 February, 2014</time></h3>
-            <p>You drove <strong>3</strong> downloads today!</p>
-          </li>
-          <li class="milestone">
-            <h3><time datetime="2014-01-21">21 January, 2014</time></h3>
-            <p>You joined Firefox Affiliates. Welcome!</p>
-          </li>
-        </ol>
-
+        {{ milestone_timeline(milestones) }}
       </div>
     </section>
   </main>

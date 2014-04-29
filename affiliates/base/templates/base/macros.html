@@ -37,3 +37,51 @@
   </aside>
 {% endfor %}
 {%- endmacro %}
+
+{% macro milestone_timeline(milestones) -%}
+<ol class="timeline">
+  {% for date, message in milestones %}
+    <li class="milestone">
+      <h3>
+        {% if date %}
+          <time datetime="{{ date.isoformat() }}">{{ date|babel_date }}</time>
+        {% else %}
+          {{ _('Someday soon!') }}
+        {% endif %}
+      </h3>
+      <p>{{ message }}</p>
+    </li>
+  {% endfor %}
+</ol>
+{%- endmacro %}
+
+{% macro stats_list(user) -%}
+<ul class="stats">
+  <li class="ranking">
+    {% set rank = user.leaderboard_rank('link_clicks') %}
+    {% if rank %}
+      {# L10n: Ranking is the user's position on a leaderboard of users ranked by banner clicks. #}
+      {% trans rank=rank|babel_number %}
+        <strong>{{ rank }}</strong> ranking
+      {% endtrans %}
+    {% else %}
+      {# L10n: Ranking is the user's position on a leaderboard of users ranked by banner clicks. #}
+      <strong>{{ _('Unranked') }}</strong>
+    {% endif %}
+  </li>
+  <li class="banners">
+    {% trans count=user.link_set.count()|babel_number %}
+      <strong>{{ count }}</strong> banner
+    {% pluralize %}
+      <strong>{{ count }}</strong> banners
+    {% endtrans %}
+  </li>
+  <li class="clicks">
+    {% trans count=user.metric_total('link_clicks') %}
+      <strong>{{ count }}</strong> click
+    {% pluralize %}
+      <strong>{{ count }}</strong> clicks
+    {% endtrans %}
+  </li>
+</ul>
+{%- endmacro %}

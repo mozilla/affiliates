@@ -1,6 +1,8 @@
 {% extends 'base/base.html' %}
 
 {% from 'base/macros.html' import notices with context %}
+{% from 'base/macros.html' import milestone_timeline, stats_list %}
+
 
 {% block body_id %}dashboard{% endblock %}
 {% block body_class %}dashboard{% endblock %}
@@ -22,30 +24,7 @@
 
         <div class="mystats">
           <h2>{{ _('My stats') }}</h2>
-          <ul class="stats">
-            <li class="downloads">
-              {% set rank = request.user.leaderboard_rank('link_clicks') %}
-              {% if rank %}
-                Leaderboard Rank: <strong>{{ rank|babel_number }}</strong>
-              {% else %}
-                Leaderboard Rank: <strong>New</strong>
-              {% endif %}
-            </li>
-            <li class="banners">
-              {% trans count=links|length|babel_number %}
-                <strong>{{ count }}</strong> banner
-              {% pluralize %}
-                <strong>{{ count }}</strong> banners
-              {% endtrans %}
-            </li>
-            <li class="clicks">
-              {% trans count=request.user.metric_total('link_clicks') %}
-                <strong>{{ count }}</strong> click
-              {% pluralize %}
-                <strong>{{ count }}</strong> clicks
-              {% endtrans %}
-            </li>
-          </ul>
+          {{ stats_list(request.user) }}
         </div>
       </div>
     </section>
@@ -81,20 +60,7 @@
     <section id="mymilestones" class="section">
       <div class="contain">
         <h2 class="section-title">{{ _('My Milestones') }}</h2>
-        <ol class="timeline">
-          {% for date, message in milestones %}
-            <li class="milestone">
-              <h3>
-                {% if date %}
-                  <time datetime="{{ date.isoformat() }}">{{ date|babel_date }}</time>
-                {% else %}
-                  {{ _('Someday soon!') }}
-                {% endif %}
-              </h3>
-              <p>{{ message }}</p>
-            </li>
-          {% endfor %}
-        </ol>
+        {{ milestone_timeline(milestones) }}
       </div>
     </section>
 

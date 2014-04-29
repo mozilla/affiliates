@@ -4,6 +4,7 @@ from django.views.generic import UpdateView
 
 from tower import ugettext as _
 
+from affiliates.base.milestones import MilestoneDisplay
 from affiliates.users.forms import EditProfileForm
 from affiliates.users.models import UserProfile
 
@@ -31,6 +32,11 @@ class UserProfileView(UpdateView):
     def get_form_kwargs(self):
         kwargs = super(UserProfileView, self).get_form_kwargs()
         kwargs['label_suffix'] = ''
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        kwargs = super(UserProfileView, self).get_context_data(**kwargs)
+        kwargs['milestones'] = MilestoneDisplay(self.object.user)
         return kwargs
 
 
