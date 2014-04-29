@@ -53,7 +53,7 @@ class Link(models.Model):
 
     @property
     def banner(self):
-        return self.banner_variation.banner
+        return self.banner_variation.banner if self.banner_variation else None
 
     @property
     def destination(self):

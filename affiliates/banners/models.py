@@ -167,6 +167,10 @@ class ImageVariation(BannerVariation):
         """
         raise NotImplementedError()
 
+    def __unicode__(self):
+        return u'{size} {color} {locale}'.format(size=self.size, color=self.color,
+                                                 locale=self.locale)
+
 
 class ImageBannerVariation(ImageVariation):
     banner = models.ForeignKey(ImageBanner, related_name='variation_set')
