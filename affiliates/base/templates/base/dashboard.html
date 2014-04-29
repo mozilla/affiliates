@@ -36,12 +36,13 @@
           <p class="create"><a class="button go" href="{{ url('banners.generator.categories') }}">{{ _('Create a new banner') }}</a></p>
         </header>
 
+      {# TODO: if there are banners: #}
         <ul class="banners-list">
           {% for link in links %}
             <li class="banner {{ link.banner_type }}">
               {% if link.banner_type == 'smart_banner' %}
                 {# TODO: Make the help thingie open a modal with an explanation #}
-                <em class="flag">Smart <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
+                <em class="flag">{{ _('Smart') }} <a class="help" href="#" title="{{ _('What are smart banners?') }}">{{ _('What are smart banners?') }}</a></em>
               {% endif %}
               <a href="{{ link.get_absolute_url() }}">
                 <img class="preview" src="{{ static('img/banner-blank.png') }}" alt="">
@@ -54,6 +55,12 @@
             </li>
           {% endfor %}
         </ul>
+
+      {# TODO: else: #}
+
+        <div class="notice">
+          <p>{{ _('You don‘t have any banners yet. Why not create one now?') }}</p>
+        </div>
       </div>
     </section>
 
@@ -86,5 +93,18 @@
         </div>
       </section>
     {% endif %}
+
+    <div id="smartbanners">
+      <h3>{{ _('What are smart banners?') }}</h3>
+      <p>
+        {% trans %}
+        Smart Banners show visitors slightly different messages depending
+        on their browser. For example, visitors on an older version of
+        Firefox would be encouraged to upgrade, while visitors on Internet
+        Explorer would be encouraged to switch.
+        {% endtrans %}
+      </p>
+    </div>
+
   </main>
 {% endblock %}

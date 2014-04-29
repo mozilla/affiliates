@@ -173,8 +173,19 @@
         affiliates.createModal($origin, content);
     });
 
+    // Show extra fields
     $('#newsletter-email').on('focus', function() {
         $('#newsletter .form-extra').slideDown();
+    });
+
+    // Show thanks message on subscription
+    // TODO: Make this happen on successful submit.
+    // I'm using slideUp/Down so the wrapper changing size is less janky than it would be with fadeOut/In or hide/show
+    $('#newsletter-form button').on('click', function(e) {
+        e.preventDefault();
+        $('#newsletter-form ol').slideUp(function(){
+            $('#newsletter-thanks').slideDown();
+        });
     });
 
 })(jQuery);

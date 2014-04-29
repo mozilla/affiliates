@@ -211,6 +211,10 @@ label {
     margin-right: 10px;
 }
 
+:disabled,
+.disabled {
+    opacity: .5;
+}
 
 
 //*----------------------------------------------------------------*/
@@ -324,24 +328,26 @@ label {
 }
 
 .notice {
-    background: #a4abae;
-    background: rgba( 255, 255, 255, .35);
-    border-radius: .5em;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
-    color: $secondary-text-color;
-    display: inline-block;
-    font-size: 20px;
-    font-style: italic;
-    margin: .5em auto 1em;
-    padding: 10px 30px;
-    text-shadow: 0 -1px 0 rgba(255, 255, 255, .25);
+    margin: 0 auto;
+    text-align: center;
 
     p {
-        margin: 0;
+        background: #a4abae;
+        background: rgba( 255, 255, 255, .35);
+        border-radius: .5em;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+        color: $secondary-text-color;
+        display: inline-block;
+        font-size: 20px;
+        font-style: italic;
+        margin: .5em auto 1em;
+        padding: 10px 30px;
+        text-align: center;
+        text-shadow: 0 -1px 0 rgba(255, 255, 255, .25);
     }
 }
 
-.notice.error {
+.notice.error p {
     background: #b9a38f;
     background: rgba(255, 200, 155, .5);
 }
@@ -483,6 +489,10 @@ label {
         margin-top: 1em;
     }
 
+    ol {
+        clearfix();
+    }
+
     li {
         margin: 0 0 .5em;
     }
@@ -491,7 +501,8 @@ label {
         margin: 0 $grid-gutter-width 0 0;
     }
 
-    input[type~='text, email'],
+    input[type='text'],
+    input[type='email'],
     select {
         width: 90%;
     }
@@ -508,6 +519,11 @@ label {
         display: none;
         margin: 1em 0 0;
     }
+}
+
+#newsletter-thanks {
+    display: none;
+    float: left;
 }
 
 //*----------------------------------------------------------------*/

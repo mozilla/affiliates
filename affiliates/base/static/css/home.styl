@@ -10,6 +10,12 @@
 #intro {
     {section-dark}
 
+    background: url(/static/img/bg-dots.png) center bottom no-repeat,
+                url(/static/img/dark-grain.png),
+                linear-gradient(to top, rgba(85, 90, 95, .25) 0, rgba(85, 90, 95, 0) 15px),
+                linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 350px),
+                $medium-gray;
+
     .button {
         min-width: 200px;
     }
@@ -125,6 +131,15 @@
 @media $media-query-tablet {
 
     #intro {
+        background: url(/static/img/bg-crowd.png) center bottom no-repeat,
+                    url(/static/img/bg-dots.png) center bottom no-repeat,
+                    url(/static/img/dark-grain.png),
+                    linear-gradient(to top, rgba(85, 90, 95, .25) 0, rgba(85, 90, 95, 0) 15px),
+                    linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 350px),
+                    $medium-gray;
+        background-size: 720px 111px, auto, auto, auto, auto;
+        padding-bottom: 80px;
+
         h1 {
             font-size: 48px;
         }
@@ -179,8 +194,13 @@
 
 @media $media-query-desktop {
 
-    #intro h1 {
-        font-size: 60px;
+    #intro {
+        background-size: auto;
+        padding-bottom: 110px;
+
+        h1 {
+            font-size: 60px;
+        }
     }
 
     #howitworks li {

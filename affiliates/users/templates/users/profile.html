@@ -20,7 +20,7 @@
 
         <h1 class="page-title">{{ profile.user.display_name }}</h1>
 
-        <img src="{{ gravatar(profile.user, size=125) }}" alt="" class="avatar">
+        <img src="{{ gravatar(profile.user, size=125) }}" alt="" class="avatar" width="125" height="125">
 
       {% if profile.bio %}
         <p class="bio">{{ profile.bio }}</p>

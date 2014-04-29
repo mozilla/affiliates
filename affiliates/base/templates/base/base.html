@@ -14,7 +14,7 @@
     {# OpenGraph Metadata #}
     <meta property="og:title" content="{% block og_title %}{{ _('Firefox Affiliates') }}{% endblock %}">
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{{ absolutify(static('img/firefox-256.jpg')) }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ absolutify(static('img/affiliates-shield-300.jpg')) }}{% endblock %}">
     <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri() }}{% endblock %}">
     <meta property="og:site_name" content="{{ _('Firefox Affiliates') }}">
     <meta property="og:description" content="{{ meta_description }}">
@@ -65,7 +65,7 @@
                 {% if user.is_authenticated() %}
                   <li class="user">
                     <a href="{{ user.userprofile.get_absolute_url() }}" aria-owns="nav-user-submenu" aria-haspopup="true">
-                      <img src="{{ gravatar(user, size=20) }}" alt="" class="avatar">
+                      <img src="{{ gravatar(user, size=20) }}" alt="" class="avatar" width="20" height="20">
                       {{ user.display_name }}
                     </a>
                     <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
@@ -87,61 +87,71 @@
 
       {% block newsletter %}
         <section id="newsletter" class="section">
-          <form class="contain" action="POST">
-            <h3 class="col">{{ _('Get Firefox Affiliates News') }}</h3>
-            <ol>
-              <li class="col">
-                <label for="newsletter-email">{{ _('Your email address') }}</label>
-                <input type="email" id="newsletter-email" name="email" required aria-required="true" placeholder="{{ _('yourname@example.com') }}">
+          <div class="contain">
 
-                <ul class="form-extra">
-                  <li>
-                    <label for="newsletter-lang">{{ _('Language') }}</label>
-                    <select id="newsletter-lang" name="language">
-                      {# L10n: This acts as a placeholder/label for a form selection #}
-                      <option selected value="">{{ _('-- select --') }}</option>
-                      {# TODO: Make this list dynamic and, you know, real. #}
-                      <option value="en-US">English (US)</option>
-                      <option value="es-ES">Español</option>
-                      <option value="fr">Français</option>
-                      <option value="tlh">tlhIngan Hol</option>
-                    </select>
-                  </li>
-                  <li>
-                    <fieldset class="inline">
-                      <legend>{{ _('Format') }}</legend>
-                      <ul>
-                        <li>
-                          <label for="newsletter-format-text" class="check">
-                            <input type="radio" name="format" id="newsletter-format-text" value="text">
-                            {{ _('Text') }}
-                          </label>
-                        </li>
-                        <li>
-                          <label for="newsletter-format-html" class="check">
-                            <input type="radio" name="format" id="newsletter-format-html" value="html">
-                            {{ _('HTML') }}
-                          </label>
-                        </li>
-                      </ul>
-                    </fieldset>
-                  </li>
-                  <li>
-                    <label for="newsletter-privacy" class="check form-privacy">
-                      <input type="checkbox" name="privacy" id="newsletter-privacy" required aria-required="true">
-                      <span class="title">
-                        {{ _('I’m okay with Mozilla handling my info as explained in <a href="%s">this Privacy Policy</a>')|format('https://www.mozilla.org/privacy/') }}
-                      </span>
-                    </label>
-                  </li>
-                </ul>
-              </li>
+            <form id="newsletter-form" method="POST" action="#">
+              <h3 class="col">{{ _('Get Firefox Affiliates News') }}</h3>
+              <ol>
+                <li class="col">
+                  <label for="newsletter-email">{{ _('Your email address') }}</label>
+                  <input type="email" id="newsletter-email" name="email" required aria-required="true" placeholder="{{ _('yourname@example.com') }}">
 
-              <li class="col form-submit">
-                <button type="submit" class="button secondary">{{ _('Sign me up!') }}</button>
-              </li>
-            </ol>
-          </form>
+                  <ul class="form-extra">
+                    <li>
+                      <label for="newsletter-lang">{{ _('Language') }}</label>
+                      <select id="newsletter-lang" name="language">
+                        {# L10n: This acts as a placeholder/label for a form selection #}
+                        <option selected value="">{{ _('-- select --') }}</option>
+                        {# TODO: Make this list dynamic and, you know, real. #}
+                        <option value="en-US">English (US)</option>
+                        <option value="es-ES">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="tlh">tlhIngan Hol</option>
+                      </select>
+                    </li>
+                    <li>
+                      <fieldset class="inline">
+                        <legend>{{ _('Format') }}</legend>
+                        <ul>
+                          <li>
+                            <label for="newsletter-format-text" class="check">
+                              <input type="radio" name="format" id="newsletter-format-text" value="text">
+                              {{ _('Text') }}
+                            </label>
+                          </li>
+                          <li>
+                            <label for="newsletter-format-html" class="check">
+                              <input type="radio" name="format" id="newsletter-format-html" value="html">
+                              {{ _('HTML') }}
+                            </label>
+                          </li>
+                        </ul>
+                      </fieldset>
+                    </li>
+                    <li>
+                      <label for="newsletter-privacy" class="check form-privacy">
+                        <input type="checkbox" name="privacy" id="newsletter-privacy" required aria-required="true">
+                        <span class="title">
+                          {{ _('I’m okay with Mozilla handling my info as explained in <a href="%s">this Privacy Policy</a>')|format('https://www.mozilla.org/privacy/') }}
+                        </span>
+                      </label>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="col form-submit">
+                  <button type="submit" class="button secondary">{{ _('Sign me up!') }}</button>
+                </li>
+              </ol>
+
+              {# TODO: On successful submit, hide the form list and show the thanks message. #}
+              <div class="notice" id="newsletter-thanks">
+                <p>{{ _('Thanks for subscribing!') }}</p>
+              </div>
+
+            </form>
+
+          </div>
         </section>
       {% endblock %}
 

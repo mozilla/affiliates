@@ -30,11 +30,11 @@
 
 {% macro notices() -%}
 {% for message in messages %}
-  <aside class="notice {{ message.tags }}">
+  <div class="notice {{ message.tags }}">
     <p {% if 'warning' in message.tags or 'error' in message.tags %}role="alert"{% endif %}>
       {{ message }}
     </p>
-  </aside>
+  </div>
 {% endfor %}
 {%- endmacro %}
 
@@ -66,7 +66,7 @@
       {% endtrans %}
     {% else %}
       {# L10n: Ranking is the user's position on a leaderboard of users ranked by banner clicks. #}
-      <strong>{{ _('Unranked') }}</strong>
+      <em>{{ _('Not yet ranked') }}</em>
     {% endif %}
   </li>
   <li class="banners">
