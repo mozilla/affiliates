@@ -104,9 +104,9 @@ STYLUS_BIN = 'stylus'
 
 # Uncomment to enable logging of exceptions to the console for local
 # development.
-#MIDDLEWARE_CLASSES = base.MIDDLEWARE_CLASSES + [
-#    'affiliates.base.middleware.ExceptionLoggingMiddleware'
-#]
+#MIDDLEWARE_CLASSES = base.MIDDLEWARE_CLASSES + (
+#    'affiliates.base.middleware.ExceptionLoggingMiddleware',
+#)
 
 # Google Analytics API Credentials
 GA_API_ACCOUNT_EMAIL = ''

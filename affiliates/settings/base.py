@@ -30,16 +30,21 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'django.contrib.admin',
 ]
 
-MIDDLEWARE_CLASSES = [
-    # Add timing middleware first to get accurate timings.
-    'django_statsd.middleware.GraphiteRequestTimingMiddleware',
-    'django_statsd.middleware.GraphiteMiddleware',
-] + list(MIDDLEWARE_CLASSES) + [
+MIDDLEWARE_CLASSES = (
+    'funfactory.middleware.LocaleURLMiddleware',
+    'multidb.middleware.PinningRouterMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'affiliates.facebook.middleware.FacebookAuthenticationMiddleware',
+    'session_csrf.CsrfMiddleware',  # Must be after auth middleware.
+    'django.contrib.messages.middleware.MessageMiddleware',
     'commonware.middleware.StrictTransportMiddleware',
     'commonware.middleware.ScrubRequestOnException',
     'csp.middleware.CSPMiddleware',
+    'affiliates.base.middleware.FrameOptionsHeader',
     'affiliates.base.middleware.PrivacyMiddleware',
-]
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'affiliates.base.context_processors.common',
@@ -53,13 +58,8 @@ TEMPLATE_LOADERS = [
     'jingo.Loader',
 ] + list(TEMPLATE_LOADERS)
 
-# Facebook auth middleware needs to come after AuthMiddleware but before
-# session-csrf middleware so that it will generate csrf tokens.
-auth_index = MIDDLEWARE_CLASSES.index('django.contrib.auth.middleware.AuthenticationMiddleware')
-MIDDLEWARE_CLASSES.insert(auth_index + 1, 'affiliates.facebook.middleware.FacebookAuthenticationMiddleware')
-
 # Language settings
-PROD_LANGUAGES = ()
+PROD_LANGUAGES = ('en-US',)
 
 # UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
 # manner.
