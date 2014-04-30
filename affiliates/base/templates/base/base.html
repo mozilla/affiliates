@@ -40,6 +40,8 @@
     <div id="strings"
         data-close="{{ _('Close') }}"
         data-input-required="{{ _('This field is required.') }}"
+        data-subscribe-thanks="{{ _('Thanks for subscribing!') }}"
+        data-subscribe-error="{{ _('Sorry, there was an error. Please refresh and try again.') }}"
         {% block string_data %}{% endblock %}>
     </div>
 
@@ -86,73 +88,68 @@
       {% block content %}{% endblock %}
 
       {% block newsletter %}
-        <section id="newsletter" class="section">
-          <div class="contain">
+        {# Email subscriptions are only shown for English locales. #}
+        {% if LANG.startswith('en') %}
+          <section id="newsletter" class="section">
+            <div class="contain">
 
-            <form id="newsletter-form" method="POST" action="#">
-              <h3 class="col">{{ _('Get Firefox Affiliates News') }}</h3>
-              <ol>
-                <li class="col">
-                  <label for="newsletter-email">{{ _('Your email address') }}</label>
-                  <input type="email" id="newsletter-email" name="email" required aria-required="true">
+              <form id="newsletter-form" method="POST" action="{{ url('base.newsletter_subscribe') }}">
+                {{ csrf() }}
+                <h3 class="col">{{ _('Get Firefox Affiliates News') }}</h3>
+                <ol>
+                  <li class="col">
+                    {{ newsletter_form.email.label_tag(_('Your email address')) }}
+                    {{ newsletter_form.email }}
 
-                  <ul class="form-extra">
-                    <li>
-                      <label for="newsletter-lang">{{ _('Language') }}</label>
-                      <select id="newsletter-lang" name="language">
-                        {# L10n: This acts as a placeholder/label for a form selection #}
-                        <option selected value="">{{ _('-- select --') }}</option>
-                        {# TODO: Make this list dynamic and, you know, real. #}
-                        <option value="en-US">English (US)</option>
-                        <option value="es-ES">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="tlh">tlhIngan Hol</option>
-                      </select>
-                    </li>
-                    <li>
-                      <fieldset class="inline">
-                        <legend>{{ _('Format') }}</legend>
-                        <ul>
-                          <li>
-                            <label for="newsletter-format-text" class="check">
-                              <input type="radio" name="format" id="newsletter-format-text" value="text">
-                              {{ _('Text') }}
-                            </label>
-                          </li>
-                          <li>
-                            <label for="newsletter-format-html" class="check">
-                              <input type="radio" name="format" id="newsletter-format-html" value="html">
-                              {{ _('HTML') }}
-                            </label>
-                          </li>
-                        </ul>
-                      </fieldset>
-                    </li>
-                    <li>
-                      <label for="newsletter-privacy" class="check form-privacy">
-                        <input type="checkbox" name="privacy" id="newsletter-privacy" required aria-required="true">
-                        <span class="title">
-                          {{ _('I’m okay with Mozilla handling my info as explained in <a href="%s">this Privacy Policy</a>')|format('https://www.mozilla.org/privacy/') }}
-                        </span>
-                      </label>
-                    </li>
-                  </ul>
-                </li>
+                    <ul class="form-extra">
+                      <li>
+                        {{ newsletter_form.country.label_tag(_('Country')) }}
+                        {{ newsletter_form.country }}
+                      </li>
+                      <li>
+                        <fieldset class="inline">
+                          <legend>{{ _('Format') }}</legend>
+                          <ul>
+                            <li>
+                              <label for="newsletter-format-text" class="check">
+                                <input type="radio" name="{{ newsletter_form.format.html_name }}" id="newsletter-format-text" value="text">
+                                {{ _('Text') }}
+                              </label>
+                            </li>
+                            <li>
+                              <label for="newsletter-format-html" class="check">
+                                <input type="radio" name="{{ newsletter_form.format.html_name }}" id="newsletter-format-html" value="html" checked>
+                                {{ _('HTML') }}
+                              </label>
+                            </li>
+                          </ul>
+                        </fieldset>
+                      </li>
+                      <li>
+                        <label for="newsletter-privacy" class="check form-privacy">
+                          <input type="checkbox" name="{{ newsletter_form.privacy_policy_agree.html_name }}" id="newsletter-privacy" required aria-required="true">
+                          <span class="title">
+                            {{ _('I’m okay with Mozilla handling my info as explained in <a href="%s">this Privacy Policy</a>')|format('https://www.mozilla.org/privacy/') }}
+                          </span>
+                        </label>
+                      </li>
+                    </ul>
+                  </li>
 
-                <li class="col form-submit">
-                  <button type="submit" class="button secondary">{{ _('Sign me up!') }}</button>
-                </li>
-              </ol>
+                  <li class="col form-submit">
+                    <button type="submit" class="button secondary">{{ _('Sign me up!') }}</button>
+                  </li>
+                </ol>
 
-              {# TODO: On successful submit, hide the form list and show the thanks message. #}
-              <div class="notice" id="newsletter-thanks">
-                <p>{{ _('Thanks for subscribing!') }}</p>
-              </div>
+                <div class="notice" id="newsletter-message">
+                  <p></p>
+                </div>
 
-            </form>
+              </form>
 
-          </div>
-        </section>
+            </div>
+          </section>
+        {% endif %}
       {% endblock %}
 
       {% block site_footer %}

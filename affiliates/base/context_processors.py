@@ -3,12 +3,16 @@ from django.utils.translation import get_language
 
 from babel.dates import get_month_names
 
+from affiliates.base.forms import NewsletterSubscriptionForm
 from affiliates.base.utils import current_locale
 
 
 def common(request):
     """Adds commonly-needed settings across the site."""
-    return {'FACEBOOK_APP_URL': settings.FACEBOOK_APP_URL}
+    return {
+        'FACEBOOK_APP_URL': settings.FACEBOOK_APP_URL,
+        'newsletter_form': NewsletterSubscriptionForm(),
+    }
 
 
 def l10n(request):

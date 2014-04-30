@@ -2,9 +2,10 @@ from datetime import date
 
 from django.test.client import RequestFactory
 
+import basket
 from funfactory.urlresolvers import reverse
 from mock import ANY, Mock, patch
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
 from affiliates.base import views
 from affiliates.base.tests import aware_datetime, NewsItemFactory, TestCase
@@ -155,3 +156,49 @@ class DashboardTests(TestCase):
             'milestones': ANY,
             'links': ANY,
         })
+
+
+class NewsletterSubscribeTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+        patcher = patch('affiliates.base.views.basket.subscribe')
+        self.addCleanup(patcher.stop)
+        self.subscribe = patcher.start()
+
+    def test_invalid_form_returns_success(self):
+        """Test that even if the form is invalid, return a 200 OK."""
+        request = self.factory.post('/', {'country': 'does.not.exist'})
+        response = views.newsletter_subscribe(request)
+        eq_(response.status_code, 200)
+        ok_(not self.subscribe.called)
+
+    def test_valid_form_call_basket(self):
+        """If the form is valid, call basket with the proper arguments."""
+        request = self.factory.post('/', {
+            'email': 'test@example.com',
+            'country': 'us',
+            'format': 'text',
+            'privacy_policy_agree': True
+        })
+        response = views.newsletter_subscribe(request)
+        eq_(response.status_code, 200)
+        self.subscribe.assert_called_with('test@example.com', 'affiliates', format='text',
+                                          country='us', source_url=ANY)
+
+    def test_basket_error_log(self):
+        """If basket throws an exception, log it and return a 500."""
+        self.subscribe.side_effect = basket.BasketException
+        request = self.factory.post('/', {
+            'email': 'test@example.com',
+            'country': 'us',
+            'format': 'text',
+            'privacy_policy_agree': True
+        })
+        with patch('affiliates.base.views.log') as mock_log:
+            response = views.newsletter_subscribe(request)
+
+        eq_(response.status_code, 500)
+        self.subscribe.assert_called_with('test@example.com', 'affiliates', format='text',
+                                          country='us', source_url=ANY)
+        ok_(mock_log.error.called)

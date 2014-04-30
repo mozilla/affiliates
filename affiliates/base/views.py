@@ -2,14 +2,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
 from django.views.defaults import page_not_found, server_error
 
+import basket
+import commonware
 from commonware.response.decorators import xframe_allow
 
+from affiliates.base.forms import NewsletterSubscriptionForm
+from affiliates.base.http import JSONResponse
 from affiliates.base.milestones import MilestoneDisplay
 from affiliates.base.models import NewsItem
 from affiliates.facebook.utils import in_facebook_app
 from affiliates.links.models import DataPoint, Link
+
+
+log = commonware.log.getLogger('a.facebook')
 
 
 def home(request):
@@ -42,6 +50,22 @@ def dashboard(request):
         'milestones': MilestoneDisplay(request.user),
         'links': request.user.link_set.order_by('-created'),
     })
+
+
+@require_POST
+def newsletter_subscribe(request):
+    form = NewsletterSubscriptionForm(request.POST)
+    if form.is_valid():
+        data = form.cleaned_data
+        try:
+            basket.subscribe(data['email'], 'affiliates',
+                             format=data['format'], country=data['country'],
+                             source_url=request.build_absolute_uri())
+        except basket.BasketException as e:
+            log.error('Error subscribing email {0} to mailing list: {1}'.format(data['email'], e))
+            return JSONResponse({'error': 'basket_error'}, status=500)
+
+    return JSONResponse({'success': 'success'})
 
 
 @xframe_allow

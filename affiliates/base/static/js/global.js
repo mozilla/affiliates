@@ -173,18 +173,32 @@
         affiliates.createModal($origin, content);
     });
 
+
+    // Newsletter form.
+    var $newsletterForm = $('#newsletter-form');
+    var $newsletterFormMessage = $('#newsletter-message');
+
+    function showFormMessage(msg) {
+        $newsletterForm.find('ol').slideUp(function() {
+            $newsletterFormMessage.find('p').text(msg);
+            $newsletterFormMessage.slideDown();
+        });
+    }
+
     // Show extra fields
-    $('#newsletter-email').on('focus', function() {
-        $('#newsletter .form-extra').slideDown();
+    $newsletterForm.find('#id_email').on('focus', function() {
+        $newsletterForm.find('.form-extra').slideDown();
     });
 
-    // Show thanks message on subscription
-    // TODO: Make this happen on successful submit.
-    // I'm using slideUp/Down so the wrapper changing size is less janky than it would be with fadeOut/In or hide/show
-    $('#newsletter-form button').on('click', function(e) {
+    // Process form submission.
+    $newsletterForm.on('submit', function(e) {
         e.preventDefault();
-        $('#newsletter-form ol').slideUp(function(){
-            $('#newsletter-thanks').slideDown();
+
+        var jqXHR = $.post($newsletterForm.attr('action'), $newsletterForm.serialize());
+        jqXHR.done(function() {
+            showFormMessage(affiliates.trans('subscribeThanks'));
+        }).fail(function() {
+            showFormMessage(affiliates.trans('subscribeError'));
         });
     });
 
