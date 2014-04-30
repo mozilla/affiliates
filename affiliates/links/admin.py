@@ -1,10 +1,8 @@
-from django.contrib import admin
-
-from affiliates.base.admin import admin_site
+from affiliates.base.admin import admin_site, BaseModelAdmin
 from affiliates.links.models import Link
 
 
-class LinkAdmin(admin.ModelAdmin):
+class LinkAdmin(BaseModelAdmin):
     list_display = ('banner', 'banner_type', 'banner_variation', 'user_name', 'user_email',
                     'link_clicks', 'created')
     search_fields = ('id', 'user__userprofile__display_name', 'user__email')
