@@ -128,6 +128,19 @@
             } else {
                 return '/static/img/banner-blank.png';
             }
+        },
+
+        /**
+         * Href to the currently selected variation's update image. Only used
+         * for upgrade banners.
+         */
+        upgradePreviewSrc: function() {
+            var pk = this.variation();
+            if (pk !== '') {
+                return this.variations[pk].upgrade_image;
+            } else {
+                return '/static/img/banner-blank.png';
+            }
         }
     };
 

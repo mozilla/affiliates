@@ -76,15 +76,23 @@ class CustomizeImageBannerView(CustomizeBannerView):
         # JSON object containing data on available variations.
         variations = {}
         for variation in self.banner.variation_set.all():
-            variations[variation.pk] = {
-                'locale': locale_to_native(variation.locale),
-                'color': variation.color,
-                'size': variation.size,  # <- Why we can't use serialize.
-                'image': variation.image.url
-            }
+            variations[variation.pk] = self.variation_json_dict(variation)
         context['variations_json'] = json.dumps(variations)
 
         return super(CustomizeImageBannerView, self).get_context_data(**context)
+
+    def variation_json_dict(self, variation):
+        """
+        Convert a variation to a dict suitable for turning into JSON
+        used by the customization frontend.
+        """
+        # Useful for subclasses that need extra info.
+        return {
+            'locale': locale_to_native(variation.locale),
+            'color': variation.color,
+            'size': variation.size,  # <- Why we can't use serialize.
+            'image': variation.image.url
+        }
 
 
 class CustomizeTextBannerView(CustomizeBannerView):
@@ -102,3 +110,11 @@ class CustomizeTextBannerView(CustomizeBannerView):
 
 class CustomizeFirefoxUpgradeBannerView(CustomizeImageBannerView):
     banner_class = FirefoxUpgradeBanner
+    template_name = 'banners/generator/customize/upgrade_banner.html'
+
+    def variation_json_dict(self, variation):
+        # Add the upgrade image URL to the JSON.
+        variation_dict = (super(CustomizeFirefoxUpgradeBannerView, self)
+                          .variation_json_dict(variation))
+        variation_dict['upgrade_image'] = variation.upgrade_image.url
+        return variation_dict

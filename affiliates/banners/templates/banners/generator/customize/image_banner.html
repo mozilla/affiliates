@@ -57,9 +57,11 @@
             </li>
           </ul>
 
-          <figure class="banner-preview">
-            <img class="preview" data-rv-src="previewSrc < selectedColor" src="{{ static('img/banner-blank.png') }}">
-          </figure>
+          {% block preview %}
+            <figure class="banner-preview">
+              <img class="preview" data-rv-src="previewSrc < selectedColor" src="{{ static('img/banner-blank.png') }}">
+            </figure>
+          {% endblock %}
 
           <p class="continue">
             <input type="hidden" name="{{ form.variation.html_name }}" data-rv-value="variation < selectedColor">
