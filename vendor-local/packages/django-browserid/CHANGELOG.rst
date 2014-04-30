@@ -3,6 +3,42 @@
 History
 -------
 
+0.10.1 (2014-05-02)
++++++++++++++++++++
+- Add ``browserid_info`` helper back in. The previous method of fetching the
+  Persona popup customization via AJAX caused browsers to trigger popup
+  warnings when users attempted to log in, so we switched back to the old
+  method of adding the info tag to pages.
+
+
+0.10 (2014-04-15)
++++++++++++++++++
+- Massive documentation update, including upgrade instructions for older
+  versions.
+
+- Support and test on Python 3.2 and 3.3, and Django 1.6!
+
+- Disable automatic login and logout coming from Persona. This also fixes
+  logins being triggered in all open tabs on your site.
+
+- Replace in-page form for trigger logins with AJAX calls. Removes need for
+  {% browserid_info %} template tag.
+
+- Drop ``six`` from requirements.
+
+- Replace ``SITE_URL`` setting with ``BROWSERID_AUDIENCES`` and make it
+  optional when ``DEBUG`` is True.
+
+- Add support for logging-in to the admin interface with Persona.
+
+- Remove need to set custom context processor.
+
+- Replace ``verify`` function with the Verifier classes like
+  ``RemoteVerifier``.
+
+- And more!
+
+
 0.9 (2013-08-25)
 ++++++++++++++++
 - Add ``BROWSERID_VERIFY_CLASS`` to make it easier to customize the verification view.
@@ -36,7 +72,7 @@ History
 ++++++++++++++++
 
 - #97: Add BrowserIDException that is raised by verify when there are issues
-  connecting to the remote verification servie. Update the Verify view to handle
+  connecting to the remote verification service. Update the Verify view to handle
   these errors.
 
 - #125: Prevent the Verify view from running reverse on user input and add check

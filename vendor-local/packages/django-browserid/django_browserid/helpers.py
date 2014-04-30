@@ -10,6 +10,29 @@ from django.utils.safestring import mark_safe
 from django.utils.six import string_types
 
 from django_browserid.compat import jingo_register, reverse
+from django_browserid.util import LazyEncoder
+
+
+@jingo_register.function
+def browserid_info():
+    """
+    Output the HTML for the info tag, which contains the arguments for
+    navigator.id.request from the BROWSERID_REQUEST_ARGS setting. Should
+    be called once at the top of the page just below the <body> tag.
+    """
+    # Force request_args to be a dictionary, in case it is lazily generated.
+    request_args = dict(getattr(settings, 'BROWSERID_REQUEST_ARGS', {}))
+
+    info = json.dumps({
+        'loginUrl': reverse('browserid.login'),
+        'logoutUrl': reverse('browserid.logout'),
+        'csrfUrl': reverse('browserid.csrf'),
+        'requestArgs': request_args,
+    }, cls=LazyEncoder)
+
+    return render_to_string('browserid/info.html', {
+        'info': info,
+    })
 
 
 def browserid_button(text=None, next=None, link_class=None, attrs=None, href='#'):
@@ -48,8 +71,8 @@ def browserid_button(text=None, next=None, link_class=None, attrs=None, href='#'
 
 
 @jingo_register.function
-def browserid_login(text='Sign in', color=None, next=None, link_class='browserid-login',
-                    attrs=None, fallback_href='#'):
+def browserid_login(text='Sign in', color=None, next=None,
+                    link_class='browserid-login persona-button', attrs=None, fallback_href='#'):
     """
     Output the HTML for a BrowserID login link.
 
@@ -69,8 +92,7 @@ def browserid_login(text='Sign in', color=None, next=None, link_class='browserid
         the LOGIN_REDIRECT_URL setting will be used.
 
     :param link_class:
-        CSS class for the link. `browserid-login` will be added to this
-        automatically.
+        CSS class for the link. Defaults to `browserid-login persona-button`.
 
     :param attrs:
         Dictionary of attributes to add to the link. Values here override those
@@ -83,11 +105,12 @@ def browserid_login(text='Sign in', color=None, next=None, link_class='browserid
         JavaScript, the login link will bring them to this page, which can be
         used as a non-JavaScript login fallback.
     """
-    if 'browserid-login' not in link_class:
-        link_class += ' browserid-login'
-    next = next or getattr(settings, 'LOGIN_REDIRECT_URL', '/')
     if color:
-        link_class += ' persona-button {0}'.format(color)
+        if 'persona-button' not in link_class:
+            link_class += ' persona-button {0}'.format(color)
+        else:
+            link_class += ' ' + color
+    next = next or getattr(settings, 'LOGIN_REDIRECT_URL', '/')
     return browserid_button(text, next, link_class, attrs, fallback_href)
 
 
@@ -101,8 +124,7 @@ def browserid_logout(text='Sign out', next=None, link_class='browserid-logout', 
         localized.
 
     :param link_class:
-        CSS class for the link. `browserid-logout` will be added to this
-        automatically.
+        CSS class for the link. Defaults to `browserid-logout`.
 
     :param attrs:
         Dictionary of attributes to add to the link. Values here override those
@@ -110,8 +132,6 @@ def browserid_logout(text='Sign out', next=None, link_class='browserid-logout', 
 
         If given a string, it is parsed as JSON and is expected to be an object.
     """
-    if 'browserid-logout' not in link_class:
-        link_class += ' browserid-logout'
     next = next or getattr(settings, 'LOGOUT_REDIRECT_URL', '/')
     return browserid_button(text, next, link_class, attrs, reverse('browserid.logout'))
 
@@ -130,6 +150,7 @@ def browserid_js(include_shim=True):
     files = []
     if include_shim:
         files.append(getattr(settings, 'BROWSERID_SHIM', 'https://login.persona.org/include.js'))
+    files.append(staticfiles_storage.url('browserid/api.js'))
     files.append(staticfiles_storage.url('browserid/browserid.js'))
 
     tags = ['<script type="text/javascript" src="{0}"></script>'.format(path)

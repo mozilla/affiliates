@@ -7,7 +7,6 @@ packages/httplib2
 packages/jingo-minify
 packages/pytz
 packages/requests
-packages/six
 src/basket-client
 src/django-cache-machine
 src/django-cronjobs

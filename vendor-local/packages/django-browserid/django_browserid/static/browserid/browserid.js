@@ -2,92 +2,52 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-(function($, window) {
+;(function($, window) {
     'use strict';
 
-    // State? Ewwwwww.
-    var logoutDeferred = null; // Deferred for post-logout actions.
-    var requestDeferred = null; // Deferred for post-request actions.
-
-    // Fetch browseridInfo via AJAX.
-    var browseridInfo = $.get('/browserid/info/');
-
-    // Public API
-    window.django_browserid = {
-        /**
-         * Retrieve an assertion and use it to log the user into your site.
-         * @param {object} requestArgs Options to pass to navigator.id.request.
-         * @return {jQuery.Deferred} Deferred that resolves once the user has
-         *                           been logged in.
-         */
-        login: function login(requestArgs) {
-            return django_browserid.getAssertion(requestArgs).then(function(assertion) {
-                return django_browserid.verifyAssertion(assertion);
-            });
-        },
-
-        /**
-         * Log the user out of your site.
-         * @return {jQuery.Deferred} Deferred that resolves once the user has
-         *                           been logged out.
-         */
-        logout: function logout() {
-            return browseridInfo.then(function(info) {
-                logoutDeferred = $.Deferred();
-                navigator.id.logout();
-
-                return logoutDeferred.then(function() {
-                    return $.ajax(info.logoutUrl, {
-                        type: 'POST',
-                        headers: {'X-CSRFToken': info.csrfToken},
-                    });
-                });
-            });
-        },
-
-        /**
-         * Retrieve an assertion via BrowserID.
-         * @param {object} requestArgs Options to pass to navigator.id.request.
-         * @return {jQuery.Deferred} Deferred that resolves with the assertion
-         *                           once it is retrieved.
-         */
-        getAssertion: function getAssertion(requestArgs) {
-            return browseridInfo.then(function(info) {
-                requestArgs = $.extend({}, info.requestArgs, requestArgs);
-
-                requestDeferred = $.Deferred();
-                navigator.id.request(requestArgs);
-                return requestDeferred;
-            });
-        },
-
-        /**
-         * Verify that the given assertion is valid, and log the user in.
-         * @param {string} Assertion to verify.
-         * @return {jQuery.Deferred} Deferred that resolves with the login view
-         *                           response once login is complete.
-         */
-        verifyAssertion: function verifyAssertion(assertion) {
-            return browseridInfo.then(function(info) {
-                return $.ajax(info.loginUrl, {
-                    type: 'POST',
-                    data: {assertion: assertion},
-                    headers: {'X-CSRFToken': info.csrfToken},
-                });
+    // Some platforms (Windows Phone and Chrome for iOS thusfar) require Persona
+    // to use redirects instead of popups. Thus, while I'd like to ignore all
+    // onlogin calls that don't happen after the user clicks a login link, we
+    // have to for login to work on those platforms.
+    // Solution? Store state in sessionStorage, which persists per-tab. Then we
+    // can still support user-triggered logins across the redirect flow without
+    // having other open tabs trigger auto-login.
+    function onAutoLogin(assertion) {
+        if (window.sessionStorage.browseridLoginAttempt === 'true') {
+            window.sessionStorage.browseridLoginAttempt = 'false';
+            django_browserid.verifyAssertion(assertion).then(function(verifyResult) {
+                window.location = verifyResult.redirect;
             });
         }
-    };
+    }
+
+    /**
+     * Compare the given URL to the current page's URL to see if they share the
+     * same origin.
+     */
+    function matchesCurrentOrigin(url) {
+        var a = document.createElement('a');
+        a.href = url;
+        var hostMatch = !a.host || window.location.host === a.host;
+        var protocolMatch = !a.protocol || window.location.protocol === a.protocol;
+        return hostMatch && protocolMatch;
+    }
 
     $(function() {
-        var loginFailed = location.search.indexOf('bid_login_failed=1') !== -1;
+        django_browserid.registerWatchHandlers(onAutoLogin);
 
         // Trigger login whenever a login link is clicked, and redirect the user
         // once it succeeds.
         $(document).on('click', '.browserid-login', function(e) {
             e.preventDefault();
             var $link = $(this);
+            window.sessionStorage.browseridLoginAttempt = 'true';
             django_browserid.login().then(function(verifyResult) {
-                window.location = $link.data('next') || verifyResult.redirect;
+                window.sessionStorage.browseridLoginAttempt = 'false';
+                var redirect = $link.data('next') || verifyResult.redirect;
+                if (matchesCurrentOrigin(redirect)) {
+                    window.location = redirect;
+                }
             });
         });
 
@@ -97,29 +57,9 @@
             e.preventDefault();
             var $link = $(this);
             django_browserid.logout().then(function(logoutResult) {
-                window.location = $link.attr('next') || logoutResult.redirect;
-            });
-        });
-
-        browseridInfo.then(function(info) {
-            navigator.id.watch({
-                loggedInUser: info.userEmail,
-                onlogin: function(assertion) {
-                    // Avoid auto-login on failure.
-                    if (loginFailed) {
-                        navigator.id.logout();
-                        loginFailed = false;
-                        return;
-                    }
-
-                    if (requestDeferred) {
-                        requestDeferred.resolve(assertion);
-                    }
-                },
-                onlogout: function() {
-                    if (logoutDeferred) {
-                        logoutDeferred.resolve();
-                    }
+                var redirect = $link.attr('next') || logoutResult.redirect;
+                if (matchesCurrentOrigin(redirect)) {
+                    window.location = redirect;
                 }
             });
         });

@@ -5,12 +5,10 @@ import logging
 
 from django.conf import settings
 from django.contrib import auth
-from django.core.urlresolvers import NoReverseMatch
+from django.http import HttpResponse
 from django.template import RequestContext
 from django.views.generic import View
 
-from django_browserid.auth import BrowserIDBackend
-from django_browserid.compat import reverse
 from django_browserid.base import BrowserIDException, sanity_checks
 from django_browserid.http import JSONResponse
 
@@ -60,9 +58,7 @@ class Verify(JSONView):
 
     def login_failure(self, error=None):
         """
-        Redirect the user to a login-failed page, and add the
-        ``bid_login_failed`` parameter to the URL to signify that login
-        failed to the JavaScript.
+        Redirect the user to a login-failed page.
 
         :param error:
             If login failed due to an error raised during verification,
@@ -72,22 +68,7 @@ class Verify(JSONView):
         if error:
             logger.error(error)
 
-        failure_url = self.failure_url
-
-        # If this url is a view name, we need to reverse it first to
-        # get the url.
-        try:
-            failure_url = reverse(failure_url)
-        except NoReverseMatch:
-            pass
-
-        # Append "?bid_login_failed=1" to the URL to notify the
-        # JavaScript that the login failed.
-        if not failure_url.endswith('?'):
-            failure_url += '?' if not '?' in failure_url else '&'
-        failure_url += 'bid_login_failed=1'
-
-        return JSONResponse({'redirect': failure_url}, status=403)
+        return JSONResponse({'redirect': self.failure_url}, status=403)
 
     def post(self, *args, **kwargs):
         """
@@ -116,21 +97,9 @@ class Verify(JSONView):
         return super(Verify, self).dispatch(request, *args, **kwargs)
 
 
-class Info(JSONView):
-    """Fetch backend-defined data used by the frontend JavaScript."""
+class CsrfToken(JSONView):
+    """Fetch a CSRF token for the frontend JavaScript."""
     def get(self, request):
-        request_args = dict(getattr(settings, 'BROWSERID_REQUEST_ARGS', {}))
-
-        # Only pass an email to the JavaScript if the current user was
-        # authed with our auth backend.
-        backend_name = self.request.session.get(auth.BACKEND_SESSION_KEY)
-        backend = auth.load_backend(backend_name) if backend_name else None
-
-        if isinstance(backend, BrowserIDBackend):
-            email = getattr(request.user, 'email', '')
-        else:
-            email = ''
-
         # Different CSRF libraries (namely session_csrf) store the CSRF
         # token in different places. The only way to retrieve the token
         # that works with both the built-in CSRF and session_csrf is to
@@ -139,13 +108,7 @@ class Info(JSONView):
         context = RequestContext(request)
         csrf_token = context.get('csrf_token', None)
 
-        return JSONResponse({
-            'userEmail': email,
-            'loginUrl': reverse('browserid.login'),
-            'logoutUrl': reverse('browserid.logout'),
-            'requestArgs': request_args,
-            'csrfToken': csrf_token,
-        })
+        return HttpResponse(csrf_token)
 
 
 class Logout(JSONView):
