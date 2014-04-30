@@ -36,4 +36,5 @@ class UserAdmin(auth.admin.UserAdmin):
     search_fields = ['email', 'userprofile__display_name', 'username']
     inlines = [UserProfileInline, LinkInline]
 
+
 admin_site.register(auth.models.User, UserAdmin)
