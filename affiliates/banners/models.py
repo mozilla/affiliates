@@ -158,7 +158,11 @@ class ImageVariation(BannerVariation):
 
     @property
     def size(self):
-        return '{width} &times; {height}'.format(width=self.image.width, height=self.image.height)
+        try:
+            return '{width} &times; {height}'.format(width=self.image.width,
+                                                     height=self.image.height)
+        except IOError:
+            return 'Unknown'
 
     def get_media_subdirectory(self):
         """
