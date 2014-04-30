@@ -35,4 +35,7 @@ Header always append Vary "User-Agent" env=3_6_banner
 RewriteCond %{ENV:3_6_banner} "yes"
 RewriteCond %%{ENV:using_firefox} "1"
 RewriteCond %%{ENV:out_of_date} "1"
-RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ static_banners/$1.upgrade.$2
+RewriteRule ^uploads/banners/([0-9a-f]+)\.(jpg|png)$ /static/banners/$1.upgrade.$2 [L]
+
+RewriteCond %{ENV:3_6_banner} "yes"
+RewriteRule ^uploads/banners/([0-9a-f]+\.(jpg|png))$ /static/banners/$1 [L]

@@ -24,3 +24,4 @@ locale
 venv/*
 ga_key.p12
 static/*
+media/*
