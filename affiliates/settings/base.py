@@ -157,11 +157,18 @@ JINGO_EXCLUDE_APPS = [
     'registration',
 ]
 
-# Activate statsd patches to time database and cache hits.
-STATSD_PATCHES = [
-    'django_statsd.patches.db',
-    'django_statsd.patches.cache',
-]
+# Tells the extract script what files to look for L10n in and what function
+# handles the extraction. The Tower library expects this.
+DOMAIN_METHODS = {
+    'messages': [
+        ('**/affiliates/**.py',
+            'tower.management.commands.extract.extract_tower_python'),
+        ('**/affiliates/**/templates/**.html',
+            'tower.management.commands.extract.extract_tower_template'),
+        ('**/affiliates/**/templates/**.ltxt',
+            'tower.management.commands.extract.extract_tower_template'),
+    ],
+}
 
 # CSP Config
 CSP_EXCLUDE_URL_PREFIXES = ('/admin',)

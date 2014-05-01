@@ -3,6 +3,8 @@
   <ol>
     <li class="step1">
       {% if step == 1 %}
+        {# L10n: Used in a progress bar showing the 4 steps in the link generation process. #}
+        {# L10n: The "Category" step is when you pick a category to see a list of banners within it. #}
         <strong>{{ _('Category') }}</strong>
       {% else %}
         <a href="{{ url('banners.generator.categories') }}">{{ _('Category') }}</a>
@@ -10,6 +12,8 @@
     </li>
     <li class="step2">
       {% if step == 2 %}
+        {# L10n: Used in a progress bar showing the 4 steps in the link generation process. #}
+        {# L10n: The "Choose" step is when you choose a banner to use. #}
         <strong>{{ _('Choose') }}</strong>
       {% elif category %}
         <a href="{{ url('banners.generator.banners', category.pk) }}">{{ _('Choose') }}</a>
@@ -19,6 +23,8 @@
     </li>
     <li class="step3">
       {% if step == 3 %}
+        {# L10n: Used in a progress bar showing the 4 steps in the link generation process. #}
+        {# L10n: The "Configure" step is when you select a specific variation of a banner. #}
         <strong>{{ _('Configure') }}</strong>
       {% elif banner %}
         <a href="{{ banner.get_customize_url() }}">{{ _('Configure') }}</a>
@@ -28,6 +34,8 @@
     </li>
     <li class="step4">
       {% if step == 4 %}
+        {# L10n: Used in a progress bar showing the 4 steps in the link generation process. #}
+        {# L10n: The "Embed" step is when you copy HTML code to put in your webpage to embed the banner. #}
         <strong>{{ _('Embed') }}</strong>
       {% else %}
         <span>{{ _('Embed') }}</span>
