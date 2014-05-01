@@ -1,13 +1,15 @@
 {% extends 'banners/generator/customize/image_banner.html' %}
 
 {% block preview %}
-  <figure class="banner-preview">
+<div class="upgrade-banner">
+  <figure class="banner-preview general">
     <img class="preview" data-rv-src="previewSrc < selectedColor" src="{{ static('img/banner-blank.png') }}">
     <figcaption>{{ _('Up to date Firefox and other browsers') }}</figcaption>
   </figure>
 
-  <figure class="banner-preview">
+  <figure class="banner-preview upgrade">
     <img class="preview" data-rv-src="upgradePreviewSrc < selectedColor" src="{{ static('img/banner-blank.png') }}">
     <figcaption>{{ _('Out of date Firefox') }}</figcaption>
   </figure>
+</div>
 {% endblock %}

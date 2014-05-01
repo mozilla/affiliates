@@ -114,6 +114,15 @@
     text-decoration: underline;
 }
 
+.upgrade-banner {
+    width: $width-mobile;
+    margin: 0 auto 1.5em;
+
+    figcaption {
+        margin: 1em 0 0;
+    }
+}
+
 .continue {
     margin: 0 0 1.5em;
 
@@ -267,6 +276,10 @@ dl.details {
         clear: left;
     }
 
+    .upgrade-banner {
+        width: $width-mobile-wide;
+    }
+
 }
 
 
@@ -329,6 +342,17 @@ dl.details {
 
     .banner-preview {
         width: $width-tablet;
+    }
+
+    .upgrade-banner {
+        width: $width-tablet;
+        clearfix();
+
+        .banner-preview {
+            width: 48%;
+            float: left;
+            margin: 0 .95% 1em;
+        }
     }
 
 }
