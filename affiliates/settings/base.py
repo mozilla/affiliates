@@ -226,7 +226,6 @@ MINIFY_BUNDLES = {
         # Mothership
         'base': (
             'css/base.styl',
-            'browserid/persona-buttons.css',
         ),
         'make-banner': (
             'css/make-banner.styl',
@@ -239,7 +238,6 @@ MINIFY_BUNDLES = {
         ),
         'oldIE': (
             'css/oldIE.styl',
-            'browserid/persona-buttons.css',
         ),
         'profile': (
             'css/profile.styl',
@@ -257,6 +255,7 @@ MINIFY_BUNDLES = {
             'js/libs/jquery-2.1.0.min.js',
             'js/libs/jquery.unveil.min.js',
             'js/global.js',
+            'browserid/api.js',
             'browserid/browserid.js',
         ),
         'customize_image_banner': (
