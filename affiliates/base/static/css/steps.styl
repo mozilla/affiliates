@@ -1,0 +1,99 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// How it works, in three steps
+
+.steps {
+    li {
+        padding: 0 0 20px 80px;
+        position: relative;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0 0 .75em;
+
+        &:before {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 80px;
+            display: block;
+            font-family: 'Font Awesome';
+            font-size: 70px;
+            font-weight: normal;
+            color: darken($medium-gray, 15%);
+            text-shadow: 0 0 3px rgba(255, 255, 255, .25);
+        }
+    }
+
+    .step-1 h3:before {
+        content: '\f0a6'; /* finger */
+    }
+
+    .step-2 h3:before {
+        content: '\f0c4'; /* scissors */
+    }
+
+    .step-3 h3:before {
+        content: '\f0c1'; /* link */
+    }
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Landscape mobile layout: 440px
+
+@media $media-query-mobile-wide {
+
+    .steps {
+        li {
+            padding-left: 100px;
+        }
+
+        h3:before {
+            width: 80px;
+            font-size: 80px;
+        }
+    }
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Tablet layout: 760px
+
+@media $media-query-tablet {
+
+    .steps {
+        li {
+            span_narrow(4);
+            padding: 140px 0 0;
+            text-align: center;
+        }
+
+        h3:before {
+            left: 0;
+            top: 10px;
+            width: 100%;
+            font-size: 100px;
+        }
+    }
+}
+
+
+
+//*----------------------------------------------------------------*/
+// @Desktop layout: 1000px
+
+@media $media-query-desktop {
+
+    .steps li {
+        span(4);
+    }
+
+}

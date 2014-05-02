@@ -44,8 +44,24 @@
           </ul>
         {% else %}
           <div class="notice">
-            <p>{{ _('You don‘t have any banners yet. Why not create one now?') }}</p>
+            <p>{{ _('You don’t have any banners yet. Why not create one now?') }}</p>
           </div>
+
+          <ol class="steps">
+            <li class="step-1">
+              <h3>{{ _('1. Pick a banner') }}</h3>
+              <p>{{ _('Choose from a number of designs that support Firefox and other Mozilla products.') }}</p>
+            </li>
+            <li class="step-2">
+              <h3>{{ _('2. Customize') }}</h3>
+              <p>{{ _('Select the size and color that suits your site. Banners and links are also available in over 30 languages.') }}</p>
+            </li>
+            <li class="step-3">
+              <h3>{{ _('3. Post to your site') }}</h3>
+              <p>{{ _('Copy and paste the HTML or text link into your site, email or wherever you’d like to share it.') }}</p>
+            </li>
+          </ol>
+
         {% endif %}
       </div>
     </section>

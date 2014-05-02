@@ -6,6 +6,7 @@
 // The home page
 
 @import 'lib.styl';
+@import 'steps.styl';
 
 #intro {
     {section-dark}
@@ -20,45 +21,6 @@
         min-width: 200px;
     }
 
-}
-
-#howitworks {
-    li {
-        padding: 0 0 20px 80px;
-        position: relative;
-    }
-
-    h3 {
-        font-size: 20px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin: 0 0 .75em;
-
-        &:before {
-            position: absolute;
-            top: -10px;
-            left: 0;
-            width: 80px;
-            display: block;
-            font-family: 'Font Awesome';
-            font-size: 70px;
-            font-weight: normal;
-            color: darken($medium-gray, 15%);
-            text-shadow: 0 0 3px rgba(255, 255, 255, .25);
-        }
-    }
-
-    .step-1 h3:before {
-        content: '\f0a6'; /* finger */
-    }
-
-    .step-2 h3:before {
-        content: '\f0c4'; /* scissors */
-    }
-
-    .step-3 h3:before {
-        content: '\f0c1'; /* link */
-    }
 }
 
 #rewards {
@@ -107,25 +69,6 @@
 
 
 //*----------------------------------------------------------------*/
-// @Landscape mobile layout: 440px
-
-@media $media-query-mobile-wide {
-
-    #howitworks {
-        li {
-            padding-left: 100px;
-        }
-
-        h3:before {
-            width: 80px;
-            font-size: 80px;
-        }
-    }
-}
-
-
-
-//*----------------------------------------------------------------*/
 // @Tablet layout: 760px
 
 @media $media-query-tablet {
@@ -137,7 +80,7 @@
                     linear-gradient(to top, rgba(85, 90, 95, .25) 0, rgba(85, 90, 95, 0) 15px),
                     linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 350px),
                     $medium-gray;
-        background-size: 720px 111px, auto, auto, auto, auto;
+        background-size: 940px 142px, auto, auto, auto, auto;
         padding-bottom: 80px;
 
         h1 {
@@ -146,21 +89,6 @@
 
         .button {
             font-size: 24px;
-        }
-    }
-
-    #howitworks {
-        li {
-            span_narrow(4);
-            padding: 140px 0 0;
-            text-align: center;
-        }
-
-        h3:before {
-            left: 0;
-            top: 10px;
-            width: 100%;
-            font-size: 100px;
         }
     }
 
@@ -202,11 +130,6 @@
             font-size: 60px;
         }
     }
-
-    #howitworks li {
-        span(4);
-    }
-
 
     #leaderboard .stats {
         width: $width-tablet;
