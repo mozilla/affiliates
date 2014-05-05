@@ -1,6 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
-from django.db import connections
+from django.db import connection
 
 from multidb.pinning import use_master
 
@@ -11,26 +11,28 @@ from affiliates.links.models import Link
 
 class Command(BaseCommand):
     help = ('Migrate link data from an Affiliates v1 database.')
-    args = ('[old_db_name]')
+    args = ('[old_table_prefix]')
 
     @use_master
-    def handle(self, old_db_name, *args, **kwargs):
-        cursor = connections[old_db_name].cursor()
+    def handle(self, old_table_prefix, *args, **kwargs):
+        cursor = connection.cursor()
 
         # Categories
         # Cannot use bulk_create due to django-mptt.
-        cursor.execute('SELECT id, name FROM badges_category')
+        cursor.execute('SELECT id, name FROM {0}badges_category'.format(old_table_prefix))
         for row in cursor.fetchall():
             Category.objects.create(id=row[0], name=row[1])
 
         subcategory_to_category = {}
-        cursor.execute('SELECT id, name, parent_id FROM badges_subcategory')
+        cursor.execute('SELECT id, name, parent_id FROM {0}badges_subcategory'
+                       .format(old_table_prefix))
         for row in cursor.fetchall():
             category = Category.objects.create(name=row[1], parent_id=row[2])
             subcategory_to_category[row[0]] = category.id
 
         # Banners
-        cursor.execute('SELECT subcategory_id, name, href, displayed, id FROM badges_badge')
+        cursor.execute('SELECT subcategory_id, name, href, displayed, id FROM {0}badges_badge'
+                       .format(old_table_prefix))
         banners = [
             ImageBanner(
                 id=row[4],
@@ -43,7 +45,8 @@ class Command(BaseCommand):
         ImageBanner.objects.bulk_create(banners, batch_size=1000)
 
         # Banner Images
-        cursor.execute('SELECT id, banner_id, color, locale, image FROM banners_bannerimage')
+        cursor.execute('SELECT id, banner_id, color, locale, image FROM {0}banners_bannerimage'
+                       .format(old_table_prefix))
         variations = [
             ImageBannerVariation(
                 id=row[0],
@@ -60,12 +63,12 @@ class Command(BaseCommand):
         cursor.execute("""SELECT
             badgeinstance.id, badgeinstance.user_id, badgeinstance.badge_id, badgeinstance.clicks,
             bannerinstance.image_id, badge.href, bannerimage.image, bannerimage.id
-        FROM badges_badgeinstance AS badgeinstance
-        LEFT JOIN banners_bannerinstance AS bannerinstance ON
+        FROM {0}badges_badgeinstance AS badgeinstance
+        LEFT JOIN {0}banners_bannerinstance AS bannerinstance ON
             bannerinstance.badgeinstance_ptr_id = badgeinstance.id
-        LEFT JOIN badges_badge AS badge ON badgeinstance.badge_id = badge.id
-        LEFT JOIN banners_bannerimage AS bannerimage ON bannerinstance.image_id = bannerimage.id
-        """)
+        LEFT JOIN {0}badges_badge AS badge ON badgeinstance.badge_id = badge.id
+        LEFT JOIN {0}banners_bannerimage AS bannerimage ON bannerinstance.image_id = bannerimage.id
+        """.format(old_table_prefix))
         links = [
             Link(
                 id=row[0],
