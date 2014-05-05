@@ -202,6 +202,7 @@ CSP_IMG_SRC = (
     'https://*.akamaihd.net',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
+    'https://pontoon.mozillalabs.com',
 )
 CSP_FONT_SRC = (
     '\'self\'',
