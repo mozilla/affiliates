@@ -23,8 +23,8 @@
       {% for category in categories %}
         <li class="category">
           <a href="{{ url('banners.generator.banners', category.pk) }}">
-            <b class="parent">{{ category.parent.name }}</b>
-            <strong class="name">{{ category.name }}</strong>
+            <b class="parent">{{ _(category.parent.name) }}</b>
+            <strong class="name">{{ _(category.name) }}</strong>
           </a>
         </li>
       {% endfor %}
