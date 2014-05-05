@@ -216,6 +216,7 @@ CSP_STYLE_SRC = (
     'http://*.mozilla.org',
     'https://*.mozilla.net',
     'http://*.mozilla.net',
+    'https://pontoon.mozillalabs.com',
 )
 CSP_OPTIONS = ('eval-script', 'inline-script')
 
