@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse_lazy
 
 from funfactory.settings_base import *
+from tower import ugettext_lazy as _lazy
 
 
 # Django Settings
@@ -134,6 +135,26 @@ LOGGING = {
 # django-browserid Config
 BROWSERID_DISABLE_SANITY_CHECKS = True
 LOGIN_REDIRECT_URL = '/'
+
+# Lazy-load request args since they depend on certain settings.
+def _request_args():
+    import urllib
+    from django.contrib.staticfiles import finders
+
+    args = {
+        'privacyPolicy': 'https://www.mozilla.org/privacy/',
+        'siteName': _lazy('Firefox Affiliates'),
+        'termsOfService': reverse_lazy('base.terms'),
+        'backgroundColor': '#6B7479',
+    }
+
+    logo_filename = finders.find('img/affiliates-shield-100.png')
+    if logo_filename:
+        base64_logo = urllib.quote(open(logo_filename, 'rb').read().encode('base64'))
+        args['siteLogo'] = 'data:image/png;base64,' + base64_logo
+
+    return args
+BROWSERID_REQUEST_ARGS = lazy(_request_args, dict)()
 
 # Paths that do not need a locale
 SUPPORTED_NONLOCALES += ['referral', 'admin', 'browserid', 'fb']
