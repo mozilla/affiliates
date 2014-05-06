@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ LANG }}" dir="{{ DIR }}" class="{{ LANG }} {{ DIR }}">
+<html lang="{{ LANG }}" dir="{{ DIR }}" class="{{ LANG }} {{ DIR }}" data-ga-code="{{ settings.GA_ACCOUNT_CODE }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0">
@@ -35,6 +35,10 @@
     <!--<![endif]-->
 
     <link rel="stylesheet" type="text/css" href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css">
+
+    {% block google_analytics %}
+      {{ js('google_analytics') }}
+    {% endblock %}
   </head>
   <body id="{% block body_id %}{% endblock %}" class="no-js {% block body_class %}{% endblock %}">
     <div id="strings"
