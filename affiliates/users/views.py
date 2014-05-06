@@ -1,10 +1,10 @@
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.views.generic import UpdateView
 
 from tower import ugettext as _
 
 from affiliates.base.milestones import MilestoneDisplay
+from affiliates.base.utils import redirect
 from affiliates.users.forms import EditProfileForm
 from affiliates.users.models import UserProfile
 

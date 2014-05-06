@@ -1,6 +1,5 @@
-from django.core.urlresolvers import reverse_lazy
-
 from funfactory.settings_base import *
+from funfactory.urlresolvers import reverse_lazy
 from tower import ugettext_lazy as _lazy
 
 
@@ -134,7 +133,7 @@ LOGGING = {
 ##############################################################################
 # django-browserid Config
 BROWSERID_DISABLE_SANITY_CHECKS = True
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = reverse_lazy('base.home')
 
 # Lazy-load request args since they depend on certain settings.
 def _request_args():

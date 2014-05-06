@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Sum
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.defaults import page_not_found, server_error
 
@@ -13,6 +13,7 @@ from affiliates.base.forms import NewsletterSubscriptionForm
 from affiliates.base.http import JSONResponse
 from affiliates.base.milestones import MilestoneDisplay
 from affiliates.base.models import NewsItem
+from affiliates.base.utils import redirect
 from affiliates.facebook.utils import in_facebook_app
 from affiliates.links.models import DataPoint, Link
 

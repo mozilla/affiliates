@@ -1,8 +1,8 @@
 from django.contrib.auth.models import Permission, User
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.dispatch import receiver
 
+from funfactory.urlresolvers import reverse
 from tower import ugettext as _
 
 from affiliates.base.models import ModelBase

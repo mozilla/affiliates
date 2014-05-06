@@ -2,11 +2,11 @@ import hashlib
 import os
 
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils import translation
 
+from funfactory.urlresolvers import reverse
 from jinja2 import Markup
 from mptt.models import MPTTModel, TreeForeignKey
 
