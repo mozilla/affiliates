@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Sum
 
 from funfactory.urlresolvers import reverse
 
@@ -37,8 +36,8 @@ class Link(models.Model):
         Get the sum total for a specific metric by combining data from
         the DataPoint table and the aggregate stored on this link.
         """
-        datapoint_sum = self.datapoint_set.aggregate(Sum(metric))['{0}__sum'.format(metric)]
-        return getattr(self, 'aggregate_{0}'.format(metric)) + (datapoint_sum or 0)
+        datapoint_sum = sum([getattr(dp, metric, 0) for dp in self.datapoint_set.all()])
+        return getattr(self, 'aggregate_{0}'.format(metric)) + datapoint_sum
 
     @property
     def link_clicks(self):

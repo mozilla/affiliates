@@ -130,17 +130,19 @@ class ImageBannerBase(Banner):
         kwargs['banner'] = self
 
         # Fetch localized variations that are 125x125.
+        # Filter in python to take advantage of prefetching.
         locale = translation.get_language()
-        sized_variations = self.variation_set.filter(width=125, height=125)
-        localized_variations = sized_variations.filter(locale=locale)
+        sized_variations = filter(lambda x: x.width == 125 and x.height == 125,
+                                  self.variation_set.all())
+        localized_variation = next((v for v in sized_variations if v.locale == locale), None)
 
         # Fallback to en-US if no localized variations are found.
-        if localized_variations:
-            kwargs['preview_img'] = localized_variations[0].image.url
+        if localized_variation:
+            kwargs['preview_img'] = localized_variation.image.url
         elif locale != 'en-us':
-            fallback_variations = sized_variations.filter(locale='en-us')
-            if fallback_variations:
-                kwargs['preview_img'] = fallback_variations[0].image.url
+            fallback_variation = next((v for v in sized_variations if v.locale == 'en-us'), None)
+            if fallback_variation:
+                kwargs['preview_img'] = fallback_variation.image.url
 
         return Markup(render_to_string(self.preview_template, kwargs))
 

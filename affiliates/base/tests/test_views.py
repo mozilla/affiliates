@@ -130,7 +130,7 @@ class DashboardTests(TestCase):
         visible_newsitem.created = aware_datetime(2014, 1, 4)
         visible_newsitem.save()
 
-        request = Mock()
+        request = Mock(user=UserFactory.create())
         with patch('affiliates.base.views.render') as render:
             views.dashboard(request)
 
@@ -147,7 +147,7 @@ class DashboardTests(TestCase):
         """
         NewsItemFactory.create_batch(3, visible=False)
 
-        request = Mock()
+        request = Mock(user=UserFactory.create())
         with patch('affiliates.base.views.render') as render:
             views.dashboard(request)
 

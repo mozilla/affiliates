@@ -114,9 +114,9 @@ class MilestoneDisplay(object):
         :param messages:
             Dictionary of messages to choose from.
         """
-        content_type = ContentType.objects.get_for_model(banner_class.get_variation_class())
-        links = self.user.link_set.filter(banner_variation_content_type=content_type)
-        link_count = links.count()
+        links = filter(lambda link: isinstance(link.banner, banner_class),
+                       self.user.link_set.all())
+        link_count = len(links)
 
         # If no links have been created, show a future milestone.
         if link_count == 0:
@@ -130,15 +130,16 @@ class MilestoneDisplay(object):
             return date_yesterday(), unicode(messages['close_to_milestone']).format(next_milestone)
 
         # As a last resort, show their previous milestone.
+        sorted_links = sorted(links, lambda x, y: cmp(x.created, y.created))
         if prev_milestone:
-            milestone_link = links.order_by('created')[prev_milestone - 1]
+            milestone_link = sorted_links[prev_milestone - 1]
             return (milestone_link.created.date(),
                     unicode(messages['achieved_milestone']).format(prev_milestone))
 
         # This shouldn't ever happen (no previous milestone yet at least
         # one banner created), but just in case, show when the last link
         # was created.
-        return links.latest('created').created.date(), unicode(messages['link_created'])
+        return sorted_links[-1].created.date(), unicode(messages['link_created'])
 
     def milestone_date(self, metric, milestone, aggregated_amount):
         """

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import Permission, User, UserManager
 from django.db import models
 from django.dispatch import receiver
 
@@ -31,6 +31,13 @@ def user_leaderboard_rank(self, metric):
     standing = get_object_or_none(LeaderboardStanding, user=self, metric=metric)
     return standing.ranking if standing else None
 User.add_to_class('leaderboard_rank', user_leaderboard_rank)
+
+
+class AffiliatesUserManager(UserManager):
+    # UserManager that prefetches user profiles when getting users.
+    def get_query_set(self):
+        return super(AffiliatesUserManager, self).get_query_set().select_related('userprofile')
+User.add_to_class('objects', AffiliatesUserManager())
 
 
 @receiver(models.signals.post_save, sender=User)

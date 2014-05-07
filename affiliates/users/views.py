@@ -10,7 +10,8 @@ from affiliates.users.models import UserProfile
 
 
 class UserProfileView(UpdateView):
-    model = UserProfile
+    queryset = UserProfile.objects.prefetch_related('user__link_set__banner_variation__banner',
+                                                    'user__link_set__datapoint_set')
     form_class = EditProfileForm
     template_name = 'users/profile.html'
     context_object_name = 'profile'

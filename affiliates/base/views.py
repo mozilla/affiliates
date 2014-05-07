@@ -46,10 +46,19 @@ def dashboard(request):
     except NewsItem.DoesNotExist:
         newsitem = None
 
+    # Replace request.user and prefetch related items that we need.
+    request.user = (User.objects
+                    .prefetch_related('link_set__datapoint_set',
+                                      'link_set__banner_variation__banner__variation_set')
+                    .get(pk=request.user.pk))
+
+    # Sort links in python to use prefetched data
+    links = sorted(request.user.link_set.all(), lambda x, y: cmp(x.created, y.created))
+
     return render(request, 'base/dashboard.html', {
         'newsitem': newsitem,
         'milestones': MilestoneDisplay(request.user),
-        'links': request.user.link_set.order_by('-created'),
+        'links': links,
     })
 
 
