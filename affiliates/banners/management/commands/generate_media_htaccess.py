@@ -1,19 +1,20 @@
 import os.path
 
 from django.conf import settings
-from django.core.management import BaseCommand, CommandError
+from django.core.management import CommandError
 from django.template.loader import render_to_string
 
 from product_details import product_details
 
 from affiliates.banners.models import FirefoxUpgradeBannerVariation
+from affiliates.base.management.commands import QuietCommand
 
 
-class Command(BaseCommand):
+class Command(QuietCommand):
     help = ('Generate .htaccess for the media directory for smart banners.')
 
-    def handle(self, *args, **kwargs):
-        print 'Generating new .htaccess...'
+    def handle_quiet(self, *args, **kwargs):
+        self.output('Generating new .htaccess...')
 
         current_version = product_details.firefox_versions['LATEST_FIREFOX_VERSION']
         if current_version is None:
@@ -36,4 +37,4 @@ class Command(BaseCommand):
         with open(os.path.join(settings.MEDIA_ROOT, '.htaccess'), 'w') as f:
             f.write(htaccess)
 
-        print 'Done!'
+        self.output('Done!')

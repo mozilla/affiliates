@@ -1,19 +1,20 @@
 from datetime import datetime
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import CommandError
 from django.utils import timezone
 
+from affiliates.base.management.commands import QuietCommand
 from affiliates.base.utils import date_yesterday
 from affiliates.links.google_analytics import AnalyticsError, AnalyticsService
 from affiliates.links.models import DataPoint, Link
 
 
-class Command(BaseCommand):
+class Command(QuietCommand):
     help = ('Collect metrics from Google Analytics for the given day (format DD-MM-YYYY, defaults '
             'to yesterday if no date is given, uses UTC timezone).')
     args = '[date]'
 
-    def handle(self, query_date=None, *args, **kwargs):
+    def handle_quiet(self, query_date=None, *args, **kwargs):
         try:
             service = AnalyticsService()
         except AnalyticsError as e:
@@ -29,14 +30,14 @@ class Command(BaseCommand):
         else:
             query_date = date_yesterday()
 
-        print 'Downloading click counts from GA...'
+        self.output('Downloading click counts from GA...')
         try:
             clicks = service.get_clicks_for_date(query_date)
         except AnalyticsError as e:
             raise CommandError('Could not retrieve click data from analytics service: {0}'
                                .format(e))
 
-        print 'Adding datapoints to database...'
+        self.output('Adding datapoints to database...')
         datapoints = []
         for pk in Link.objects.values_list('id', flat=True):
             datapoint = DataPoint(link_id=pk, date=query_date,
@@ -48,4 +49,4 @@ class Command(BaseCommand):
         DataPoint.objects.filter(date=query_date).delete()
         DataPoint.objects.bulk_create(datapoints)
 
-        print 'Done!'
+        self.output('Done!')

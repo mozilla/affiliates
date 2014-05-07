@@ -125,6 +125,10 @@ LOGGING = {
             'handlers': ['syslog'],
             'level': 'WARNING',
         },
+        'django_browserid.urls': {
+            'handlers': ['null'],
+            'level': 'INFO',
+        },
     }
 }
 
