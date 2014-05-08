@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 
 import bleach
 import jinja2
+from caching.base import CachingManager, CachingMixin
 from product_details import product_details
 
 
@@ -31,7 +32,7 @@ class LocaleField(models.CharField):
             *args, **kwargs)
 
 
-class NewsItem(models.Model):
+class NewsItem(CachingMixin, models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=255)
     html = models.TextField()
@@ -39,6 +40,8 @@ class NewsItem(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    objects = CachingManager()
 
     # Whitelisted tags allowed to be used in the HTML.
     ALLOWED_TAGS = [
@@ -78,11 +81,13 @@ class NewsItem(models.Model):
         return self.title
 
 
-class NewsItemTranslation(models.Model):
+class NewsItemTranslation(CachingMixin, models.Model):
     newsitem = models.ForeignKey(NewsItem)
     locale = LocaleField()
     title = models.CharField(max_length=255)
     html = models.TextField()
+
+    objects = CachingManager()
 
     class Meta:
         unique_together = ('newsitem', 'locale')

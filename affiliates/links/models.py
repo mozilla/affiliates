@@ -3,11 +3,12 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
 
 from affiliates.base.utils import absolutify
 
-class Link(models.Model):
+class Link(CachingMixin, models.Model):
     """Affiliate link that banners link to."""
     user = models.ForeignKey(User)
     html = models.TextField()
@@ -30,6 +31,8 @@ class Link(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    objects = CachingManager()
 
     def _get_metric_total(self, metric):
         """
@@ -84,7 +87,7 @@ class Link(models.Model):
         return reverse('links.detail', args=[self.pk])
 
 
-class DataPoint(models.Model):
+class DataPoint(CachingMixin, models.Model):
     """Stores the metric totals for a specific day, for a link."""
     link = models.ForeignKey(Link)
     date = models.DateField()
@@ -93,11 +96,13 @@ class DataPoint(models.Model):
     firefox_downloads = models.PositiveIntegerField(default=0)
     firefox_os_referrals = models.PositiveIntegerField(default=0)
 
+    objects = CachingManager()
+
     class Meta:
         unique_together = ('link', 'date')
 
 
-class LeaderboardStanding(models.Model):
+class LeaderboardStanding(CachingMixin, models.Model):
     """Ranking in a leaderboard for a specific metric."""
     ranking = models.PositiveIntegerField()
     user = models.ForeignKey(User)
@@ -107,6 +112,8 @@ class LeaderboardStanding(models.Model):
         ('firefox_downloads', 'Firefox Downloads'),
         ('firefox_os_referrals', ('Firefox OS Referrals'))
     ))
+
+    objects = CachingManager()
 
     class Meta:
         unique_together = ('ranking', 'metric')

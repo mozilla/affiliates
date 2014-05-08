@@ -6,6 +6,7 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.utils import translation
 
+from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
 from jinja2 import Markup
 from mptt.models import MPTTModel, TreeForeignKey
@@ -18,7 +19,7 @@ from affiliates.base.utils import absolutify, locale_to_native
 from affiliates.links.models import Link
 
 
-class Category(MPTTModel):
+class Category(CachingMixin, MPTTModel):
     """
     Category that groups together either subcategories or banners.
 
@@ -30,6 +31,8 @@ class Category(MPTTModel):
     """
     name = models.CharField(max_length=255)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+
+    objects = CachingManager()
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -150,8 +153,10 @@ class ImageBannerBase(Banner):
         abstract = True
 
 
-class ImageBanner(ImageBannerBase):
+class ImageBanner(CachingMixin, ImageBannerBase):
     """Banner displayed as an image link."""
+    objects = CachingManager()
+
     def generate_banner_code(self, variation):
         return render_to_string('banners/banner_code/image_banner.html', {
             'variation': variation
@@ -212,15 +217,19 @@ class ImageVariation(BannerVariation):
                                                  locale=self.locale)
 
 
-class ImageBannerVariation(ImageVariation):
+class ImageBannerVariation(CachingMixin, ImageVariation):
     banner = models.ForeignKey(ImageBanner, related_name='variation_set')
+
+    objects = CachingManager()
 
     def get_media_subdirectory(self):
         return 'uploads/image_banners'
 
 
-class TextBanner(Banner):
+class TextBanner(CachingMixin, Banner):
     """Banner displayed as a string of text with a link."""
+    objects = CachingManager()
+
     def generate_banner_code(self, variation):
         return u'<a href="{{href}}">{text}</a>'.format(text=variation.text)
 
@@ -252,22 +261,26 @@ class TextBanner(Banner):
         return TextBannerVariation
 
 
-class TextBannerVariation(BannerVariation):
+class TextBannerVariation(CachingMixin, BannerVariation):
     """Localized variation of a text banner."""
     banner = models.ForeignKey(TextBanner, related_name='variation_set')
     text = models.TextField()
     locale = LocaleField()
 
+    objects = CachingManager()
+
     def __unicode__(self):
         return locale_to_native(self.locale)
 
 
-class FirefoxUpgradeBanner(ImageBannerBase):
+class FirefoxUpgradeBanner(CachingMixin, ImageBannerBase):
     """
     Image banner that shows a different image depending on whether the
     viewer has an up-to-date version of Firefox or not.
     """
     preview_template = 'banners/previews/upgrade_banner.html'
+
+    objects = CachingManager()
 
     def generate_banner_code(self, variation):
         return render_to_string('banners/banner_code/firefox_upgrade_banner.html', {
@@ -283,8 +296,10 @@ class FirefoxUpgradeBanner(ImageBannerBase):
         return FirefoxUpgradeBannerVariation
 
 
-class FirefoxUpgradeBannerVariation(ImageVariation):
+class FirefoxUpgradeBannerVariation(CachingMixin, ImageVariation):
     banner = models.ForeignKey(FirefoxUpgradeBanner, related_name='variation_set')
+
+    objects = CachingManager()
 
     def _filename(self, filename):
         filename = super(FirefoxUpgradeBannerVariation, self)._filename(filename)

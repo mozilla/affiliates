@@ -2,6 +2,7 @@ from django.contrib.auth.models import Permission, User, UserManager
 from django.db import models
 from django.dispatch import receiver
 
+from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
 from tower import ugettext as _
 
@@ -65,7 +66,7 @@ def create_profile(sender, **kwargs):
         UserProfile.objects.create(user=user)
 
 
-class UserProfile(ModelBase):
+class UserProfile(CachingMixin, ModelBase):
     """
     Stores information about a user account. Created post-activation.
     """
@@ -77,6 +78,8 @@ class UserProfile(ModelBase):
     display_name = models.CharField(max_length=255, blank=True)
     website = models.URLField(blank=True)
     bio = models.TextField(blank=True)
+
+    objects = CachingManager()
 
     def __unicode__(self):
         return unicode(self.display_name)
