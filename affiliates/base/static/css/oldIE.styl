@@ -65,7 +65,7 @@
 }
 
 @font-face {
-    font-family: 'FontAwesome';
+    font-family: 'Font Awesome';
     src: url('//mozorg.cdn.mozilla.net/media/fonts/fontawesome-webfont.eot');
     src: url('//mozorg.cdn.mozilla.net/media/fonts/fontawesome-webfont.eot?#iefix') format('embedded-opentype');
     font-weight: normal;
@@ -75,32 +75,253 @@
 
 
 //*----------------------------------------------------------------*/
-// @General elements
-
-html {
-    background: #fff;
+// @Buttons
+// Standard orange buttons
+.button:hover,
+.button:focus,
+.button:active {
+    background-color: #f79e20;
 }
 
-body {
-    font-size: $base-font-size;
-    line-height: 1.5;
-    font-family: 'Open Sans', sans-serif;
-    color: $primary-text-color;
-    background: pink;
+// Alternative blue buttons
+.button.secondary {
+    background-color: #276195;
 }
 
-//*----------------------------------------------------------------*/
+.button.secondary:hover,
+.button.secondary:focus,
+.button.secondary:active {
+    background-color: #3089d8;
+}
+
+.button.cancel:hover,
+.button.cancel:focus,
+.button.cancel:active {
+    background-color: lighten($dark-gray, 25%);
+}
+
+#newsletter .button {
+    width: 150px;
+}
+
+
+
+/*----------------------------------------------------------------*/
 // @Layout containers
 
-#outer-wrap {
-    position: relative;
-    border-top: 2px solid #fff;
-    background: #eee;
-}
-
-.wrap {
-    width: $width-desktop;
-    margin: 0 auto;
-    position: relative;
+.section {
     zoom: 1;
 }
+
+.contain {
+    width: $width-desktop - ($grid-gutter-width * 2);
+}
+
+#newsletter .col {
+    span(4);
+}
+
+.footer-license,
+.footer-lang {
+    span(3);
+}
+
+.footer-logo,
+.footer-nav {
+    span(2);
+}
+
+.footer-license {
+    margin-right: $grid-column-width + $grid-gutter-width;
+}
+
+
+
+//*----------------------------------------------------------------*/
+// Main @Navigation
+// oldIE is in permanent widemode and needs the desktop styles
+
+#nav-main {
+    left: auto;
+    top: 10px;
+    right: 160px;
+
+    a {
+        display: inline-block;
+        padding: 0;
+        color: $light-text-color;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background: transparent;
+            text-decoration: underline;
+        }
+    }
+
+    .menu {
+        background: transparent;
+        padding: 0;
+        position: static;
+
+        &:before {
+            border: 0;
+            display: none;
+        }
+
+        li {
+            float: left;
+            border: 0;
+            padding: 0 10px;
+
+            &.user,
+            &.signin {
+                border-left: 1px solid #fff;
+            }
+        }
+    }
+
+    .user {
+        position: relative;
+
+        &:after {
+            font-family: 'Font Awesome';
+            content: '\f0d7';
+            color: $light-gray;
+            margin-left: 6px;
+            font-size: 15px;
+        }
+    }
+
+    .submenu {
+        border: 0;
+        position: absolute;
+        top: 2.75em;
+        left: -999em;
+        min-width: 160px;
+
+        &:before {
+            content: '';
+            border-bottom: 12px solid #fff;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            position: absolute;
+            top: -10px;
+            left: 16px;
+        }
+
+        &:after {
+            content: '';
+            height: 18px;
+            width: 100%;
+            position: absolute;
+            top: -18px;
+            left: 0;
+        }
+
+        li {
+            border-bottom: 1px solid $light-gray;
+            display: block;
+            padding: 0 2px;
+            background: #fff;
+
+            &:first-child {
+                padding-top: 2px;
+            }
+
+            &:last-child {
+                border: 0;
+                padding-bottom: 2px;
+            }
+        }
+
+        a {
+            display: block;
+            padding: .3em 15px;
+            color: $link-color;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background: $light-gray;
+                text-decoration: none;
+            }
+        }
+
+        .user.open > a {
+            text-decoration: underline;
+        }
+    }
+
+    .toggle {
+        display: none;
+    }
+}
+
+.no-js #nav-main:hover .menu,
+.no-js #nav-main .toggle:hover + .menu {
+    left: auto;
+}
+
+.no-js #nav-main .user:hover .submenu,
+.no-js #nav-main .user a:focus + .submenu {
+    left: -5px;
+}
+
+.js #nav-main .submenu {
+    left: -5px;
+    display: none;
+}
+
+
+
+/*----------------------------------------------------------------*/
+// @Home page
+
+.steps li {
+    span(4);
+    padding: 0;
+
+    h3 {
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0 0 .75em;
+
+        &:before {
+            content: '';
+            display: none;
+        }
+    }
+}
+
+#rewards {
+    {section-orange}
+}
+
+#leaderboard .stats {
+    width: $width-tablet;
+    margin: 1em auto 2em;
+    font-size: 24px;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.1;
+    clearfix();
+    zoom: 1;
+
+    li {
+        width: 30%;
+        padding: 0 1%;
+        float: left;
+
+        strong {
+            display: block;
+            font-size: 1.25em;
+        }
+    }
+}
+
+#leaderboard .more {
+    text-align: center;
+}
+

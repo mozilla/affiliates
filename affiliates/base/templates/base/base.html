@@ -21,18 +21,18 @@
 
     <link rel="shortcut icon" href="{{ static('img/favicon.ico') }}">
 
-    <!--[if lt IE 9]>
-      <script type="text/javascript" src="{{ static('js/libs/html5shiv.js') }}"></script>
-      {{ css('oldIE') }}
-    <![endif]-->
-
-    <!--[if !lt IE 9]><!-->
     {% block site_css %}
       {{ css('base') }}
     {% endblock %}
 
+    <!--[if !lt IE 9]><!-->
     {% block page_css %}{% endblock %}
     <!--<![endif]-->
+
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="{{ static('js/libs/html5shiv.js') }}"></script>
+      {{ css('oldIE') }}
+    <![endif]-->
 
     <link rel="stylesheet" type="text/css" href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css">
 
@@ -179,7 +179,7 @@
             </div>
 
             <ul class="footer-nav">
-              <li><a href="https://www.mozilla.org/contact/spaces/">{{_('Contact Us')}}</a></li>
+              <li><a href="https://www.mozilla.org/contact/">{{_('Contact Us')}}</a></li>
               <li><a href="https://www.mozilla.org/about/partnerships/">{{_('Partner with Us')}}</a></li>
               <li><a href="https://sendto.mozilla.org/">{{ _('Donate') }}</a></li>
               <li><a href="https://www.mozilla.org/privacy/">{{_('Privacy Policy')}}</a></li>
@@ -202,7 +202,7 @@
 
     {% block site_js %}
       <script src="//login.persona.org/include.js"></script>
-      <!--[if !lte IE 7]><!-->
+      <!--[if !lte IE 8]><!-->
         {{ js('base') }}
       <!--<![endif]-->
     {% endblock %}

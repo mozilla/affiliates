@@ -18,9 +18,14 @@ html {
     background: #fff;
     font-size: $base-font-size;
     line-height: 1.5;
+    height: 100%;
     -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
-    height: 100%;
+    font-variant-ligatures: common-ligatures;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: 'liga', 'dlig';
+       -moz-font-feature-settings: 'liga', 'dlig';
+            font-feature-settings: 'liga', 'dlig';
 }
 
 body {
@@ -73,7 +78,7 @@ h1, h2, h3, h4, h5, h6, legend, dl.faq dt {
     color: $secondary-text-color;
     font-family: 'Open Sans Light', sans-serif;
     font-weight: normal;
-    letter-spacing: -.03em;
+    letter-spacing: -.025em;
     line-height: 1.1;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, .35);
     margin: 0 0 .5em;
