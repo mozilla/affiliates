@@ -62,7 +62,8 @@ class Command(BaseCommand):
         content_type = ContentType.objects.get_for_model(ImageBannerVariation)
         cursor.execute("""SELECT
             badgeinstance.id, badgeinstance.user_id, badgeinstance.badge_id, badgeinstance.clicks,
-            bannerinstance.image_id, badge.href, bannerimage.image, bannerimage.id
+            bannerinstance.image_id, badge.href, bannerimage.image, bannerimage.id,
+            badgeinstance.created
         FROM {0}badges_badgeinstance AS badgeinstance
         LEFT JOIN {0}banners_bannerinstance AS bannerinstance ON
             bannerinstance.badgeinstance_ptr_id = badgeinstance.id
@@ -82,7 +83,8 @@ class Command(BaseCommand):
                 legacy_banner_image_id=row[4],
                 aggregate_link_clicks=row[3],
                 banner_variation_id=row[7],
-                banner_variation_content_type=content_type
+                banner_variation_content_type=content_type,
+                created=row[8]
             ) for row in cursor.fetchall()
         ]
         Link.objects.bulk_create(links, batch_size=1000)

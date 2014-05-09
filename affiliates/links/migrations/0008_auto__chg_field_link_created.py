@@ -8,32 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Removing primary key index on 'LeaderboardStanding', fields ['ranking']
-        db.delete_primary_key(u'links_leaderboardstanding')
 
-        # Adding field 'LeaderboardStanding.id'
-        db.add_column(u'links_leaderboardstanding', u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True))
-
-
-        # Changing field 'LeaderboardStanding.ranking'
-        db.alter_column(u'links_leaderboardstanding', 'ranking', self.gf('django.db.models.fields.PositiveIntegerField')())
-        # Adding unique constraint on 'LeaderboardStanding', fields ['ranking', 'metric']
-        db.create_unique(u'links_leaderboardstanding', ['ranking', 'metric'])
-
+        # Changing field 'Link.created'
+        db.alter_column(u'links_link', 'created', self.gf('django.db.models.fields.DateTimeField')())
 
     def backwards(self, orm):
-        # Removing unique constraint on 'LeaderboardStanding', fields ['ranking', 'metric']
-        db.delete_unique(u'links_leaderboardstanding', ['ranking', 'metric'])
 
-        # Deleting field 'LeaderboardStanding.id'
-        db.delete_column(u'links_leaderboardstanding', u'id')
-
-
-        # Changing field 'LeaderboardStanding.ranking'
-        db.alter_column(u'links_leaderboardstanding', 'ranking', self.gf('django.db.models.fields.PositiveIntegerField')(primary_key=True))
-        # Adding primary key index on 'LeaderboardStanding', fiels['ranking']
-        db.create_primary_key(u'links_leaderboardstanding', [u'ranking'])
-
+        # Changing field 'Link.created'
+        db.alter_column(u'links_link', 'created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True))
 
     models = {
         u'auth.group': {
@@ -96,7 +78,7 @@ class Migration(SchemaMigration):
             'aggregate_link_clicks': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'banner_variation_content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
             'banner_variation_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
-            'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'html': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'legacy_banner_image_id': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True'}),

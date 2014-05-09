@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils import timezone
 
 from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
@@ -29,7 +30,7 @@ class Link(CachingMixin, models.Model):
     legacy_banner_instance_id = models.IntegerField(default=None, null=True)
     legacy_banner_image_id = models.IntegerField(default=None, null=True)
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(auto_now=True)
 
     objects = CachingManager()
