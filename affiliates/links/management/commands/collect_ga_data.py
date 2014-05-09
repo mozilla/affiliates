@@ -4,7 +4,6 @@ from django.core.management.base import CommandError
 from django.utils import timezone
 
 from affiliates.base.management.commands import QuietCommand
-from affiliates.base.utils import date_yesterday
 from affiliates.links.google_analytics import AnalyticsError, AnalyticsService
 from affiliates.links.models import DataPoint, Link
 
@@ -20,7 +19,9 @@ class Command(QuietCommand):
         except AnalyticsError as e:
             raise CommandError('Could not connect to analytics service: {0}'.format(e), e)
 
-        if query_date:
+        if query_date == 'today':
+            query_date = timezone.now().date()
+        elif query_date:
             try:
                 unaware_query_datetime = datetime.strptime(query_date, '%d-%m-%Y')
             except ValueError:
@@ -28,7 +29,7 @@ class Command(QuietCommand):
 
             query_date = timezone.make_aware(unaware_query_datetime, timezone.utc).date()
         else:
-            query_date = date_yesterday() - timedelta(days=1)
+            query_date = timezone.now() - timedelta(days=2)
 
         self.output('Downloading click counts from GA...')
         try:

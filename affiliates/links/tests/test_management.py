@@ -49,11 +49,10 @@ class CollectGADataTests(TestCase):
             unicode(link1.pk): '4',
             unicode(link2.pk): '7'
         }
-        yesterday = aware_datetime(2014, 1, 2).date()
-        two_days_ago = yesterday - timedelta(days=1)
+        two_days_ago = aware_date(2014, 1, 1)
 
-        with patch.object(collect_ga_data, 'date_yesterday') as date_yesterday:
-            date_yesterday.return_value = yesterday
+        with patch.object(collect_ga_data, 'timezone') as mock_timezone:
+            mock_timezone.now.return_value = aware_date(2014, 1, 3)
             self.command.execute()
 
         self.service.get_clicks_for_date.assert_called_with(two_days_ago)
@@ -83,6 +82,26 @@ class CollectGADataTests(TestCase):
         self.service.get_clicks_for_date.assert_called_with(query_date)
         eq_(link1.datapoint_set.get(date=query_date).link_clicks, 4)
         eq_(link2.datapoint_set.get(date=query_date).link_clicks, 7)
+
+    def test_date_argument_today(self):
+        """
+        If the date argument is the word 'today', set the query date to
+        the current date.
+        """
+        link1, link2 = LinkFactory.create_batch(2)
+        self.service.get_clicks_for_date.return_value = {
+            unicode(link1.pk): '4',
+            unicode(link2.pk): '7'
+        }
+        today = aware_datetime(2014, 1, 2).date()
+
+        with patch.object(collect_ga_data, 'timezone') as mock_timezone:
+            mock_timezone.now.return_value = aware_datetime(2014, 1, 2)
+            self.command.execute('today')
+
+        self.service.get_clicks_for_date.assert_called_with(today)
+        eq_(link1.datapoint_set.get(date=today).link_clicks, 4)
+        eq_(link2.datapoint_set.get(date=today).link_clicks, 7)
 
     def test_invalid_date_argument(self):
         """If the date argument is invalid, raise a CommandError."""
