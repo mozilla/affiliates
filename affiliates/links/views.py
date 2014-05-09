@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.views.generic import DetailView
 
 from braces.views import LoginRequiredMixin
@@ -22,3 +23,13 @@ class LinkReferralView(DetailView):
     @csp_exempt
     def dispatch(self, *args, **kwargs):
         return super(LinkReferralView, self).dispatch(*args, **kwargs)
+
+
+class LegacyLinkReferralView(LinkReferralView):
+    def get_object(self, queryset=None):
+        links = Link.objects.filter(user__id=self.kwargs['user_id'],
+                                    legacy_banner_image_id=self.kwargs['banner_img_id'])
+        if not links:
+            raise Http404()
+        else:
+            return links[0]
