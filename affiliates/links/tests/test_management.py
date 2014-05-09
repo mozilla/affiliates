@@ -43,21 +43,22 @@ class CollectGADataTests(TestCase):
             self.command.handle()
 
     def test_default_yesterday(self):
-        """When no date is given, fetch data for the previous day."""
+        """When no date is given, fetch data for the two days ago."""
         link1, link2 = LinkFactory.create_batch(2)
         self.service.get_clicks_for_date.return_value = {
             unicode(link1.pk): '4',
             unicode(link2.pk): '7'
         }
-        yesterday = aware_datetime(2014, 1, 1).date()
+        yesterday = aware_datetime(2014, 1, 2).date()
+        two_days_ago = yesterday - timedelta(days=1)
 
         with patch.object(collect_ga_data, 'date_yesterday') as date_yesterday:
             date_yesterday.return_value = yesterday
             self.command.execute()
 
-        self.service.get_clicks_for_date.assert_called_with(yesterday)
-        eq_(link1.datapoint_set.get(date=yesterday).link_clicks, 4)
-        eq_(link2.datapoint_set.get(date=yesterday).link_clicks, 7)
+        self.service.get_clicks_for_date.assert_called_with(two_days_ago)
+        eq_(link1.datapoint_set.get(date=two_days_ago).link_clicks, 4)
+        eq_(link2.datapoint_set.get(date=two_days_ago).link_clicks, 7)
 
     def test_date_argument(self):
         """

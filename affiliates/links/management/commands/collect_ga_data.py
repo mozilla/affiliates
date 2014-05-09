@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.core.management.base import CommandError
 from django.utils import timezone
@@ -11,7 +11,7 @@ from affiliates.links.models import DataPoint, Link
 
 class Command(QuietCommand):
     help = ('Collect metrics from Google Analytics for the given day (format DD-MM-YYYY, defaults '
-            'to yesterday if no date is given, uses UTC timezone).')
+            'to two days ago if no date is given, uses UTC timezone).')
     args = '[date]'
 
     def handle_quiet(self, query_date=None, *args, **kwargs):
@@ -28,7 +28,7 @@ class Command(QuietCommand):
 
             query_date = timezone.make_aware(unaware_query_datetime, timezone.utc).date()
         else:
-            query_date = date_yesterday()
+            query_date = date_yesterday() - timedelta(days=1)
 
         self.output('Downloading click counts from GA...')
         try:
