@@ -38,7 +38,7 @@
 
         {% if link.is_image_link or link.is_upgrade_link %}
           <dt>{{ _('Size:') }}</dt>
-          <dd>{{ link.banner_variation.size }}</dd>
+          <dd>{{ link.banner_variation.size|safe }}</dd>
         {% endif %}
       </dl>
 
