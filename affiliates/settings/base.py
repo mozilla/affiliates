@@ -160,7 +160,7 @@ def _request_args():
 BROWSERID_REQUEST_ARGS = lazy(_request_args, dict)()
 
 # Paths that do not need a locale
-SUPPORTED_NONLOCALES += ['referral', 'admin', 'browserid', 'fb']
+SUPPORTED_NONLOCALES += ['referral', 'admin', 'browserid', 'fb', 'link/banner']
 
 # CacheMachine config
 CACHE_COUNT_TIMEOUT = 60  # seconds, not too long.
