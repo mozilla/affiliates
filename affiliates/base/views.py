@@ -49,7 +49,7 @@ def dashboard(request):
     # Replace request.user and prefetch related items that we need.
     request.user = (User.objects
                     .prefetch_related('link_set__datapoint_set',
-                                      'link_set__banner_variation__banner__variation_set')
+                                      'link_set__banner_variation')
                     .get(pk=request.user.pk))
 
     # Sort links in python to use prefetched data
