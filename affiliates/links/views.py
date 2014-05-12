@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.views.decorators.cache import never_cache
 from django.views.generic import DetailView
 
 from braces.views import LoginRequiredMixin
@@ -21,6 +22,7 @@ class LinkReferralView(DetailView):
     context_object_name = 'link'
 
     @csp_exempt
+    @never_cache
     def dispatch(self, *args, **kwargs):
         return super(LinkReferralView, self).dispatch(*args, **kwargs)
 
