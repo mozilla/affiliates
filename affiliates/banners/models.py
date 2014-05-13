@@ -9,6 +9,7 @@ from django.utils import translation
 from caching.base import CachingManager, CachingMixin
 from funfactory.urlresolvers import reverse
 from jinja2 import Markup
+from mptt.managers import TreeManager
 from mptt.models import MPTTModel, TreeForeignKey
 
 from affiliates.banners import COLOR_CHOICES
@@ -17,6 +18,10 @@ from affiliates.base.models import LocaleField
 from affiliates.base.storage import OverwritingStorage
 from affiliates.base.utils import absolutify, locale_to_native
 from affiliates.links.models import Link
+
+
+class CategoryManager(TreeManager, CachingManager):
+    pass  # MPTT and django-cache-machine, living in harmony!
 
 
 class Category(CachingMixin, MPTTModel):
@@ -32,7 +37,7 @@ class Category(CachingMixin, MPTTModel):
     name = models.CharField(max_length=255)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
-    objects = CachingManager()
+    objects = CategoryManager()
 
     class Meta:
         verbose_name_plural = 'categories'
@@ -44,7 +49,8 @@ class Category(CachingMixin, MPTTModel):
         """
         Validate that this category isn't more than one layer deep.
         """
-        if self.get_level() > 1:
+        has_children = not self.is_leaf_node()
+        if self.parent is not None and (has_children or not self.parent.is_root_node()):
             raise ValidationError('Categories cannot be more than one level deep.')
 
     def __unicode__(self):

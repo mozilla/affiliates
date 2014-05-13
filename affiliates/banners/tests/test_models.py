@@ -14,19 +14,36 @@ from affiliates.users.tests import UserFactory
 
 
 class CategoryTests(TestCase):
-    def test_category_clean(self):
+    def test_category_clean_has_children(self):
         """
-        If a category is more than one layer away from its root, clean
-        should raise a ValidationError.
+        If a category has children and is being assigned a parent
+        category, raise a ValidationError.
+        """
+        root = CategoryFactory.create()
+        child = CategoryFactory.create()
+        CategoryFactory.create(parent=child)  # Grandchild
+
+        root.clean()  # Root is fine!
+
+        child.parent = root
+        with self.assertRaises(ValidationError):
+            child.clean()  # child has a grandchild, no bueno!
+
+    def test_category_clean_parent_not_root(self):
+        """
+        If a category is being assigned a parent that isn't a root node,
+        raise a ValidationError.
         """
         root = CategoryFactory.create()
         child = CategoryFactory.create(parent=root)
-        grandchild = CategoryFactory.create(parent=child)
+        grandchild = CategoryFactory.create()
 
-        root.clean()  # No layers is fine!
-        child.clean()  # 1 layer is fine!
+        root.clean()  # Root is fine!
+        child.clean() # Child is fine!
+
+        grandchild.parent = child
         with self.assertRaises(ValidationError):
-            grandchild.clean()  # 2 layers is no bueno!
+            grandchild.clean()  # child is not a root node, no bueno!
 
 
 class BannerTests(TestCase):
