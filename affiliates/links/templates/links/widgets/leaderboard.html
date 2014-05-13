@@ -19,7 +19,7 @@
             <strong class="fn">{{ standing.user.display_name }}</strong>
           </a>
           {% if standing.user.userprofile.website %}
-            <a href="{{ standing.user.userprofile.website }}" rel="external" class="url website">{{ _('Website') }}</a>
+            <a href="{{ standing.user.userprofile.website }}" rel="external" class="url website">{{ standing.user.userprofile.website }}</a>
           {% endif %}
         </th>
         <td class="clicks">{{ standing.value|babel_number }}</td>
