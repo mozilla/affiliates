@@ -15,7 +15,7 @@
       </script>
     {% endif %}
     <script>
-        window.location = '{{ link.destination }}';
+        window.location = '{{ link.destination|safe }}';
     </script>
   </body>
 </html>
