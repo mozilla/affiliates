@@ -30,12 +30,12 @@ if [ -z "$QUIET" ]; then
 fi
 run $MANAGE update_product_details
 
-if [ -z "$QUIET" ]; then
-    echo ""
-    echo "Collecting data from Google Analytics"
-    echo "====================================="
-fi
-run $MANAGE collect_ga_data
+#if [ -z "$QUIET" ]; then
+#    echo ""
+#    echo "Collecting data from Google Analytics"
+#    echo "====================================="
+#fi
+#run $MANAGE collect_ga_data
 
 if [ -z "$QUIET" ]; then
     echo ""

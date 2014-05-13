@@ -31,6 +31,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
 ]
 
 MIDDLEWARE_CLASSES = (
+    'affiliates.links.middleware.ReferralSkipMiddleware',
     'funfactory.middleware.LocaleURLMiddleware',
     'multidb.middleware.PinningRouterMiddleware',
     'django.middleware.common.CommonMiddleware',

@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib import messages
+from django.core.urlresolvers import resolve, Resolver404
 from django.db.models import Sum
 from django.utils import timezone
 
@@ -51,3 +52,23 @@ class StatsSinceLastVisitMiddleware(object):
         profile.last_visit = now
         profile.save()
         return None
+
+
+class ReferralSkipMiddleware(object):
+    """
+    If the current URL resolves to the link referral view, skip the rest
+    of the middleware (avoiding unnecessary DB queries) and call the
+    view directly.
+    """
+    view_names = ('links.referral', 'links.referral.old', 'links.referral.older')
+
+    def process_request(self, request):
+        try:
+            match = resolve(request.path)
+        except Resolver404:
+            # Locale hasn't been removed yet, but referral views don't
+            # have locales, so most views 404 here. Just give up!
+            return
+
+        if match.view_name in self.view_names:
+            return match.func(request, *match.args, **match.kwargs)

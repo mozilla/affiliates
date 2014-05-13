@@ -1,3 +1,4 @@
+from django.core.urlresolvers import Resolver404
 from django.test.client import RequestFactory
 
 from nose.tools import eq_, ok_
@@ -5,7 +6,7 @@ from mock import Mock, patch
 
 from affiliates.base.tests import aware_date, aware_datetime, TestCase
 from affiliates.facebook.tests import FacebookUserFactory
-from affiliates.links.middleware import StatsSinceLastVisitMiddleware
+from affiliates.links.middleware import ReferralSkipMiddleware, StatsSinceLastVisitMiddleware
 from affiliates.links.tests import DataPointFactory
 from affiliates.users.models import UserProfile
 from affiliates.users.tests import UserFactory
@@ -115,3 +116,47 @@ class StatsSinceLastVisitMiddlewareTests(TestCase):
 
         profile = UserProfile.objects.get(user=self.request.user)
         eq_(profile.last_visit, aware_date(2014, 1, 3))
+
+
+class ReferralSkipMiddlewareTests(TestCase):
+    def setUp(self):
+        self.middleware = ReferralSkipMiddleware()
+        self.factory = RequestFactory()
+
+    def test_process_request_resolver404(self):
+        """If resolve raises a Resolver404 error, return None."""
+        request = self.factory.get('/')
+
+        with patch('affiliates.links.middleware.resolve') as resolve:
+            resolve.side_effect = Resolver404
+            eq_(self.middleware.process_request(request), None)
+            resolve.assert_called_with('/')
+
+    def test_process_request_viewname_mismatch(self):
+        """
+        If the resolved view name isn't in self.view_names, return None.
+        """
+        request = self.factory.get('/foo')
+        self.middleware.view_names = ('bears', 'bears', 'bears')
+
+        with patch('affiliates.links.middleware.resolve') as resolve:
+            resolve.return_value.view_name = 'my.view'
+            eq_(self.middleware.process_request(request), None)
+            resolve.assert_called_with('/foo')
+
+    def test_process_request_viewname_match(self):
+        """
+        If the resolved view name is in self.view_names, execute the
+        view function with the given args and kwargs.
+        """
+        request = self.factory.get('/bar')
+        self.middleware.view_names = ('kakumei', 'dualism')
+
+        with patch('affiliates.links.middleware.resolve') as resolve:
+            match = Mock(view_name='kakumei', args=[1, 'valvrave'],
+                         kwargs={'haruto': 'l-elf', 'saki': 4})
+            resolve.return_value = match
+
+            eq_(self.middleware.process_request(request), match.func.return_value)
+            resolve.assert_called_with('/bar')
+            match.func.assert_called_with(request, 1, 'valvrave', haruto='l-elf', saki=4)

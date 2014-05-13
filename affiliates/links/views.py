@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.utils import timezone
 from django.views.decorators.cache import never_cache
 from django.views.generic import DetailView
 
@@ -6,6 +7,7 @@ from braces.views import LoginRequiredMixin
 from csp.decorators import csp_exempt
 
 from affiliates.links.models import Link
+from affiliates.links.tasks import add_click
 
 
 class LinkDetailView(LoginRequiredMixin, DetailView):
@@ -18,13 +20,18 @@ class LinkDetailView(LoginRequiredMixin, DetailView):
 
 class LinkReferralView(DetailView):
     template_name = 'links/referral.html'
-    model = Link
     context_object_name = 'link'
+    queryset = Link.objects.select_related('user')
 
     @csp_exempt
     @never_cache
     def dispatch(self, *args, **kwargs):
         return super(LinkReferralView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        response = super(LinkReferralView, self).get(request, *args, **kwargs)
+        add_click.delay(self.object.id, timezone.now().date())
+        return response
 
 
 class LegacyLinkReferralView(LinkReferralView):
