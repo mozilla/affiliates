@@ -34,11 +34,14 @@ def user_leaderboard_rank(self, metric):
 User.add_to_class('leaderboard_rank', user_leaderboard_rank)
 
 
-class AffiliatesUserManager(UserManager):
+class AffiliatesUserManager(CachingManager, UserManager):
     # UserManager that prefetches user profiles when getting users.
     def get_query_set(self):
         return super(AffiliatesUserManager, self).get_query_set().select_related('userprofile')
 User.add_to_class('objects', AffiliatesUserManager())
+
+# Add CachingMixin to User's base classes so that it can be cached.
+User.__bases__ = (CachingMixin,) + User.__bases__
 
 
 @receiver(models.signals.post_save, sender=User)
