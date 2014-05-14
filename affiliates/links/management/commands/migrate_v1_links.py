@@ -69,6 +69,7 @@ class Command(BaseCommand):
             bannerinstance.badgeinstance_ptr_id = badgeinstance.id
         LEFT JOIN {0}badges_badge AS badge ON badgeinstance.badge_id = badge.id
         LEFT JOIN {0}banners_bannerimage AS bannerimage ON bannerinstance.image_id = bannerimage.id
+        WHERE badgeinstance.user_id in (SELECT id from auth_user)
         """.format(old_table_prefix))
         links = [
             Link(
