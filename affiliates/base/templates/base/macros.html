@@ -70,7 +70,7 @@
     {% endif %}
   </li>
   <li class="banners">
-    {% set count = user.link_set.count() %}
+    {% set count = user.link_set.all()|count %}
     {% trans count=count|babel_number, count_int=count %}
       <strong>{{ count }}</strong> banner
     {% pluralize count_int %}
