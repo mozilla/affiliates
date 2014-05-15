@@ -98,9 +98,6 @@ def pre_update(ctx, ref=settings.UPDATE_REF):
 
 @task
 def update(ctx):
-    # TEMPORARY: Run migration command because I don't have root. HACK
-    with ctx.lcd(settings.SRC_DIR):
-        ctx.local("python2.6 ./manage.py migrate_v1_links old_")
     update_assets()
     update_locales()
     south()
