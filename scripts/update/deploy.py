@@ -108,7 +108,6 @@ def update(ctx):
 def deploy(ctx):
     checkin_changes()
     deploy_app()
-    prime_app()
     update_celery()
 
 
