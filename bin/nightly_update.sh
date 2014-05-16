@@ -2,7 +2,7 @@
 export PYTHONPATH=/usr/local/lib64/python2.6/site-packages/:$PYTHONPATH
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-MANAGE="$DIR/manage.py"
+MANAGE="/usr/bin/env python -W ignore $DIR/manage.py"
 QUIET=""
 
 while getopts "q" o; do
@@ -15,7 +15,7 @@ done
 shift $((OPTIND-1))
 
 function run {
-    PYTHONWARNINGS="ignore" "$@" $QUIET
+    "$@" $QUIET
     local status=$?
     if [ $status -ne 0 ]; then
         echo "Error with $@"
