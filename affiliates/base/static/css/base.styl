@@ -326,7 +326,7 @@ label {
 
 .contain {
     margin: 0 auto;
-    min-width: 290px;
+    min-width: 280px;
     padding: 0 20px;
     position: relative;
     clearfix();
@@ -621,7 +621,7 @@ table.leaderboard {
     }
 
     .vcard {
-        padding-left: 80px;
+        padding-left: 60px;
         position: relative;
 
         a:link,
@@ -639,16 +639,15 @@ table.leaderboard {
 
         .avatar {
             float: left;
-            margin: -15px 0 -15px -80px;
-            width: 55px;
-            height: 55px;
+            margin: -10px 0 -10px -60px;
+            width: 40px;
+            height: 40px;
         }
 
         .fn {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: normal;
             display: block;
-            margin-top: -3px;
             margin-bottom: -.35em;
         }
 
@@ -662,7 +661,7 @@ table.leaderboard {
         width: 30%;
         font-weight: bold;
         font-style: italic;
-        font-size: 26px;
+        font-size: 18px;
     }
 
 }
@@ -865,6 +864,24 @@ body.noscroll {
 
     table.leaderboard {
         width: 80%;
+
+        .vcard {
+            padding-left: 80px;
+
+            .avatar {
+                width: 55px;
+                height: 55px;
+                margin-left: -80px;
+            }
+
+            .fn {
+                font-size: 22px;
+            }
+        }
+
+        .clicks {
+            font-size: 26px;
+        }
     }
 
     #nav-main {

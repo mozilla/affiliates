@@ -78,11 +78,11 @@
                     <ul aria-expanded="false" id="nav-user-submenu" class="submenu">
                       <li><a href="{{ url('base.dashboard') }}">{{ _('Dashboard') }}</a></li>
                       <li><a href="{{ user.userprofile.get_absolute_url() }}">{{ _('Profile') }}</a></li>
-                      <li>{{ browserid_logout() }}</li>
+                      <li>{{ browserid_logout(text=_('Sign out')) }}</li>
                     </ul>
                   </li>
                 {% else %}
-                  <li class="signin">{{ browserid_login() }}</li>
+                  <li class="signin">{{ browserid_login(text=_('Sign in')) }}</li>
                 {% endif %}
               {% endif %}
             </ul>
