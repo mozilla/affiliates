@@ -38,6 +38,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'affiliates.facebook.middleware.FacebookAuthenticationMiddleware',
+    'affiliates.base.middleware.AnonymousCookieNoCache',
     'session_csrf.CsrfMiddleware',  # Must be after auth middleware.
     'django.contrib.messages.middleware.MessageMiddleware',
     'commonware.middleware.StrictTransportMiddleware',

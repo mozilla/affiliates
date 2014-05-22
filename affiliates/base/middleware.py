@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.cache import add_never_cache_headers
 
 from commonware.response.middleware import FrameOptionsHeader as CommonwareFrameOptionsHeader
 
@@ -28,3 +29,15 @@ class FrameOptionsHeader(CommonwareFrameOptionsHeader):
             return response
         else:
             return super(FrameOptionsHeader, self).process_response(request, response)
+
+
+class AnonymousCookieNoCache(object):
+    """
+    If the user is anonymous, sent no cookies, and the response set some
+    cookies, do not cache.
+    """
+    def process_response(self, request, response):
+        if not request.COOKIES and request.user.is_anonymous() and response.cookies:
+            add_never_cache_headers(response)
+
+        return response
