@@ -49,7 +49,7 @@
           {{ _('Someday soon!') }}
         {% endif %}
       </h3>
-      <p>{{ message }}</p>
+      <p>{{ message|safe }}</p>
     </li>
   {% endfor %}
 </ol>

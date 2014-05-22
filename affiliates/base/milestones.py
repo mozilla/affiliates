@@ -1,5 +1,3 @@
-from django.contrib.contenttypes.models import ContentType
-
 from tower import ugettext_lazy as _lazy
 
 from affiliates.banners.models import ImageBanner, TextBanner
