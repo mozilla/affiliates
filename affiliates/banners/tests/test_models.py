@@ -2,14 +2,15 @@ from django.core.exceptions import ValidationError
 from django.test.utils import override_settings
 
 from nose.tools import eq_, ok_
-from mock import Mock, patch
+from mock import Mock, patch, PropertyMock
 
-from affiliates.banners.models import Banner, ImageVariation
+from affiliates.banners.models import Banner, Category, ImageVariation
 from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerVariationFactory,
                                       ImageBannerFactory, ImageBannerVariationFactory,
                                       TextBannerFactory, TextBannerVariationFactory)
 from affiliates.base.tests import TestCase
 from affiliates.links.models import Link
+from affiliates.links.tests import LinkFactory
 from affiliates.users.tests import UserFactory
 
 
@@ -44,6 +45,38 @@ class CategoryTests(TestCase):
         grandchild.parent = child
         with self.assertRaises(ValidationError):
             grandchild.clean()  # child is not a root node, no bueno!
+
+    def test_link_clicks(self):
+        category = CategoryFactory.create()
+        mock_links = [Mock(link_clicks=5), Mock(link_clicks=13), Mock(link_clicks=7)]
+
+        with patch.object(Category, 'links', PropertyMock(return_value=mock_links)):
+            eq_(category.link_clicks, 25)
+
+    def test_links(self):
+        """
+        links should return a queryset of links related to any type of
+        banner variation within the category.
+        """
+        category = CategoryFactory.create()
+
+        # Test against several variations, and multiple variations.
+        image_banner_variation1 = ImageBannerVariationFactory.create(banner__category=category)
+        image_banner_variation2 = ImageBannerVariationFactory.create(banner__category=category)
+        text_banner_variation = TextBannerVariationFactory.create(banner__category=category)
+        upgrade_banner_variation = FirefoxUpgradeBannerVariationFactory.create(
+            banner__category=category)
+
+        # Create links from the variations.
+        image_link1 = LinkFactory.create(banner_variation=image_banner_variation1)
+        image_link2 = LinkFactory.create(banner_variation=image_banner_variation1)
+        image_link3 = LinkFactory.create(banner_variation=image_banner_variation2)
+        text_link = LinkFactory.create(banner_variation=text_banner_variation)
+        upgrade_link = LinkFactory.create(banner_variation=upgrade_banner_variation)
+
+        eq_(set([image_link1, image_link2, image_link3, text_link, upgrade_link]),
+            set(category.links))
+
 
 
 class BannerTests(TestCase):

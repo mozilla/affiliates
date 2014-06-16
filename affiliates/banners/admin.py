@@ -9,7 +9,7 @@ from affiliates.base.admin import admin_site, BaseModelAdmin
 
 
 class CategoryModelAdmin(MPTTModelAdmin):
-    pass
+    list_display = ('name', 'link_clicks')
 
 
 class ImageVariationInline(admin.TabularInline):

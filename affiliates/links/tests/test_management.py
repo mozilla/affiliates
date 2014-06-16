@@ -202,7 +202,10 @@ class AggregateOldDataPointsTests(TestCase):
         link2_old_datapoint2 = DataPointFactory.create(link=link2, date=aware_date(2013, 12, 30),
                                                        link_clicks=2, firefox_downloads=7)
 
-        self.command.handle()
+        path = 'affiliates.links.management.commands.aggregate_old_datapoints.timezone'
+        with patch(path) as mock_timezone:
+            mock_timezone.now.return_value = aware_datetime(2014, 4, 2)
+            self.command.handle()
 
         # link1 should have 7+8=15 clicks, 10+4=14 downloads, and the
         # new datapoint should still exist.
