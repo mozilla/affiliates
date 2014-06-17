@@ -1,15 +1,27 @@
 <li class="banner {{ extra_class|default('') }}">
   {% block flag %}{% endblock %}
-  <a href="{{ href }}">
-    {% block preview %}{% endblock %}
-    {% if link %}
-      <ul class="desc">
-        {% block link_extra %}{% endblock %}
-        <li>Created <time datetime="{{ link.created.isoformat() }}">{{ link.created|babel_date }}</time></li>
-        <li>{{ link.link_clicks|babel_number }} clicks</li>
-      </ul>
-    {% else %}
-      <h3 class="name">{{ _(banner.name) }}</h3>
-    {% endif %}
-  </a>
+  {% if href %}
+    <a href="{{ href }}" class="preview-container">
+  {% else %}
+    <div class="preview-container">
+  {% endif %}
+
+  {% block preview %}{% endblock %}
+  {% if link %}
+    <ul class="desc">
+      {% block link_extra %}{% endblock %}
+      <li>Created <time datetime="{{ link.created.isoformat() }}">{{ link.created|babel_date }}</time></li>
+      <li>{{ link.link_clicks|babel_number }} clicks</li>
+    </ul>
+  {% else %}
+    <h3 class="name">{{ _(banner.name) }}</h3>
+  {% endif %}
+
+  {% if href %}
+    </a>
+  {% else %}
+    </div>
+  {% endif %}
+
+  {% if extra %}{{ extra }}{% endif %}
 </li>

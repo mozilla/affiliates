@@ -1,0 +1,37 @@
+{% extends 'statistics/index.html' %}
+
+{% from 'banners/generator/macros.html' import smart_banner_help %}
+{% from 'base/macros.html' import banner_string, click_string %}
+
+{% block main_stats %}
+  <div class="mystats">
+    <h2>{{ _('{category} Metrics')|fe(category=category.name|safe) }}</h2>
+    <ul class="stats col-2">
+      <li class="clicks">{{ click_string(category.link_clicks) }}</li>
+      <li class="banners">{{ banner_string(category.links()|count) }}</li>
+    </ul>
+  </div>
+{% endblock %}
+
+{% macro banner_stats(banner) -%}
+  <ul class="extra">
+    <li class="clicks">{{ click_string(banner.link_clicks) }}</li>
+    <li class="banners">{{ banner_string(banner.links.count()) }}</li>
+  </ul>
+{%- endmacro %}
+
+{% block extra_sections %}
+  <section class="section banner-section">
+    <div class="contain">
+      <h2 class="section-title">{{ _('Banners') }}</h2>
+
+      <ul class="banners-list">
+        {% for banner in banners %}
+          {{ banner.preview_html(None, extra=banner_stats(banner)) }}
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  {{ smart_banner_help() }}
+{% endblock %}

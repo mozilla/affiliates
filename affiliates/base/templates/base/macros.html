@@ -69,20 +69,31 @@
       <em>{{ _('Not yet ranked') }}</em>
     {% endif %}
   </li>
-  <li class="banners">
-    {% set count = user.link_set.all()|count %}
-    {% trans count=count|babel_number, count_int=count %}
-      <strong>{{ count }}</strong> banner
-    {% pluralize count_int %}
-      <strong>{{ count }}</strong> banners
-    {% endtrans %}
-  </li>
-  <li class="clicks">
-    {% trans count=user.metric_total('link_clicks') %}
-      <strong>{{ count }}</strong> click
-    {% pluralize %}
-      <strong>{{ count }}</strong> clicks
-    {% endtrans %}
-  </li>
+  <li class="banners">{{ banner_string(user.link_set.all()|count) }}</li>
+  <li class="clicks">{{ click_string(user.metric_total('link_clicks')) }}</li>
 </ul>
+{%- endmacro %}
+
+{% macro affiliate_string(count) -%}
+  {% trans count=count|babel_number, count_int=count %}
+    <strong>{{ count }}</strong> affiliate
+  {% pluralize count_int %}
+    <strong>{{ count }}</strong> affiliates
+  {% endtrans %}
+{%- endmacro %}
+
+{% macro click_string(count) -%}
+  {% trans count=count|babel_number, count_int=count %}
+    <strong>{{ count }}</strong> click
+  {% pluralize count_int %}
+    <strong>{{ count }}</strong> clicks
+  {% endtrans %}
+{%- endmacro %}
+
+{% macro banner_string(count) -%}
+  {% trans count=count|babel_number, count_int=count %}
+    <strong>{{ count }}</strong> banner
+  {% pluralize count_int %}
+    <strong>{{ count }}</strong> banners
+  {% endtrans %}
 {%- endmacro %}

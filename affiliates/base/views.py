@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Sum
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.defaults import page_not_found, server_error
@@ -15,7 +14,7 @@ from affiliates.base.milestones import MilestoneDisplay
 from affiliates.base.models import NewsItem
 from affiliates.base.utils import redirect
 from affiliates.facebook.utils import in_facebook_app
-from affiliates.links.models import DataPoint, Link
+from affiliates.links.models import Link
 
 
 log = commonware.log.getLogger('a.facebook')
@@ -25,12 +24,10 @@ def home(request):
     if request.user.is_authenticated():
         return redirect('base.dashboard')
     else:
-        aggregate_clicks = Link.objects.aggregate(a=Sum('aggregate_link_clicks'))['a'] or 0
-        datapoint_clicks = DataPoint.objects.aggregate(d=Sum('link_clicks'))['d'] or 0
         return render(request, 'base/home.html', {
             'affiliate_count': User.objects.count(),
             'link_count': Link.objects.count(),
-            'click_count': aggregate_clicks + datapoint_clicks
+            'click_count': Link.objects.total_link_clicks(),
         })
 
 def about(request):

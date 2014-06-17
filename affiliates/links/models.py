@@ -9,6 +9,15 @@ from funfactory.urlresolvers import reverse
 
 from affiliates.base.utils import absolutify
 
+
+class LinkManager(CachingManager):
+    def total_link_clicks(self):
+        """Return total number of clicks across the entire service."""
+        aggregate_clicks = self.aggregate(a=models.Sum('aggregate_link_clicks'))['a'] or 0
+        datapoint_clicks = DataPoint.objects.aggregate(d=models.Sum('link_clicks'))['d'] or 0
+        return aggregate_clicks + datapoint_clicks
+
+
 class Link(CachingMixin, models.Model):
     """Affiliate link that banners link to."""
     user = models.ForeignKey(User)
@@ -33,7 +42,7 @@ class Link(CachingMixin, models.Model):
     created = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(auto_now=True)
 
-    objects = CachingManager()
+    objects = LinkManager()
 
     def _get_metric_total(self, metric):
         """

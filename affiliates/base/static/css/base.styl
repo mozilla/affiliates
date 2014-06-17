@@ -681,7 +681,7 @@ table.leaderboard {
         text-align: center;
         position: relative;
 
-        a {
+        .preview-container {
             text-decoration: none;
             color: inherit;
             display: block;
@@ -689,18 +689,18 @@ table.leaderboard {
             position: relative;
             border-radius: 6px;
             transition: background ease-in-out .25s;
+        }
 
-            &:hover,
-            &:focus,
-            &:active {
-                background: lighten($light-gray, 25%);
-                background: rgba(255, 255, 255, .25);
-            }
+        a:hover,
+        a:focus,
+        a:active {
+            background: lighten($light-gray, 25%);
+            background: rgba(255, 255, 255, .25);
+        }
 
-            &:hover .name,
-            &:focus .name {
-                text-decoration: underline;
-            }
+        a:hover .name,
+        a:focus .name {
+            text-decoration: underline;
         }
 
         .flag {
@@ -734,6 +734,12 @@ table.leaderboard {
                 text-indent: 200%;
                 white-space: nowrap;
             }
+        }
+
+        ul.extra {
+            box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, .1) inset, -1px -1px 2px 0 rgba(255, 255, 255, .1) inset;
+            border-radius: 6px;
+            background: rgba(lighten($dark-gray, 15%), .15);
         }
 
     }

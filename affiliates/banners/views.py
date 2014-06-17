@@ -35,14 +35,7 @@ class BannerListView(LoginRequiredMixin, ListView):
         return super(BannerListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        return (
-            list(self.category.imagebanner_set
-                 .filter(visible=True).prefetch_related('variation_set')) +
-            list(self.category.textbanner_set
-                 .filter(visible=True).prefetch_related('variation_set')) +
-            list(self.category.firefoxupgradebanner_set
-                 .filter(visible=True).prefetch_related('variation_set'))
-        )
+        return self.category.banners(prefetch=['variation_set'], visible=True)
 
     def get_context_data(self, **context):
         context['category'] = self.category

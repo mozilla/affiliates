@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 
-{% from 'banners/generator/macros.html' import progress %}
+{% from 'banners/generator/macros.html' import progress, smart_banner_help %}
 
 {% block body_id %}generator{% endblock %}
 {% block body_class %}banner{% endblock %}
@@ -28,17 +28,6 @@
     </div>
   </section>
 
-  <div id="smartbanners">
-    <h3>{{ _('What are smart banners?') }}</h3>
-    <p>
-      {% trans %}
-      Smart Banners show visitors slightly different messages depending
-      on their browser. For example, visitors on an older version of
-      Firefox would be encouraged to upgrade, while visitors on Internet
-      Explorer would be encouraged to switch.
-      {% endtrans %}
-    </p>
-  </div>
-
+  {{ smart_banner_help() }}
 </main>
 {% endblock %}

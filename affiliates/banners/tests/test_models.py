@@ -2,12 +2,13 @@ from django.core.exceptions import ValidationError
 from django.test.utils import override_settings
 
 from nose.tools import eq_, ok_
-from mock import Mock, patch, PropertyMock
+from mock import Mock, patch
 
 from affiliates.banners.models import Banner, Category, ImageVariation
-from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerVariationFactory,
-                                      ImageBannerFactory, ImageBannerVariationFactory,
-                                      TextBannerFactory, TextBannerVariationFactory)
+from affiliates.banners.tests import (CategoryFactory, FirefoxUpgradeBannerFactory,
+                                      FirefoxUpgradeBannerVariationFactory, ImageBannerFactory,
+                                      ImageBannerVariationFactory, TextBannerFactory,
+                                      TextBannerVariationFactory)
 from affiliates.base.tests import TestCase
 from affiliates.links.models import Link
 from affiliates.links.tests import LinkFactory
@@ -46,12 +47,29 @@ class CategoryTests(TestCase):
         with self.assertRaises(ValidationError):
             grandchild.clean()  # child is not a root node, no bueno!
 
+    def test_banners(self):
+        category = CategoryFactory.create()
+        image_banner1, image_banner2 = ImageBannerFactory.create_batch(2, category=category)
+        text_banner = TextBannerFactory.create(category=category)
+        upgrade_banner = FirefoxUpgradeBannerFactory.create(category=category)
+
+        eq_(set(category.banners()),
+            set([image_banner1, image_banner2, text_banner, upgrade_banner]))
+
+    def test_banners_filters(self):
+        category = CategoryFactory.create()
+        text_banner = TextBannerFactory.create(category=category, visible=True)
+        FirefoxUpgradeBannerFactory.create(category=category, visible=False)
+
+        eq_(category.banners(visible=True), [text_banner])
+
     def test_link_clicks(self):
         category = CategoryFactory.create()
-        mock_links = [Mock(link_clicks=5), Mock(link_clicks=13), Mock(link_clicks=7)]
+        for clicks in (5, 13, 7):
+            LinkFactory.create(aggregate_link_clicks=clicks,
+                               banner_variation__banner__category=category)
 
-        with patch.object(Category, 'links', PropertyMock(return_value=mock_links)):
-            eq_(category.link_clicks, 25)
+        eq_(category.link_clicks, 25)
 
     def test_links(self):
         """
@@ -74,9 +92,21 @@ class CategoryTests(TestCase):
         text_link = LinkFactory.create(banner_variation=text_banner_variation)
         upgrade_link = LinkFactory.create(banner_variation=upgrade_banner_variation)
 
-        eq_(set([image_link1, image_link2, image_link3, text_link, upgrade_link]),
-            set(category.links))
+        eq_(set(category.links()),
+            set([image_link1, image_link2, image_link3, text_link, upgrade_link]))
 
+    def test_links_filters(self):
+        category = CategoryFactory.create()
+        user = UserFactory.create()
+
+        text_banner_variation = TextBannerVariationFactory.create(banner__category=category)
+        upgrade_banner_variation = FirefoxUpgradeBannerVariationFactory.create(
+            banner__category=category)
+
+        text_link = LinkFactory.create(banner_variation=text_banner_variation, user=user)
+        LinkFactory.create(banner_variation=upgrade_banner_variation)
+
+        eq_(list(category.links(user=user)), [text_link])
 
 
 class BannerTests(TestCase):
@@ -105,12 +135,25 @@ class BannerTests(TestCase):
         """)
         banner.generate_banner_code.assert_called_with(variation)
 
+    # Test base behavior using TextBanner because mocking this or using
+    # a test model isn't worth it.
+
+    def test_links(self):
+        banner = TextBannerFactory.create()
+        link1, link2 = LinkFactory.create_batch(2, banner_variation__banner=banner)
+
+        eq_(set(banner.links), set([link1, link2]))
+
+    def test_link_clicks(self):
+        banner = TextBannerFactory.create()
+        for clicks in (4, 9, 10):
+            LinkFactory.create(aggregate_link_clicks=clicks, banner_variation__banner=banner)
+
+        eq_(banner.link_clicks, 23)
+
 
 @override_settings(MEDIA_URL='/media/')
 class ImageBannerBaseTests(TestCase):
-    # Test base behavior via ImageBanner because mocking would be
-    # tedious and wouldn't help prove much.
-
     def setUp(self):
         self.banner = ImageBannerFactory.create()
         self.banner.preview_template = 'test_template.html'

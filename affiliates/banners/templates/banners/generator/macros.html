@@ -44,3 +44,17 @@
   </ol>
 </div>
 {%- endmacro %}
+
+{% macro smart_banner_help() -%}
+<div id="smartbanners">
+  <h3>{{ _('What are smart banners?') }}</h3>
+  <p>
+    {% trans %}
+    Smart Banners show visitors slightly different messages depending
+    on their browser. For example, visitors on an older version of
+    Firefox would be encouraged to upgrade, while visitors on Internet
+    Explorer would be encouraged to switch.
+    {% endtrans %}
+  </p>
+</div>
+{%- endmacro %}

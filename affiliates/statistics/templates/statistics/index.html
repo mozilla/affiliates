@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+
+{% set title = _('Performance') %}
+
+{% block page_css %}
+  {{ css('dashboard') }}
+  {{ css('make-banner') }}
+  {{ css('statistics') }}
+{% endblock %}
+
+{% from 'base/macros.html' import affiliate_string, banner_string, click_string %}
+
+{% block content %}
+  <main role="main">
+    <section class="section page-head">
+      <div class="contain">
+        <h1 class="page-title">{{ _('Performance') }}</h1>
+        <p class="tagline">{{ _('Take a look at the impact our Affiliates make on increasing awareness of Mozilla and it products.') }}</p>
+
+        {% block main_stats %}
+          <div class="mystats">
+            <h2>{{ _('Key Metrics') }}</h2>
+            <ul class="stats">
+              <li class="users">{{ affiliate_string(total_user_count) }}</li>
+              <li class="banners">{{ banner_string(total_link_count) }}</li>
+              <li class="clicks">{{ click_string(total_link_clicks) }}</li>
+            </ul>
+          </div>
+        {% endblock %}
+      </div>
+    </section>
+
+    {% block extra_sections %}
+      <section class="section category-section">
+        <div class="contain">
+          <h2 class="section-title">{{ _('Categories') }}</h2>
+
+          <ul class="categories-list">
+            {% for category in categories %}
+              <li class="category">
+                <a href="{{ url('statistics.category', category.pk) }}">
+                  <b class="parent">{{ _(category.parent.name) }}</b>
+                  <strong class="name">{{ _(category.name) }}</strong>
+                  <b class="extra">{{ click_string(category.link_clicks) }}</b>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+    {% endblock %}
+  </main>
+{% endblock %}

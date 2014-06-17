@@ -15,6 +15,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'affiliates.base',
     'affiliates.facebook',
     'affiliates.links',
+    'affiliates.statistics',
     'affiliates.users',
 
     'csp',
@@ -269,6 +270,9 @@ MINIFY_BUNDLES = {
         ),
         'profile': (
             'css/profile.styl',
+        ),
+        'statistics': (
+            'css/statistics.styl',
         ),
 
         # Facebook app

@@ -68,6 +68,7 @@
             <ul id="nav-main-menu" class="menu">
               <li><a href="{{ url('base.about') }}">{{ _('About') }}</a></li>
               <li><a href="{{ url('links.leaderboard') }}">{{ _('Leaderboard') }}</a></li>
+              <li><a href="{{ url('statistics.index') }}">{{ _('Performance') }}</a></li>
               {% if user %}
                 {% if user.is_authenticated() %}
                   <li class="user">
