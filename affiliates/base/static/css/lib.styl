@@ -59,18 +59,18 @@ $light-text-color       = #fff;
 $link-color = #09c;
 
 $light-gray     = #dae1e7;
+$med-light-gray = #b6bfc9;
 $medium-gray    = #828d93;
-$med-dark-gray  = #b6bfc9;
 $dark-gray      = #4e4f53;
 $orange         = #e26522;
 
 
 // Orange backgrounds for some page sections
 section-orange = @block {
-    background: #e26522 url(/static/img/warm-grain.png);
+    background: $orange url(/static/img/warm-grain.png);
     background: url(/static/img/warm-grain.png),
                 linear-gradient(to bottom, #f59121, #d05921),
-                #e26522;
+                $orange;
     color: $light-text-color;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, .15);
 
@@ -88,7 +88,7 @@ section-orange = @block {
 
 // Medium gray backgrounds for some page sections
 section-medium = @block {
-    background: $med-dark-gray url(/static/img/light-grain.png);
+    background: $med-light-gray url(/static/img/light-grain.png);
 
     .section-title {
         color: $light-text-color;
