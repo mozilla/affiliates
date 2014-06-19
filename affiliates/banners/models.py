@@ -74,7 +74,6 @@ class Category(CachingMixin, MPTTModel):
 
         return (Link.objects
                 .filter(reduce(operator.or_, variation_filters))
-                .no_cache()
                 .prefetch_related('datapoint_set'))
 
     @property
