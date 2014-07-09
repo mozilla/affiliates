@@ -28,6 +28,12 @@ class Link(CachingMixin, models.Model):
     banner_variation = generic.GenericForeignKey('banner_variation_content_type',
                                                  'banner_variation_id')
 
+    # Denormalized metrics. The true source of these are the aggregate
+    # counts plus the sum of counts on the DataPoints.
+    link_clicks = models.PositiveIntegerField(default=0, editable=False)
+    firefox_downloads = models.PositiveIntegerField(default=0, editable=False)
+    firefox_os_referrals = models.PositiveIntegerField(default=0, editable=False)
+
     # Aggregates do not include data currently stored in the DataPoint
     # model. After a retention period, DataPoint data is added to these
     # aggregate counts and removed from the database.
@@ -43,26 +49,6 @@ class Link(CachingMixin, models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     objects = LinkManager()
-
-    def _get_metric_total(self, metric):
-        """
-        Get the sum total for a specific metric by combining data from
-        the DataPoint table and the aggregate stored on this link.
-        """
-        datapoint_sum = sum([getattr(dp, metric, 0) for dp in self.datapoint_set.all()])
-        return getattr(self, 'aggregate_{0}'.format(metric)) + datapoint_sum
-
-    @property
-    def link_clicks(self):
-        return self._get_metric_total('link_clicks')
-
-    @property
-    def firefox_downloads(self):
-        return self._get_metric_total('firefox_downloads')
-
-    @property
-    def firefox_os_referrals(self):
-        return self._get_metric_total('firefox_os_referrals')
 
     @property
     def banner(self):

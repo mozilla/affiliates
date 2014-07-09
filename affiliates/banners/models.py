@@ -41,6 +41,12 @@ class Category(CachingMixin, MPTTModel):
     name = models.CharField(max_length=255)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
+    # Denormalized totals. Links and datapoints are the true source of
+    # these totals.
+    link_clicks = models.PositiveIntegerField(default=0, editable=False)
+    firefox_downloads = models.PositiveIntegerField(default=0, editable=False)
+    firefox_os_referrals = models.PositiveIntegerField(default=0, editable=False)
+
     objects = CategoryManager()
 
     class Meta:
@@ -94,14 +100,6 @@ class Category(CachingMixin, MPTTModel):
 
         return links
 
-    @property
-    def link_clicks(self):
-        """
-        Total number of link clicks for links generated from banners
-        within this category.
-        """
-        return sum(link.link_clicks for link in self.links(prefetch=['datapoint_set']))
-
     def __unicode__(self):
         return self.name
 
@@ -112,6 +110,12 @@ class Banner(models.Model):
     name = models.CharField(max_length=255)
     destination = models.URLField(max_length=255)
     visible = models.BooleanField(default=False)
+
+    # Denormalized totals. Links and datapoints are the true source of
+    # these totals.
+    link_clicks = models.PositiveIntegerField(default=0, editable=False)
+    firefox_downloads = models.PositiveIntegerField(default=0, editable=False)
+    firefox_os_referrals = models.PositiveIntegerField(default=0, editable=False)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -167,14 +171,6 @@ class Banner(models.Model):
         content_type = ContentType.objects.get_for_model(self.get_variation_class())
         return Link.objects.filter(banner_variation_content_type=content_type,
                                    banner_variation_id__in=variation_pks)
-
-    @property
-    def link_clicks(self):
-        """
-        Total number of link clicks for links generated from variations
-        of this banner.
-        """
-        return sum(link.link_clicks for link in self.links.prefetch_related('datapoint_set'))
 
     def __unicode__(self):
         return self.name

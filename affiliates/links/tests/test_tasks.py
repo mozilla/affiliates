@@ -1,5 +1,7 @@
 from datetime import date
 
+from django.core.management import call_command
+
 from nose.tools import eq_
 
 from affiliates.base.tests import TestCase
@@ -27,7 +29,18 @@ class AddClickTests(TestCase):
         """
         link = LinkFactory.create()
         datapoint = DataPointFactory.create(link=link, date=date(2014, 1, 1), link_clicks=7)
+        call_command('denormalize_metrics')  # Ensure denormalized data.
 
         add_click(link.id, date(2014, 1, 1))
+
         datapoint = DataPoint.objects.get(pk=datapoint.pk)
         eq_(datapoint.link_clicks, 8)
+
+        link = datapoint.link
+        eq_(link.link_clicks, 8)
+
+        banner = link.banner
+        eq_(banner.link_clicks, 8)
+
+        category = banner.category
+        eq_(category.link_clicks, 8)

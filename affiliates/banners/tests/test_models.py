@@ -63,14 +63,6 @@ class CategoryTests(TestCase):
 
         eq_(category.banners(visible=True), [text_banner])
 
-    def test_link_clicks(self):
-        category = CategoryFactory.create()
-        for clicks in (5, 13, 7):
-            LinkFactory.create(aggregate_link_clicks=clicks,
-                               banner_variation__banner__category=category)
-
-        eq_(category.link_clicks, 25)
-
     def test_links(self):
         """
         links should return a queryset of links related to any type of
@@ -143,13 +135,6 @@ class BannerTests(TestCase):
         link1, link2 = LinkFactory.create_batch(2, banner_variation__banner=banner)
 
         eq_(set(banner.links), set([link1, link2]))
-
-    def test_link_clicks(self):
-        banner = TextBannerFactory.create()
-        for clicks in (4, 9, 10):
-            LinkFactory.create(aggregate_link_clicks=clicks, banner_variation__banner=banner)
-
-        eq_(banner.link_clicks, 23)
 
 
 @override_settings(MEDIA_URL='/media/')

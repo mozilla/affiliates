@@ -1,14 +1,16 @@
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.core.management.base import CommandError
 
 from mock import patch
 from nose.tools import eq_, ok_
 
+from affiliates.banners.models import TextBanner, Category
+from affiliates.banners.tests import CategoryFactory, TextBannerFactory
 from affiliates.base.tests import aware_date, aware_datetime, TestCase
 from affiliates.links.google_analytics import AnalyticsError
 from affiliates.links.management.commands import (aggregate_old_datapoints, collect_ga_data,
-                                                  update_leaderboard)
+                                                  denormalize_metrics, update_leaderboard)
 from affiliates.links.models import DataPoint, LeaderboardStanding, Link
 from affiliates.links.tests import DataPointFactory, LeaderboardStandingFactory, LinkFactory
 from affiliates.users.tests import UserFactory
@@ -222,3 +224,56 @@ class AggregateOldDataPointsTests(TestCase):
         eq_(link2.aggregate_firefox_downloads, 21)
         ok_(not DataPoint.objects.filter(pk=link2_old_datapoint1.pk).exists())
         ok_(not DataPoint.objects.filter(pk=link2_old_datapoint2.pk).exists())
+
+
+class DenormalizeMetricsTests(TestCase):
+    _date = date(2014, 1, 1)
+
+    def setUp(self):
+        self.command = denormalize_metrics.Command()
+        self.command.METRICS = ('link_clicks',)
+
+    def _datapoint(self, link, clicks):
+        DataPointFactory.create(link_clicks=clicks, link=link, date=self._date)
+        self._date += timedelta(days=1)
+
+    def test_basic(self):
+        category = CategoryFactory.create()
+        banner1, banner2 = TextBannerFactory.create_batch(2, category=category)
+        link1, link2 = LinkFactory.create_batch(2, banner_variation__banner=banner1)
+        link3, link4 = LinkFactory.create_batch(2, banner_variation__banner=banner2)
+
+        # Set datapoint totals.
+        self._datapoint(link1, 4)
+        self._datapoint(link1, 4)
+        self._datapoint(link2, 3)
+        self._datapoint(link2, 3)
+        self._datapoint(link3, 2)
+        self._datapoint(link3, 2)
+        self._datapoint(link4, 1)
+        self._datapoint(link4, 1)
+
+        # Assert that data hasn't been denormalized yet.
+        eq_(link1.link_clicks, 0)
+        eq_(link2.link_clicks, 0)
+        eq_(link3.link_clicks, 0)
+        eq_(link4.link_clicks, 0)
+        eq_(banner1.link_clicks, 0)
+        eq_(banner2.link_clicks, 0)
+        eq_(category.link_clicks, 0)
+
+        self.command.handle()
+
+        # Re-fetch data now that is has updated
+        category = Category.objects.get(pk=category.pk)
+        banner1, banner2 = TextBanner.objects.order_by('id')
+        link1, link2, link3, link4 = Link.objects.order_by('id')
+
+        # Assert that counts are now denormalized.
+        eq_(link1.link_clicks, 8)
+        eq_(link2.link_clicks, 6)
+        eq_(link3.link_clicks, 4)
+        eq_(link4.link_clicks, 2)
+        eq_(banner1.link_clicks, 14)
+        eq_(banner2.link_clicks, 6)
+        eq_(category.link_clicks, 20)
