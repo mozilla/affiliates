@@ -13,28 +13,24 @@ Affiliates consists of two main sites:
   https://apps.facebook.com/fxaffiliates.
 
 
-About playdoh
--------------
-
-This project is based on **playdoh**. Mozilla's Playdoh is an open source
-web application template based on `Django <http://www.djangoproject.com/>`_.
-
-To learn more about it, step by the `playdoh project page
-<https://github.com/mozilla/playdoh>`_.
-
-Contents
---------
-
+User Guide
+----------
 .. toctree::
    :maxdepth: 2
 
-   install
-   banners
+   user/intro
+   user/banners
+
+Developer Guide
+---------------
+.. toctree::
+   :maxdepth: 2
+
+   developer/install
 
 
 Indices and tables
 ------------------
-
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
