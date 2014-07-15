@@ -143,6 +143,10 @@ class Banner(models.Model):
     def __unicode__(self):
         return self.name
 
+    category.help_text = 'Subcategories only!'
+    destination.help_text = 'URL to send users to when they click this banner.'
+    visible.help_text = 'If unchecked, this banner won\'t be shown to users in the generator.'
+
 
 class BannerVariation(models.Model):
     """
