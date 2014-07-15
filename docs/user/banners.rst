@@ -44,7 +44,7 @@ following:
 * The URL for the Banner to redirect to.
 
 * The actual images to use for the banner. At least one of these must be
-  150x150 pixels, otherwise an empty preview will be shown for the banner on
+  125x125 pixels, otherwise an empty preview will be shown for the banner on
   the site.
 
 Once you've gathered all these and had the necessary strings translated, you
