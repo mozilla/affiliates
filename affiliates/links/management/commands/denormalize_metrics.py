@@ -28,15 +28,12 @@ class Command(QuietCommand):
                 banner_totals[banner_type][metric] = defaultdict(int)
 
         # Annotate links with the sum of the metrics from datapoints.
-        links = Link.objects.prefetch_related('banner_variation__banner__category')
+        links = Link.objects.all()
         for metric in self.METRICS:
             links = links.annotate(**{'datapoint_' + metric: Sum('datapoint__' + metric)})
 
         # Update totals on links.
         for link in links:
-            if not link.banner:  # Orphaned links get ignored.
-                continue
-
             for metric in self.METRICS:
                 # Total is aggregate + datapoint sum.
                 total = (getattr(link, 'aggregate_' + metric) +
