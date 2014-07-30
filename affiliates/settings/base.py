@@ -293,9 +293,6 @@ MINIFY_BUNDLES = {
             'browserid/api.js',
             'browserid/browserid.js',
         ),
-        'google_analytics': (
-            'js/ga.js',
-        ),
         'customize_image_banner': (
             'js/libs/rivets.min.js',
             'js/customize_image_banner.js',
