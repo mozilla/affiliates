@@ -201,6 +201,7 @@ DOMAIN_METHODS = {
 CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
 CSP_SCRIPT_SRC = (
     '\'self\'',
+    '\'unsafe-eval\'',
     'https://*.mozilla.org',
     'http://*.mozilla.org',
     'https://*.mozilla.net',
@@ -210,10 +211,12 @@ CSP_SCRIPT_SRC = (
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
     'https://pontoon.mozillalabs.com',
+    'www.googletagmanager.com',
 )
 CSP_FRAME_SRC = (
     '\'self\'',
-    'https://login.persona.org'
+    'https://login.persona.org',
+    'www.googletagmanager.com',
 )
 CSP_IMG_SRC = (
     '\'self\'',
@@ -240,13 +243,13 @@ CSP_FONT_SRC = (
 )
 CSP_STYLE_SRC = (
     '\'self\'',
+    '\'unsafe-inline\'',
     'https://*.mozilla.org',
     'http://*.mozilla.org',
     'https://*.mozilla.net',
     'http://*.mozilla.net',
     'https://pontoon.mozillalabs.com',
 )
-CSP_OPTIONS = ('eval-script', 'inline-script')
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
 # and js files that can be bundled together by the minify app.

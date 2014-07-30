@@ -41,6 +41,12 @@
     {% endblock %}
   </head>
   <body id="{% block body_id %}{% endblock %}" class="no-js {% block body_class %}{% endblock %}">
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PTVRTG"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script src="{{ static('js/google_tag_manager.js') }}"></script>
+    <!-- End Google Tag Manager -->
+
     <div id="strings"
         data-close="{{ _('Close') }}"
         data-input-required="{{ _('This field is required.') }}"
