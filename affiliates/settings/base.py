@@ -210,7 +210,7 @@ CSP_SCRIPT_SRC = (
     'https://login.persona.org',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
-    'https://pontoon.mozillalabs.com',
+    'https://pontoon.mozilla.org',
     'www.googletagmanager.com',
 )
 CSP_FRAME_SRC = (
@@ -232,7 +232,7 @@ CSP_IMG_SRC = (
     'https://*.akamaihd.net',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
-    'https://pontoon.mozillalabs.com',
+    'https://pontoon.mozilla.org',
 )
 CSP_FONT_SRC = (
     '\'self\'',
@@ -248,7 +248,7 @@ CSP_STYLE_SRC = (
     'http://*.mozilla.org',
     'https://*.mozilla.net',
     'http://*.mozilla.net',
-    'https://pontoon.mozillalabs.com',
+    'https://pontoon.mozilla.org',
 )
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
