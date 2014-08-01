@@ -19,7 +19,7 @@ class ImageVariationInline(admin.TabularInline):
 
 
 class ImageBannerModelAdmin(BaseModelAdmin):
-    list_display = ('name', 'category', 'destination', 'visible')
+    list_display = ('name', 'category', 'destination', 'visible', 'link_clicks')
     fields = ('name', 'category', 'destination', 'visible', 'created', 'modified')
     readonly_fields = ('created', 'modified')
     search_fields = ('name', 'destination', 'category__name')
@@ -33,7 +33,7 @@ class TextVariationInline(admin.TabularInline):
 
 
 class TextBannerModelAdmin(BaseModelAdmin):
-    list_display = ('name', 'category', 'visible', 'destination')
+    list_display = ('name', 'category', 'visible', 'destination', 'link_clicks')
     fields = ('name', 'category', 'visible', 'destination', 'created', 'modified')
     readonly_fields = ('created', 'modified')
     search_fields = ('name', 'destination', 'category__name')
@@ -48,7 +48,7 @@ class FirefoxUpgradeBannerVariationInline(admin.TabularInline):
 
 
 class FirefoxUpgradeBannerModelAdmin(BaseModelAdmin):
-    list_display = ('name', 'category', 'destination', 'visible')
+    list_display = ('name', 'category', 'destination', 'visible', 'link_clicks')
     fields = ('name', 'category', 'destination', 'visible', 'created', 'modified')
     readonly_fields = ('created', 'modified')
     search_fields = ('name', 'destination', 'category__name')
