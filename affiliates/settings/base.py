@@ -4,7 +4,7 @@ from tower import ugettext_lazy as _lazy
 
 
 # Django Settings
-##############################################################################
+###############################################################################
 ROOT_URLCONF = 'affiliates.urls'
 
 USE_TZ = True
