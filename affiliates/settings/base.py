@@ -210,6 +210,8 @@ CSP_SCRIPT_SRC = (
     'https://login.persona.org',
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
+    'http://*.google.com',
+    'https://*.google.com',
     'https://pontoon.mozilla.org',
     'www.googletagmanager.com',
 )
