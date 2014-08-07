@@ -236,13 +236,18 @@ CSP_IMG_SRC = (
     'http://*.google-analytics.com',
     'https://*.google-analytics.com',
     'https://pontoon.mozilla.org',
+    'http://*.google.com',
+    'https://*.google.com',
 )
 CSP_FONT_SRC = (
     '\'self\'',
+    'data:',
     'https://*.mozilla.org',
     'http://*.mozilla.org',
     'https://*.mozilla.net',
     'http://*.mozilla.net',
+    'http://*.google.com',
+    'https://*.google.com',
 )
 CSP_STYLE_SRC = (
     '\'self\'',
