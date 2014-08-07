@@ -202,6 +202,7 @@ CSP_EXCLUDE_URL_PREFIXES = ('/admin',)
 CSP_SCRIPT_SRC = (
     '\'self\'',
     '\'unsafe-eval\'',
+    '\'unsafe-inline\'',
     'https://*.mozilla.org',
     'http://*.mozilla.org',
     'https://*.mozilla.net',
@@ -251,6 +252,8 @@ CSP_STYLE_SRC = (
     'https://*.mozilla.net',
     'http://*.mozilla.net',
     'https://pontoon.mozilla.org',
+    'http://*.google.com',
+    'https://*.google.com',
 )
 
 # Bundles is a dictionary of two dictionaries, css and js, which list css files
