@@ -12,13 +12,14 @@ def index(request):
         'total_link_count': Link.objects.count(),
         'total_user_count': User.objects.count(),
         'categories': (Category.objects
+                       .with_visible_banners()
                        .filter(level=1)
                        .order_by('parent__name', 'name')),
     })
 
 
 class CategoryDetailView(DetailView):
-    queryset = Category.objects.filter(level=1)
+    queryset = Category.objects.with_visible_banners().filter(level=1)
     template_name = 'statistics/category.html'
     context_object_name = 'category'
 

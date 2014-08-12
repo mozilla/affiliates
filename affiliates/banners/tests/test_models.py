@@ -100,6 +100,41 @@ class CategoryTests(TestCase):
 
         eq_(list(category.links(user=user)), [text_link])
 
+    def test_links_no_banners(self):
+        """If a Category has no banners, return an empty queryset."""
+        category = CategoryFactory.create()
+
+        eq_(len(category.banners()), 0)
+        eq_(category.links().exists(), False)
+
+    def test_queryset_visible_banners(self):
+        parent = CategoryFactory.create()
+        categories = CategoryFactory.create_batch(5, parent=parent)
+        category1, category2, category3, category4, category5 = categories
+
+        # category1 has a visible ImageBanner
+        ImageBannerFactory.create(category=category1, visible=True)
+        TextBannerFactory.create(category=category1, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category1, visible=False)
+
+        # category2 has a visible TextBanner
+        ImageBannerFactory.create(category=category2, visible=False)
+        TextBannerFactory.create(category=category2, visible=True)
+        FirefoxUpgradeBannerFactory.create(category=category2, visible=False)
+
+        # category3 has a visible FirefoxUpgradeBanner
+        ImageBannerFactory.create(category=category3, visible=False)
+        TextBannerFactory.create(category=category3, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category3, visible=True)
+
+        # category4 has no visible banners
+        ImageBannerFactory.create(category=category4, visible=False)
+        TextBannerFactory.create(category=category4, visible=False)
+        FirefoxUpgradeBannerFactory.create(category=category4, visible=False)
+
+        # category5 has no banners.
+        eq_(set(Category.objects.with_visible_banners()), set([category1, category2, category3]))
+
 
 class BannerTests(TestCase):
     def test_create_link(self):
