@@ -19,7 +19,7 @@ def index(request):
 
 
 class CategoryDetailView(DetailView):
-    queryset = Category.objects.with_visible_banners().filter(level=1)
+    queryset = Category.objects.with_visible_banners().filter(level=1).distinct()
     template_name = 'statistics/category.html'
     context_object_name = 'category'
 
