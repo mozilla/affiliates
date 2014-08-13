@@ -14,7 +14,8 @@ def index(request):
         'categories': (Category.objects
                        .with_visible_banners()
                        .filter(level=1)
-                       .order_by('parent__name', 'name')),
+                       .order_by('parent__name', 'name')
+                       .distinct()),
     })
 
 
