@@ -31,3 +31,6 @@
 [submodule "vendor-local/src/django-form-utils"]
 	path = vendor-local/src/django-form-utils
 	url = git://github.com/carljm/django-form-utils.git
+[submodule "vendor-local/src/django"]
+	path = vendor-local/src/django
+	url = https://github.com/django/django.git

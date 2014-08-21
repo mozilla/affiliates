@@ -8,6 +8,7 @@ packages/jingo-minify
 packages/pytz
 packages/requests
 src/basket-client
+src/django
 src/django-cache-machine
 src/django-cronjobs
 src/django-csp
