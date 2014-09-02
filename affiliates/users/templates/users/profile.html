@@ -18,16 +18,12 @@
       <div class="contain">
         {{ notices() }}
 
-        <h1 class="page-title">{{ profile.user.display_name }}</h1>
+        <h1 class="page-title">{{ _('Name: {display_name}')|fe(display_name=profile.user.display_name) }}</h1>
 
         <img src="{{ gravatar(profile.user, size=125) }}" alt="" class="avatar" width="125" height="125">
 
       {% if profile.bio %}
-        <p class="bio">{{ profile.bio }}</p>
-      {% endif %}
-
-      {% if profile.website %}
-        <p class="website"><a href="{{ profile.website }}" rel="nofollow">{{ profile.website }}</a></p>
+        <p class="bio">{{ _('Biography: {biography_text}')|fe(biography_text=profile.bio) }}</p>
       {% endif %}
 
       {% if request.user == profile.user  %}
