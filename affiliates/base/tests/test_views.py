@@ -1,4 +1,5 @@
 from django.test.client import RequestFactory
+from django.views.defaults import server_error
 
 import basket
 from funfactory.urlresolvers import reverse
@@ -61,6 +62,14 @@ class ErrorPageTests(TestCase):
 
             self.in_facebook_app.assert_called_with(request)
             render.assert_called_with(request, 'facebook/error.html', status=500)
+
+    def test_500_renders(self):
+        """
+        Ensure that the built-in 500 view can render without errors.
+        """
+        request = self.factory.get('/')
+        server_error(request)  # No exceptions! Hopefully, at least.
+
 
 
 class HomeTests(TestCase):

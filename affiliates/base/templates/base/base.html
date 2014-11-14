@@ -15,7 +15,9 @@
     <meta property="og:title" content="{% block og_title %}{{ _('Firefox Affiliates') }}{% endblock %}">
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:image" content="{% block og_image %}{{ absolutify(static('img/affiliates-shield-300.jpg')) }}{% endblock %}">
-    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri() }}{% endblock %}">
+    {% if request %}
+      <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri() }}{% endblock %}">
+    {% endif %}
     <meta property="og:site_name" content="{{ _('Firefox Affiliates') }}">
     <meta property="og:description" content="{{ meta_description }}">
 
@@ -97,7 +99,7 @@
 
       {% block newsletter %}
         {# Email subscriptions are only shown for English locales. #}
-        {% if LANG.startswith('en') %}
+        {% if LANG and LANG.startswith('en') %}
           <section id="newsletter" class="section">
             <div class="contain">
 
@@ -211,7 +213,7 @@
     {% endblock %}
 
     <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
-    {% if settings.DEV %}
+    {% if settings and settings.DEV %}
       <script src="https://pontoon.mozilla.org/pontoon.js"></script>
     {% endif %}
   </body>
