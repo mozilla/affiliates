@@ -1,3 +1,5 @@
+import sys
+
 from django.contrib.auth.models import User
 from django.db.models import Sum
 
@@ -40,7 +42,7 @@ class Command(QuietCommand):
             for index, entry in enumerate(total_clicks)
         ]
         for standing in new_standings:
-            print '{0}: {1} {2}'.format(standing.ranking, standing.user_id, standing.value)
+            sys.stderr.write('{0}: {1} {2}\n'.format(standing.ranking, standing.user_id, standing.value))
         LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
 
         self.output('Done!')
