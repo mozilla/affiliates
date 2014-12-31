@@ -39,6 +39,8 @@ class Command(QuietCommand):
                                 value=entry[1])
             for index, entry in enumerate(total_clicks)
         ]
+        for standing in new_standings:
+            print '{0}: {1} {2}'.format(standing.ranking, standing.user_id, standing.value)
         LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
 
         self.output('Done!')
