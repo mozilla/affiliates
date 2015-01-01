@@ -35,7 +35,9 @@ class Command(QuietCommand):
 
         # Regenerate the leaderboard using the sorted list of clicks.
         self.output('Updating database...')
+        print 'pre-delete'
         LeaderboardStanding.objects.all().delete()
+        print 'post-delete'
         new_standings = [
             LeaderboardStanding(ranking=index + 1, user_id=entry[0], metric='link_clicks',
                                 value=entry[1])
