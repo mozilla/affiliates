@@ -1,6 +1,5 @@
-import sys
-
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.db.models import Sum
 
 from affiliates.base.management.commands import QuietCommand
@@ -35,16 +34,18 @@ class Command(QuietCommand):
 
         # Regenerate the leaderboard using the sorted list of clicks.
         self.output('Updating database...')
-        print 'pre-delete'
         LeaderboardStanding.objects.all().delete()
-        print 'post-delete'
         new_standings = [
             LeaderboardStanding(ranking=index + 1, user_id=entry[0], metric='link_clicks',
                                 value=entry[1])
             for index, entry in enumerate(total_clicks)
         ]
-        for standing in new_standings:
-            sys.stderr.write('{0}: {1} {2}\n'.format(standing.ranking, standing.user_id, standing.value))
-        LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
+        try:
+            LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
+        except IntegrityError:
+            msg = ''
+            for standing in new_standings:
+                msg += '{0}: {1} {2}\n'.format(standing.ranking, standing.user_id, standing.value)
+            raise Exception(msg)
 
         self.output('Done!')
