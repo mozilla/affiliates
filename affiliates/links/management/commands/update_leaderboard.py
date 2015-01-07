@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.db import IntegrityError
 from django.db.models import Sum
 
 from affiliates.base.management.commands import QuietCommand
@@ -40,12 +39,5 @@ class Command(QuietCommand):
                                 value=entry[1])
             for index, entry in enumerate(total_clicks)
         ]
-        try:
-            LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
-        except IntegrityError:
-            msg = ''
-            for standing in new_standings:
-                msg += '{0}: {1} {2}\n'.format(standing.ranking, standing.user_id, standing.value)
-            raise Exception(msg)
-
+        LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
         self.output('Done!')
