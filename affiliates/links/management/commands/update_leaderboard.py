@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db import transaction
 from django.db.models import Sum
 
 from affiliates.base.management.commands import QuietCommand
@@ -8,6 +9,7 @@ from affiliates.links.models import LeaderboardStanding
 class Command(QuietCommand):
     help = ('Populate the leaderboard with the latest rankings.')
 
+    @transaction.commit_on_success
     def handle_quiet(self, *args, **kwargs):
         # Collect the sum of aggregated clicks stored in related Links
         # for each user.
