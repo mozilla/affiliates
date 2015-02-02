@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
-from django.db import transaction
 from django.db.models import Sum
+
+from multidb.pinning import use_master
 
 from affiliates.base.management.commands import QuietCommand
 from affiliates.links.models import LeaderboardStanding
@@ -9,7 +10,6 @@ from affiliates.links.models import LeaderboardStanding
 class Command(QuietCommand):
     help = ('Populate the leaderboard with the latest rankings.')
 
-    @transaction.commit_on_success
     def handle_quiet(self, *args, **kwargs):
         # Collect the sum of aggregated clicks stored in related Links
         # for each user.
@@ -35,11 +35,12 @@ class Command(QuietCommand):
 
         # Regenerate the leaderboard using the sorted list of clicks.
         self.output('Updating database...')
-        LeaderboardStanding.objects.all().delete()
-        new_standings = [
-            LeaderboardStanding(ranking=index + 1, user_id=entry[0], metric='link_clicks',
-                                value=entry[1])
-            for index, entry in enumerate(total_clicks)
-        ]
-        LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
+        with use_master:
+            LeaderboardStanding.objects.all().delete()
+            new_standings = [
+                LeaderboardStanding(ranking=index + 1, user_id=entry[0], metric='link_clicks',
+                                    value=entry[1])
+                for index, entry in enumerate(total_clicks)
+            ]
+            LeaderboardStanding.objects.bulk_create(new_standings, batch_size=1000)
         self.output('Done!')
