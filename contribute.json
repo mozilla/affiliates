@@ -1,0 +1,31 @@
+{
+    "name": "Firefox Affiliates",
+    "description": "Service for generating affiliate banners to share Firefox and other Mozilla projects with the world.",
+    "repository": {
+        "url": "https://github.com/mozilla/affiliates",
+        "license": "BSD 2-Clause",
+        "tests": "https://ci.mozilla.org/job/affiliates/"
+    },
+    "participate": {
+        "home": "https://github.com/mozilla/affiliates/blob/master/CONTRIBUTING.md",
+        "docs": "https://affiliates.readthedocs.org/en/latest/",
+        "irc": "irc://irc.mozilla.org/#affiliates",
+        "irc-contacts": ["Osmose"]
+    },
+    "bugs": {
+        "list": "https://bugzilla.mozilla.org/describecomponents.cgi?product=Firefox%20Affiliates",
+        "report": "https://bugzilla.mozilla.org/enter_bug.cgi?product=Firefox%20Affiliates"
+    },
+    "urls": {
+        "prod": "https://affiliates.mozilla.org/",
+        "stage": "https://affiliates.allizom.org/",
+        "dev": "https://affiliates-dev.allizom.org/"
+    },
+    "keywords": [
+        "django",
+        "mysql",
+        "python",
+        "jquery",
+        "javascript"
+    ]
+}
