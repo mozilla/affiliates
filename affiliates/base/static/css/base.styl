@@ -836,13 +836,44 @@ body.noscroll {
     }
 }
 
-#smartbanners {
+#smartbanners, #friends-msg {
     display: none;
+}
+
+.friends-msg-modal {
+    background: transparent url(/static/img/affiliates-to-friends.png) top center no-repeat;
+    padding-top: 145px;
+    h4 {
+        text-align: center;
+    }
+    p {
+        text-align: center;
+    }
+    .friends-blog-link {
+        font-size: 14px;
+    }
 }
 
 
 //*----------------------------------------------------------------*/
-// @Mobile @Landscape layout: 480px
+// @Mobile layout: Max 480px
+
+@media $media-query-mobile {
+    #modal .inner {
+        margin: 30px 5px auto 5px;
+        width: 73%;
+    }
+
+    .friends-msg-modal {
+        background: transparent url(/static/img/affiliates-to-friends-small.png) top center no-repeat;
+        padding-top: 75px;
+    }
+
+}
+
+
+//*----------------------------------------------------------------*/
+// @Mobile @Landscape layout: Max 480px
 
 @media $media-query-mobile-wide {
 

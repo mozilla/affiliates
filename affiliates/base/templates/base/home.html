@@ -17,6 +17,30 @@
 {% endblock %}
 
 {% block content %}
+
+  {% if LANG in settings.FRIENDS_MSG_LOCALES or settings.DEV == True %}
+    <div id="friends-msg">
+      <div class="friends-msg-modal">
+        <h4>{{ _('So long, <strong>Firefox Affiliates</strong>.') }}</h4>
+        <h4>{{ _('Hello, <strong>Firefox Friends</strong>.') }}</h4>
+        <p>
+          {{ _('We’re moving our Affiliates program to Firefox Friends, an exciting new way to share what
+          we do with the world. At Firefox Friends you’ll have opportunities to get recognized for
+          making an impact — plus, you’ll be in the know for all the latest Mozilla news and
+          announcements.') }}
+        </p>
+        <p>
+          {{ _('At the end of July, sign-in and new banner creation for Affiliates will be disabled,
+          so please join us at Firefox Friends to continue sharing Mozilla with world.') }}
+        </p>
+        <p><a href="https://friends.mozilla.org" class="button go">{{ _('Join Firefox Friends') }}</a></p>
+        <p class="friends-blog-link">
+          <a href="https://blog.mozilla.org/community/2015/05/12/shutting-down-firefox-affiliates/">{{_('Click here for more information.')}}</a>
+        </p>
+      </div>
+    </div>
+  {% endif %}
+
   <main role="main">
     <section id="intro" class="section page-head">
       <div class="contain">
