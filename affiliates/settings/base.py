@@ -63,7 +63,7 @@ TEMPLATE_LOADERS = [
 ] + list(TEMPLATE_LOADERS)
 
 # Language settings
-PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'pl', 'sl', 'sq', 'zh-TW', 'sk')
+PROD_LANGUAGES = ('cs', 'de', 'en-US', 'es', 'fr', 'nl', 'pl', 'pt-BR', 'sk', 'sl', 'sq', 'sr', 'zh-TW')
 
 # UPSTREAM: Change lazy_langs to search for locales in a case-insensitive
 # manner.
