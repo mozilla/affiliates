@@ -429,4 +429,4 @@ FACEBOOK_APP_URL = lazy(facebook_app_url_lazy, str)()
 GA_ACCOUNT_CODE = ''
 
 # List Of Locales Where Firefox Friends Messaging Is Translated & Enabled
-FRIENDS_MSG_LOCALES = ['en-US']
+FRIENDS_MSG_LOCALES = ['cs', 'de', 'en-US', 'fr', 'nl', 'pt-BR', 'sl', 'sr']
