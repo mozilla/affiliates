@@ -1,7 +1,9 @@
 from datetime import date
 
+from django.core.cache import cache
 from django.http import Http404
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from mock import patch
 from nose.tools import eq_, ok_
@@ -41,16 +43,33 @@ class LinkReferralViewTest(TestCase):
         self.view = views.LinkReferralView.as_view()
         self.factory = RequestFactory()
 
+    @override_settings(MAX_CLICK_COUNT=3)
+    @override_settings(CLICK_THROTTLE_TIMEOUT=20)
     def test_add_click(self):
         request = self.factory.get('/')
         link = LinkFactory.create()
 
-        with patch('affiliates.links.views.add_click') as add_click:
-            with patch('affiliates.links.views.timezone') as timezone:
-                timezone.now.return_value = aware_datetime(2014, 4, 7)
+        with patch('affiliates.links.views.cache', wraps=cache) as cache_patch:
+            with patch('affiliates.links.views.add_click') as add_click:
+                with patch('affiliates.links.views.timezone') as timezone:
+                    timezone.now.return_value = aware_datetime(2014, 4, 7)
 
+                    self.view(request, pk=link.pk)
+                    add_click.delay.assert_called_with(link.id, date(2014, 4, 7))
+                    cache_patch.set.assert_called_with('127.0.0.1_clicked', 1, 20)
+
+
+    @override_settings(MAX_CLICK_COUNT=3)
+    def test_rate_limiting(self):
+        request = self.factory.get('/')
+        link = LinkFactory.create()
+
+
+        with patch('affiliates.links.views.cache') as cache_patch:
+            with patch('affiliates.links.views.add_click') as add_click:
+                cache_patch.get.return_value = 3
                 self.view(request, pk=link.pk)
-                add_click.delay.assert_called_with(link.id, date(2014, 4, 7))
+                ok_(not add_click.delay.called)
 
 
 class LegacyLinkReferralViewTests(TestCase):
