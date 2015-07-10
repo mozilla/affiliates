@@ -430,3 +430,7 @@ GA_ACCOUNT_CODE = ''
 
 # List Of Locales Where Firefox Friends Messaging Is Translated & Enabled
 FRIENDS_MSG_LOCALES = ['cs', 'de', 'en-US', 'fr', 'nl', 'pt-BR', 'sl', 'sr']
+
+# Limit to three counts per minute.
+CLICK_THROTTLE_TIMEOUT = 60  # One minute
+MAX_CLICK_COUNT = 3

@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.cache import cache
 from django.http import Http404
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
@@ -30,7 +32,15 @@ class LinkReferralView(DetailView):
 
     def get(self, request, *args, **kwargs):
         response = super(LinkReferralView, self).get(request, *args, **kwargs)
-        add_click.delay(self.object.id, timezone.now().date())
+        remote_addr = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
+        key = '{0}_clicked'.format(remote_addr)
+        count = cache.get(key, 0)
+        if count < settings.MAX_CLICK_COUNT:
+            if count == 0:
+                cache.set(key, 1, settings.CLICK_THROTTLE_TIMEOUT)
+            else:
+                cache.incr(key)
+            add_click.delay(self.object.id, timezone.now().date())
         return response
 
 
