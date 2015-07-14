@@ -107,7 +107,7 @@ class CollectGADataTests(TestCase):
 
     def test_invalid_date_argument(self):
         """If the date argument is invalid, raise a CommandError."""
-        with self.assertRaises(CommandError):
+        with self.assertRaises(SystemExit):
             self.command.execute('asdgasdihg')
 
 
