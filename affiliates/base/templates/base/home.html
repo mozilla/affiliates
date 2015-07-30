@@ -17,30 +17,6 @@
 {% endblock %}
 
 {% block content %}
-
-  {% if LANG in settings.FRIENDS_MSG_LOCALES or settings.DEV == True %}
-    <div id="friends-msg">
-      <div class="friends-msg-modal">
-        <h4>{{ _('So long, <strong>Firefox Affiliates</strong>.') }}</h4>
-        <h4>{{ _('Hello, <strong>Firefox Friends</strong>.') }}</h4>
-        <p>
-          {{ _('We’re moving our Affiliates program to Firefox Friends, an exciting new way to share what
-          we do with the world. At Firefox Friends you’ll have opportunities to get recognized for
-          making an impact — plus, you’ll be in the know for all the latest Mozilla news and
-          announcements.') }}
-        </p>
-        <p>
-          {{ _('At the beginning of August, new banner creation for Affiliates will be disabled,
-          so please join us at Firefox Friends to continue sharing Mozilla with world.') }}
-        </p>
-        <p><a href="https://friends.mozilla.org" class="button go">{{ _('Join Firefox Friends') }}</a></p>
-        <p class="friends-blog-link">
-          <a href="https://blog.mozilla.org/community/2015/05/12/shutting-down-firefox-affiliates/">{{_('Click here for more information')}}</a>
-        </p>
-      </div>
-    </div>
-  {% endif %}
-
   <main role="main">
     <section id="intro" class="section page-head">
       <div class="contain">
@@ -52,51 +28,30 @@
 
         {{ notices() }}
 
-        <h1>{{ _('Become a Firefox Affiliate today!') }}</h1>
-        <p class="tagline">{{ _('Get everything you need to share Firefox – and the other Mozilla products you love – with the world. Climb the leaderboard to help us build a better Web.') }}</p>
-        <p>{{ browserid_login(link_class='button go browserid-login', text=_('Get started')) }}</p>
+        <h1>{{ _('Important Notice: <br />Firefox Affiliates is being discontinued') }}</h1>
+        <p class="tagline">{{ _('The good news is... we’re moving our Affiliates program to Firefox Friends - an exciting new way to share what we do with the world - and we’d love for you to join us there.') }}</p>
+        <p><a href="https://friends.mozilla.org" class="button go"><span>Join Firefox Friends!</span></a></p>
       </div>
     </section>
 
-    <section id="howitworks" class="section">
+    <section id="dates" class="section">
       <div class="contain">
-        <h2 class="section-title">{{ _('How it works') }}</h2>
+        <h2 class="section-title">{{ _('In the mean time, here are a few dates you need to know:') }}</h2>
         <ol class="steps">
           <li class="step-1">
-            <h3>{{ _('1. Pick a banner') }}</h3>
-            <p>{{ _('Choose from a number of designs that support Firefox and other Mozilla products.') }}</p>
+            <h3>{{ _('August 2015') }}</h3>
+            <p>{{ _('New banner creation and new member registrations for Firefox Affiliates will be disabled.') }}</p>
           </li>
           <li class="step-2">
-            <h3>{{ _('2. Customize') }}</h3>
-            <p>{{ _('Select the size and color that suits your site. Banners and links are also available in over 30 languages.') }}</p>
+            <h3>{{ _('December 2015') }}</h3>
+            <p>{{ _('The Firefox Affiliates site will be decommissioned and sign-in will no longer be available. Banner images will still be hosted through the end of 2016, but after that time links to those images will no longer work.') }}</p>
           </li>
           <li class="step-3">
-            <h3>{{ _('3. Post to your site') }}</h3>
-            <p>{{ _('Copy and paste the HTML or text link into your site, email or wherever you’d like to share it.') }}</p>
+            <h3>{{ _('January 2016') }}</h3>
+            <p>{{ _('Firefox Affiliates banners will no longer be available.') }}</p>
           </li>
         </ol>
-      </div>
-    </section>
-
-    <section id="rewards" class="section">
-      <div class="contain">
-        <h2 class="section-title">{{ _('Earn rewards!') }}</h2>
-        <p>{{ _('Climb the affiliates leaderboard for your chance to win awesome Firefox gear, and to get even more involved with Mozilla. The more you share, the higher you can climb.') }}</p>
-      </div>
-    </section>
-
-    <section id="leaderboard" class="section">
-      <div class="contain">
-
-        <ul class="stats">
-          <li>{{ affiliate_string(affiliate_count) }}</li>
-          <li>{{ banner_string(link_count) }}</li>
-          <li>{{ click_string(click_count) }}</li>
-        </ul>
-
-        <h2 class="section-title">{{ _('Top affiliates') }}</h2>
-        {{ leaderboard(metric='link_clicks', count=5) }}
-        <p class="more"><a href="{{ url('links.leaderboard') }}" class="button go">See all</a></p>
+        <p class="join">{{ _('We’re very grateful for all of your support through Firefox Affiliates! Please join us at Firefox Friends where you’ll have opportunities to get recognized for making an impact — plus, you’ll be in the know for all the latest Mozilla news and announcements. <a href="https://friends.mozilla.org">Join Firefox Friends today!</a>') }}</p>
       </div>
     </section>
   </main>

@@ -173,14 +173,6 @@
         affiliates.createModal($origin, content);
     });
 
-
-    // Firefox Friends Messaging Modal For HP - Launches On Load If Exists
-    if ($('#friends-msg').length) {
-        var $origin = $('#friends-msg');
-        var content = $origin.html();
-        affiliates.createModal($origin, content);
-    }
-
     // Newsletter form.
     var $newsletterForm = $('#newsletter-form');
     var $newsletterFormMessage = $('#newsletter-message');

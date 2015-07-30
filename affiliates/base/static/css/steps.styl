@@ -5,45 +5,42 @@
 // How it works, in three steps
 
 .steps {
+
+    clearfix();
+
     li {
         padding: 0 0 20px 80px;
         position: relative;
-    }
 
-    h3 {
-        font-size: 20px;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin: 0 0 .75em;
-
-        &:before {
-            position: absolute;
-            top: -10px;
-            left: 0;
-            width: 80px;
-            display: block;
-            font-family: 'Font Awesome';
-            font-size: 70px;
-            font-weight: normal;
-            color: darken($medium-gray, 15%);
-            text-shadow: 0 0 3px rgba(255, 255, 255, .25);
+        p {
+            margin: 0 auto;
+            max-width: 290px;
         }
     }
 
-    .step-1 h3:before {
-        content: '\f0a6'; /* finger */
-    }
-
-    .step-2 h3:before {
-        content: '\f0c4'; /* scissors */
-    }
-
-    .step-3 h3:before {
-        content: '\f0c1'; /* link */
+    h3 {
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0 0 .75em;
     }
 }
 
+//*----------------------------------------------------------------*/
+// @Mobile layout: 480px
 
+@media $media-query-mobile {
+    .steps {
+        li {
+            padding: 15px 30px;
+
+            p {
+                margin: auto;
+                max-width: 100%;
+            }
+        }
+    }
+}
 
 //*----------------------------------------------------------------*/
 // @Landscape mobile layout: 440px
@@ -52,7 +49,12 @@
 
     .steps {
         li {
-            padding-left: 100px;
+            padding: 15px 30px;
+
+            p {
+                margin: auto;
+                max-width: 100%;
+            }
         }
 
         h3:before {
@@ -72,7 +74,7 @@
     .steps {
         li {
             span_narrow(4);
-            padding: 140px 0 0;
+            padding: 0;
             text-align: center;
         }
 
