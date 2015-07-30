@@ -22,7 +22,7 @@ have ``pip`` installed, you can install it with ``easy_install pip``.
     $ pip install virtualenv
     $ virtualenv venv
     $ source venv/bin/activate
-    $ pip install -r requirements/compiled.txt
+    $ pip install -r requirements/dev.txt
 
 .. note:: The adventurous may prefer to use virtualenvwrapper_ instead of
    manually creating a virtualenv.
