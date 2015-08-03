@@ -17,56 +17,34 @@
                 linear-gradient(to bottom, darken($medium-gray, 20%) 0, $medium-gray 350px),
                 $medium-gray;
 
+    h1:before {
+        display: block;
+        background: transparent url('/static/img/affiliates-friends.png') 0 0 no-repeat;
+        margin: 0 auto 30px;
+        width: 173px;
+        height: 79px;
+        content: '';
+    }
+
     .button {
         min-width: 200px;
     }
 
 }
 
-#rewards {
-    {section-orange}
-
-    h2 {
-        color: $light-text-color;
-        text-shadow: none;
-        margin: 0 0 .5em;
+#dates {
+    .section-title {
+        color: #56565a;
+        padding: 102px 0 70px;
+        font-size: 2.3rem;
     }
-
-    p {
-        text-align: center;
-        margin: 0 0 .5em;
-    }
-}
-
-#leaderboard {
-    .stats {
-        font-size: 24px;
-        font-style: italic;
-        text-align: center;
-        line-height: 1.1;
-        margin: 0 $grid-column-width 1em;
-
-        li {
-            padding: 1em 0;
-
-            &:nth-child(2) {
-                border: groove rgba(255, 255, 255, .75);
-                border-width: 2px 0;
-            }
-
-            strong {
-                display: block;
-                font-size: 1.25em;
-            }
-        }
-    }
-
-    .more {
+    .join {
+        margin: 50px 0 130px;
+        padding: 0 30px;
+        line-height: 1.7;
         text-align: center;
     }
 }
-
-
 
 //*----------------------------------------------------------------*/
 // @Tablet layout: 760px
@@ -92,27 +70,6 @@
         }
     }
 
-    #rewards p {
-        font-size: 24px;
-        margin: 0 $grid-column-width .5em;
-    }
-
-    #leaderboard .stats {
-        width: $width-tablet;
-        margin: 1em auto 2em;
-
-        li {
-            width: 30%;
-            padding: 0 1%;
-            display: inline-block;
-
-            &:nth-child(2) {
-                border-width: 0 2px;
-            }
-
-        }
-    }
-
 }
 
 
@@ -132,5 +89,3 @@
     }
 
 }
-
-
