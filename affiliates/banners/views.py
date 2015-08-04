@@ -1,9 +1,12 @@
 import json
 
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, RedirectView
 
 from braces.views import LoginRequiredMixin
+from tower import ugettext as _
 
 from affiliates.banners.forms import CustomizeImageBannerForm, CustomizeTextBannerForm
 from affiliates.banners.models import Category, FirefoxUpgradeBanner, ImageBanner, TextBanner
@@ -112,3 +115,14 @@ class CustomizeFirefoxUpgradeBannerView(CustomizeImageBannerView):
                           .variation_json_dict(variation))
         variation_dict['upgrade_image'] = variation.upgrade_image.url
         return variation_dict
+
+
+class NoMoreBannersRedirectView(RedirectView):
+    permanent = False
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.error(request, _('New banner creation functionality has been disabled.'))
+        return super(NoMoreBannersRedirectView, self).dispatch(request, *args, **kwargs)
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('base.home')

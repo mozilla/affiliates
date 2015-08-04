@@ -434,3 +434,6 @@ FRIENDS_MSG_LOCALES = ['cs', 'de', 'en-US', 'fr', 'nl', 'pt-BR', 'sl', 'sr']
 # Limit to three counts per minute.
 CLICK_THROTTLE_TIMEOUT = 60  # One minute
 MAX_CLICK_COUNT = 3
+
+BROWSERID_CREATE_USER = False
+BROWSERID_VERIFY_CLASS = 'affiliates.base.views.BrowserIDVerify'

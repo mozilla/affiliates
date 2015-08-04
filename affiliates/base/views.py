@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -7,6 +8,8 @@ from django.views.defaults import page_not_found, server_error
 import basket
 import commonware
 from commonware.response.decorators import xframe_allow
+from django_browserid.views import Verify
+from tower import ugettext as _
 
 from affiliates.base.forms import NewsletterSubscriptionForm
 from affiliates.base.http import JSONResponse
@@ -93,3 +96,11 @@ def handler500(request):
 
 def strings(request):
     return render(request, 'base/strings.html')
+
+
+class BrowserIDVerify(Verify):
+    def login_failure(self, msg=None):
+        if not msg:
+            msg = _('Login failed. Firefox Affiliates has stopped accepting new users.')
+        messages.error(self.request, msg)
+        return JSONResponse({'redirect': self.failure_url})
