@@ -135,8 +135,6 @@ class DashboardTests(TestCase):
             views.dashboard(request)
 
         render.assert_called_with(request, 'base/dashboard.html', {
-            'newsitem': visible_newsitem,
-            'milestones': ANY,
             'links': ANY,
         })
 
@@ -152,8 +150,6 @@ class DashboardTests(TestCase):
             views.dashboard(request)
 
         render.assert_called_with(request, 'base/dashboard.html', {
-            'newsitem': None,
-            'milestones': ANY,
             'links': ANY,
         })
 

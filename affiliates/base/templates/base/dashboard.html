@@ -44,36 +44,6 @@
       </section>
     {% endif %}
 
-    <section id="mymilestones" class="section">
-      <div class="contain">
-        <h2 class="section-title">{{ _('My Milestones') }}</h2>
-        {{ milestone_timeline(milestones) }}
-      </div>
-    </section>
-
-    {% if newsitem %}
-      <section id="news" class="section hfeed">
-        <div class="contain">
-          <h2 class="section-title">{{ _('Affiliates News') }}</h2>
-
-          {{ newsitem.render(LOCALE) }}
-
-          <aside class="sidebar aside">
-            <h2>{{ _('Become a Mozillian') }}</h2>
-            <p>
-            {% trans %}
-            At Mozilla, doing good is part of our code. Our mission is to promote
-            openness, innovation and opportunity on the Web, and we can only do it
-            with awesome people like you. If you’d like to do even more to help our
-            mission, we have volunteer opportunities available in a number of areas.
-            {% endtrans %}
-            </p>
-            <p><strong><a href="https://www.mozilla.org/contribute/" class="go">{{ _('Learn more') }}</a></strong></p>
-          </aside>
-        </div>
-      </section>
-    {% endif %}
-
     <div id="smartbanners">
       <h3>{{ _('What are smart banners?') }}</h3>
       <p>
