@@ -13,8 +13,6 @@ from tower import ugettext as _
 
 from affiliates.base.forms import NewsletterSubscriptionForm
 from affiliates.base.http import JSONResponse
-from affiliates.base.milestones import MilestoneDisplay
-from affiliates.base.models import NewsItem
 from affiliates.base.utils import redirect
 from affiliates.facebook.utils import in_facebook_app
 from affiliates.links.models import Link
@@ -41,11 +39,6 @@ def terms(request):
 
 @login_required
 def dashboard(request):
-    try:
-        newsitem = NewsItem.objects.filter(visible=True).latest('created')
-    except NewsItem.DoesNotExist:
-        newsitem = None
-
     # Replace request.user and prefetch related items that we need.
     request.user = (User.objects
                     .prefetch_related('link_set__datapoint_set',
@@ -56,8 +49,6 @@ def dashboard(request):
     links = sorted(request.user.link_set.all(), lambda x, y: cmp(x.created, y.created))
 
     return render(request, 'base/dashboard.html', {
-        'newsitem': newsitem,
-        'milestones': MilestoneDisplay(request.user),
         'links': links,
     })
 
